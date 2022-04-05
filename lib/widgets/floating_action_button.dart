@@ -4,8 +4,8 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
 class CustomFloatingActionButton extends StatefulWidget {
-  final GestureTapCallback? onTap;
   const CustomFloatingActionButton({Key? key, this.onTap}) : super(key: key);
+  final GestureTapCallback? onTap;
 
   @override
   _CustomFloatingActionButtonState createState() =>

@@ -23,11 +23,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
 class PhoneScreen extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-  final bool isCallFromCaseDetails;
-  final int index;
-  final String? callId;
-
   const PhoneScreen(
       {Key? key,
       required this.bloc,
@@ -35,6 +30,10 @@ class PhoneScreen extends StatefulWidget {
       this.isCallFromCaseDetails = false,
       this.callId})
       : super(key: key);
+  final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final int index;
+  final String? callId;
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -125,7 +124,7 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -205,13 +204,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                             margin: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     CustomText(
                                       widget.bloc.isAutoCalling
@@ -226,8 +223,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase() ??
                                               '_',
                                       fontWeight: FontWeight.w700,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     ),
                                     Wrap(
@@ -281,9 +276,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                       ['value']
                                                   .toString() ??
                                               '_',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     ),
                                   ),
@@ -339,8 +331,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         Languages.of(context)!
                                                             .call
                                                             .toUpperCase(),
-                                                        fontSize:
-                                                            FontSize.fourteen,
                                                         lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
@@ -368,7 +358,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           color: ColorResource.color23375A,
                                           lineHeight: 1,
                                           fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal,
                                         ),
                                         onTap: () => widget.bloc.add(
                                             EventDetailsEvent(
@@ -501,8 +490,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     width: 190,
                                     child: CustomButton(
                                       Languages.of(context)!.done.toUpperCase(),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: () async {
                                         if (widget.bloc.isAutoCalling) {
                                           if (await CallCustomerStatus
@@ -552,7 +539,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Singleton.instance.startCalling ?? false
                                       ? const SizedBox()
@@ -595,7 +581,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   ),
                                                   isRemoveExtraPadding: true,
                                                   fontSize: FontSize.ten,
-                                                  fontWeight: FontWeight.w600,
                                                   onTap: isSubmitFirst
                                                       ? () {
                                                           if (widget
@@ -644,8 +629,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                           .withOpacity(0.7),
                                                     ],
                                                   ),
-                                                  fontSize: FontSize.eighteen,
-                                                  fontWeight: FontWeight.w600,
                                                   onTap: isSubmitSecond
                                                       ? () {
                                                           widget.bloc.add(
@@ -680,8 +663,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.eighteen,
-                                            fontWeight: FontWeight.w600,
                                             onTap: isSubmitFirst
                                                 ? () {
                                                     if (widget.bloc
@@ -753,8 +734,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.eighteen,
-                                            fontWeight: FontWeight.w600,
                                             onTap: isSubmitSecond
                                                 ? () {
                                                     if (widget.bloc

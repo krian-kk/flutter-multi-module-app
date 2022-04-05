@@ -17,46 +17,6 @@ import 'package:path_provider/path_provider.dart';
 import '../singleton.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
-  final String hintText;
-  final bool obscureText;
-  final TextEditingController controller;
-  final Widget? suffixWidget;
-  final bool isEnable;
-  final bool isReadOnly;
-  final Function? onTapped;
-  final Function? onChanged;
-  final Widget? prefixWidget;
-  final TextInputType keyBoardType;
-  final int? maximumWordCount;
-  final Color titleColor;
-  final Color borderColor;
-  final Color textColor;
-  final bool isHighlighted;
-  final Color highlightColor;
-  final FocusNode? focusNode;
-  final Color? focusTextColor;
-  final bool isLabel;
-  final String? descriptionText;
-  final List<TextInputFormatter>? inputformaters;
-  final List<String> validationRules;
-  final EdgeInsetsGeometry? contentPadding;
-  final Function? onEditing;
-  final Function? returnS2Tresponse;
-  final bool isBorder;
-  final bool isFill;
-  final Color cursorColor;
-  final Function? validatorCallBack;
-  final double height;
-  final TextCapitalization? textCapitalization;
-  final bool isVoiceRecordWidget;
-  final bool isNumberOnly;
-  final String? caseId;
-  final String? agrRef;
-  final OnChange? remarkFunction;
-  final TextStyle? lableStyle;
-  final OnChangeCheckRecord? checkRecord;
-  final bool isSubmit;
-
   const CustomReadOnlyTextField(
     this.hintText,
     this.controller, {
@@ -99,6 +59,45 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.checkRecord,
     this.isSubmit = true,
   }) : super(key: key);
+  final String hintText;
+  final bool obscureText;
+  final TextEditingController controller;
+  final Widget? suffixWidget;
+  final bool isEnable;
+  final bool isReadOnly;
+  final Function? onTapped;
+  final Function? onChanged;
+  final Widget? prefixWidget;
+  final TextInputType keyBoardType;
+  final int? maximumWordCount;
+  final Color titleColor;
+  final Color borderColor;
+  final Color textColor;
+  final bool isHighlighted;
+  final Color highlightColor;
+  final FocusNode? focusNode;
+  final Color? focusTextColor;
+  final bool isLabel;
+  final String? descriptionText;
+  final List<TextInputFormatter>? inputformaters;
+  final List<String> validationRules;
+  final EdgeInsetsGeometry? contentPadding;
+  final Function? onEditing;
+  final Function? returnS2Tresponse;
+  final bool isBorder;
+  final bool isFill;
+  final Color cursorColor;
+  final Function? validatorCallBack;
+  final double height;
+  final TextCapitalization? textCapitalization;
+  final bool isVoiceRecordWidget;
+  final bool isNumberOnly;
+  final String? caseId;
+  final String? agrRef;
+  final OnChange? remarkFunction;
+  final TextStyle? lableStyle;
+  final OnChangeCheckRecord? checkRecord;
+  final bool isSubmit;
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -128,7 +127,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   getFileDirectory() async {
-    String dir = ((await getApplicationDocumentsDirectory()).path) +
+    final String dir = ((await getApplicationDocumentsDirectory()).path) +
         '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
     setState(() {
       filePath = dir;
@@ -404,8 +403,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   Languages.of(context)!.remarksRecording,
                   lineHeight: 1,
                   color: ColorResource.color000000,
-                  fontSize: FontSize.fourteen,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(width: 5),
@@ -475,8 +472,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                 : CustomText(
                     translateTextController.text,
                     color: ColorResource.color000000,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w400,
                   ),
           ),
         if (widget.isVoiceRecordWidget &&

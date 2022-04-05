@@ -99,7 +99,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (!event.isOfflineAPI) {
         yield AllocationLoadingState();
       }
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       Singleton.instance.buildContext = event.context;
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
@@ -134,9 +134,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isNoInternetAndServerError = true;
         isNoInternetAndServerErrorMsg =
             Languages.of(event.context)!.noInternetConnection;
-        yield AllocationOfflineState(successResponse: "offlineData");
+        yield AllocationOfflineState(successResponse: 'offlineData');
       } else {
-        SharedPreferences _pref = await SharedPreferences.getInstance();
+        final SharedPreferences _pref = await SharedPreferences.getInstance();
         // if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
         //   debugPrint('Values--> in off initiateState');
         //   yield AllocationOfflineState(successResponse: "offlineData");
@@ -146,14 +146,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isPriorityLoadMore = true;
 
         //event.isOfflineAPI! For offline purpose only
-        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            // event.isOfflineAPI == true
-            //     ? HttpUrl.priorityCaseListV2
-            //     :
-            HttpUrl.priorityCaseListV1 +
-                'pageNo=${Constants.pageNo}' +
-                '&limit=${Constants.limit}');
+        final Map<String, dynamic> priorityListData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                // event.isOfflineAPI == true
+                //     ? HttpUrl.priorityCaseListV2
+                //     :
+                HttpUrl.priorityCaseListV1 +
+                    'pageNo=${Constants.pageNo}' +
+                    '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount = 0;
@@ -169,10 +170,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
             // Singleton.instance.isOfflineStorageFeatureEnabled = true;
             // hasNextPage = false;
-            _pref.setBool(Constants.appDataLoadedFromFirebase, true);
-            _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
-            FirebaseFirestore.instance
+            await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(Singleton.instance.agentRef)
                 .collection(Constants.firebaseCase)
@@ -196,11 +197,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               hasNextPage = false;
             }
             // Get Contractor Details and stored in Singleton
-            Map<String, dynamic> getContractorDetails =
+            final Map<String, dynamic> getContractorDetails =
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.contractorDetail);
             if (getContractorDetails[Constants.success] == true) {
-              Map<String, dynamic> jsonData = getContractorDetails['data'];
+              final Map<String, dynamic> jsonData =
+                  getContractorDetails['data'];
               // check and store cloudTelephony true or false
               Singleton.instance.cloudTelephony =
                   jsonData['result']['cloudTelephony'] ?? false;
@@ -255,11 +257,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.priorityCaseListV1 +
-                'pageNo=${Constants.pageNo}' +
-                '&limit=${Constants.limit}');
+        final Map<String, dynamic> priorityListData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.priorityCaseListV1 +
+                    'pageNo=${Constants.pageNo}' +
+                    '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount = 0;
@@ -282,13 +285,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield TapPriorityState(successResponse: resultList);
     }
     if (event is ConnectedStopAndSubmitEvent) {
-      Result val = autoCallingResultList[event.customerIndex];
+      final Result val = autoCallingResultList[event.customerIndex];
       autoCallingResultList.remove(val);
       customerCount++;
     }
     if (event is StartCallingEvent) {
       if (event.isIncreaseCount && event.customerIndex! <= totalCount) {
-        Result val = autoCallingResultList[event.customerIndex! - 1];
+        final Result val = autoCallingResultList[event.customerIndex! - 1];
         autoCallingResultList.remove(val);
         // autoCallingResultList.add(val);
         customerCount++;
@@ -307,12 +310,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> priorityListData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.priorityCaseListV1 +
-                'pageNo=$page' +
-                '&limit=${Constants.limit}');
-        PriorityCaseListModel listOfdata =
+        final Map<String, dynamic> priorityListData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.priorityCaseListV1 +
+                    'pageNo=$page' +
+                    '&limit=${Constants.limit}');
+        final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(priorityListData['data']);
         if (priorityListData['data']['result'] != null) {
           for (var element in priorityListData['data']['result']) {
@@ -334,22 +338,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield PriorityLoadMoreState(successResponse: resultList);
     }
     if (event is CallSuccessfullyConnectedEvent) {
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       int index;
       index = _pref.getInt('autoCallingIndexValue') ?? 0;
       indexValue = index;
-      _pref.setInt('autoCallingIndexValue', index + 1);
+      await _pref.setInt('autoCallingIndexValue', index + 1);
       if (Singleton.instance.startCalling ?? false) {
         yield StartCallingState();
       }
     }
     if (event is CallUnSuccessfullyConnectedEvent) {
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       int index, subIndex;
       index = _pref.getInt('autoCallingIndexValue') ?? 0;
       subIndex = _pref.getInt('autoCallingSubIndexValue') ?? 0;
-      _pref.setInt('autoCallingIndexValue', index + 1);
-      _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
+      await _pref.setInt('autoCallingIndexValue', index + 1);
+      await _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
       if (Singleton.instance.startCalling ?? false) {
         yield StartCallingState();
       }
@@ -363,13 +367,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> buildRouteListData =
+        final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
-                    "lat=${event.paramValues.lat}&" +
-                    "lng=${event.paramValues.long}&" +
-                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'lat=${event.paramValues.lat}&' +
+                    'lng=${event.paramValues.long}&' +
+                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=${Constants.pageNo}&' +
                     'limit=${Constants.limit}');
 
@@ -377,7 +381,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         multipleLatLong.clear();
         buildRouteListData['data']['result']['cases'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          final Result listOfCases =
+              Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
             MapMarkerModel(
               caseId: listOfCases.caseId,
@@ -403,20 +408,21 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> buildRouteListData =
+        final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
-                    "lat=${event.paramValues.lat}&" +
-                    "lng=${event.paramValues.long}&" +
-                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'lat=${event.paramValues.lat}&' +
+                    'lng=${event.paramValues.long}&' +
+                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=$page&' +
                     'limit=${Constants.limit}');
-        PriorityCaseListModel listOfdata =
+        final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(buildRouteListData['data']);
         buildRouteListData['data']['result']['cases'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          final Result listOfCases =
+              Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
             MapMarkerModel(
               caseId: listOfCases.caseId,
@@ -461,18 +467,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         yield MapInitiateState();
-        Map<String, dynamic> buildRouteListData =
+        final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
                 HttpUrl.buildRouteCaseList +
-                    "lat=${event.paramValues.lat}&" +
-                    "lng=${event.paramValues.long}&" +
-                    "maxDistMeters=${event.paramValues.maxDistMeters}&" +
+                    'lat=${event.paramValues.lat}&' +
+                    'lng=${event.paramValues.long}&' +
+                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=${Constants.pageNo}&' +
                     'limit=${Constants.limit}');
 
         buildRouteListData['data']['result']['cases'].forEach((element) {
-          Result listOfCases = Result.fromJson(jsonDecode(jsonEncode(element)));
+          final Result listOfCases =
+              Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
             MapMarkerModel(
               caseId: listOfCases.caseId,
@@ -508,52 +515,52 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        var data = event.returnValue as SearchingDataModel;
+        final data = event.returnValue as SearchingDataModel;
         Map<String, dynamic> getSearchResultData;
         if (data.isStarCases! && data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "starredOnly=${data.isStarCases}&" +
-                  "recentActivity=${data.isMyRecentActivity}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'starredOnly=${data.isStarCases}&' +
+                  'recentActivity=${data.isMyRecentActivity}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "starredOnly=${data.isStarCases}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'starredOnly=${data.isStarCases}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "recentActivity=${data.isMyRecentActivity}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'recentActivity=${data.isMyRecentActivity}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         }
 
         resultList.clear();
@@ -579,7 +586,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       isAutoCalling = true;
       isShowSearchFloatingButton = false;
 
-      Map<String, dynamic> autoCallingListData = await APIRepository.apiRequest(
+      final Map<String, dynamic> autoCallingListData =
+          await APIRepository.apiRequest(
         APIRequestType.get,
         HttpUrl.autoCallingURL,
       );
@@ -607,7 +615,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        SharedPreferences _pref = await SharedPreferences.getInstance();
+        final SharedPreferences _pref = await SharedPreferences.getInstance();
         if (_pref.getString(Constants.userType) == Constants.fieldagent) {
           resultList[event.selectedStarIndex].starredCase =
               !resultList[event.selectedStarIndex].starredCase;

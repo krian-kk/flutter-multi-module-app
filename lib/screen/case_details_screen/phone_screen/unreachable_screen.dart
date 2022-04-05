@@ -9,7 +9,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/utils/select_payment_mode_button_widget.dart';
@@ -46,14 +45,14 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = [
       SelectedClipModel(Languages.of(context)!.lineBusy.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.switchOff.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.rnr.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.outOfNetwork.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -72,7 +71,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -170,8 +168,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                     color: ColorResource.color23375A,
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                        color: ColorResource.colorECECEC,
-                                        width: 1.0),
+                                        color: ColorResource.colorECECEC),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
@@ -229,7 +226,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
 
     for (var element in list) {
       widgets.add(InkWell(
@@ -248,8 +245,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

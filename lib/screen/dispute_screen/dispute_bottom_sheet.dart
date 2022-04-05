@@ -111,7 +111,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -167,7 +167,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               widget.customerLoanUserWidget,
                               const SizedBox(height: 11),
                               Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -312,7 +311,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: isSubmit
                                     ? () => submitDisbuteEvent(true)
                                     : () {},
@@ -336,7 +334,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit
                               ? () => submitDisbuteEvent(false)
                               : () {},
@@ -384,13 +381,12 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
               LatLng latLng = const LatLng(0, 0);
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
-                Position res = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best);
+                final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
                   latLng = LatLng(res.latitude, res.longitude);
                 });
               }
-              var requestBodyData = DisputePostModel(
+              final requestBodyData = DisputePostModel(
                 eventId: ConstantEventValues.disputeEventId,
                 eventType:
                     (widget.userType == Constants.telecaller || widget.isCall!)
@@ -437,7 +433,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
               } else {
-                Map<String, dynamic> postResult =
+                final Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                         APIRequestType.post,
                         HttpUrl.disputePostUrl(

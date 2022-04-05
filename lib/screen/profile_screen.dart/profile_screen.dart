@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -55,8 +55,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  void getAddress() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+  getAddress() async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') ?? '').toString();
   }
 
@@ -84,11 +84,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> requestOTP(String aRef) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
       requestBodydata: {
-        "aRef": aRef,
+        'aRef': aRef,
       },
     );
     if (await postResult[Constants.success]) {
@@ -101,7 +101,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> createMpin(String? mPin) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.put, HttpUrl.createMpin,
         requestBodydata: {
           'mPin': mPin,
@@ -117,11 +117,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> verifyOTP(String? aRef, String? otp) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post, HttpUrl.verifyOTP(),
         requestBodydata: {
-          "aRef": aRef,
-          "otp": otp,
+          'aRef': aRef,
+          'otp': otp,
         });
     if (postResult[Constants.success]) {
       setState(() => returnValue = true);
@@ -145,10 +145,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
               submitOtpFunction: (otp, isError, function) async {
-                bool result = await verifyOTP(userName, otp);
+                final bool result = await verifyOTP(userName, otp);
                 if (result) {
                   Navigator.pop(context);
-                  showNewMpinDialogBox();
+                  await showNewMpinDialogBox();
                 } else {
                   function;
                 }
@@ -191,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    List<ProfileNavigation> profileNavigationList = [
+    final List<ProfileNavigation> profileNavigationList = [
       // ProfileNavigation(
       //     title: Languages.of(context)!.notification,
       //     notificationCount: 3,
@@ -300,7 +300,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
                       child: SingleChildScrollView(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -391,7 +390,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.eighteen,
-                                              fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color101010,
                                             ),
@@ -402,8 +400,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w400,
                                               color: ColorResource.color101010,
                                             ),
                                             CustomText(
@@ -412,7 +408,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color101010,
                                             ),
@@ -448,7 +443,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .markAsHome,
                                                     fontSize: FontSize.twelve,
                                                     isUnderLine: true,
-                                                    fontStyle: FontStyle.normal,
                                                     fontWeight: FontWeight.w700,
                                                     color: ColorResource
                                                         .color101010,
@@ -477,8 +471,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 vertical: 16.0,
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
@@ -488,10 +480,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         Languages.of(context)!
                                                             .homeAddress
                                                             .toUpperCase(),
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -515,9 +503,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             Languages.of(
                                                                     context)!
                                                                 .homeAddressNotAvailable,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontStyle: FontStyle.normal,
                                                     color: ColorResource
                                                         .color484848,
                                                   ),
@@ -567,8 +552,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               FontSize.sixteen,
                                                           fontWeight:
                                                               FontWeight.w700,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           color: ColorResource
                                                               .color23375A,
                                                         ),
@@ -637,7 +620,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 )),
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
-                                isTrailing: false,
                                 leadingWidget: const CircleAvatar(
                                   radius: 13,
                                   backgroundColor: ColorResource.colorFFFFFF,
@@ -647,7 +629,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     lineHeight: 1,
                                     color: ColorResource.colorEA6D48,
                                     fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
                                   ),
                                 ),
                               ),
@@ -693,9 +674,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   .addAProfilePhoto
                                   .toUpperCase(),
                               color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
                             ),
                             const Spacer(),
                             GestureDetector(
@@ -858,7 +837,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 MapViewBottomSheetScreen(
                   title: Languages.of(context)!.markAsHome,
                   onClose: (value) async {
-                    SharedPreferences _pref =
+                    final SharedPreferences _pref =
                         await SharedPreferences.getInstance();
                     setState(() {
                       addressValue = value;

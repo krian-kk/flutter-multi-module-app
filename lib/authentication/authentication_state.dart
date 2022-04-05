@@ -5,28 +5,27 @@ abstract class AuthenticationState extends BaseEquatable {}
 class AuthenticationUnInitialized extends AuthenticationState {
   @override
   String toString() {
-    return "AuthenticationUnInitialized";
+    return 'AuthenticationUnInitialized';
   }
 }
 
 class AuthenticationUnAuthenticated extends AuthenticationState {
+  AuthenticationUnAuthenticated({this.notificationData});
   final dynamic notificationData;
+
   @override
   String toString() {
-    return "AuthenticationUnAuthenticated";
+    return 'AuthenticationUnAuthenticated';
   }
-
-  AuthenticationUnAuthenticated({this.notificationData});
 }
 
 class AuthenticationAuthenticated extends AuthenticationState {
+  AuthenticationAuthenticated({this.notificationData});
   final dynamic notificationData;
   @override
   String toString() {
-    return "AuthenticationAuthenticated";
+    return 'AuthenticationAuthenticated';
   }
-
-  AuthenticationAuthenticated({this.notificationData});
 }
 
 class SplashScreenState extends AuthenticationState {}
@@ -34,6 +33,6 @@ class SplashScreenState extends AuthenticationState {}
 class OfflineState extends AuthenticationState {
   @override
   String toString() {
-    return "AuthenticationUnAuthenticated";
+    return 'AuthenticationUnAuthenticated';
   }
 }

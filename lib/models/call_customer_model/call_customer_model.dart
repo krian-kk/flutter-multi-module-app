@@ -1,18 +1,4 @@
 class CallCustomerModel {
-  late String from;
-  late String to;
-  late String callerId;
-  late String aRef;
-  late String customerName;
-  late String service;
-  late String eventCode;
-  late String callerServiceID;
-  late String caseId;
-  late String sId;
-  late String agrRef;
-  late String agentName;
-  late String agentType;
-
   CallCustomerModel({
     required this.from,
     required this.to,
@@ -44,6 +30,20 @@ class CallCustomerModel {
     agentName = json['agentName'];
     agentType = json['agentType'];
   }
+
+  late String from;
+  late String to;
+  late String callerId;
+  late String aRef;
+  late String customerName;
+  late String service;
+  late String eventCode;
+  late String callerServiceID;
+  late String caseId;
+  late String sId;
+  late String agrRef;
+  late String agentName;
+  late String agentType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -1,23 +1,4 @@
 class EventAttr {
-  String? date;
-  dynamic time;
-  String? remarks;
-  int? ptpAmount;
-  String? mode;
-  String? ptpType;
-  // String? followUpPriority;
-  // String? amntOts;
-  // String? customerName;
-  String? amountCollected;
-  // String? chequeRefNo;
-  // String? remarkOts;
-  // String? modelMake;
-  // String? registrationNo;
-  // String? chassisNo;
-  String? reginalText;
-  String? translatedText;
-  String? audioS3Path;
-
   EventAttr({
     this.date,
     this.time,
@@ -59,6 +40,24 @@ class EventAttr {
         translatedText: json['translated_text'] as String?,
         audioS3Path: json['audioS3Path'] as String?,
       );
+  String? date;
+  dynamic time;
+  String? remarks;
+  int? ptpAmount;
+  String? mode;
+  String? ptpType;
+  // String? followUpPriority;
+  // String? amntOts;
+  // String? customerName;
+  String? amountCollected;
+  // String? chequeRefNo;
+  // String? remarkOts;
+  // String? modelMake;
+  // String? registrationNo;
+  // String? chassisNo;
+  String? reginalText;
+  String? translatedText;
+  String? audioS3Path;
 
   Map<String, dynamic> toJson() => {
         'date': date,

@@ -103,8 +103,8 @@ class _CustomCollectionsBottomSheetState
   bool isTranslate = true;
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -145,7 +145,7 @@ class _CustomCollectionsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList = [
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
@@ -154,7 +154,7 @@ class _CustomCollectionsBottomSheetState
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -224,8 +224,6 @@ class _CustomCollectionsBottomSheetState
                                   children: [
                                     Flexible(
                                         child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
@@ -314,8 +312,6 @@ class _CustomCollectionsBottomSheetState
                                     Flexible(
                                         child: SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
@@ -363,9 +359,7 @@ class _CustomCollectionsBottomSheetState
                                 const SizedBox(height: 15),
                                 CustomText(
                                   Languages.of(context)!.paymentMode,
-                                  fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color101010,
                                 ),
                                 const SizedBox(height: 8),
@@ -558,7 +552,7 @@ class _CustomCollectionsBottomSheetState
             });
           }
           if (isNotAutoCalling) {
-            if (selectedPaymentModeButton == "DIGITAL" ||
+            if (selectedPaymentModeButton == 'DIGITAL' ||
                 Singleton.instance.usertype == Constants.telecaller) {
               setState(() => isSubmit = false);
 
@@ -574,13 +568,12 @@ class _CustomCollectionsBottomSheetState
               );
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
-                Position res = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best);
+                final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
                   position = res;
                 });
               }
-              var requestBodyData = CollectionPostModel(
+              final requestBodyData = CollectionPostModel(
                   eventId: ConstantEventValues.collectionEventId,
                   eventCode: ConstantEventValues.collectionEvenCode,
                   eventType: (widget.userType == Constants.telecaller ||
@@ -611,7 +604,7 @@ class _CustomCollectionsBottomSheetState
                     altitude: position.altitude,
                     heading: position.heading,
                     speed: position.speed,
-                    deposition: CollectionsDeposition(status: "pending"),
+                    deposition: CollectionsDeposition(),
                     reginalText: returnS2Tdata.result?.reginalText,
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
@@ -630,7 +623,7 @@ class _CustomCollectionsBottomSheetState
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
-              List<dynamic> value = [];
+              final List<dynamic> value = [];
               for (var element in uploadFileLists) {
                 value
                     .add(await MultipartFile.fromFile(element.path.toString()));
@@ -639,7 +632,8 @@ class _CustomCollectionsBottomSheetState
                 'files': value,
               });
 
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.upload,
                 HttpUrl.collectionPostUrl('collection', widget.userType),
                 formDatas: FormData.fromMap(postdata),
@@ -660,18 +654,18 @@ class _CustomCollectionsBottomSheetState
                   if (Singleton
                           .instance.contractorInformations!.result!.sendSms! &&
                       Singleton.instance.usertype == Constants.fieldagent) {
-                    var requestBodyData = ReceiptSendSMS(
+                    final requestBodyData = ReceiptSendSMS(
                       agrRef: Singleton.instance.agrRef,
                       agentRef: Singleton.instance.agentRef,
                       borrowerMobile:
-                          Singleton.instance.customerContactNo ?? "0",
+                          Singleton.instance.customerContactNo ?? '0',
                       type: Constants.receiptAcknowledgementType,
                       receiptAmount: int.parse(amountCollectedControlller.text),
                       receiptDate: dateControlller.text,
                       paymentMode: selectedPaymentModeButton,
                       messageBody: 'message',
                     );
-                    Map<String, dynamic> postResult =
+                    final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
                       APIRequestType.post,
                       HttpUrl.sendSMSurl,
@@ -703,13 +697,12 @@ class _CustomCollectionsBottomSheetState
               );
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
-                Position res = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best);
+                final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
                   position = res;
                 });
               }
-              var requestBodyData = CollectionPostModel(
+              final requestBodyData = CollectionPostModel(
                   eventId: ConstantEventValues.collectionEventId,
                   eventCode: ConstantEventValues.collectionEvenCode,
                   eventType: (widget.userType == Constants.telecaller ||
@@ -740,7 +733,7 @@ class _CustomCollectionsBottomSheetState
                     altitude: position.altitude,
                     heading: position.heading,
                     speed: position.speed,
-                    deposition: CollectionsDeposition(status: "pending"),
+                    deposition: CollectionsDeposition(),
                     reginalText: returnS2Tdata.result?.reginalText,
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
@@ -759,7 +752,7 @@ class _CustomCollectionsBottomSheetState
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
-              List<dynamic> value = [];
+              final List<dynamic> value = [];
               for (var element in uploadFileLists) {
                 value
                     .add(await MultipartFile.fromFile(element.path.toString()));
@@ -768,7 +761,7 @@ class _CustomCollectionsBottomSheetState
                 'files': value,
               });
               setState(() => isSubmit = true);
-              DialogUtils.showDialog(
+              await DialogUtils.showDialog(
                 buildContext: context,
                 title: Languages.of(context)!.reciptsAlertMesg,
                 description: '',
@@ -778,7 +771,7 @@ class _CustomCollectionsBottomSheetState
                   // pop or remove the AlertDialouge Box
                   Navigator.pop(context);
                   setState(() => isSubmit = false);
-                  Map<String, dynamic> firebaseObject =
+                  final Map<String, dynamic> firebaseObject =
                       jsonDecode(jsonEncode(requestBodyData.toJson()));
                   try {
                     firebaseObject.addAll(
@@ -798,7 +791,7 @@ class _CustomCollectionsBottomSheetState
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
                   } else {
-                    Map<String, dynamic> postResult =
+                    final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
                       APIRequestType.upload,
                       HttpUrl.collectionPostUrl('collection', widget.userType),
@@ -847,11 +840,11 @@ class _CustomCollectionsBottomSheetState
                                   false) &&
                               Singleton.instance.usertype ==
                                   Constants.fieldagent) {
-                            var requestBodyData = ReceiptSendSMS(
+                            final requestBodyData = ReceiptSendSMS(
                               agrRef: Singleton.instance.agrRef,
                               agentRef: Singleton.instance.agentRef,
                               borrowerMobile:
-                                  Singleton.instance.customerContactNo ?? "0",
+                                  Singleton.instance.customerContactNo ?? '0',
                               type: Constants.receiptAcknowledgementType,
                               receiptAmount:
                                   int.parse(amountCollectedControlller.text),
@@ -868,7 +861,7 @@ class _CustomCollectionsBottomSheetState
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {
-                              Map<String, dynamic> postResult =
+                              final Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                 APIRequestType.post,
                                 HttpUrl.sendSMSurl,
@@ -903,7 +896,7 @@ class _CustomCollectionsBottomSheetState
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -945,7 +938,6 @@ class _CustomCollectionsBottomSheetState
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

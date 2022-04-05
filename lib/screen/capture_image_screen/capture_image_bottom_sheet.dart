@@ -70,8 +70,8 @@ class _CustomCaptureImageBottomSheetState
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -220,7 +220,6 @@ class _CustomCaptureImageBottomSheetState
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit
                               ? () async {
                                   if (isRecord == Constants.process) {
@@ -252,15 +251,13 @@ class _CustomCaptureImageBottomSheetState
                                                 .toString() !=
                                             PermissionStatus.granted
                                                 .toString()) {
-                                          Position res = await Geolocator
-                                              .getCurrentPosition(
-                                                  desiredAccuracy:
-                                                      LocationAccuracy.best);
+                                          final Position res = await Geolocator
+                                              .getCurrentPosition();
                                           setState(() {
                                             position = res;
                                           });
                                         }
-                                        var requestBodyData =
+                                        final requestBodyData =
                                             PostImageCapturedModel(
                                                 eventId: ConstantEventValues
                                                     .captureImageEventId,

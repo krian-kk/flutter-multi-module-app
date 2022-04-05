@@ -28,19 +28,19 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
     if (event is ChatInitialEvent) {
       yield ChatScreenInitial();
 
-      var date = DateTime.now();
-      String currentDate = DateFormat('yyyy-MM-dd').format(date);
-      String fromDate = DateFormat('yyyy-MM-dd')
+      final date = DateTime.now();
+      final String currentDate = DateFormat('yyyy-MM-dd').format(date);
+      final String fromDate = DateFormat('yyyy-MM-dd')
           .format(DateTime(date.year - 1, date.month, date.day - 3));
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       } else {
-        Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
+        final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
             APIRequestType.get,
             HttpUrl.chatHistory + '?fromDate=$fromDate&todate=$currentDate');
 
         if (chatHistory[Constants.success]) {
-          Map<String, dynamic> jsonData = chatHistory['data'];
+          final Map<String, dynamic> jsonData = chatHistory['data'];
           chatHistoryData = ChatHistoryModel.fromJson(jsonData);
 
           chatHistoryData.result?.forEach((element) {
@@ -56,11 +56,12 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
 
         // Get toAref from profile detail API
         if (event.toAref == null) {
-          Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
-              APIRequestType.get, HttpUrl.profileUrl);
+          final Map<String, dynamic> getProfileData =
+              await APIRepository.apiRequest(
+                  APIRequestType.get, HttpUrl.profileUrl);
 
           if (getProfileData['success']) {
-            Map<String, dynamic> jsonData = getProfileData['data'];
+            final Map<String, dynamic> jsonData = getProfileData['data'];
             profileAPIValue = ProfileApiModel.fromJson(jsonData);
           } else if (getProfileData['statusCode'] == 401 ||
               getProfileData['data'] == Constants.connectionTimeout ||
@@ -69,13 +70,14 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
           }
         }
 
-        Map<String, dynamic> agentInformation = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.agentInformation +
-                'aRef=${event.toAref ?? profileAPIValue.result![0].parent}');
+        final Map<String, dynamic> agentInformation =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.agentInformation +
+                    'aRef=${event.toAref ?? profileAPIValue.result![0].parent}');
 
         if (agentInformation[Constants.success]) {
-          Map<String, dynamic> jsonData = agentInformation['data'];
+          final Map<String, dynamic> jsonData = agentInformation['data'];
           agentDetails = AgentInformation.fromJson(jsonData);
         } else {}
       }

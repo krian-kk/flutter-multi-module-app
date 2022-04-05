@@ -1,12 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 
 class DashboardListModel {
-  String? title;
-  String? subTitle;
-  String? image;
-  String? count;
-  String? amountRs;
-
   DashboardListModel({
     this.title,
     this.subTitle,
@@ -14,6 +8,11 @@ class DashboardListModel {
     this.count,
     this.amountRs,
   });
+  String? title;
+  String? subTitle;
+  String? image;
+  String? count;
+  String? amountRs;
 }
 
 // class CaseListModel {
@@ -37,11 +36,10 @@ class DashboardListModel {
 // }
 
 class FilterCasesByTimeperiod {
-  String? timeperiodText;
-  String? value;
-
   FilterCasesByTimeperiod({
     this.timeperiodText,
     this.value,
   });
+  String? timeperiodText;
+  String? value;
 }

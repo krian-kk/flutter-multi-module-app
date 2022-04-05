@@ -1,21 +1,4 @@
 class CollectionPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late EventAttr eventAttr;
-  late String eventCode;
-  late String createdBy;
-  late String agentName;
-  late String contractor;
-  late String eventModule;
-  late CollectionsContact contact;
-  late String agrRef;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-
   CollectionPostModel({
     required this.eventId,
     required this.eventType,
@@ -53,6 +36,22 @@ class CollectionPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late EventAttr eventAttr;
+  late String eventCode;
+  late String createdBy;
+  late String agentName;
+  late String contractor;
+  late String eventModule;
+  late CollectionsContact contact;
+  late String agrRef;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,26 +76,6 @@ class CollectionPostModel {
 }
 
 class EventAttr {
-  late dynamic amountCollected;
-  late String date;
-  late String chequeRefNo;
-  late String remarks;
-  late String mode;
-  late String followUpPriority;
-  late String customerName;
-  late List<String> imageLocation;
-  late double? altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double? heading;
-  late double? speed;
-  late double latitude;
-  late double longitude;
-  late CollectionsDeposition deposition;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.amountCollected,
     required this.date,
@@ -140,6 +119,25 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late dynamic amountCollected;
+  late String date;
+  late String chequeRefNo;
+  late String remarks;
+  late String mode;
+  late String followUpPriority;
+  late String customerName;
+  late List<String> imageLocation;
+  late double? altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double? heading;
+  late double? speed;
+  late double latitude;
+  late double longitude;
+  late CollectionsDeposition deposition;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -170,12 +168,6 @@ class EventAttr {
 }
 
 class CollectionsContact {
-  late String cType;
-  late String health;
-  late String value;
-  late String resAddressId0;
-  late String contactId0;
-
   CollectionsContact(
       {required this.cType,
       required this.health,
@@ -190,6 +182,11 @@ class CollectionsContact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -203,8 +200,6 @@ class CollectionsContact {
 }
 
 class CollectionsDeposition {
-  late String status;
-
   CollectionsDeposition({
     this.status = 'pending',
   });
@@ -212,6 +207,7 @@ class CollectionsDeposition {
   CollectionsDeposition.fromJson(Map<String, dynamic> json) {
     status = json['status'];
   }
+  late String status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -23,13 +23,13 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
-  final CaseDetailsBloc bloc;
   const CustomEventDetailsBottomSheet(
     this.cardTitle,
     this.bloc, {
     Key? key,
     required this.customeLoanUserWidget,
   }) : super(key: key);
+  final CaseDetailsBloc bloc;
   final String cardTitle;
   final Widget customeLoanUserWidget;
   @override
@@ -57,7 +57,7 @@ class _CustomEventDetailsBottomSheetState
   }
 
   getFileDirectory() async {
-    String dir = ((await getApplicationDocumentsDirectory()).path) +
+    final String dir = ((await getApplicationDocumentsDirectory()).path) +
         '/TemporaryAudioFile.wav';
     setState(() {
       filePath = dir;
@@ -68,17 +68,17 @@ class _CustomEventDetailsBottomSheetState
     setState(() {
       bloc.eventDetailsPlayAudioModel[index].loadingAudio = true;
     });
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.getAudioFile,
-      requestBodydata: {"pathOfFile": audioPath},
+      requestBodydata: {'pathOfFile': audioPath},
     );
     if (postResult[Constants.success]) {
-      var audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
-      var base64 = const Base64Encoder()
+      final audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
+      final base64 = const Base64Encoder()
           .convert(List<int>.from(audioConvertyData.result!.body!.data!));
 
-      Uint8List audioBytes = const Base64Codec().decode(base64);
+      final Uint8List audioBytes = const Base64Codec().decode(base64);
       await File(filePath).writeAsBytes(audioBytes);
       await platform.invokeMethod(
           'playRecordAudio', {'filePath': filePath}).then((value) {
@@ -185,7 +185,7 @@ class _CustomEventDetailsBottomSheetState
                             itemCount:
                                 bloc.eventDetailsAPIValues.result?.length ?? 0,
                             itemBuilder: (context, int index) {
-                              dynamic listVal = bloc
+                              final dynamic listVal = bloc
                                   .eventDetailsAPIValues.result!.reversed
                                   .toList();
                               return expandList(listVal, index);
@@ -220,7 +220,6 @@ class _CustomEventDetailsBottomSheetState
                     Languages.of(context)!.okay.toUpperCase(),
                     onTap: () => Navigator.pop(context),
                     fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
                     cardShape: 5,
                   ),
                 ),
@@ -266,7 +265,6 @@ class _CustomEventDetailsBottomSheetState
                       ),
                     CustomText(
                       expandedList[index].eventType.toString().toUpperCase(),
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -278,7 +276,6 @@ class _CustomEventDetailsBottomSheetState
                   if (expandedList[index].createdBy != null)
                     CustomText(
                       '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -287,7 +284,6 @@ class _CustomEventDetailsBottomSheetState
                       expandedList[index].eventAttr?.amountCollected != null)
                     CustomText(
                       '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -296,28 +292,24 @@ class _CustomEventDetailsBottomSheetState
                       expandedList[index].eventAttr?.ptpAmount != null)
                     CustomText(
                       '${Languages.of(context)!.ptpAmount} : ${expandedList[index].eventAttr?.ptpAmount}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
                       '${Languages.of(context)!.date.replaceAll('*', '')} : ${expandedList[index].eventAttr?.date.toString()}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.time != null)
                     CustomText(
                       '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
                       '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -334,7 +326,6 @@ class _CustomEventDetailsBottomSheetState
                   if (expandedList[index].eventAttr?.remarks != null)
                     CustomText(
                       '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -509,8 +500,6 @@ class _CustomEventDetailsBottomSheetState
                   ),
                   child: CustomText(
                     Languages.of(context)!.remarksRecording,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w400,
                     color: ColorResource.colorFFFFFF,
                     lineHeight: 1,
                   ),
@@ -572,7 +561,6 @@ class _CustomEventDetailsBottomSheetState
         const SizedBox(height: 12),
         const CustomText(
           Constants.reginalText,
-          fontSize: FontSize.fourteen,
           fontWeight: FontWeight.w700,
           color: ColorResource.color000000,
         ),
@@ -586,15 +574,12 @@ class _CustomEventDetailsBottomSheetState
           child: CustomText(
             reginalText!,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontWeight: FontWeight.w400,
             lineHeight: 1,
           ),
         ),
         const SizedBox(height: 12),
         const CustomText(
           Constants.translatedText,
-          fontSize: FontSize.fourteen,
           fontWeight: FontWeight.w700,
           color: ColorResource.color000000,
         ),
@@ -608,8 +593,6 @@ class _CustomEventDetailsBottomSheetState
           child: CustomText(
             translatedText!,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontWeight: FontWeight.w400,
             lineHeight: 1,
           ),
         ),

@@ -7,7 +7,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/select_payment_mode_button_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -34,13 +33,13 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = [
       SelectedClipModel(Languages.of(context)!.doesNotExist.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.incorrectNumber.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.numberNotWorking.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -59,7 +58,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -132,7 +130,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -150,8 +148,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

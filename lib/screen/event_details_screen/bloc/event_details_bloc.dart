@@ -18,20 +18,17 @@ part 'event_details_event.dart';
 part 'event_details_state.dart';
 
 class EventDetailsPlayAudioModel {
-  bool isPlaying;
-  bool isPaused;
-  bool loadingAudio;
   EventDetailsPlayAudioModel({
     this.isPlaying = false,
     this.isPaused = false,
     this.loadingAudio = false,
   });
+  bool isPlaying;
+  bool isPaused;
+  bool loadingAudio;
 }
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
-  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
-  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
-
   EventDetailsBloc() : super(EventDetailsInitial()) {
     on<EventDetailsEvent>((event, emit) async {
       if (event is EventDetailsInitialEvent) {
@@ -54,6 +51,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               .then((QuerySnapshot<Map<String, dynamic>> value) {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
+              // ignore: prefer_final_locals
               List<EvnetDetailsResultsModel>? results = [];
               for (var element in value.docs) {
                 try {
@@ -69,14 +67,14 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             }
           });
         } else {
-          Map<String, dynamic> getEventDetailsData =
+          final Map<String, dynamic> getEventDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.get,
                   HttpUrl.eventDetailsUrl(
                       caseId: event.caseId, userType: event.userType));
 
           if (getEventDetailsData[Constants.success] == true) {
-            Map<String, dynamic> jsonData = getEventDetailsData['data'];
+            final Map<String, dynamic> jsonData = getEventDetailsData['data'];
             eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
             log('Event Details Value ===== > ${jsonEncode(jsonData)}');
           } else {
@@ -110,4 +108,6 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
       }
     });
   }
+  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
+  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
 }

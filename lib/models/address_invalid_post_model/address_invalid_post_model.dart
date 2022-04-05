@@ -1,22 +1,4 @@
 class AddressInvalidPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late AddressInvalidEventAttr eventAttr;
-  late List<AddressInvalidContact> contact;
-  late String createdBy;
-  late String eventModule;
-  late String agentName;
-  late String contractor;
-
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-  late String agrRef;
-
   AddressInvalidPostModel({
     required this.eventId,
     required this.eventType,
@@ -35,7 +17,6 @@ class AddressInvalidPostModel {
     this.invalidNumber,
     required this.agrRef,
   });
-
   AddressInvalidPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
     eventType = json['eventType'];
@@ -79,22 +60,27 @@ class AddressInvalidPostModel {
     data['agrRef'] = agrRef;
     return data;
   }
+
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late AddressInvalidEventAttr eventAttr;
+  late List<AddressInvalidContact> contact;
+  late String createdBy;
+  late String eventModule;
+  late String agentName;
+  late String contractor;
+
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
+  late String agrRef;
 }
 
 class AddressInvalidEventAttr {
-  late String remarks;
-  late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   AddressInvalidEventAttr({
     required this.remarks,
     required this.followUpPriority,
@@ -109,7 +95,6 @@ class AddressInvalidEventAttr {
     this.translatedText,
     this.audioS3Path,
   });
-
   AddressInvalidEventAttr.fromJson(Map<String, dynamic> json) {
     remarks = json['remarks'];
     followUpPriority = json['followUpPriority'];
@@ -143,14 +128,22 @@ class AddressInvalidEventAttr {
     }
     return data;
   }
+
+  late String remarks;
+  late String followUpPriority;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 }
 
 class AddressInvalidContact {
-  late String cType;
-  late String value;
-  late String health;
-  late String resAddressId_0;
-
   AddressInvalidContact({
     required this.cType,
     required this.value,
@@ -164,6 +157,11 @@ class AddressInvalidContact {
     health = json['health'];
     resAddressId_0 = json['resAddressId_0'];
   }
+
+  late String cType;
+  late String value;
+  late String health;
+  late String resAddressId_0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

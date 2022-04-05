@@ -11,12 +11,6 @@ import 'package:origa/widgets/pin_code_text_field_widget.dart';
 // import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConformMpinScreen extends StatefulWidget {
-  final GestureTapCallback successFunction;
-  final GestureTapCallback forgotPinFunction;
-  final GestureTapCallback? popFunction;
-  final String mPin;
-  final bool canPopWidget;
-
   const ConformMpinScreen(
       {Key? key,
       required this.successFunction,
@@ -25,6 +19,11 @@ class ConformMpinScreen extends StatefulWidget {
       this.popFunction,
       this.canPopWidget = false})
       : super(key: key);
+  final GestureTapCallback successFunction;
+  final GestureTapCallback forgotPinFunction;
+  final GestureTapCallback? popFunction;
+  final String mPin;
+  final bool canPopWidget;
 
   @override
   State<ConformMpinScreen> createState() => _ConformMpinScreenState();
@@ -56,7 +55,6 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                   child: CustomText(
                     Languages.of(context)!.enterYourSecureFourdDigitPin,
                     fontSize: FontSize.eighteen,
-                    fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -79,7 +77,6 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
               controller: contoller,
               length: 4,
               mainAxisAlignment: MainAxisAlignment.center,
-              obscureText: false,
               animationType: AnimationType.scale,
               onChanged: (value) {
                 setState(() => isError = false);
@@ -129,7 +126,6 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                 Languages.of(context)!.forgotPin,
                 color: ColorResource.color23375A,
                 fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w600,
               ),
             ),

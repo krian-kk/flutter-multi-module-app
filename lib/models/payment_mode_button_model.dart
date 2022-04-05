@@ -1,14 +1,13 @@
 class PaymentModeButtonModel {
-  String title;
   PaymentModeButtonModel(this.title);
+  String title;
 }
 
 class OptionBottomSheetButtonModel {
-  final String title;
-  final String stringResourceValue;
-
   OptionBottomSheetButtonModel(
     this.title,
     this.stringResourceValue,
   );
+  final String title;
+  final String stringResourceValue;
 }

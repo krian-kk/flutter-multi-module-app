@@ -123,7 +123,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList = [
       PaymentModeButtonModel(Languages.of(context)!.pickUp),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
@@ -132,7 +132,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -379,9 +379,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 const SizedBox(height: 15),
                                 CustomText(
                                   Languages.of(context)!.paymentMode,
-                                  fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color101010,
                                 ),
                                 const SizedBox(height: 8),
@@ -498,7 +496,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: isSubmit
                                     ? () => submitPTPEvent(true)
                                     : () {},
@@ -522,7 +519,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit ? () => submitPTPEvent(false) : () {},
                           cardShape: 5,
                         ),
@@ -576,14 +572,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             );
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
-              Position res = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best);
+              final Position res = await Geolocator.getCurrentPosition();
 
               setState(() {
                 position = res;
               });
             }
-            var requestBodyData = PTPPostModel(
+            final requestBodyData = PTPPostModel(
               eventId: ConstantEventValues.ptpEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)
@@ -611,9 +606,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 translatedText: returnS2Tdata.result?.translatedText,
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
-              callID: Singleton.instance.callID ?? " ",
-              callingID: Singleton.instance.callingID ?? " ",
-              callerServiceID: Singleton.instance.callerServiceID ?? " ",
+              callID: Singleton.instance.callID ?? ' ',
+              callingID: Singleton.instance.callingID ?? ' ',
+              callerServiceID: Singleton.instance.callerServiceID ?? ' ',
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',
@@ -640,7 +635,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.post,
                 HttpUrl.ptpPostUrl(
                   'ptp',
@@ -700,7 +696,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -742,7 +738,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

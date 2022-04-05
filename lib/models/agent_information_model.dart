@@ -1,8 +1,4 @@
 class AgentInformation {
-  int? status;
-  String? message;
-  List<Result>? result;
-
   AgentInformation({this.status, this.message, this.result});
 
   AgentInformation.fromJson(Map<String, dynamic> json) {
@@ -16,6 +12,10 @@ class AgentInformation {
     }
   }
 
+  int? status;
+  String? message;
+  List<Result>? result;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
@@ -28,30 +28,6 @@ class AgentInformation {
 }
 
 class Result {
-  String? sId;
-  List<String>? areaCode;
-  String? aRef;
-  String? name;
-  String? type;
-  String? contractor;
-  String? status;
-  List<String>? children;
-  Audit? audit;
-  List<Contact>? contact;
-  String? webLogin;
-  dynamic dateJoining;
-  dynamic dateResign;
-  String? defMobileNumber;
-  String? roleLevel;
-  dynamic aId;
-  dynamic aclId;
-  String? parent;
-  dynamic parentId;
-  int? lastOtp;
-  bool? userAdmin;
-  int? failedLoginCounter;
-  Fcm? fcm;
-
   Result(
       {this.sId,
       this.areaCode,
@@ -108,6 +84,30 @@ class Result {
     fcm = json['fcm'] != null ? Fcm.fromJson(json['fcm']) : null;
   }
 
+  String? sId;
+  List<String>? areaCode;
+  String? aRef;
+  String? name;
+  String? type;
+  String? contractor;
+  String? status;
+  List<String>? children;
+  Audit? audit;
+  List<Contact>? contact;
+  String? webLogin;
+  dynamic dateJoining;
+  dynamic dateResign;
+  String? defMobileNumber;
+  String? roleLevel;
+  dynamic aId;
+  dynamic aclId;
+  String? parent;
+  dynamic parentId;
+  int? lastOtp;
+  bool? userAdmin;
+  int? failedLoginCounter;
+  Fcm? fcm;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
@@ -144,11 +144,6 @@ class Result {
 }
 
 class Audit {
-  String? crBy;
-  String? crAt;
-  String? upBy;
-  String? upAt;
-
   Audit({this.crBy, this.crAt, this.upBy, this.upAt});
 
   Audit.fromJson(Map<String, dynamic> json) {
@@ -157,6 +152,11 @@ class Audit {
     upBy = json['upBy'];
     upAt = json['upAt'];
   }
+
+  String? crBy;
+  String? crAt;
+  String? upBy;
+  String? upAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -169,15 +169,15 @@ class Audit {
 }
 
 class Contact {
-  String? value;
-  String? cType;
-
   Contact({this.value, this.cType});
 
   Contact.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     cType = json['cType'];
   }
+
+  String? value;
+  String? cType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -188,13 +188,6 @@ class Contact {
 }
 
 class Fcm {
-  String? socketId;
-  String? displayName;
-  int? status;
-  dynamic avatar;
-  String? id;
-  int? participantType;
-
   Fcm(
       {this.socketId,
       this.displayName,
@@ -211,6 +204,13 @@ class Fcm {
     id = json['id'];
     participantType = json['participantType'];
   }
+
+  String? socketId;
+  String? displayName;
+  int? status;
+  dynamic avatar;
+  String? id;
+  int? participantType;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

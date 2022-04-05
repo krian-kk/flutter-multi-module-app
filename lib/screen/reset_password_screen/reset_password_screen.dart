@@ -68,7 +68,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   cancelTimer() {
-    if (timer != null) timer!.cancel();
+    if (timer != null) {
+      timer!.cancel();
+    }
   }
 
   @override
@@ -161,14 +163,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     mobileNumberController.clear();
                                     userNameController.clear();
                                     emailController.clear();
-                                    Map<String, dynamic> getAgentDetail =
+                                    final Map<String, dynamic> getAgentDetail =
                                         await APIRepository.apiRequest(
                                             APIRequestType.get,
                                             HttpUrl.resetPasswordCheckUrl(
                                                 userIdController.text));
 
                                     if (getAgentDetail['success'] == false) {
-                                      AgentDetailErrorModel agentDetailError =
+                                      final AgentDetailErrorModel
+                                          agentDetailError =
                                           AgentDetailErrorModel.fromJson(
                                               getAgentDetail['data']);
                                       AppUtils.showToast(agentDetailError.msg!,
@@ -204,8 +207,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 color: ColorResource.color23375A,
                                 borderRadius: BorderRadius.circular(85),
                                 border: Border.all(
-                                    color: ColorResource.colorECECEC,
-                                    width: 1.0),
+                                    color: ColorResource.colorECECEC),
                               ),
                               margin: const EdgeInsets.all(12),
                               padding: const EdgeInsets.symmetric(
@@ -313,7 +315,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     controller: pinCodeController,
                                     length: 6,
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    obscureText: false,
                                     animationType: AnimationType.scale,
                                     onChanged: (value) {
                                       setState(() {});
@@ -344,12 +345,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     onTap: isTime
                                         ? () {}
                                         : () async {
-                                            Map<String, dynamic> postResult =
+                                            final Map<String, dynamic>
+                                                postResult =
                                                 await APIRepository.apiRequest(
                                               APIRequestType.post,
                                               HttpUrl.resendOTPUrl(),
                                               requestBodydata: {
-                                                "aRef": userIdController.text
+                                                'aRef': userIdController.text
                                               },
                                             );
                                             if (postResult[Constants.success]) {
@@ -417,12 +419,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   // emailController.text.isNotEmpty
                                   )
                                   ? () async {
-                                      Map<String, dynamic> postResult =
+                                      final Map<String, dynamic> postResult =
                                           await APIRepository.apiRequest(
                                         APIRequestType.post,
                                         HttpUrl.requestOTPUrl(),
                                         requestBodydata: {
-                                          "aRef": userIdController.text
+                                          'aRef': userIdController.text
                                         },
                                       );
                                       if (await postResult[Constants.success]) {
@@ -436,7 +438,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   : () {},
                               cardShape: 85,
                               fontSize: FontSize.sixteen,
-                              fontWeight: FontWeight.w600,
                             )
                           : CustomButton(
                               Languages.of(context)!.submit.toUpperCase(),
@@ -457,13 +458,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       pinCodeController.text.length == 6)
                                   ? () async {
                                       if (userNameController.text.isNotEmpty) {
-                                        Map<String, dynamic> postResult =
+                                        final Map<String, dynamic> postResult =
                                             await APIRepository.apiRequest(
                                                 APIRequestType.post,
                                                 HttpUrl.verifyOTP(),
                                                 requestBodydata: {
-                                              "aRef": userIdController.text,
-                                              "otp": pinCodeController.text
+                                              'aRef': userIdController.text,
+                                              'otp': pinCodeController.text
                                             });
                                         if (postResult[Constants.success]) {
                                           cancelTimer();
@@ -479,7 +480,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   : () {},
                               cardShape: 85,
                               fontSize: FontSize.sixteen,
-                              fontWeight: FontWeight.w600,
                             ),
                       // const SizedBox(height: 20),
                       // if (mobileNumberController.text.isNotEmpty &&
@@ -521,10 +521,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   resetPasswordShowBottomSheet(String name) {
-    TextEditingController newPasswordController = TextEditingController();
-    TextEditingController confirmPasswordController = TextEditingController();
-    FocusNode newPasswordFocusNode = FocusNode();
-    FocusNode confirmPasswordFocusNode = FocusNode();
+    final TextEditingController newPasswordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
+        TextEditingController();
+    final FocusNode newPasswordFocusNode = FocusNode();
+    final FocusNode confirmPasswordFocusNode = FocusNode();
     final formKey = GlobalKey<FormState>();
 
     showModalBottomSheet(
@@ -620,7 +621,6 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             .withOpacity(0.7),
                                       ],
                                     ),
-                                    textColor: ColorResource.colorFFFFFF,
                                     fontSize: FontSize.sixteen,
                                     fontWeight: FontWeight.w700,
                                     padding: 15.0,
@@ -634,7 +634,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               setState(() =>
                                                   isSaveNewPasswordLoad =
                                                       false);
-                                              var requestBodyData =
+                                              final requestBodyData =
                                                   ResetPasswordModel(
                                                       otp: pinCodeController
                                                           .text,
@@ -642,7 +642,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                       newPassword:
                                                           newPasswordController
                                                               .text);
-                                              Map<String, dynamic> postResult =
+                                              final Map<String, dynamic>
+                                                  postResult =
                                                   await APIRepository.apiRequest(
                                                       APIRequestType.post,
                                                       HttpUrl

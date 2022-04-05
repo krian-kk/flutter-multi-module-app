@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class DashboardEventCountModel {
-  int? status;
-  String? message;
-  List<DashboardEventCountResult>? result;
-
   DashboardEventCountModel({this.status, this.message, this.result});
 
   factory DashboardEventCountModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +13,9 @@ class DashboardEventCountModel {
           .toList(),
     );
   }
+  int? status;
+  String? message;
+  List<DashboardEventCountResult>? result;
 
   Map<String, dynamic> toJson() => {
         'status': status,

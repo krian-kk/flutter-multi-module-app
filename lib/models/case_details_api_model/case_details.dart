@@ -3,28 +3,6 @@ import 'contact.dart';
 import 'repayment_info.dart';
 
 class CaseDetails {
-  String? id;
-  dynamic pos;
-  dynamic due;
-  String? cust;
-  dynamic odVal;
-  String? accNo;
-  String? collSubStatus;
-  String? telSubStatus;
-  String? bankName;
-  String? batchNo;
-  String? product;
-  String? emiStartDate;
-  String? schemeCode;
-  String? loanDuration;
-  dynamic loanAmt;
-  String? pincode;
-  List<Contact>? contact;
-  List<Attr>? attr;
-  RepaymentInfo? repaymentInfo;
-  String? caseId;
-  String? agrRef;
-
   CaseDetails({
     this.id,
     this.pos,
@@ -79,6 +57,27 @@ class CaseDetails {
         caseId: json['caseId'] as String?,
         agrRef: json['agrRef'] as String?,
       );
+  String? id;
+  dynamic pos;
+  dynamic due;
+  String? cust;
+  dynamic odVal;
+  String? accNo;
+  String? collSubStatus;
+  String? telSubStatus;
+  String? bankName;
+  String? batchNo;
+  String? product;
+  String? emiStartDate;
+  String? schemeCode;
+  String? loanDuration;
+  dynamic loanAmt;
+  String? pincode;
+  List<Contact>? contact;
+  List<Attr>? attr;
+  RepaymentInfo? repaymentInfo;
+  String? caseId;
+  String? agrRef;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

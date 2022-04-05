@@ -203,12 +203,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is NavigateCaseDetailState) {
-            dynamic returnValue = await Navigator.pushNamed(
+            final dynamic returnValue = await Navigator.pushNamed(
               context,
               AppRoutes.caseDetailsScreen,
               arguments: CaseDetailsNaviagationModel(state.paramValues),
             );
-            RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
+            final RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
                 Map<String, dynamic>.from(returnValue));
 
             if (retrunModelValue.isSubmitForMyVisit) {
@@ -301,7 +301,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Expanded(
-                                                flex: 1,
                                                 child: userActivity(
                                                   header: bloc.userType ==
                                                           Constants.fieldagent
@@ -326,7 +325,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 width: 7,
                                               ),
                                               Expanded(
-                                                flex: 1,
                                                 child: userActivity(
                                                   header: bloc.userType ==
                                                           Constants.fieldagent
@@ -351,7 +349,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                 width: 7,
                                               ),
                                               Expanded(
-                                                flex: 1,
                                                 child: userActivity(
                                                   header: Languages.of(context)!
                                                       .invalid
@@ -589,8 +586,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                               RoundedRectangleBorder(
                                                             side: const BorderSide(
                                                                 color: ColorResource
-                                                                    .colorD3D7DE,
-                                                                width: 1),
+                                                                    .colorD3D7DE),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
@@ -647,8 +643,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       .dashboardList[
                                                                           index]
                                                                       .title!,
-                                                                  isSingleLine:
-                                                                      false,
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -740,9 +734,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                       mainAxisAlignment:
                                                                           MainAxisAlignment
                                                                               .spaceBetween,
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .center,
                                                                       children: [
                                                                         SizedBox(
                                                                             width:
@@ -767,8 +758,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                         CustomText(
                                                                           bloc.dashboardList[index]
                                                                               .count!,
-                                                                          fontSize:
-                                                                              FontSize.fourteen,
                                                                           fontWeight:
                                                                               FontWeight.w700,
                                                                           color:
@@ -781,8 +770,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                                                         CustomText(
                                                                           bloc.dashboardList[index]
                                                                               .subTitle!,
-                                                                          fontSize:
-                                                                              FontSize.fourteen,
                                                                           fontWeight:
                                                                               FontWeight.w500,
                                                                           color:

@@ -107,7 +107,6 @@ class AutoCalling {
                             CustomText(
                               Languages.of(context)!.customer.toUpperCase(),
                               color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
                             ),
                             const SizedBox(height: 5),
@@ -139,8 +138,6 @@ class AutoCalling {
                                         ],
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
                                         children: [
                                           const SizedBox(
                                             height: 2.0,
@@ -157,7 +154,7 @@ class AutoCalling {
                                                         .autoCallingResultList[
                                                             indexs]
                                                         .bankName! +
-                                                    " / " +
+                                                    ' / ' +
                                                     bloc
                                                         .autoCallingResultList[
                                                             indexs]
@@ -211,8 +208,6 @@ class AutoCalling {
                                                             FontSize.sixteen,
                                                         color: ColorResource
                                                             .color101010,
-                                                        fontWeight:
-                                                            FontWeight.w400,
                                                       ),
                                                     ),
                                                     const SizedBox(
@@ -304,7 +299,7 @@ class AutoCalling {
                                                                   indexs]
                                                               .agrRef;
 
-                                                      CaseDetailsBloc
+                                                      final CaseDetailsBloc
                                                           caseDetailsloc =
                                                           CaseDetailsBloc(bloc)
                                                             ..add(
@@ -347,7 +342,7 @@ class AutoCalling {
                                                                 .autoCallingResultList[
                                                                     indexs]
                                                                 .bankName! +
-                                                            " / " +
+                                                            ' / ' +
                                                             bloc
                                                                 .autoCallingResultList[
                                                                     indexs]
@@ -376,9 +371,6 @@ class AutoCalling {
                                                                 .start,
                                                         children: [
                                                           Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
                                                             children: [
                                                               CustomText(
                                                                 bloc
@@ -390,8 +382,6 @@ class AutoCalling {
                                                                     '_',
                                                                 color: ColorResource
                                                                     .color484848,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
                                                               ),
                                                               const SizedBox(
                                                                 width: 15,
@@ -410,9 +400,6 @@ class AutoCalling {
                                                                     Languages.of(
                                                                             context)!
                                                                         .view,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
                                                                     color: ColorResource
                                                                         .color23375A,
                                                                     fontWeight:
@@ -462,7 +449,6 @@ class AutoCalling {
                                                     Languages.of(context)!
                                                         .caseView
                                                         .toUpperCase(),
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color23375A,
                                                     fontWeight: FontWeight.w700,

@@ -1,8 +1,4 @@
 class ContractorDetailsModel {
-  int? status;
-  String? message;
-  ContractorResult? result;
-
   ContractorDetailsModel({this.status, this.message, this.result});
 
   ContractorDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -12,6 +8,9 @@ class ContractorDetailsModel {
         ? ContractorResult.fromJson(json['result'])
         : null;
   }
+  int? status;
+  String? message;
+  ContractorResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,9 +24,6 @@ class ContractorDetailsModel {
 }
 
 class ContractorResult {
-  String? sId;
-  List<FeedbackTemplate>? feedbackTemplate;
-
   ContractorResult({this.sId, this.feedbackTemplate});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
@@ -39,6 +35,8 @@ class ContractorResult {
       });
     }
   }
+  String? sId;
+  List<FeedbackTemplate>? feedbackTemplate;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -52,14 +50,6 @@ class ContractorResult {
 }
 
 class FeedbackTemplate {
-  String? name;
-  String? type;
-  bool? hide;
-  bool? expanded;
-  String? label;
-  bool? reportColumnMerged;
-  List<Data>? data;
-
   FeedbackTemplate(
       {this.name,
       this.type,
@@ -83,6 +73,13 @@ class FeedbackTemplate {
       });
     }
   }
+  String? name;
+  String? type;
+  bool? hide;
+  bool? expanded;
+  String? label;
+  bool? reportColumnMerged;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -100,15 +97,6 @@ class FeedbackTemplate {
 }
 
 class Data {
-  String? name;
-  String? type;
-  bool? hide;
-  bool? value;
-  String? label;
-  bool? required;
-  bool? disabled;
-  List<Options>? options;
-
   Data(
       {this.name,
       this.type,
@@ -134,6 +122,14 @@ class Data {
       });
     }
   }
+  String? name;
+  String? type;
+  bool? hide;
+  bool? value;
+  String? label;
+  bool? required;
+  bool? disabled;
+  List<Options>? options;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -152,15 +148,14 @@ class Data {
 }
 
 class Options {
-  String? value;
-  String? viewValue;
-
   Options({this.value, this.viewValue});
 
   Options.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     viewValue = json['viewValue'];
   }
+  String? value;
+  String? viewValue;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

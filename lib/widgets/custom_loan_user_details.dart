@@ -5,12 +5,6 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomLoanUserDetails extends StatefulWidget {
-  final String userName;
-  final String userId;
-  final double userAmount;
-  final bool isAccountNo;
-  final Color? color;
-  final double? marginTop;
   const CustomLoanUserDetails({
     Key? key,
     required this.userName,
@@ -20,6 +14,12 @@ class CustomLoanUserDetails extends StatefulWidget {
     this.isAccountNo = false,
     this.color,
   }) : super(key: key);
+  final String userName;
+  final String userId;
+  final double userAmount;
+  final bool isAccountNo;
+  final Color? color;
+  final double? marginTop;
 
   @override
   State<CustomLoanUserDetails> createState() => _CustomLoanUserDetailsState();
@@ -37,15 +37,12 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             CustomText(
               widget.userName.toUpperCase(),
               fontWeight: FontWeight.w700,
-              fontSize: FontSize.fourteen,
-              fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
             ),
             SizedBox(height: widget.isAccountNo ? 9 : 7),
@@ -54,9 +51,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
                     children: [
                       CustomText(
                         Languages.of(context)!.accountNo,
-                        fontWeight: FontWeight.w400,
                         fontSize: FontSize.twelve,
-                        fontStyle: FontStyle.normal,
                         color: ColorResource.color666666,
                       ),
                       const SizedBox(height: 7)
@@ -67,16 +62,12 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
               widget.userId.toUpperCase(),
               fontWeight:
                   widget.isAccountNo ? FontWeight.w700 : FontWeight.w400,
-              fontSize: FontSize.fourteen,
-              fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
             ),
             const SizedBox(height: 17),
             CustomText(
               Languages.of(context)!.overdueAmount,
-              fontWeight: FontWeight.w400,
               fontSize: FontSize.twelve,
-              fontStyle: FontStyle.normal,
               color: ColorResource.color666666,
             ),
             const SizedBox(height: 9),
@@ -85,7 +76,6 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
               lineHeight: 1,
               fontWeight: FontWeight.w700,
               fontSize: FontSize.twentyFour,
-              fontStyle: FontStyle.normal,
               color: ColorResource.color333333,
             )
           ],

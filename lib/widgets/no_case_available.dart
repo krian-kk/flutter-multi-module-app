@@ -15,7 +15,6 @@ class NoCaseAvailble {
         width: double.infinity,
         height: 210,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(ImageResource.noCaseAvailable),

@@ -11,7 +11,7 @@ class HomeTabLoadingState extends HomeTabState {}
 class HomeTabLoadedState extends HomeTabState {}
 
 class NavigateTabState extends HomeTabState {
+  NavigateTabState({this.notificationData, this.context});
   final dynamic notificationData;
   final BuildContext? context;
-  NavigateTabState({this.notificationData, this.context});
 }

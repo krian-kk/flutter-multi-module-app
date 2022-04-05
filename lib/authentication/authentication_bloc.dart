@@ -24,7 +24,7 @@ class AuthenticationBloc
       await Future.delayed(const Duration(seconds: 2));
       // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       // _pref.setBool(Constants.appDataLoadedFromFirebase, true);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         if (_pref.getString(Constants.userType) == Constants.fieldagent) {
@@ -42,35 +42,36 @@ class AuthenticationBloc
         }
         // AppUtils.showErrorToast('No Internet Connection');
       } else {
-        SharedPreferences _prefs = await SharedPreferences.getInstance();
-        String? getToken = _prefs.getString(Constants.accessToken) ?? "";
-        String? getUserName = _prefs.getString(Constants.userId);
-        String? getUserType = _prefs.getString(Constants.userType) ?? "";
+        final SharedPreferences _prefs = await SharedPreferences.getInstance();
+        final String? getToken = _prefs.getString(Constants.accessToken) ?? '';
+        final String? getUserName = _prefs.getString(Constants.userId);
+        final String? getUserType = _prefs.getString(Constants.userType) ?? '';
 
-        if (getToken == "") {
+        if (getToken == '') {
           yield AuthenticationUnAuthenticated(
               notificationData: event.notificationData);
         } else {
           debugPrint('Token Issue is === > $getToken');
-          if (JwtDecoder.isExpired(getToken)) {
+          if (JwtDecoder.isExpired(getToken!)) {
             yield AuthenticationUnAuthenticated(
                 notificationData: event.notificationData);
           } else {
-            if (getUserType == "") {
+            if (getUserType == '') {
               yield AuthenticationUnAuthenticated(
                   notificationData: event.notificationData);
             } else {
               Singleton.instance.accessToken =
-                  _prefs.getString(Constants.accessToken) ?? "";
+                  _prefs.getString(Constants.accessToken) ?? '';
               Singleton.instance.refreshToken =
-                  _prefs.getString(Constants.refreshToken) ?? "";
+                  _prefs.getString(Constants.refreshToken) ?? '';
               Singleton.instance.sessionID =
-                  _prefs.getString(Constants.sessionId) ?? "";
+                  _prefs.getString(Constants.sessionId) ?? '';
               Singleton.instance.agentRef =
-                  _prefs.getString(Constants.agentRef) ?? "";
+                  _prefs.getString(Constants.agentRef) ?? '';
 
-              Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-                  APIRequestType.get, HttpUrl.agentDetailUrl + getUserName!);
+              final Map<String, dynamic> agentDetail =
+                  await APIRepository.apiRequest(APIRequestType.get,
+                      HttpUrl.agentDetailUrl + getUserName!);
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(
@@ -80,14 +81,14 @@ class AuthenticationBloc
                   AppUtils.showToast(agentDetail['data'],
                       backgroundColor: Colors.red);
                 }
-                AgentDetailErrorModel agentDetailError =
+                final AgentDetailErrorModel agentDetailError =
                     AgentDetailErrorModel.fromJson(agentDetail['data']);
                 AppUtils.showToast(agentDetailError.msg!,
                     backgroundColor: Colors.red);
               } else {
                 // if user inactivity means go to login
                 if (agentDetail['data']['status'] == 440) {
-                  AgentDetailErrorModel agentInactivityError =
+                  final AgentDetailErrorModel agentInactivityError =
                       AgentDetailErrorModel.fromJson(agentDetail['data']);
                   yield AuthenticationUnAuthenticated(
                       notificationData: event.notificationData);
@@ -95,7 +96,7 @@ class AuthenticationBloc
                       backgroundColor: Colors.red);
                 }
 
-                dynamic agentDetails =
+                final dynamic agentDetails =
                     AgentDetailsModel.fromJson(agentDetail['data']);
                 if (agentDetails.data![0].agentType == 'COLLECTOR') {
                   await _prefs.setString(

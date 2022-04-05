@@ -41,12 +41,11 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  final dynamic paramValues;
-  final AllocationBloc allocationBloc;
-
   const CaseDetailsScreen(
       {Key? key, this.paramValues, required this.allocationBloc})
       : super(key: key);
+  final dynamic paramValues;
+  final AllocationBloc allocationBloc;
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -228,8 +227,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           20.0, 0, 20, 20),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -419,7 +416,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 .repaymentInfo,
                                             fontSize: FontSize.sixteen,
                                             fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 5),
                                           Container(
@@ -466,12 +462,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         CustomText(
                                                           Languages.of(context)!
                                                               .beneficiaryDetails,
-                                                          fontWeight:
-                                                              FontWeight.w400,
                                                           fontSize:
                                                               FontSize.twelve,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           color: ColorResource
                                                               .color666666,
                                                         ),
@@ -489,10 +481,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               FontWeight.w700,
                                                           color: ColorResource
                                                               .color333333,
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                         ),
                                                         const SizedBox(
                                                             height: 7),
@@ -508,10 +496,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               FontWeight.w700,
                                                           color: ColorResource
                                                               .color333333,
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                         ),
                                                       ],
                                                     ),
@@ -534,10 +518,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             .repaymentBankName,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -550,10 +530,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.repayBankName ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -566,10 +542,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             .referenceLender,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -582,10 +554,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.refLender ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -598,10 +566,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             .referenceUrl,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -614,10 +578,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.refUrl ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -682,9 +642,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                               ColorResource.color23375A,
                                                                           borderRadius:
                                                                               BorderRadius.circular(8),
-                                                                          border: Border.all(
-                                                                              color: ColorResource.colorECECEC,
-                                                                              width: 1.0),
+                                                                          border:
+                                                                              Border.all(color: ColorResource.colorECECEC),
                                                                         ),
                                                                         child:
                                                                             Row(
@@ -752,7 +711,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             borderRadius:
                                                                                 BorderRadius.circular(8),
                                                                             border:
-                                                                                Border.all(color: ColorResource.colorECECEC, width: 1.0),
+                                                                                Border.all(color: ColorResource.colorECECEC),
                                                                           ),
                                                                           child: CustomText(
                                                                               Languages.of(context)!.generatePaymentLink,
@@ -777,7 +736,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             Languages.of(context)!.otherLoanOf,
                                             color: ColorResource.color101010,
                                             fontSize: FontSize.sixteen,
-                                            fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w700,
                                           ),
                                           ListView.builder(
@@ -862,12 +820,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 fontSize:
                                                                     FontSize
                                                                         .twelve,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
                                                               ),
                                                               const SizedBox(
                                                                   height: 5),
@@ -889,11 +841,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     : '_',
                                                                 color: ColorResource
                                                                     .color333333,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700,
@@ -909,12 +856,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 fontSize:
                                                                     FontSize
                                                                         .twelve,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
                                                               ),
                                                               const SizedBox(
                                                                   height: 5),
@@ -933,12 +874,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         '_',
                                                                     color: ColorResource
                                                                         .color333333,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -950,10 +885,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             .view,
                                                                         color: ColorResource
                                                                             .color23375A,
-                                                                        fontSize:
-                                                                            FontSize.fourteen,
-                                                                        fontStyle:
-                                                                            FontStyle.normal,
                                                                         fontWeight:
                                                                             FontWeight.w700,
                                                                       ),
@@ -997,7 +928,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(21.0),
                                 child: Align(
-                                  alignment: Alignment.center,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -1056,8 +986,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color23375A,
                                                       ))
@@ -1116,7 +1044,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   fontSize: FontSize.twelve,
                                                   fontWeight: FontWeight.w700,
                                                   lineHeight: 1,
-                                                  fontStyle: FontStyle.normal,
                                                   color:
                                                       ColorResource.color23375A,
                                                 ))
@@ -1384,7 +1311,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
-            List<String> s1 = [];
+            final List<String> s1 = [];
             bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
@@ -1409,7 +1336,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   ? bloc.caseId!
                   : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
               custName:
-                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: selectedContact,
               isCallFromCallDetails: isCallFromCallDetails,

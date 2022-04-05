@@ -1,9 +1,4 @@
 class LoginErrorMessage {
-  String? code;
-  int? status;
-  String? msg;
-  String? auth;
-
   LoginErrorMessage({this.code, this.status, this.msg, this.auth});
 
   LoginErrorMessage.fromJson(Map<String, dynamic> json) {
@@ -17,6 +12,10 @@ class LoginErrorMessage {
     msg = json['msg'];
     auth = json['auth'];
   }
+  String? code;
+  int? status;
+  String? msg;
+  String? auth;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/dashboard_all_models/address.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -28,7 +29,7 @@ class CaseLists {
         ? const CustomLoadingWidget()
         : listData.result == null || listData.result!.cases!.isEmpty
             ? Column(
-                children: [
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 50),
                     child: NoCaseAvailble.buildNoCaseAvailable(),
@@ -36,25 +37,23 @@ class CaseLists {
                 ],
               )
             : ListView.builder(
-                scrollDirection: Axis.vertical,
                 itemCount: listData.result!.cases!.length,
                 // itemCount: 1,
                 itemBuilder: (BuildContext context, int index) {
                   // int listCount = index + 1;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       if (index == 0)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               Expanded(
                                 flex: 2,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                       Languages.of(context)!
                                           .count
@@ -64,7 +63,6 @@ class CaseLists {
                                     ),
                                     CustomText(
                                       listData.result!.count.toString(),
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -75,7 +73,7 @@ class CaseLists {
                                 flex: 7,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                       Languages.of(context)!
                                           .amount
@@ -86,7 +84,6 @@ class CaseLists {
                                     CustomText(
                                       Constants.inr +
                                           listData.result!.totalAmt.toString(),
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -133,7 +130,7 @@ class CaseLists {
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: <Widget>[
                                 const SizedBox(
                                   height: 2.0,
                                 ),
@@ -159,13 +156,12 @@ class CaseLists {
                                   padding:
                                       const EdgeInsets.fromLTRB(23, 0, 10, 0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
+                                    children: <Widget>[
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: <Widget>[
                                             CustomText(
                                               Constants.inr +
                                                   listData
@@ -183,7 +179,6 @@ class CaseLists {
                                                   .result!.cases![index].cust!,
                                               fontSize: FontSize.sixteen,
                                               color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w400,
                                             ),
                                           ],
                                         ),
@@ -192,7 +187,7 @@ class CaseLists {
                                           Constants.fieldagent)
                                         listData.result!.cases![index]
                                                     .collSubStatus ==
-                                                "new"
+                                                'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
                                                 text:
@@ -212,7 +207,7 @@ class CaseLists {
                                           Constants.telecaller)
                                         listData.result!.cases![index]
                                                     .telSubStatus ==
-                                                "new"
+                                                'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
                                                 text:
@@ -273,13 +268,12 @@ class CaseLists {
                                           child: Column(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
-                                            children: [
+                                            children: <Widget>[
                                               CustomText(
                                                 listData.result!.cases![index]
                                                     .address![0].value!,
                                                 color:
                                                     ColorResource.color484848,
-                                                fontSize: FontSize.fourteen,
                                               ),
                                               // CustomText(
                                               //   resultData[index].address![1].value!,
@@ -290,8 +284,8 @@ class CaseLists {
                                           ),
                                         )
                                       : Wrap(
-                                          children: [
-                                            for (var item in listData
+                                          children: <Widget>[
+                                            for (Address item in listData
                                                 .result!.cases![index].address!)
                                               item.cType!.contains('mobile') ||
                                                       item.cType!
@@ -316,8 +310,6 @@ class CaseLists {
                                                         item.value!,
                                                         color: ColorResource
                                                             .color484848,
-                                                        fontSize:
-                                                            FontSize.fourteen,
                                                         lineHeight: 1.0,
                                                       ),
                                                     )
@@ -344,28 +336,25 @@ class CaseLists {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
+                                    children: <Widget>[
                                       CustomText(
                                         Languages.of(context)!.followUpDate,
-                                        fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w400,
                                       ),
                                       Row(
-                                        children: [
+                                        children: <Widget>[
                                           //here check Fieldagent 'collSubSatus'
                                           if (Singleton.instance.usertype ==
                                               Constants.fieldagent)
                                             listData.result!.cases![index]
                                                         .collSubStatus!
                                                         .toLowerCase() ==
-                                                    "new"
+                                                    'new'
                                                 ? CustomText(
                                                     DateFormateUtils
                                                         .followUpDateFormate(
                                                             DateTime.now()
                                                                 .toString()),
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color101010,
                                                     fontWeight: FontWeight.w700,
@@ -384,7 +373,6 @@ class CaseLists {
                                                                         index]
                                                                     .fieldfollowUpDate!)
                                                         : '-',
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color101010,
                                                     fontWeight: FontWeight.w700,
@@ -395,13 +383,12 @@ class CaseLists {
                                             listData.result!.cases![index]
                                                         .telSubStatus!
                                                         .toLowerCase() ==
-                                                    "new"
+                                                    'new'
                                                 ? CustomText(
                                                     DateFormateUtils
                                                         .followUpDateFormate(
                                                             DateTime.now()
                                                                 .toString()),
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color101010,
                                                     fontWeight: FontWeight.w700,
@@ -420,17 +407,15 @@ class CaseLists {
                                                                         index]
                                                                     .followUpDate!)
                                                         : '-',
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color101010,
                                                     fontWeight: FontWeight.w700,
                                                   ),
                                           const Spacer(),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               CustomText(
                                                 Languages.of(context)!.view,
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color23375A,
                                                 fontWeight: FontWeight.w700,

@@ -106,7 +106,7 @@ class _CustomRemainderBottomSheetState
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -164,7 +164,6 @@ class _CustomRemainderBottomSheetState
                                 children: [
                                   Flexible(
                                       child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
@@ -214,7 +213,6 @@ class _CustomRemainderBottomSheetState
                                   const SizedBox(width: 7),
                                   Flexible(
                                       child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
@@ -342,7 +340,6 @@ class _CustomRemainderBottomSheetState
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 cardShape: 5,
                                 onTap: isSubmit
                                     ? () => submitRemainderEvent(true)
@@ -366,7 +363,6 @@ class _CustomRemainderBottomSheetState
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           onTap: isSubmit
                               ? () => submitRemainderEvent(false)
@@ -412,13 +408,12 @@ class _CustomRemainderBottomSheetState
           LatLng latLng = const LatLng(0, 0);
           if (Geolocator.checkPermission().toString() !=
               PermissionStatus.granted.toString()) {
-            Position res = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.best);
+            final Position res = await Geolocator.getCurrentPosition();
             setState(() {
               latLng = LatLng(res.latitude, res.longitude);
             });
           }
-          var requestBodyData = ReminderPostAPI(
+          final requestBodyData = ReminderPostAPI(
             eventId: ConstantEventValues.remainderEventId,
             eventType:
                 (widget.userType == Constants.telecaller || widget.isCall!)
@@ -462,7 +457,8 @@ class _CustomRemainderBottomSheetState
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
           } else {
-            Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            final Map<String, dynamic> postResult =
+                await APIRepository.apiRequest(
               APIRequestType.post,
               HttpUrl.reminderPostUrl('reminder', widget.userType),
               requestBodydata: jsonEncode(requestBodyData),

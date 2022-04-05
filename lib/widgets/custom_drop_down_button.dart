@@ -7,6 +7,22 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomDropDownButton extends StatefulWidget {
+  const CustomDropDownButton(this.labelText, this.listOfItems,
+      {Key? key,
+      this.hintWidget,
+      this.icon,
+      this.underline,
+      this.isExpanded = true,
+      this.style,
+      this.valueTextStyle,
+      this.focusNode,
+      this.underlineColor = ColorResource.colorE5EAF6,
+      this.autoFocus = false,
+      this.onChanged,
+      this.focusColor,
+      this.menuMaxHeight,
+      this.selectedValue})
+      : super(key: key);
   // final String value;
   final String labelText;
   final List<String> listOfItems;
@@ -24,22 +40,6 @@ class CustomDropDownButton extends StatefulWidget {
   final OnChange? onChanged;
   final double? menuMaxHeight;
 
-  const CustomDropDownButton(this.labelText, this.listOfItems,
-      {Key? key,
-      this.hintWidget,
-      this.icon,
-      this.underline,
-      this.isExpanded = true,
-      this.style,
-      this.valueTextStyle,
-      this.focusNode,
-      this.underlineColor = ColorResource.colorE5EAF6,
-      this.autoFocus = false,
-      this.onChanged,
-      this.focusColor,
-      this.menuMaxHeight,
-      this.selectedValue})
-      : super(key: key);
   @override
   State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
 }
@@ -53,16 +53,13 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
         CustomText(
           widget.labelText,
           color: ColorResource.color666666,
-          fontWeight: FontWeight.w400,
           fontSize: FontSize.twelve,
-          fontStyle: FontStyle.normal,
         ),
         // const SizedBox(height: 4),
         MediaQuery.removePadding(

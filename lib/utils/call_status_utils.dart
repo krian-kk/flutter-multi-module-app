@@ -10,7 +10,7 @@ class CallCustomerStatus {
 
   static Future<bool> callStatusCheck(
       {required String callId, required BuildContext context}) async {
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
       requestBodydata: {'id': callId},
@@ -45,7 +45,7 @@ class CallCustomerStatus {
     move next index of number (maybe next case or nex number of current case)  */
   static Future<bool> callStatusCheckForAutoJump(
       {required String callId, required BuildContext context}) async {
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
       requestBodydata: {'id': callId},

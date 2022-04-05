@@ -12,15 +12,15 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class ForgotMpinScreen extends StatefulWidget {
-  final OnChangeBoolFuction submitOtpFunction;
-  final GestureTapCallback resendOtpFunction;
-  final String userName;
   const ForgotMpinScreen({
     Key? key,
     required this.submitOtpFunction,
     required this.userName,
     required this.resendOtpFunction,
   }) : super(key: key);
+  final OnChangeBoolFuction submitOtpFunction;
+  final GestureTapCallback resendOtpFunction;
+  final String userName;
 
   @override
   State<ForgotMpinScreen> createState() => _ForgotMpinScreenState();
@@ -52,7 +52,6 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                   child: CustomText(
                     Languages.of(context)!.forgotPin.replaceAll('?', ''),
                     fontSize: FontSize.eighteen,
-                    fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -68,8 +67,6 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
             child: CustomText(
               Languages.of(context)!.enterOTP,
               fontSize: FontSize.sixteen,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w400,
             ),
           ),
           const SizedBox(height: 20),
@@ -80,7 +77,6 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
               controller: contoller,
               length: 6,
               mainAxisAlignment: MainAxisAlignment.center,
-              obscureText: false,
               animationType: AnimationType.scale,
               onChanged: (value) {
                 setState(() => isError = false);
@@ -138,7 +134,6 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 Languages.of(context)!.resendOTP,
                 color: ColorResource.color23375A,
                 fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w600,
                 isUnderLine: true,
               ),

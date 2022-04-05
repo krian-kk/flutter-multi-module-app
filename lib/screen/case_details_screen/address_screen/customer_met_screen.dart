@@ -41,7 +41,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
@@ -67,7 +67,6 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -103,8 +102,6 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                           Radius.circular(10.0))),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
                                     children: [
                                       SvgPicture.asset(widget
                                           .bloc
@@ -121,7 +118,6 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                         color: ColorResource.color000000,
                                         fontSize: FontSize.twelve,
                                         fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
                                       )
                                     ],
                                   ),

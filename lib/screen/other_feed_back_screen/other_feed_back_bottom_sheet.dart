@@ -44,8 +44,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../models/speech2text_model.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-
   const CustomOtherFeedBackBottomSheet(
     this.cardTitle,
     this.bloc, {
@@ -62,6 +60,8 @@ class CustomOtherFeedBackBottomSheet extends StatefulWidget {
     this.isCallFromCaseDetails = false,
     this.callId,
   }) : super(key: key);
+  final CaseDetailsBloc bloc;
+
   final String cardTitle;
   final String caseId;
   final Widget customerLoanUserWidget;
@@ -111,8 +111,8 @@ class _CustomOtherFeedBackBottomSheetState
   bool isTranslate = true;
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
@@ -162,7 +162,7 @@ class _CustomOtherFeedBackBottomSheetState
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -223,7 +223,6 @@ class _CustomOtherFeedBackBottomSheetState
                                 widget.customerLoanUserWidget,
                                 const SizedBox(height: 11),
                                 Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -301,7 +300,6 @@ class _CustomOtherFeedBackBottomSheetState
                                     remarksController,
                                     validationRules: const ['required'],
                                     isLabel: true,
-                                    isEnable: true,
                                     isVoiceRecordWidget: true,
                                     checkRecord:
                                         (isRecord, text, returnS2Tdata) {
@@ -348,8 +346,6 @@ class _CustomOtherFeedBackBottomSheetState
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
@@ -363,8 +359,6 @@ class _CustomOtherFeedBackBottomSheetState
                                                         fontSize:
                                                             FontSize.sixteen,
                                                         lineHeight: 1,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         textAlign:
@@ -381,7 +375,6 @@ class _CustomOtherFeedBackBottomSheetState
                                                   color:
                                                       ColorResource.colorFFFFFF,
                                                   fontSize: FontSize.twelve,
-                                                  fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
                                                 )
                                               ],
@@ -451,7 +444,6 @@ class _CustomOtherFeedBackBottomSheetState
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: isSubmit
                                     ? () => submitOtherFeedbackEvent(true)
                                     : () {},
@@ -475,7 +467,6 @@ class _CustomOtherFeedBackBottomSheetState
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit
                               ? () => submitOtherFeedbackEvent(false)
                               : () {},
@@ -552,15 +543,14 @@ class _CustomOtherFeedBackBottomSheetState
           );
           if (Geolocator.checkPermission().toString() !=
               PermissionStatus.granted.toString()) {
-            Position res = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.best);
+            final Position res = await Geolocator.getCurrentPosition();
             if (mounted) {
               setState(() {
                 position = res;
               });
             }
           }
-          var requestBodyData = OtherFeedBackPostModel(
+          final requestBodyData = OtherFeedBackPostModel(
             eventId: ConstantEventValues.otherFeedbackEventId,
             eventType:
                 (widget.userType == Constants.telecaller || widget.isCall!)
@@ -610,7 +600,7 @@ class _CustomOtherFeedBackBottomSheetState
           final Map<String, dynamic> postdata =
               jsonDecode(jsonEncode(requestBodyData.toJson()))
                   as Map<String, dynamic>;
-          List<dynamic> value = [];
+          final List<dynamic> value = [];
           for (var element in uploadFileLists) {
             value.add(await MultipartFile.fromFile(element.path.toString()));
           }
@@ -618,7 +608,7 @@ class _CustomOtherFeedBackBottomSheetState
             'files': value,
           });
 
-          Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+          final Map<String, dynamic> firebaseObject = requestBodyData.toJson();
           try {
             firebaseObject.addAll(
                 FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
@@ -636,7 +626,8 @@ class _CustomOtherFeedBackBottomSheetState
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
           } else {
-            Map<String, dynamic> postResult = await APIRepository.apiRequest(
+            final Map<String, dynamic> postResult =
+                await APIRepository.apiRequest(
               APIRequestType.upload,
               HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
               formDatas: FormData.fromMap(postdata),
@@ -721,7 +712,6 @@ class _CustomOtherFeedBackBottomSheetState
                 expandedAlignment: Alignment.centerLeft,
                 title: CustomText(
                   list[index].name!,
-                  fontSize: FontSize.fourteen,
                   fontWeight: FontWeight.w700,
                   color: ColorResource.color000000,
                 ),
@@ -743,7 +733,6 @@ class _CustomOtherFeedBackBottomSheetState
                     CustomDropDownButton(
                       list[index].data![0].label!,
                       collectorFeedBackValueDropdownList,
-                      isExpanded: true,
                       hintWidget: const Text('Select'),
                       selectedValue: collectorFeedBackValue,
                       underline: Container(
@@ -760,7 +749,6 @@ class _CustomOtherFeedBackBottomSheetState
                     CustomDropDownButton(
                       list[index].data![0].label!,
                       actionproposedDropdownValue,
-                      isExpanded: true,
                       hintWidget: const Text('Select'),
                       selectedValue: actionproposedValue,
                       underline: Container(
@@ -786,7 +774,6 @@ class _CustomOtherFeedBackBottomSheetState
                               return Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 25),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -828,7 +815,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                   ? listOfContact[i]
                                                       .formValue
                                                       .toLowerCase()
-                                                  : "",
+                                                  : '',
                                               value: listOfContact[i]
                                                   .controller
                                                   .text,
@@ -869,7 +856,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                         'Email Id')
                                                     ? Languages.of(context)!
                                                         .email
-                                                    : "Address",
+                                                    : 'Address',
                                         listOfContact[index].controller,
                                         isLabel: true,
                                         isEnable:
@@ -963,7 +950,6 @@ class _CustomOtherFeedBackBottomSheetState
                                   Languages.of(context)!.addMoreContact,
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.thirteen,
-                                  fontStyle: FontStyle.normal,
                                 ),
                               ),
                             ),

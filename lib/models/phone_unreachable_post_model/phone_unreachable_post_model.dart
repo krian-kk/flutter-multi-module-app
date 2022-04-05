@@ -1,21 +1,4 @@
 class PhoneUnreachablePostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late PhoneUnreachableEventAttr eventAttr;
-  late String eventModule;
-  late PhoneUnreachbleContact contact;
-  late String createdBy;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late int? invalidNumber;
-  late String agentName;
-  late String contractor;
-  late String agrRef;
-
   PhoneUnreachablePostModel({
     required this.eventId,
     required this.eventType,
@@ -53,6 +36,22 @@ class PhoneUnreachablePostModel {
     contractor = json['contractor'];
     agrRef = json['agrRef'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late PhoneUnreachableEventAttr eventAttr;
+  late String eventModule;
+  late PhoneUnreachbleContact contact;
+  late String createdBy;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late int? invalidNumber;
+  late String agentName;
+  late String contractor;
+  late String agrRef;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,13 +76,6 @@ class PhoneUnreachablePostModel {
 }
 
 class PhoneUnreachableEventAttr {
-  late String remarks;
-  late String followUpPriority;
-  late String nextActionDate;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   PhoneUnreachableEventAttr({
     required this.remarks,
     this.followUpPriority = 'AWAITING CONTACT',
@@ -101,6 +93,12 @@ class PhoneUnreachableEventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String remarks;
+  late String followUpPriority;
+  late String nextActionDate;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -117,11 +115,6 @@ class PhoneUnreachableEventAttr {
 }
 
 class PhoneUnreachbleContact {
-  late String cType;
-  late String value;
-  late String contactId0;
-  late String health;
-
   PhoneUnreachbleContact({
     required this.cType,
     required this.value,
@@ -135,6 +128,10 @@ class PhoneUnreachbleContact {
     contactId0 = json['contactId_0'];
     health = json['health'];
   }
+  late String cType;
+  late String value;
+  late String contactId0;
+  late String health;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

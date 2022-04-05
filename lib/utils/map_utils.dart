@@ -19,26 +19,26 @@ class MapUtils {
     required double destinationLongitude,
   }) async {
     if (Platform.isAndroid) {
-      String googleUrl =
+      final String googleUrl =
           'https://www.google.com/maps/dir/?api=1&origin=$startLatitude,$startLongitude&destination=$destinationLatitude,$destinationLongitude&travelmode=driving&dir_action=navigate';
 
       try {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> $e");
-        AppUtils.showErrorToast("Could not open the map.");
+        debugPrint('map not. open ---> $e');
+        AppUtils.showErrorToast('Could not open the map.');
       }
     } else if (Platform.isIOS) {
-      String googleUrl =
+      final String googleUrl =
           'https://www.google.com/maps/dir/?api=1&origin=$startLatitude,$startLongitude&destination=$destinationLatitude,$destinationLongitude&travelmode=driving&dir_action=navigate';
 
       try {
         // AppUtils.showToast("Loading...");
         await launch(googleUrl);
       } catch (e) {
-        debugPrint("map not. open ---> $e");
-        AppUtils.showErrorToast("Could not open the map.");
+        debugPrint('map not. open ---> $e');
+        AppUtils.showErrorToast('Could not open the map.');
       }
     }
   }
@@ -48,10 +48,10 @@ class MapUtils {
     Northeast? addressToLatlngValue;
     try {
       LocationConverterModel getLocationLatLng = LocationConverterModel();
-      String geocodeURL =
-          "https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Env.googleMapAPI}";
+      final String geocodeURL =
+          'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Env.googleMapAPI}';
 
-      Map<String, dynamic> getAddressToLatlng =
+      final Map<String, dynamic> getAddressToLatlng =
           await APIRepository.apiRequest(APIRequestType.get, geocodeURL);
 
       getLocationLatLng =
@@ -67,21 +67,19 @@ class MapUtils {
 
   static Future<Position> getCurrentLocation(BuildContext context) async {
     Position? currentLocation;
-    LocationPermission permission = await Geolocator.checkPermission();
+    final LocationPermission permission = await Geolocator.checkPermission();
 
     AppUtils.showToast(Languages.of(context)!.loading);
 
     if (permission.toString() == LocationPermission.whileInUse.toString()) {
-      currentLocation = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      currentLocation = await Geolocator.getCurrentPosition();
     } else if (permission.toString() == LocationPermission.denied.toString()) {
       await Geolocator.requestPermission();
     } else if (permission.toString() ==
         LocationPermission.deniedForever.toString()) {
       await Geolocator.openAppSettings();
     } else {
-      currentLocation = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      currentLocation = await Geolocator.getCurrentPosition();
     }
     return currentLocation!;
   }

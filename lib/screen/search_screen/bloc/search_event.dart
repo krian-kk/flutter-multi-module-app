@@ -4,8 +4,8 @@ part of 'search_bloc.dart';
 class SearchScreenEvent extends BaseEquatable {}
 
 class SearchScreenInitialEvent extends SearchScreenEvent {
-  final BuildContext? context;
   SearchScreenInitialEvent({this.context});
+  final BuildContext? context;
 }
 
 class NavigatePopEvent extends SearchScreenEvent {}

@@ -9,9 +9,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWidget extends StatefulWidget {
-  final String urlAddress;
-
   const WebViewWidget({Key? key, required this.urlAddress}) : super(key: key);
+  final String urlAddress;
 
   @override
   State<WebViewWidget> createState() => _WebViewWidgetState();
@@ -19,7 +18,7 @@ class WebViewWidget extends StatefulWidget {
 
 class _WebViewWidgetState extends State<WebViewWidget> {
   late WebViewController controller;
-  final completer = Completer<WebViewController>();
+  final Completer<WebViewController> completer = Completer<WebViewController>();
   bool isLoading = true;
 
   @override
@@ -39,7 +38,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           BottomSheetAppbar(
             title: Languages.of(context)!.callCustomer,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
@@ -47,26 +46,26 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           ),
           Expanded(
             child: Stack(
-              children: [
+              children: <Widget>[
                 WebView(
                   javascriptMode: JavascriptMode.unrestricted,
                   initialUrl: '',
-                  onWebViewCreated: (webViewController) async {
+                  onWebViewCreated:
+                      (WebViewController webViewController) async {
                     controller = webViewController;
-                    String fileContent =
+                    final String fileContent =
                         await rootBundle.loadString('assets/help.html');
-                    controller.loadUrl(Uri.dataFromString(fileContent,
+                    await controller.loadUrl(Uri.dataFromString(fileContent,
                             mimeType: 'text/html',
                             encoding: Encoding.getByName('utf-8'))
                         .toString());
                   },
-                  onPageStarted: (val) {
+                  onPageStarted: (String val) {
                     // print("Page Started $val");
                     //_loadHTML(controller: controller);
                   },
-                  onPageFinished: (finish) {
+                  onPageFinished: (String finish) {
                     setState(() => isLoading = false);
-                    debugPrint("Finished");
                   },
                 ),
                 isLoading ? const CustomLoadingWidget() : const SizedBox(),

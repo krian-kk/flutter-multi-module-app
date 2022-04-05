@@ -4,18 +4,6 @@ import 'package:flutter/material.dart';
 
 /// Popup widget that you can use by default to show some information
 class CustomSnackBar extends StatefulWidget {
-  final String message;
-  final Widget icon;
-  final Color backgroundColor;
-  final TextStyle textStyle;
-  final int iconRotationAngle;
-  final List<BoxShadow> boxShadow;
-  final BorderRadius borderRadius;
-  final double iconPositionTop;
-  final double iconPositionLeft;
-  final EdgeInsetsGeometry messagePadding;
-  final double textScaleFactor;
-
   const CustomSnackBar.success({
     Key? key,
     required this.message,
@@ -84,6 +72,17 @@ class CustomSnackBar extends StatefulWidget {
     this.borderRadius = kDefaultBorderRadius,
     this.textScaleFactor = 1.0,
   }) : super(key: key);
+  final String message;
+  final Widget icon;
+  final Color backgroundColor;
+  final TextStyle textStyle;
+  final int iconRotationAngle;
+  final List<BoxShadow> boxShadow;
+  final BorderRadius borderRadius;
+  final double iconPositionTop;
+  final double iconPositionLeft;
+  final EdgeInsetsGeometry messagePadding;
+  final double textScaleFactor;
 
   @override
   _CustomSnackBarState createState() => _CustomSnackBarState();

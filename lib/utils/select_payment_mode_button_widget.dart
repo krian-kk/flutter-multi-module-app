@@ -12,7 +12,7 @@ class SelectPaymentModeButtonWidget {
     OnClickForPaymentMode function,
     String selectValue,
   ) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -35,7 +35,6 @@ class SelectPaymentModeButtonWidget {
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
               fontSize: FontSize.thirteen,
-              fontStyle: FontStyle.normal,
               lineHeight: 1.35,
             ),
           ),

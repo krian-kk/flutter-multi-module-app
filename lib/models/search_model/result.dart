@@ -1,20 +1,6 @@
 import 'address.dart';
 
 class SearchResultModel {
-  String? id;
-  int? due;
-  String? cust;
-  String? accNo;
-  String? dpdStr;
-  String? collSubStatus;
-  String? repoStatus;
-  String? followUpDate;
-  String? customerId;
-  String? pincode;
-  String? caseId;
-  List<Address>? address;
-  bool? starredCase;
-
   SearchResultModel({
     this.id,
     this.due,
@@ -49,6 +35,19 @@ class SearchResultModel {
             .toList(),
         starredCase: json['starredCase'] as bool?,
       );
+  String? id;
+  int? due;
+  String? cust;
+  String? accNo;
+  String? dpdStr;
+  String? collSubStatus;
+  String? repoStatus;
+  String? followUpDate;
+  String? customerId;
+  String? pincode;
+  String? caseId;
+  List<Address>? address;
+  bool? starredCase;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

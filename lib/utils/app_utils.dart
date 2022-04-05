@@ -26,7 +26,6 @@ class AppUtils {
         msg: text,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 14.0);
@@ -135,7 +134,7 @@ class AppUtils {
   }
 
   static String getLanguageCode(context) {
-    Locale myLocale = Localizations.localeOf(context);
+    final Locale myLocale = Localizations.localeOf(context);
     return myLocale.languageCode;
   }
 }

@@ -1,17 +1,4 @@
 class CompanyBranchDepositPostModel {
-  late List<String> caseIds;
-  late Deposition deposition;
-  late String contractor;
-  // String? eventModule;
-  // String? callID;
-  // String? callingID;
-  // String? callerServiceID;
-  // String? voiceCallEventCode;
-  // int? invalidNumber;
-  // String? agentName;
-  // String? contractor;
-  // String? agrRef;
-
   CompanyBranchDepositPostModel({
     required this.caseIds,
     required this.deposition,
@@ -42,6 +29,19 @@ class CompanyBranchDepositPostModel {
     // contractor = json['contractor'];
     // agrRef = json['agrRef'];
   }
+
+  late List<String> caseIds;
+  late Deposition deposition;
+  late String contractor;
+  // String? eventModule;
+  // String? callID;
+  // String? callingID;
+  // String? callerServiceID;
+  // String? voiceCallEventCode;
+  // int? invalidNumber;
+  // String? agentName;
+  // String? contractor;
+  // String? agrRef;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -164,17 +164,6 @@ class CompanyBranchDepositPostModel {
 // }
 
 class Deposition {
-  late String companyBranchName;
-  late String companyBranchLocation;
-
-  late String recptAmount;
-  late String deptAmount;
-  late String reference;
-  List<String>? imageLocation;
-  late String mode;
-  late String depositDate;
-  late String status;
-
   Deposition(
       {required this.companyBranchName,
       required this.companyBranchLocation,
@@ -197,6 +186,15 @@ class Deposition {
     depositDate = json['depositDate'];
     status = json['status'];
   }
+  late String companyBranchName;
+  late String companyBranchLocation;
+  late String recptAmount;
+  late String deptAmount;
+  late String reference;
+  List<String>? imageLocation;
+  late String mode;
+  late String depositDate;
+  late String status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

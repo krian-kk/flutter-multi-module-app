@@ -1,8 +1,4 @@
 class MyDeposistModel {
-  int? status;
-  String? message;
-  DeposistResult? result;
-
   MyDeposistModel({this.status, this.message, this.result});
 
   MyDeposistModel.fromJson(Map<String, dynamic> json) {
@@ -11,6 +7,9 @@ class MyDeposistModel {
     result =
         json['result'] != null ? DeposistResult.fromJson(json['result']) : null;
   }
+  int? status;
+  String? message;
+  DeposistResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -24,11 +23,6 @@ class MyDeposistModel {
 }
 
 class DeposistResult {
-  int? count;
-  dynamic totalAmt;
-  Cheque? cheque;
-  Cheque? cash;
-
   DeposistResult({this.count, this.totalAmt, this.cheque, this.cash});
 
   DeposistResult.fromJson(Map<String, dynamic> json) {
@@ -37,6 +31,10 @@ class DeposistResult {
     cheque = json['cheque'] != null ? Cheque.fromJson(json['cheque']) : null;
     cash = json['cash'] != null ? Cheque.fromJson(json['cash']) : null;
   }
+  int? count;
+  dynamic totalAmt;
+  Cheque? cheque;
+  Cheque? cash;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -53,10 +51,6 @@ class DeposistResult {
 }
 
 class Cheque {
-  int? count;
-  List<Cases>? cases;
-  dynamic totalAmt;
-
   Cheque({this.count, this.cases, this.totalAmt});
 
   Cheque.fromJson(Map<String, dynamic> json) {
@@ -69,6 +63,9 @@ class Cheque {
     }
     totalAmt = json['totalAmt'];
   }
+  int? count;
+  List<Cases>? cases;
+  dynamic totalAmt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -82,11 +79,6 @@ class Cheque {
 }
 
 class Cases {
-  String? sId;
-  EventAttr? eventAttr;
-  String? agrRef;
-  String? caseId;
-
   Cases({this.sId, this.eventAttr, this.agrRef, this.caseId});
 
   Cases.fromJson(Map<String, dynamic> json) {
@@ -97,6 +89,10 @@ class Cases {
     agrRef = json['agrRef'];
     caseId = json['caseId'];
   }
+  String? sId;
+  EventAttr? eventAttr;
+  String? agrRef;
+  String? caseId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -111,11 +107,6 @@ class Cases {
 }
 
 class EventAttr {
-  dynamic amountCollected;
-  String? date;
-  String? mode;
-  String? customerName;
-
   EventAttr({this.amountCollected, this.date, this.mode, this.customerName});
 
   EventAttr.fromJson(Map<String, dynamic> json) {
@@ -124,6 +115,10 @@ class EventAttr {
     mode = json['mode'];
     customerName = json['customerName'];
   }
+  dynamic amountCollected;
+  String? date;
+  String? mode;
+  String? customerName;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

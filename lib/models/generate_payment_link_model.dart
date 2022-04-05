@@ -1,8 +1,4 @@
 class GeneratePaymentLinkModel {
-  String? status;
-  String? msg;
-  Data? data;
-
   GeneratePaymentLinkModel({this.status, this.msg, this.data});
 
   GeneratePaymentLinkModel.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,9 @@ class GeneratePaymentLinkModel {
     msg = json['msg'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
+  String? status;
+  String? msg;
+  Data? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,15 +22,14 @@ class GeneratePaymentLinkModel {
 }
 
 class Data {
-  String? msg;
-  Data2? data;
-
   Data({this.msg, this.data});
 
   Data.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     data = json['data'] != null ? Data2.fromJson(json['data']) : null;
   }
+  String? msg;
+  Data2? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -44,10 +42,6 @@ class Data {
 }
 
 class Data2 {
-  String? paymentId;
-  String? paymentLink;
-  String? qrLink;
-
   Data2({this.paymentId, this.paymentLink, this.qrLink});
 
   Data2.fromJson(Map<String, dynamic> json) {
@@ -55,6 +49,9 @@ class Data2 {
     paymentLink = json['payment_link'];
     qrLink = json['qr_link'];
   }
+  String? paymentId;
+  String? paymentLink;
+  String? qrLink;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -66,9 +63,6 @@ class Data2 {
 }
 
 class GeneratePaymentLinkPost {
-  String? caseId;
-  bool? dynamicLink;
-
   GeneratePaymentLinkPost({
     required this.caseId,
     required this.dynamicLink,
@@ -78,6 +72,9 @@ class GeneratePaymentLinkPost {
     caseId = json['caseId'];
     dynamicLink = json['dynamic_link'];
   }
+  String? caseId;
+  bool? dynamicLink;
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

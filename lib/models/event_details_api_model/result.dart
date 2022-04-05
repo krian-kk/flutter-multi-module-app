@@ -1,22 +1,4 @@
 class EventDetailsResultModel {
-  String? id;
-  String? caseId;
-  String? eventType;
-  String remarks;
-  String? date;
-  String? mode;
-  String? reference;
-  String modelMake;
-  String registrationNo;
-  String chassisNo;
-  String customerName;
-  String otsAmt;
-  String? reginalText;
-  String? translatedText;
-  String? audioS3Path;
-  String? amountCollected;
-  String? chequeRefNo;
-
   EventDetailsResultModel({
     this.id,
     this.caseId,
@@ -60,6 +42,23 @@ class EventDetailsResultModel {
         amountCollected: json['eventAttr']['amountCollected'] as String?,
         chequeRefNo: json['eventAttr']['chequeRefNo'] as String?,
       );
+  String? id;
+  String? caseId;
+  String? eventType;
+  String remarks;
+  String? date;
+  String? mode;
+  String? reference;
+  String modelMake;
+  String registrationNo;
+  String chassisNo;
+  String customerName;
+  String otsAmt;
+  String? reginalText;
+  String? translatedText;
+  String? audioS3Path;
+  String? amountCollected;
+  String? chequeRefNo;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

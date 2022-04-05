@@ -11,16 +11,16 @@ import '../models/priority_case_list.dart';
 
 class FirebaseUtils {
   static Future<List<Result>> caseDetailStream() async {
-    List<Result> resultList = [];
-    FirebaseFirestore.instance
+    final List<Result> resultList = [];
+    await FirebaseFirestore.instance
         .collection(Singleton.instance.firebaseDatabaseName)
         .doc(Singleton.instance.agentRef)
         .collection(Constants.firebaseCase)
         .snapshots()
         .forEach((element) {
       for (var docs in element.docs) {
-        Map<String, dynamic>? data = docs.data();
-        resultList.add(Result.fromJson(data));
+        final Map<String, dynamic>? data = docs.data();
+        resultList.add(Result.fromJson(data!));
       }
     });
     return resultList;
@@ -34,7 +34,7 @@ class FirebaseUtils {
       String? selectedClipValue,
       String? selectedFollowUpDate,
       required CaseDetailsBloc bloc}) async {
-    bool returnValues = false;
+    const bool returnValues = false;
     // if (Singleton.instance.usertype == Constants.fieldagent
     //     // && Constants.appDataLoadedFromFirebase
     //     ) {
@@ -134,7 +134,7 @@ class FirebaseUtils {
 
   //For offline purpose -> it'll storing inside of all event submission if files added
   static Map<String, dynamic> toPrepareFileStoringModel(List<File> files) {
-    List<Map<String, dynamic>> returnResult = [];
+    final List<Map<String, dynamic>> returnResult = [];
     for (var element in files) {
       returnResult.add({
         'fileName': element.path.split('/').last,

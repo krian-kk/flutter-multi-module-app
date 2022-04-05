@@ -23,13 +23,12 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
 class AddressScreen extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-  final int index;
-  final dynamic addressModel;
-
   const AddressScreen(
       {Key? key, required this.bloc, required this.index, this.addressModel})
       : super(key: key);
+  final CaseDetailsBloc bloc;
+  final int index;
+  final dynamic addressModel;
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -81,7 +80,7 @@ class _AddressScreenState extends State<AddressScreen>
           setState(() => isSubmitSecond = true);
         }
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -141,7 +140,6 @@ class _AddressScreenState extends State<AddressScreen>
                         padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Row(
@@ -158,8 +156,6 @@ class _AddressScreenState extends State<AddressScreen>
                                           .toUpperCase() ??
                                       '_',
                                   fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color23375A,
                                 ),
                                 Wrap(
@@ -194,9 +190,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               ['value']
                                           .toString() ??
                                       '_',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color23375A,
                                 ),
                               ),
@@ -216,7 +209,7 @@ class _AddressScreenState extends State<AddressScreen>
                                           currentLocation = value;
                                         });
                                       });
-                                      Northeast? destinationLocation =
+                                      final Northeast? destinationLocation =
                                           await MapUtils.convertAddressToLarlng(
                                         address: widget
                                                 .bloc
@@ -227,7 +220,7 @@ class _AddressScreenState extends State<AddressScreen>
                                         context: context,
                                       );
                                       if (destinationLocation != null) {
-                                        MapUtils.openMap(
+                                        await MapUtils.openMap(
                                             startLatitude:
                                                 currentLocation!.latitude,
                                             startLongitude:
@@ -246,8 +239,6 @@ class _AddressScreenState extends State<AddressScreen>
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(75.0))),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
                                           children: [
                                             CircleAvatar(
                                               backgroundColor:
@@ -265,7 +256,6 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .viewMap
                                                   .toUpperCase(),
                                               lineHeight: 1,
-                                              fontSize: FontSize.fourteen,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color23375A,
                                             )
@@ -324,7 +314,6 @@ class _AddressScreenState extends State<AddressScreen>
                                       color: ColorResource.color23375A,
                                       lineHeight: 1,
                                       fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
                                     ),
                                     onTap: () => widget.bloc.add(
                                         EventDetailsEvent(
@@ -440,8 +429,6 @@ class _AddressScreenState extends State<AddressScreen>
                               width: 190,
                               child: CustomButton(
                                 Languages.of(context)!.done.toUpperCase(),
-                                fontSize: FontSize.eighteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: () => Navigator.pop(context),
                                 cardShape: 5,
                               ),
@@ -468,7 +455,6 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 20, vertical: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: CustomCancelButton.cancelButton(context),
@@ -490,8 +476,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: isSubmitFirst
                                           ? () {
                                               if (widget.bloc
@@ -555,8 +539,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
                                           ? () {
                                               if (widget.bloc

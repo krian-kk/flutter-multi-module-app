@@ -1,10 +1,6 @@
 import 'case.dart';
 
 class Approved {
-  int? count;
-  int? totalAmt;
-  List<ReceiptWeeklyCase>? cases;
-
   Approved({this.count, this.totalAmt, this.cases});
 
   factory Approved.fromJson(Map<String, dynamic> json) => Approved(
@@ -14,6 +10,9 @@ class Approved {
             ?.map((e) => ReceiptWeeklyCase.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
+  int? count;
+  int? totalAmt;
+  List<ReceiptWeeklyCase>? cases;
 
   Map<String, dynamic> toJson() => {
         'count': count,

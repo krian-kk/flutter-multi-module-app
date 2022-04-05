@@ -19,9 +19,9 @@ class ClickChangePasswordState extends ProfileState {}
 class ClickChangeSecurityPinState extends ProfileState {}
 
 class ClickMessageState extends ProfileState {
+  ClickMessageState({this.fromId, this.toId});
   final String? fromId;
   final String? toId;
-  ClickMessageState({this.fromId, this.toId});
 }
 
 class ClickMarkAsHomeState extends ProfileState {}

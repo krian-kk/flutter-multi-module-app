@@ -47,13 +47,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = [
       SelectedClipModel(Languages.of(context)!.leftMessage.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
     ];
 
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
@@ -72,7 +72,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -204,7 +203,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -223,8 +222,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

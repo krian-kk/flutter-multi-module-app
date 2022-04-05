@@ -1,10 +1,6 @@
 import 'case.dart';
 
 class New {
-  int? count;
-  int? totalAmt;
-  List<ReceiptWeeklyCase>? cases;
-
   New({this.count, this.totalAmt, this.cases});
 
   factory New.fromJson(Map<String, dynamic> json) => New(
@@ -14,6 +10,9 @@ class New {
             ?.map((e) => ReceiptWeeklyCase.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
+  int? count;
+  int? totalAmt;
+  List<ReceiptWeeklyCase>? cases;
 
   Map<String, dynamic> toJson() => {
         'count': count,

@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
 class BrokenPTPBottomSheet extends StatefulWidget {
-  final DashboardBloc bloc;
   const BrokenPTPBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
 
   @override
   _BrokenPTPBottomSheetState createState() => _BrokenPTPBottomSheetState();
@@ -75,7 +75,7 @@ class _BrokenPTPBottomSheetState extends State<BrokenPTPBottomSheet> {
                             ? Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 0.0),
+                                      horizontal: 20.0),
                                   child: SearchCaseList.buildListView(
                                     widget.bloc,
                                     resultData: widget.bloc.searchResultList,

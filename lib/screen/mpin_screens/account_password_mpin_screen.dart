@@ -11,10 +11,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class AccountPasswordMpinScreen extends StatefulWidget {
-  final GestureTapCallback submitBtnFunction;
-  final String password;
-  final String userName;
-  final GestureTapCallback forgotPasswordFunction;
   const AccountPasswordMpinScreen({
     Key? key,
     required this.submitBtnFunction,
@@ -22,6 +18,10 @@ class AccountPasswordMpinScreen extends StatefulWidget {
     required this.userName,
     required this.forgotPasswordFunction,
   }) : super(key: key);
+  final GestureTapCallback submitBtnFunction;
+  final String password;
+  final String userName;
+  final GestureTapCallback forgotPasswordFunction;
 
   @override
   State<AccountPasswordMpinScreen> createState() =>
@@ -58,7 +58,6 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
                     child: CustomText(
                       Languages.of(context)!.forgotPin.replaceAll('?', ''),
                       fontSize: FontSize.eighteen,
-                      fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -70,12 +69,9 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
                       ))
                 ]),
             Align(
-              alignment: Alignment.center,
               child: CustomText(
                 'Enter your account password to edit 4-digit PIN for ${widget.userName}’s account.',
                 fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(height: 15),
@@ -105,7 +101,6 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
                 child: CustomText(
                   Languages.of(context)!.forgotPin.toUpperCase(),
                   fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w600,
                 ),
               ),

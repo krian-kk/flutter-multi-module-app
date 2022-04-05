@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class EventDetailsModel {
-  int? status;
-  String? message;
-  List<EvnetDetailsResultsModel>? result;
-
   EventDetailsModel({this.status, this.message, this.result});
 
   factory EventDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +13,9 @@ class EventDetailsModel {
           .toList(),
     );
   }
+  int? status;
+  String? message;
+  List<EvnetDetailsResultsModel>? result;
 
   Map<String, dynamic> toJson() => {
         'status': status,

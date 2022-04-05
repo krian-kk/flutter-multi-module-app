@@ -1,8 +1,4 @@
 class DashboardMyReceiptsResult {
-  int? count;
-  int? totalAmt;
-  List<dynamic>? cases;
-
   DashboardMyReceiptsResult({this.count, this.totalAmt, this.cases});
 
   factory DashboardMyReceiptsResult.fromJson(Map<String, dynamic> json) =>
@@ -11,6 +7,9 @@ class DashboardMyReceiptsResult {
         totalAmt: json['totalAmt'] as int?,
         cases: json['cases'] as List<dynamic>?,
       );
+  int? count;
+  int? totalAmt;
+  List<dynamic>? cases;
 
   Map<String, dynamic> toJson() => {
         'count': count,

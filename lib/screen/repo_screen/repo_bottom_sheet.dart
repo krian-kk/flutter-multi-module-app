@@ -108,8 +108,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -149,7 +149,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           children: [
                             Flexible(
                                 child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -192,7 +191,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                             const SizedBox(width: 7),
                             Flexible(
                                 child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -346,7 +344,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                       ],
                     ),
                     fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
                     onTap: isSubmit
                         ? () async {
                             if (isRecord == Constants.process) {
@@ -382,15 +379,13 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   );
                                   if (Geolocator.checkPermission().toString() !=
                                       PermissionStatus.granted.toString()) {
-                                    Position res =
-                                        await Geolocator.getCurrentPosition(
-                                            desiredAccuracy:
-                                                LocationAccuracy.best);
+                                    final Position res =
+                                        await Geolocator.getCurrentPosition();
                                     setState(() {
                                       position = res;
                                     });
                                   }
-                                  var requestBodyData = RepoPostModel(
+                                  final requestBodyData = RepoPostModel(
                                       eventId: ConstantEventValues.repoEventId,
                                       eventType: Constants.repo,
                                       caseId: widget.caseId,
@@ -429,9 +424,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                             registrationNoControlller.text,
                                         chassisNo: chassisNoControlller.text,
                                         remarks: remarksControlller.text,
-                                        repo: Repo(
-                                          status: 'pending',
-                                        ),
+                                        repo: Repo(),
                                         date: dateControlller.text.trim() +
                                             'T' +
                                             timeControlller.text.trim() +
@@ -458,7 +451,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       jsonDecode(jsonEncode(
                                               requestBodyData.toJson()))
                                           as Map<String, dynamic>;
-                                  List<dynamic> value = [];
+                                  final List<dynamic> value = [];
                                   for (var element in uploadFileLists) {
                                     value.add(await MultipartFile.fromFile(
                                         element.path.toString()));
@@ -467,7 +460,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     'files': value,
                                   });
 
-                                  Map<String, dynamic> firebaseObject =
+                                  final Map<String, dynamic> firebaseObject =
                                       requestBodyData.toJson();
                                   try {
                                     firebaseObject.addAll(
@@ -488,7 +481,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       await Connectivity()
                                           .checkConnectivity()) {
                                   } else {
-                                    Map<String, dynamic> postResult =
+                                    final Map<String, dynamic> postResult =
                                         await APIRepository.apiRequest(
                                       APIRequestType.upload,
                                       HttpUrl.repoPostUrl(

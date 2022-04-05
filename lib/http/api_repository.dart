@@ -40,7 +40,7 @@ class APIRepository {
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     debugPrint(
         'Initial -> urlString-->$urlString \n  requestBodydata-->$requestBodydata}');
@@ -101,7 +101,7 @@ class APIRepository {
         debugPrint('Access Token is => ${response.headers['access-token']}');
         // Here get New Access Token for every API call then store
         if (response.headers['access-token']![0].toString() != 'false') {
-          _prefs.setString(Constants.accessToken,
+          await _prefs.setString(Constants.accessToken,
               response.headers['access-token']![0].toString());
           Singleton.instance.accessToken =
               response.headers['access-token']![0].toString();
@@ -129,7 +129,7 @@ class APIRepository {
           'Error Status :  urlString-->$urlString \n  requestBodydata-->$requestBodydata'
           '\n  response-->${jsonDecode(e.response.toString())}');
 
-      if (error.toString() != "DioErrorType.response") {
+      if (error.toString() != 'DioErrorType.response') {
         // isPop is used for if i load new api then get any error then pop the back screen
         if (isPop == true) {
           Navigator.pop(Singleton.instance.buildContext!);
@@ -142,7 +142,7 @@ class APIRepository {
         if (e.response!.statusCode == 401) {
           //  here check accestoken expire or not after go to login
           invalidAccessServerError =
-              e.response!.data['message'] ?? "Session Expired!";
+              e.response!.data['message'] ?? 'Session Expired!';
           String? errVal;
           if (e.response!.data['message'] ==
                   'Error refreshing access token: Invalid refresh token' ||
@@ -155,10 +155,12 @@ class APIRepository {
               e.response!.data['message'] ==
                   'Error refreshing access token: Session not active' ||
               invalidAccessServerError == 'Session Expired!') {
-            errVal = "Logout triggered due to inactivity / another";
+            errVal = 'Logout triggered due to inactivity / another';
 
-            Navigator.pushNamedAndRemoveUntil(Singleton.instance.buildContext!,
-                AppRoutes.loginScreen, (route) => false);
+            await Navigator.pushNamedAndRemoveUntil(
+                Singleton.instance.buildContext!,
+                AppRoutes.loginScreen,
+                (route) => false);
           }
           apiErrorStatus(
               errorString: errVal ?? e.response!.data['message'],

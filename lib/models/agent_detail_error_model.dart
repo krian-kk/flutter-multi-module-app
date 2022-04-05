@@ -1,9 +1,4 @@
 class AgentDetailErrorModel {
-  String? code;
-  int? status;
-  String? msg;
-  String? auth;
-
   AgentDetailErrorModel({this.code, this.status, this.msg, this.auth});
 
   AgentDetailErrorModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +12,11 @@ class AgentDetailErrorModel {
     msg = json['msg'];
     auth = json['auth'];
   }
+
+  String? code;
+  int? status;
+  String? msg;
+  String? auth;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

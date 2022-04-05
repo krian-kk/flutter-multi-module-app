@@ -1,14 +1,4 @@
 class OtherLoanDetail {
-  String? id;
-  dynamic due;
-  dynamic originalDue;
-  dynamic odVal;
-  String? cust;
-  String? accNo;
-  String? caseId;
-  String? bankName;
-  String? agrRef;
-
   OtherLoanDetail(
       {this.id,
       this.due,
@@ -33,6 +23,15 @@ class OtherLoanDetail {
       agrRef: json['agrRef'] as String?,
     );
   }
+  String? id;
+  dynamic due;
+  dynamic originalDue;
+  dynamic odVal;
+  String? cust;
+  String? accNo;
+  String? caseId;
+  String? bankName;
+  String? agrRef;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

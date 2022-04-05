@@ -12,9 +12,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class CreateMpinScreen extends StatefulWidget {
-  final OnChange saveFunction;
   const CreateMpinScreen({Key? key, required this.saveFunction})
       : super(key: key);
+  final OnChange saveFunction;
 
   @override
   State<CreateMpinScreen> createState() => _CreateMpinScreenState();
@@ -45,7 +45,6 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
                   Languages.of(context)!
                       .secureYourAccountByCreatingAFourDigitPin,
                   fontSize: FontSize.eighteen,
-                  fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -68,7 +67,6 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
             controller: contoller,
             length: 4,
             mainAxisAlignment: MainAxisAlignment.center,
-            obscureText: false,
             animationType: AnimationType.scale,
             onChanged: (value) {
               setState(() => isError = false);

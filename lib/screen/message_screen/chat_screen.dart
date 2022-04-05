@@ -25,12 +25,11 @@ import 'chat_model/message_model.dart';
 import 'chat_screen_state.dart';
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({Key? key, this.fromARefId, this.toARefId, this.agentImage})
+      : super(key: key);
   final String? fromARefId;
   final String? toARefId;
   final ImageProvider<Object>? agentImage;
-
-  const ChatScreen({Key? key, this.fromARefId, this.toARefId, this.agentImage})
-      : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -156,8 +155,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                           width: 7,
                                         ),
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           mainAxisSize: MainAxisSize.min,
@@ -166,9 +163,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                               bloc.agentDetails.result?[0]
                                                       .name ??
                                                   '-',
-                                              fontWeight: FontWeight.w400,
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
                                               color: ColorResource.color101010,
                                             ),
                                             CustomText(
@@ -176,8 +171,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                                       .type ??
                                                   '-',
                                               fontWeight: FontWeight.w700,
-                                              fontSize: FontSize.fourteen,
-                                              fontStyle: FontStyle.normal,
                                               color: ColorResource.color333333,
                                             ),
                                           ],
@@ -233,7 +226,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void gettingAPIKeyFromServer() {}
 
-  void createAblyRealtimeInstance() async {
+  createAblyRealtimeInstance() async {
     //isi6Mw.OkTsUw:L1PnG2F-SEVG0Jc7bNnlj4Z_y8pX9IaIIeRTF0fPD1Q
     clientOptions = ably.ClientOptions()
       ..clientId = clientIDFromARef
@@ -291,7 +284,7 @@ class _ChatScreenState extends State<ChatScreen> {
         //   );
         // }
         setState(() {
-          ReceivingData receivedData =
+          final ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(event.data)));
           bloc.messageHistory.insert(
             0,
@@ -305,7 +298,7 @@ class _ChatScreenState extends State<ChatScreen> {
         debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
 
         setState(() {
-          ReceivingData receivedData =
+          final ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
           bloc.messageHistory.insert(
             0,
@@ -318,9 +311,8 @@ class _ChatScreenState extends State<ChatScreen> {
       });
 
       //to getting the history of data
-      var result = await chatChannel.history(ably.RealtimeHistoryParams(
+      final result = await chatChannel.history(ably.RealtimeHistoryParams(
           direction: 'forwards',
-          limit: 100,
           start: DateTime(DateTime.now().year - 1),
           end: DateTime.now()));
       debugPrint('The data of history--> ${result.items}');
@@ -336,7 +328,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   dateTime: element.timestamp),
             );
           } else {
-            ReceivingData receivedData =
+            final ReceivingData receivedData =
                 ReceivingData.fromJson(jsonDecode(jsonEncode(element.data)));
             bloc.messageHistory.insert(
               0,
@@ -399,9 +391,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         const EdgeInsets.symmetric(vertical: 9, horizontal: 15),
                     child: CustomText(
                       message.data.toString(),
-                      fontWeight: FontWeight.w400,
-                      fontSize: FontSize.fourteen,
-                      fontStyle: FontStyle.normal,
                       color: ColorResource.color484848,
                     ),
                   ),
@@ -411,11 +400,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   CustomText(
                     // DateFormat('yyyy-MM-dd').format(message.dateTime!),
                     DateFormat.MMMd().format(message.dateTime!) +
-                        " / " +
+                        ' / ' +
                         DateFormat.jm().format(message.dateTime!),
-                    fontWeight: FontWeight.w400,
                     fontSize: FontSize.eight,
-                    fontStyle: FontStyle.normal,
                     color: ColorResource.color484848,
                   ),
                 ],
@@ -470,8 +457,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   Languages.of(context)!.typeYourMessage,
                   messageController,
                   isBorder: true,
-
-                  borderColor: ColorResource.colorDADADA,
                   keyBoardType: TextInputType.multiline,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
                   suffixWidget: SizedBox(
@@ -500,7 +485,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             messageController.clear();
                           });
                         } else {
-                          debugPrint("space removed");
+                          debugPrint('space removed');
                         }
                       },
                       child: Container(

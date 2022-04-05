@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/yarding_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -17,14 +18,13 @@ import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:intl/intl.dart';
 
 class YardingTab extends StatefulWidget {
+  const YardingTab(this.bloc, {Key? key, this.caseId, this.custname})
+      : super(key: key);
   final DashboardBloc bloc;
   final String? caseId;
   final String? custname;
-  const YardingTab(this.bloc, {Key? key, this.caseId, this.custname})
-      : super(key: key);
 
   @override
   _YardingTabState createState() => _YardingTabState();
@@ -56,8 +56,8 @@ class _YardingTabState extends State<YardingTab> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -102,7 +102,6 @@ class _YardingTabState extends State<YardingTab> {
                           Languages.of(context)!.cancel.toUpperCase(),
                           fontSize: FontSize.sixteen,
                           textColor: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           buttonBackgroundColor: ColorResource.colorffffff,
                           borderColor: ColorResource.colorffffff,
@@ -123,7 +122,6 @@ class _YardingTabState extends State<YardingTab> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           onTap: isSubmited
                               ? () async {
@@ -134,7 +132,7 @@ class _YardingTabState extends State<YardingTab> {
                                     //     gravity: ToastGravity.CENTER,
                                     //   );
                                     // } else {
-                                    var requestBodyData = YardingPostModel(
+                                    final requestBodyData = YardingPostModel(
                                         // caseId: widget.caseId!,
                                         caseId: widget.caseId.toString(),
                                         contractor:

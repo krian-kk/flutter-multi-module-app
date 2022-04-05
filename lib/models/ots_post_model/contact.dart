@@ -1,8 +1,4 @@
 class OTSContact {
-  String cType;
-  String health;
-  String value;
-
   OTSContact({
     required this.cType,
     required this.health,
@@ -14,6 +10,9 @@ class OTSContact {
         health: json['health'] as String,
         value: json['value'] as String,
       );
+  String cType;
+  String health;
+  String value;
 
   Map<String, dynamic> toJson() => {
         'cType': cType,

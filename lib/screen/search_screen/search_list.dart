@@ -20,7 +20,6 @@ class SearchCaseList {
     List<Result>? resultData,
   }) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
           return Column(
@@ -85,7 +84,6 @@ class SearchCaseList {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
                                 child: Column(
@@ -105,14 +103,13 @@ class SearchCaseList {
                                       resultData[index].cust!,
                                       fontSize: FontSize.sixteen,
                                       color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w400,
                                     ),
                                   ],
                                 ),
                               ),
                               if (Singleton.instance.usertype ==
                                   Constants.fieldagent)
-                                resultData[index].collSubStatus == "new"
+                                resultData[index].collSubStatus == 'new'
                                     ? CaseStatusWidget.satusTextWidget(
                                         context,
                                         text: Languages.of(context)!.new_,
@@ -126,7 +123,7 @@ class SearchCaseList {
                               // : const SizedBox(),
                               if (Singleton.instance.usertype ==
                                   Constants.telecaller)
-                                resultData[index].telSubStatus == "new"
+                                resultData[index].telSubStatus == 'new'
                                     ? CaseStatusWidget.satusTextWidget(
                                         context,
                                         text: Languages.of(context)!.new_,
@@ -178,7 +175,6 @@ class SearchCaseList {
                                       CustomText(
                                         resultData[index].address![0].value!,
                                         color: ColorResource.color484848,
-                                        fontSize: FontSize.fourteen,
                                       ),
                                       // CustomText(
                                       //   resultData[index].address![1].value!,
@@ -210,7 +206,6 @@ class SearchCaseList {
                                                 item.value!,
                                                 color:
                                                     ColorResource.color484848,
-                                                fontSize: FontSize.fourteen,
                                                 lineHeight: 1.0,
                                               ),
                                             )
@@ -235,9 +230,7 @@ class SearchCaseList {
                             children: [
                               CustomText(
                                 Languages.of(context)!.followUpDate,
-                                fontSize: FontSize.fourteen,
                                 color: ColorResource.color101010,
-                                fontWeight: FontWeight.w400,
                               ),
                               Row(
                                 children: [
@@ -251,7 +244,6 @@ class SearchCaseList {
                                                   resultData[index]
                                                       .fieldfollowUpDate!)
                                           : '-',
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -264,7 +256,6 @@ class SearchCaseList {
                                                   resultData[index]
                                                       .followUpDate!)
                                           : '-',
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -281,7 +272,6 @@ class SearchCaseList {
                                     children: [
                                       CustomText(
                                         Languages.of(context)!.view,
-                                        fontSize: FontSize.fourteen,
                                         color: ColorResource.color23375A,
                                         fontWeight: FontWeight.w700,
                                       ),

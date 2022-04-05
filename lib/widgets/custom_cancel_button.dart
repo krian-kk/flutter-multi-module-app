@@ -10,7 +10,6 @@ class CustomCancelButton {
     return CustomButton(
       Languages.of(context!)!.cancel.toUpperCase(),
       fontSize: fontsize ?? FontSize.eighteen,
-      fontWeight: FontWeight.w600,
       buttonBackgroundColor: Colors.white,
       borderColor: Colors.white,
       textColor: ColorResource.colorEA6D48,

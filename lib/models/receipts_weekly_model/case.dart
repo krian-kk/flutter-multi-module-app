@@ -1,21 +1,6 @@
 import 'contact.dart';
 
 class ReceiptWeeklyCase {
-  String? id;
-  int? due;
-  int? originalDue;
-  int? odVal;
-  String? cust;
-  String? agrRef;
-  String? collSubStatus;
-  String? telSubStatus;
-  dynamic followUpDate;
-  dynamic fieldfollowUpDate;
-  String? bankName;
-  String? customerId;
-  List<Contact>? contact;
-  String? caseId;
-
   ReceiptWeeklyCase({
     this.id,
     this.due,
@@ -52,6 +37,20 @@ class ReceiptWeeklyCase {
             .toList(),
         caseId: json['caseId'] as String?,
       );
+  String? id;
+  int? due;
+  int? originalDue;
+  int? odVal;
+  String? cust;
+  String? agrRef;
+  String? collSubStatus;
+  String? telSubStatus;
+  dynamic followUpDate;
+  dynamic fieldfollowUpDate;
+  String? bankName;
+  String? customerId;
+  List<Contact>? contact;
+  String? caseId;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

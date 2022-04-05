@@ -5,14 +5,6 @@ import 'receipt_event.dart';
 import 'rejected.dart';
 
 class Result {
-  int? totalCount;
-  int? totalAmt;
-  List<ReceiptEvent>? receiptEvent;
-  List<ReceiptWeeklyCase>? cases;
-  Approved? approved;
-  Rejected? rejected;
-  New? new_;
-
   Result({
     this.totalCount,
     this.totalAmt,
@@ -42,6 +34,13 @@ class Result {
             ? null
             : New.fromJson(json['new'] as Map<String, dynamic>),
       );
+  int? totalCount;
+  int? totalAmt;
+  List<ReceiptEvent>? receiptEvent;
+  List<ReceiptWeeklyCase>? cases;
+  Approved? approved;
+  Rejected? rejected;
+  New? new_;
 
   Map<String, dynamic> toJson() => {
         'totalCount': totalCount,

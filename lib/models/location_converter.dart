@@ -1,7 +1,4 @@
 class LocationConverterModel {
-  List<Results>? results;
-  String? status;
-
   LocationConverterModel({this.results, this.status});
 
   LocationConverterModel.fromJson(Map<String, dynamic> json) {
@@ -13,6 +10,8 @@ class LocationConverterModel {
     }
     status = json['status'];
   }
+  List<Results>? results;
+  String? status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,12 +24,6 @@ class LocationConverterModel {
 }
 
 class Results {
-  List<AddressComponents>? addressComponents;
-  String? formattedAddress;
-  Geometry? geometry;
-  String? placeId;
-  List<String>? types;
-
   Results(
       {this.addressComponents,
       this.formattedAddress,
@@ -51,6 +44,11 @@ class Results {
     placeId = json['place_id'];
     types = json['types'].cast<String>();
   }
+  List<AddressComponents>? addressComponents;
+  String? formattedAddress;
+  Geometry? geometry;
+  String? placeId;
+  List<String>? types;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -69,10 +67,6 @@ class Results {
 }
 
 class AddressComponents {
-  String? longName;
-  String? shortName;
-  List<String>? types;
-
   AddressComponents({this.longName, this.shortName, this.types});
 
   AddressComponents.fromJson(Map<String, dynamic> json) {
@@ -80,6 +74,9 @@ class AddressComponents {
     shortName = json['short_name'];
     types = json['types'].cast<String>();
   }
+  String? longName;
+  String? shortName;
+  List<String>? types;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -91,11 +88,6 @@ class AddressComponents {
 }
 
 class Geometry {
-  Bounds? bounds;
-  Northeast? location;
-  String? locationType;
-  Bounds? viewport;
-
   Geometry({this.bounds, this.location, this.locationType, this.viewport});
 
   Geometry.fromJson(Map<String, dynamic> json) {
@@ -106,6 +98,10 @@ class Geometry {
     viewport =
         json['viewport'] != null ? Bounds.fromJson(json['viewport']) : null;
   }
+  Bounds? bounds;
+  Northeast? location;
+  String? locationType;
+  Bounds? viewport;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -124,9 +120,6 @@ class Geometry {
 }
 
 class Bounds {
-  Northeast? northeast;
-  Northeast? southwest;
-
   Bounds({this.northeast, this.southwest});
 
   Bounds.fromJson(Map<String, dynamic> json) {
@@ -137,6 +130,8 @@ class Bounds {
         ? Northeast.fromJson(json['southwest'])
         : null;
   }
+  Northeast? northeast;
+  Northeast? southwest;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -151,15 +146,14 @@ class Bounds {
 }
 
 class Northeast {
-  double? lat;
-  double? lng;
-
   Northeast({this.lat, this.lng});
 
   Northeast.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     lng = json['lng'];
   }
+  double? lat;
+  double? lng;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

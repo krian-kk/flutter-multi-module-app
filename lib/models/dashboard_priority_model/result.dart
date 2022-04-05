@@ -1,8 +1,4 @@
 class DashboardProrityResultModel {
-  int? count;
-  int? totalAmt;
-  List<dynamic>? cases;
-
   DashboardProrityResultModel({this.count, this.totalAmt, this.cases});
 
   factory DashboardProrityResultModel.fromJson(Map<String, dynamic> json) =>
@@ -11,6 +7,9 @@ class DashboardProrityResultModel {
         totalAmt: json['totalAmt'] as int?,
         cases: json['cases'] as List<dynamic>?,
       );
+  int? count;
+  int? totalAmt;
+  List<dynamic>? cases;
 
   Map<String, dynamic> toJson() => {
         'count': count,

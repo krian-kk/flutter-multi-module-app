@@ -1,10 +1,4 @@
 class AgentDetailsModel {
-  String? code;
-  int? status;
-  String? msg;
-  String? auth;
-  List<Data>? data;
-
   AgentDetailsModel({this.code, this.status, this.msg, this.auth, this.data});
 
   AgentDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +19,12 @@ class AgentDetailsModel {
     }
   }
 
+  String? code;
+  int? status;
+  String? msg;
+  String? auth;
+  List<Data>? data;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['code'] = code;
@@ -39,17 +39,6 @@ class AgentDetailsModel {
 }
 
 class Data {
-  String? agentRef;
-  String? agentName;
-  String? agentType;
-  String? status;
-  String? mobileNumber;
-  String? contractor;
-  bool? userAdmin;
-  String? email;
-  String? contractorPrefix;
-  String? mobNo;
-
   Data(
       {this.agentRef,
       this.agentName,
@@ -74,6 +63,17 @@ class Data {
     contractorPrefix = json['contractorPrefix'];
     mobNo = json['mobNo'];
   }
+
+  String? agentRef;
+  String? agentName;
+  String? agentType;
+  String? status;
+  String? mobileNumber;
+  String? contractor;
+  bool? userAdmin;
+  String? email;
+  String? contractorPrefix;
+  String? mobNo;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

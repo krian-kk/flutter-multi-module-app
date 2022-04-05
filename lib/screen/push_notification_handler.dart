@@ -47,7 +47,7 @@ class PushNotificationHandlers {
     notificationEvents.onMessage.listen((message) {
       addMessage(message);
 
-      ably.Notification? notification = message.notification;
+      final ably.Notification? notification = message.notification;
 
       if (notification != null && notification.body!.isNotEmpty) {
         debugPrint('--------notification data---------');
@@ -72,7 +72,7 @@ class PushNotificationHandlers {
     });
   }
 
-  static void setUpAndroidNotificationChannels() async {
+  static setUpAndroidNotificationChannels() async {
     const channel = AndroidNotificationChannel(
       'high_importance_channel', // id
       'origa.ai', // title
@@ -80,10 +80,10 @@ class PushNotificationHandlers {
           'This channel is used for important notifications.', // description
       importance: Importance.max,
     );
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = const IOSInitializationSettings();
-    var initializationSettings = InitializationSettings(
+    const initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsIOS = IOSInitializationSettings();
+    const initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -97,7 +97,7 @@ class PushNotificationHandlers {
         ?.createNotificationChannel(channel);
   }
 
-  static void selectNotification(String? payload) async {
+  static selectNotification(String? payload) async {
     //Handle notification tapped logic here
     debugPrint('flutter Local Notifications Plugin payload ---> $payload');
   }

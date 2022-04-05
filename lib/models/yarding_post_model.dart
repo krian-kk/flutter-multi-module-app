@@ -1,8 +1,4 @@
 class YardingPostModel {
-  late String caseId;
-  late Repo repo;
-  late String contractor;
-
   YardingPostModel({
     required this.caseId,
     required this.repo,
@@ -14,6 +10,9 @@ class YardingPostModel {
     repo = json['repo'];
     contractor = json['contractor'];
   }
+  late String caseId;
+  late Repo repo;
+  late String contractor;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,13 +24,6 @@ class YardingPostModel {
 }
 
 class Repo {
-  late String yard;
-  late String date;
-  late String time;
-  late String remarks;
-  late List<String> imageLocation;
-  late String status;
-
   Repo({
     required this.yard,
     required this.date,
@@ -49,6 +41,12 @@ class Repo {
     imageLocation = json['imageLocation'].cast<String>();
     status = json['status'];
   }
+  late String yard;
+  late String date;
+  late String time;
+  late String remarks;
+  late List<String> imageLocation;
+  late String status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

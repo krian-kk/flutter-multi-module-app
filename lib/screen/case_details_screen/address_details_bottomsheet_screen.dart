@@ -10,7 +10,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -43,7 +42,7 @@ class _AddressDetailsBottomSheetScreenState
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -117,14 +116,12 @@ class _AddressDetailsBottomSheetScreenState
                             itemBuilder: (context, i) {
                               return widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
-                                          "residence address" ||
+                                          'residence address' ||
                                       widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
-                                          "office address"
+                                          'office address'
                                   ? SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
@@ -138,9 +135,7 @@ class _AddressDetailsBottomSheetScreenState
                                                     .toUpperCase() ??
                                                 '_',
                                             fontWeight: FontWeight.w700,
-                                            fontSize: FontSize.fourteen,
                                             color: ColorResource.color23375A,
-                                            fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 7),
                                           GestureDetector(
@@ -158,7 +153,7 @@ class _AddressDetailsBottomSheetScreenState
                                                           .result
                                                           ?.addressDetails![i]
                                                       ['resAddressId_0'] ??
-                                                  "";
+                                                  '';
 
                                               for (var element in widget
                                                   .bloc
@@ -166,7 +161,7 @@ class _AddressDetailsBottomSheetScreenState
                                                   .result!
                                                   .callDetails!) {
                                                 if (element['cType'] ==
-                                                    "mobile") {
+                                                    'mobile') {
                                                   Singleton.instance
                                                           .customerContactNo =
                                                       element['value'];
@@ -205,12 +200,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                         'value']
                                                                     .toString() ??
                                                                 '_',
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontStyle: FontStyle
-                                                                .normal,
                                                             color: ColorResource
                                                                 .color484848,
                                                           ),
@@ -256,7 +245,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                       value;
                                                                 });
                                                               });
-                                                              Northeast?
+                                                              final Northeast?
                                                                   destinationLocation =
                                                                   await MapUtils
                                                                       .convertAddressToLarlng(
@@ -271,7 +260,7 @@ class _AddressDetailsBottomSheetScreenState
                                                               );
                                                               if (destinationLocation !=
                                                                   null) {
-                                                                MapUtils.openMap(
+                                                                await MapUtils.openMap(
                                                                     startLatitude:
                                                                         currentLocation!
                                                                             .latitude,
@@ -323,9 +312,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                     Languages.of(
                                                                             context)!
                                                                         .viewMap,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -356,11 +342,6 @@ class _AddressDetailsBottomSheetScreenState
                                                               lineHeight: 1,
                                                               color: ColorResource
                                                                   .color23375A,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,

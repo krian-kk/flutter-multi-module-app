@@ -43,7 +43,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                             itemCount: bloc.notificationList.length,
                             itemBuilder: (BuildContext context, int index) {
                               return Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -54,7 +53,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                       bloc.notificationList[index].date,
                                       color: ColorResource.color484848,
                                       fontSize: FontSize.ten,
-                                      fontStyle: FontStyle.normal,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
@@ -78,8 +76,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                             padding: const EdgeInsets.fromLTRB(
                                                 14, 8, 30, 12),
                                             child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
@@ -94,8 +90,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                                   color:
                                                       ColorResource.color101010,
                                                   fontSize: FontSize.sixteen,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w400,
                                                 ),
                                                 CustomText(
                                                   bloc
@@ -106,9 +100,6 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                                       .toString(),
                                                   color:
                                                       ColorResource.color484848,
-                                                  fontSize: FontSize.fourteen,
-                                                  fontStyle: FontStyle.normal,
-                                                  fontWeight: FontWeight.w400,
                                                 ),
                                               ],
                                             ),

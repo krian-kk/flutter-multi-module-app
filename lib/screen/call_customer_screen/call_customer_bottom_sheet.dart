@@ -24,17 +24,6 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CallCustomerBottomSheet extends StatefulWidget {
-  final Widget customerLoanUserWidget;
-  final String userType;
-  final String caseId;
-  final String sid;
-  final List<String> listOfMobileNo;
-  final CaseDetailsApiModel? caseDetailsAPIValue;
-  final String? custName;
-  final String? contactNumber;
-  final bool? isCallFromCallDetails;
-  final CaseDetailsBloc caseDetailsBloc;
-
   const CallCustomerBottomSheet({
     Key? key,
     required this.customerLoanUserWidget,
@@ -48,6 +37,16 @@ class CallCustomerBottomSheet extends StatefulWidget {
     this.isCallFromCallDetails,
     required this.caseDetailsBloc,
   }) : super(key: key);
+  final Widget customerLoanUserWidget;
+  final String userType;
+  final String caseId;
+  final String sid;
+  final List<String> listOfMobileNo;
+  final CaseDetailsApiModel? caseDetailsAPIValue;
+  final String? custName;
+  final String? contactNumber;
+  final bool? isCallFromCallDetails;
+  final CaseDetailsBloc caseDetailsBloc;
 
   @override
   State<CallCustomerBottomSheet> createState() =>
@@ -144,8 +143,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   children: [
                                     Flexible(
                                         child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
@@ -153,9 +150,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         CustomText(
                                           Languages.of(context)!.agentContactNo,
                                           fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
                                           color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
                                         ),
                                         CustomReadOnlyTextField(
                                           '',
@@ -209,7 +204,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     child: CustomDropDownButton(
                                   Languages.of(context)!.callersId,
                                   bloc.callersIDDropdownList,
-                                  isExpanded: true,
                                   selectedValue: bloc.callersIDDropdownValue,
                                   onChanged: (newValue) {
                                     Singleton.instance.callingID =
@@ -251,8 +245,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                         Expanded(
                             child: CustomButton(
                           Languages.of(context)!.done.toUpperCase(),
-                          fontSize: FontSize.eighteen,
-                          fontWeight: FontWeight.w600,
                           buttonBackgroundColor: Colors.white,
                           borderColor: Colors.white,
                           textColor: ColorResource.colorEA6D48,
@@ -265,7 +257,6 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                           child: CustomButton(
                             Languages.of(context)!.call.toUpperCase(),
                             fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
                             isLeading: true,
                             isEnabled: bloc.isSubmit,
                             trailingWidget:
@@ -279,7 +270,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               if (_formKey.currentState!.validate()) {
                                 if (Singleton.instance.cloudTelephony! &&
                                     Singleton.instance.callingID != null) {
-                                  var requestBodyData = CallCustomerModel(
+                                  final requestBodyData = CallCustomerModel(
                                     //Mobile user number as Agent contact number
                                     from: agentContactNoControlller.text,
                                     //Customer mobile number
@@ -306,7 +297,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         : 'COLLECTOR',
                                   );
 
-                                  Map<String, dynamic> postResult =
+                                  final Map<String, dynamic> postResult =
                                       await APIRepository.apiRequest(
                                     APIRequestType.post,
                                     HttpUrl.callCustomerUrl,
@@ -322,7 +313,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     }
                                   }
                                 } else {
-                                  AppUtils.makePhoneCall(
+                                  await AppUtils.makePhoneCall(
                                       'tel:' + customerContactNoDropDownValue);
                                 }
                               }

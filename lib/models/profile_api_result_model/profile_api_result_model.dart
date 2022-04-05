@@ -1,8 +1,4 @@
 class ProfileApiModel {
-  int? status;
-  String? message;
-  List<Result>? result;
-
   ProfileApiModel({this.status, this.message, this.result});
 
   ProfileApiModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +11,9 @@ class ProfileApiModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Result>? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,27 +27,6 @@ class ProfileApiModel {
 }
 
 class Result {
-  String? sId;
-  String? aRef;
-  List<String>? areaCode;
-  Audit? audit;
-  List? children;
-  List<Contact>? contact;
-  String? contractor;
-  String? dateJoining;
-  String? dateResign;
-  String? defMobileNumber;
-  String? name;
-  String? parent;
-  String? roleLevel;
-  String? status;
-  String? type;
-  bool? userAdmin;
-  int? failedLoginCounter;
-  String? homeAddress;
-  String? profileImgUrl;
-  int? mPin;
-
   Result({
     this.sId,
     this.aRef,
@@ -101,6 +79,26 @@ class Result {
     profileImgUrl = json['profileImgUrl'];
     mPin = json['mPin'];
   }
+  String? sId;
+  String? aRef;
+  List<String>? areaCode;
+  Audit? audit;
+  List? children;
+  List<Contact>? contact;
+  String? contractor;
+  String? dateJoining;
+  String? dateResign;
+  String? defMobileNumber;
+  String? name;
+  String? parent;
+  String? roleLevel;
+  String? status;
+  String? type;
+  bool? userAdmin;
+  int? failedLoginCounter;
+  String? homeAddress;
+  String? profileImgUrl;
+  int? mPin;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -135,12 +133,6 @@ class Result {
 }
 
 class Audit {
-  String? crBy;
-  String? crAt;
-  String? syncAt;
-  String? upBy;
-  String? upAt;
-
   Audit({this.crBy, this.crAt, this.syncAt, this.upBy, this.upAt});
 
   Audit.fromJson(Map<String, dynamic> json) {
@@ -150,6 +142,11 @@ class Audit {
     upBy = json['upBy'];
     upAt = json['upAt'];
   }
+  String? crBy;
+  String? crAt;
+  String? syncAt;
+  String? upBy;
+  String? upAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -163,15 +160,14 @@ class Audit {
 }
 
 class Contact {
-  String? cType;
-  String? value;
-
   Contact({this.cType, this.value});
 
   Contact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     value = json['value'];
   }
+  String? cType;
+  String? value;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

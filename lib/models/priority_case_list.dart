@@ -2,10 +2,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
 
 class PriorityCaseListModel {
-  int? status;
-  String? message;
-  List<Result>? result;
-
   PriorityCaseListModel({this.status, this.message, this.result});
 
   PriorityCaseListModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +14,9 @@ class PriorityCaseListModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<Result>? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -31,29 +30,6 @@ class PriorityCaseListModel {
 }
 
 class Result {
-  String? sId;
-  dynamic due;
-  late bool starredCase;
-  String? cust;
-  String? collSubStatus;
-  String? telSubStatus;
-  String? followUpPriority;
-  String? customerId;
-  String? pincode;
-  String? caseId;
-  String? agrRef;
-  String? bankName;
-  String? fieldfollowUpDate;
-  dynamic sortId;
-  String? followUpDate;
-  String? locationType;
-  dynamic distanceMeters;
-  String? repoStatus;
-  String? accNo;
-  List<Address>? address;
-  Location? location;
-  bool? isCompletedSuccess = false;
-
   Result({
     this.sId,
     this.due,
@@ -143,6 +119,28 @@ class Result {
       location = Location.fromJson(json['location']);
     }
   }
+  String? sId;
+  dynamic due;
+  late bool starredCase;
+  String? cust;
+  String? collSubStatus;
+  String? telSubStatus;
+  String? followUpPriority;
+  String? customerId;
+  String? pincode;
+  String? caseId;
+  String? agrRef;
+  String? bankName;
+  String? fieldfollowUpDate;
+  dynamic sortId;
+  String? followUpDate;
+  String? locationType;
+  dynamic distanceMeters;
+  String? repoStatus;
+  String? accNo;
+  List<Address>? address;
+  Location? location;
+  bool? isCompletedSuccess = false;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -171,10 +169,6 @@ class Result {
 }
 
 class Address {
-  String? cType;
-  String? value;
-  String? health;
-
   Address({this.cType, this.value, this.health});
 
   Address.fromJson(Map<String, dynamic> json) {
@@ -182,6 +176,9 @@ class Address {
     value = json['value'];
     health = json['health'] ?? '1.5';
   }
+  String? cType;
+  String? value;
+  String? health;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -193,15 +190,14 @@ class Address {
 }
 
 class Location {
-  double? lat;
-  double? lng;
-
   Location({this.lat, this.lng});
 
   Location.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     lng = json['lng'];
   }
+  double? lat;
+  double? lng;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

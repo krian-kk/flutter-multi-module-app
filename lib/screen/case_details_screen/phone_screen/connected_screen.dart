@@ -33,7 +33,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -51,7 +51,6 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -85,8 +84,6 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                           Radius.circular(10.0))),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
                                     children: [
                                       SvgPicture.asset(widget
                                           .bloc

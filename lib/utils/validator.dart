@@ -26,18 +26,17 @@ class Validator {
           final int? letterCount = int.tryParse(rule.replaceAll('min:', ''));
           if (input.length < letterCount!) {
             return ValidationState(
-                status: false,
                 error: 'Value should be min $letterCount character long');
           }
         } catch (_) {
-          return ValidationState(status: false, error: ' - $rule is incorrect');
+          return ValidationState(error: ' - $rule is incorrect');
         }
       }
 
       if (rule == 'number_only') {
         final RegExp regex = RegExp(r'(\d+)');
         if (!regex.hasMatch(input)) {
-          return ValidationState(status: false, error: 'Value is not a number');
+          return ValidationState(error: 'Value is not a number');
         }
       }
 
@@ -57,8 +56,7 @@ class Validator {
 }
 
 class ValidationState {
+  ValidationState({this.status = false, this.error});
   bool status;
   String? error;
-
-  ValidationState({this.status = false, this.error});
 }

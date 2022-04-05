@@ -35,7 +35,6 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
             height: MediaQuery.of(context).size.height * 0.97,
             width: MediaQuery.of(context).size.width,
             child: Column(
-              mainAxisSize: MainAxisSize.max,
               children: [
                 Expanded(
                   child: SizedBox(

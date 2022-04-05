@@ -6,38 +6,6 @@ import 'package:origa/utils/validator.dart';
 
 @immutable
 class CustomTextField extends StatefulWidget {
-  final String hintText;
-  final bool obscureText;
-  final TextEditingController controller;
-  final Widget? suffixWidget;
-  final bool isEnable;
-  final bool isReadOnly;
-  final Function? onTapped;
-  final Widget? prefixWidget;
-  final TextInputType keyBoardType;
-  final int? maximumWordCount;
-  final Color titleColor;
-  final Color? borderColor;
-  final Color? errorborderColor;
-  final Color textColor;
-  final bool isHighlighted;
-  final Color highlightColor;
-  final FocusNode? focusNode;
-  final Color? focusTextColor;
-  final bool isLabel;
-  final String? descriptionText;
-  final List<TextInputFormatter>? inputformaters;
-  final List<String> validationRules;
-  final Function? oncomplete;
-  final Function? onEditing;
-  final Function? onChange;
-  final bool isBorder;
-  final bool isFill;
-  final Color cursorColor;
-  final Function(bool)? validatorCallBack;
-  final AutovalidateMode? autovalidateMode;
-  final EdgeInsetsGeometry? contentPadding;
-
   const CustomTextField(
     this.hintText,
     this.controller, {
@@ -72,6 +40,37 @@ class CustomTextField extends StatefulWidget {
     this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
     this.validationRules = const [],
   }) : super(key: key);
+  final String hintText;
+  final bool obscureText;
+  final TextEditingController controller;
+  final Widget? suffixWidget;
+  final bool isEnable;
+  final bool isReadOnly;
+  final Function? onTapped;
+  final Widget? prefixWidget;
+  final TextInputType keyBoardType;
+  final int? maximumWordCount;
+  final Color titleColor;
+  final Color? borderColor;
+  final Color? errorborderColor;
+  final Color textColor;
+  final bool isHighlighted;
+  final Color highlightColor;
+  final FocusNode? focusNode;
+  final Color? focusTextColor;
+  final bool isLabel;
+  final String? descriptionText;
+  final List<TextInputFormatter>? inputformaters;
+  final List<String> validationRules;
+  final Function? oncomplete;
+  final Function? onEditing;
+  final Function? onChange;
+  final bool isBorder;
+  final bool isFill;
+  final Color cursorColor;
+  final Function(bool)? validatorCallBack;
+  final AutovalidateMode? autovalidateMode;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   _CustomTextFieldState createState() => _CustomTextFieldState();

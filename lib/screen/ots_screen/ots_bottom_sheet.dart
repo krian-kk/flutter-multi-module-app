@@ -113,8 +113,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
@@ -134,7 +134,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList = [
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
@@ -143,7 +143,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -227,8 +227,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     children: [
                                       Flexible(
                                           child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
@@ -312,9 +310,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 15),
                                   CustomText(
                                     Languages.of(context)!.paymentMode,
-                                    fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
                                     color: ColorResource.color101010,
                                   ),
                                   const SizedBox(height: 8),
@@ -358,8 +354,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                           .colorFFFFFF,
                                                       fontSize:
                                                           FontSize.sixteen,
-                                                      fontStyle:
-                                                          FontStyle.normal,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       lineHeight: 1,
@@ -373,7 +367,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   color:
                                                       ColorResource.colorFFFFFF,
                                                   fontSize: FontSize.twelve,
-                                                  fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                                 const SizedBox(height: 5),
@@ -443,7 +436,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     ],
                                   ),
                                   fontSize: FontSize.sixteen,
-                                  fontWeight: FontWeight.w600,
                                   onTap: isSubmit
                                       ? () => submitOTSEvent(true)
                                       : () {},
@@ -467,7 +459,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               ],
                             ),
                             fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
                             onTap:
                                 isSubmit ? () => submitOTSEvent(false) : () {},
                             cardShape: 5,
@@ -525,13 +516,12 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             );
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
-              Position res = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best);
+              final Position res = await Geolocator.getCurrentPosition();
               setState(() {
                 position = res;
               });
             }
-            var requestBodyData = OtsPostModel(
+            final requestBodyData = OtsPostModel(
               eventId: ConstantEventValues.otsEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)
@@ -576,14 +566,15 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
-            List<dynamic> value = [];
+            final List<dynamic> value = [];
             for (var element in uploadFileLists) {
               value.add(await MultipartFile.fromFile(element.path.toString()));
             }
             postdata.addAll({
               'files': value,
             });
-            Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+            final Map<String, dynamic> firebaseObject =
+                requestBodyData.toJson();
             try {
               firebaseObject.addAll(
                   FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
@@ -599,7 +590,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.upload,
                 HttpUrl.otsPostUrl,
                 formDatas: FormData.fromMap(postdata),
@@ -651,7 +643,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -693,7 +685,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

@@ -114,7 +114,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
       bloc: widget.bloc,
       listener: (context, state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -173,7 +173,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                     (MediaQuery.of(context).size.width - 36) /
                                         2,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -331,7 +330,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: isSubmit
                                     ? () => submitRTPEvent(stopValue: true)
                                     : () {},
@@ -354,7 +352,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               ],
                             ),
                             fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
                             onTap: isSubmit
                                 ? () => submitRTPEvent(stopValue: false)
                                 : () {},
@@ -400,14 +397,13 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
             LatLng latLng = const LatLng(0, 0);
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
-              Position res = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best);
+              final Position res = await Geolocator.getCurrentPosition();
               setState(() {
                 // position = res;
                 latLng = LatLng(res.latitude, res.longitude);
               });
             }
-            var requestBodyData = DenialPostModel(
+            final requestBodyData = DenialPostModel(
               eventId: ConstantEventValues.rtpDenialEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)
@@ -456,10 +452,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
-                  APIRequestType.post,
-                  HttpUrl.denialPostUrl('denial', widget.userType),
-                  requestBodydata: jsonEncode(requestBodyData));
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(APIRequestType.post,
+                      HttpUrl.denialPostUrl('denial', widget.userType),
+                      requestBodydata: jsonEncode(requestBodyData));
               if (postResult[Constants.success]) {
                 widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
                 if (!(widget.userType == Constants.fieldagent &&

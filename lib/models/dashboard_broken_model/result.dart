@@ -1,19 +1,6 @@
 import 'address.dart';
 
 class DashboardBrokenPTPResult {
-  String? id;
-  int? due;
-  bool? starredCase;
-  String? cust;
-  String? collSubStatus;
-  String? followUpPriority;
-  String? customerId;
-  String? pincode;
-  String? caseId;
-  String? fieldfollowUpDate;
-  int? sortId;
-  List<Address>? address;
-
   DashboardBrokenPTPResult({
     this.id,
     this.due,
@@ -46,6 +33,18 @@ class DashboardBrokenPTPResult {
             ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
+  String? id;
+  int? due;
+  bool? starredCase;
+  String? cust;
+  String? collSubStatus;
+  String? followUpPriority;
+  String? customerId;
+  String? pincode;
+  String? caseId;
+  String? fieldfollowUpDate;
+  int? sortId;
+  List<Address>? address;
 
   Map<String, dynamic> toJson() => {
         '_id': id,

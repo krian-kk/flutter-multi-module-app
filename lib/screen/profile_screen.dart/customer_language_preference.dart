@@ -36,7 +36,7 @@ class _CustomerLanguagePreferenceState
     getLanguageCode();
   }
 
-  void getLanguageCode() async {
+  getLanguageCode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       ratioIndex = prefs.getInt(Constants.s2tLangSelectedIndex);
@@ -60,7 +60,6 @@ class _CustomerLanguagePreferenceState
                 children: [
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -82,7 +81,6 @@ class _CustomerLanguagePreferenceState
                             Languages.of(context)!.chooseLanguage.toUpperCase(),
                             fontWeight: FontWeight.w700,
                             fontSize: FontSize.twelve,
-                            fontStyle: FontStyle.normal,
                             color: ColorResource.color23375A,
                           ),
                         ),
@@ -114,9 +112,6 @@ class _CustomerLanguagePreferenceState
                                             .customerLanguagePreferenceList[i]
                                             .language!,
                                         lineHeight: 1,
-                                        fontSize: FontSize.fourteen,
-                                        fontStyle: FontStyle.normal,
-                                        fontWeight: FontWeight.w400,
                                         color: ColorResource.color484848,
                                       ),
                                       groupValue: ratioIndex,

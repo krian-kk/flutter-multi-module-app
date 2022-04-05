@@ -105,9 +105,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is SignInEvent) {
       // started the sign in loading
       yield SignInLoadingState();
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
 
-      Map<String, dynamic> response = await APIRepository.apiRequest(
+      final Map<String, dynamic> response = await APIRepository.apiRequest(
           APIRequestType.post, HttpUrl.loginUrl,
           requestBodydata: event.paramValue);
 
@@ -119,13 +119,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         // if SignIn error to show again SignIn button
         yield SignInLoadedState();
         if (loginErrorResponse.msg ==
-            "Invalid Credentails, Please contact the administrator") {
+            'Invalid Credentails, Please contact the administrator') {
           AppUtils.showToast(
             Languages.of(event.context)!.userIDDoesNotExist,
             backgroundColor: Colors.red,
           );
         } else if (loginErrorResponse.msg ==
-            "Invalid password, Please enter correct password") {
+            'Invalid password, Please enter correct password') {
           AppUtils.showToast(
             Languages.of(event.context)!.invalidPassword,
             backgroundColor: Colors.red,
@@ -138,20 +138,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (response['data']['data'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
-          _prefs.setString(
+          await _prefs.setString(
               Constants.accessToken, loginResponse.data!.accessToken!);
-          _prefs.setInt(
+          await _prefs.setInt(
               Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
-          _prefs.setString(
+          await _prefs.setString(
               Constants.refreshToken, loginResponse.data!.refreshToken!);
-          _prefs.setInt(Constants.refreshTokenExpireTime,
+          await _prefs.setInt(Constants.refreshTokenExpireTime,
               loginResponse.data!.refreshExpiresIn!);
-          _prefs.setString(
+          await _prefs.setString(
               Constants.keycloakId, loginResponse.data!.keycloakId!);
-          _prefs.setString(
+          await _prefs.setString(
               Constants.sessionId, loginResponse.data!.sessionState!);
-          _prefs.setString(Constants.agentRef, event.userId!);
-          _prefs.setString(Constants.userId, event.userId!);
+          await _prefs.setString(Constants.agentRef, event.userId!);
+          await _prefs.setString(Constants.userId, event.userId!);
           Singleton.instance.accessToken = loginResponse.data!.accessToken!;
           Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
           Singleton.instance.sessionID = loginResponse.data!.sessionState!;
@@ -159,14 +159,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
           if (loginResponse.data!.accessToken != null) {
             // profile details API
-            Map<String, dynamic> getProfileData =
+            final Map<String, dynamic> getProfileData =
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.profileUrl);
 
             if (getProfileData['success']) {
               yield SignInCompletedState();
-              Map<String, dynamic> jsonData = getProfileData['data'];
-              var profileAPIValue = ProfileApiModel.fromJson(jsonData);
+              final Map<String, dynamic> jsonData = getProfileData['data'];
+              final profileAPIValue = ProfileApiModel.fromJson(jsonData);
 
               yield EnterSecurePinState(
                 securePin: profileAPIValue.result?.first.mPin,
@@ -189,9 +189,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is TriggeredHomeTabEvent) {
       yield SignInLoadingState();
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
       // Execute agent detail URl to get Agent details
-      Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+      final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
           APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
 
       if (agentDetail['success'] == false) {
@@ -200,7 +200,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (agentDetail['data'] is String) {
           AppUtils.showToast(agentDetail['data'], backgroundColor: Colors.red);
         }
-        AgentDetailErrorModel agentDetailError =
+        final AgentDetailErrorModel agentDetailError =
             AgentDetailErrorModel.fromJson(agentDetail['data']);
 
         AppUtils.showToast(agentDetailError.msg!, backgroundColor: Colors.red);
@@ -208,7 +208,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield SignInCompletedState();
 
         // getting Agent Details
-        var agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
+        final agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
         // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
         if (agentDetails.status == 200) {
           if (agentDetails.data!.first.agentType == 'COLLECTOR') {
@@ -257,7 +257,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             if (_deviceData.isNotEmpty) {
               try {
                 if (Platform.isAndroid) {
-                  var requestBodyData = AndoridDeviceInfoModel(
+                  final requestBodyData = AndoridDeviceInfoModel(
                     board: _deviceData['board'],
                     bootloader: _deviceData['bootloader'],
                     brand: _deviceData['brand'],
@@ -295,7 +295,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                     requestBodydata: jsonEncode(requestBodyData.toJson()),
                   );
                 } else if (Platform.isIOS) {
-                  var requestBodyData = IOSDeviceInfoModel(
+                  final requestBodyData = IOSDeviceInfoModel(
                     name: _deviceData['name'],
                     systemName: _deviceData['systemName'],
                     systemVersion: _deviceData['systemVersion'],

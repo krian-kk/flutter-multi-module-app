@@ -1,8 +1,4 @@
 class SelfReleasePostModel {
-  late String caseId;
-  late Repo repo;
-  late String contractor;
-
   SelfReleasePostModel({
     required this.caseId,
     required this.repo,
@@ -14,6 +10,9 @@ class SelfReleasePostModel {
     repo = json['repo'];
     contractor = json['contractor'];
   }
+  late String caseId;
+  late Repo repo;
+  late String contractor;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,12 +24,6 @@ class SelfReleasePostModel {
 }
 
 class Repo {
-  late String date;
-  late String time;
-  late String remarks;
-  late List<String> imageLocation;
-  String? status;
-
   Repo({
     required this.date,
     required this.time,
@@ -46,6 +39,11 @@ class Repo {
     imageLocation = json['imageLocation'].cast<String>();
     status = json['status'];
   }
+  late String date;
+  late String time;
+  late String remarks;
+  late List<String> imageLocation;
+  String? status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

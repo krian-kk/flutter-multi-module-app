@@ -38,13 +38,13 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = [
       SelectedClipModel(Languages.of(context)!.wrongAddress),
       SelectedClipModel(Languages.of(context)!.shifted),
       SelectedClipModel(Languages.of(context)!.addressNotFound),
     ];
 
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -61,7 +61,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -149,7 +148,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in list) {
       widgets.add(InkWell(
         onTap: () {
@@ -167,8 +166,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

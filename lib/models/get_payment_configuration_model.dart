@@ -1,8 +1,4 @@
 class PaymentConfigurationModel {
-  String? status;
-  String? msg;
-  List<Data>? data;
-
   PaymentConfigurationModel({this.status, this.msg, this.data});
 
   PaymentConfigurationModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +11,9 @@ class PaymentConfigurationModel {
       });
     }
   }
+  String? status;
+  String? msg;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,9 +27,6 @@ class PaymentConfigurationModel {
 }
 
 class Data {
-  String? sId;
-  List<Payment>? payment;
-
   Data({this.sId, this.payment});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -42,6 +38,8 @@ class Data {
       });
     }
   }
+  String? sId;
+  List<Payment>? payment;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -54,17 +52,6 @@ class Data {
 }
 
 class Payment {
-  Audit? audit;
-  String? sId;
-  String? paymentGateway;
-  String? keyId;
-  String? keySecret;
-  bool? active;
-  bool? partialPayment;
-  bool? dynamicLink;
-  bool? qrCode;
-  int? expire;
-
   Payment(
       {this.audit,
       this.sId,
@@ -89,6 +76,16 @@ class Payment {
     qrCode = json['qr_code'];
     expire = json['expire'];
   }
+  Audit? audit;
+  String? sId;
+  String? paymentGateway;
+  String? keyId;
+  String? keySecret;
+  bool? active;
+  bool? partialPayment;
+  bool? dynamicLink;
+  bool? qrCode;
+  int? expire;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -109,15 +106,14 @@ class Payment {
 }
 
 class Audit {
-  String? crAt;
-  String? upAt;
-
   Audit({this.crAt, this.upAt});
 
   Audit.fromJson(Map<String, dynamic> json) {
     crAt = json['crAt'];
     upAt = json['upAt'];
   }
+  String? crAt;
+  String? upAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

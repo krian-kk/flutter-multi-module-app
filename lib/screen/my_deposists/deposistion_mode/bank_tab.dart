@@ -22,11 +22,6 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/object_id_widget.dart';
 
 class BankTab extends StatefulWidget {
-  final DashboardBloc bloc;
-  final List<String>? selectedCaseIds;
-  final String? mode;
-  final String? custname;
-  final double? receiptAmt;
   const BankTab(this.bloc,
       {Key? key,
       this.selectedCaseIds,
@@ -34,6 +29,11 @@ class BankTab extends StatefulWidget {
       this.custname,
       this.receiptAmt})
       : super(key: key);
+  final DashboardBloc bloc;
+  final List<String>? selectedCaseIds;
+  final String? mode;
+  final String? custname;
+  final double? receiptAmt;
 
   @override
   _BankTabState createState() => _BankTabState();
@@ -72,8 +72,8 @@ class _BankTabState extends State<BankTab> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -116,7 +116,6 @@ class _BankTabState extends State<BankTab> {
                         Languages.of(context)!.cancel.toUpperCase(),
                         fontSize: FontSize.sixteen,
                         textColor: ColorResource.colorEA6D48,
-                        fontWeight: FontWeight.w600,
                         cardShape: 5,
                         buttonBackgroundColor: ColorResource.colorffffff,
                         borderColor: ColorResource.colorffffff,
@@ -137,7 +136,6 @@ class _BankTabState extends State<BankTab> {
                           ],
                         ),
                         fontSize: FontSize.sixteen,
-                        fontWeight: FontWeight.w600,
                         cardShape: 5,
                         onTap: isSubmited
                             ? () async {
@@ -150,7 +148,7 @@ class _BankTabState extends State<BankTab> {
                                   // } else {
 
                                   final id = ObjectIdWidget();
-                                  var requestBodyData = BankDepositPostModel(
+                                  final requestBodyData = BankDepositPostModel(
                                       caseIds: widget.selectedCaseIds!.length ==
                                               1
                                           ? [...widget.selectedCaseIds!, '$id']
@@ -179,7 +177,7 @@ class _BankTabState extends State<BankTab> {
                                       context: context,
                                     ));
                                   } else {
-                                    DialogUtils.showDialog(
+                                    await DialogUtils.showDialog(
                                         buildContext: context,
                                         title: Constants
                                             .bankReceiptAmountDoesntMatch,
@@ -288,7 +286,6 @@ class _BankTabState extends State<BankTab> {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    flex: 1,
                                     child: CustomReadOnlyTextField(
                                       Languages.of(context)!.receiptAmount,
                                       receiptController,
@@ -304,7 +301,6 @@ class _BankTabState extends State<BankTab> {
                                     width: 7,
                                   ),
                                   Expanded(
-                                    flex: 1,
                                     child: CustomReadOnlyTextField(
                                       Languages.of(context)!.depositAmount,
                                       depositController,

@@ -204,25 +204,26 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         debugPrint(
-            "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
+            'Router AuthenticationAuthenticated @notification tyep ${state.notificationData}');
 
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+        await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
             arguments: state.notificationData);
-        String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
-        String? agentRef =
+        final String? mPin =
+            await PreferenceHelper.getPreference(Constants.mPin);
+        final String? agentRef =
             await PreferenceHelper.getPreference(Constants.agentRef);
         // await SharedPreferences.getInstance().then((value) {
         //   String? mPin = value.getString(Constants.mPin);
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
         if (mPin != null) {
-          showMPinDialog(
+          await showMPinDialog(
               mPin: mPin,
               buildContext: context,
               userName: agentRef,
               notificationData: state.notificationData);
         } else {
-          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+          await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
               arguments: state.notificationData);
         }
         // });
@@ -233,22 +234,23 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         debugPrint(
-            "Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}");
+            'Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}');
 
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+        await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
             arguments: state.notificationData);
       }
 
       if (state is OfflineState) {
         await SharedPreferences.getInstance().then((value) {
-          String mPin = value.getString(Constants.mPin).toString();
-          String agentRef = value.getString(Constants.agentRef).toString();
+          final String mPin = value.getString(Constants.mPin).toString();
+          final String agentRef =
+              value.getString(Constants.agentRef).toString();
           showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
         });
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
       if (state is SplashScreenState) {
-        Navigator.pushNamed(context, AppRoutes.splashScreen);
+        await Navigator.pushNamed(context, AppRoutes.splashScreen);
       }
     },
     child: BlocBuilder(
@@ -285,7 +287,8 @@ Future<void> showMPinDialog(
                 AppUtils.showErrorToast(
                     Languages.of(context)!.noInternetConnection);
               } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+                await Navigator.pushReplacementNamed(
+                    context, AppRoutes.loginScreen,
                     arguments: notificationData);
               }
             },

@@ -74,7 +74,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   );
   List<Result> resultList = [];
   String? searchBasedOnValue;
-  String version = "";
+  String version = '';
   late Timer _timer;
   String? internetAvailability;
 
@@ -90,8 +90,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()
-      ..add(AllocationInitialEvent(context, isOfflineAPI: false));
+    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
     getCurrentLocation();
@@ -114,25 +113,23 @@ class _AllocationScreenState extends State<AllocationScreen> {
           isOffline = false;
           resultList.clear();
           bloc.hasNextPage = true;
-          bloc = AllocationBloc()
-            ..add(AllocationInitialEvent(context, isOfflineAPI: false));
+          bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
     });
   }
 
   //get current location lat, alng and address
-  void getCurrentLocation() async {
+  getCurrentLocation() async {
     if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
-      Position result = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      final Position result = await Geolocator.getCurrentPosition();
       if (mounted) {
         setState(() {
           position = result;
         });
       }
 
-      List<Placemark> placemarks =
+      final List<Placemark> placemarks =
           await placemarkFromCoordinates(result.latitude, result.longitude);
       if (mounted) {
         setState(() {
@@ -191,7 +188,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
   // This function will be triggered whenver the user scroll
   // to near the bottom of the list view
-  void _loadMore() async {
+  _loadMore() async {
     if (_controller.position.pixels == _controller.position.maxScrollExtent) {
       if (bloc.hasNextPage) {
         if (bloc.isShowSearchPincode) {
@@ -269,7 +266,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   }
 
   List<Widget> _buildRouteFilterOptions() {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     bloc.filterBuildRoute.asMap().forEach((index, element) {
       widgets.add(_buildRouteFilterWidget(index, element));
     });
@@ -400,18 +397,19 @@ class _AllocationScreenState extends State<AllocationScreen> {
           Singleton.instance.startCalling = true;
           setState(() {});
           if (bloc.customerCount < bloc.totalCount) {
-            Map<String, dynamic> getAgencyDetailsData =
+            final Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
-                Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+                final Map<String, dynamic> jsonData =
+                    getAgencyDetailsData['data'];
 
-                AgencyDetailsModel voiceAgencyDetails =
+                final AgencyDetailsModel voiceAgencyDetails =
                     AgencyDetailsModel.fromJson(jsonData);
 
                 if (state.customerIndex! < bloc.autoCallingResultList.length) {
-                  List<Address> tempMobileList = [];
+                  final List<Address> tempMobileList = [];
                   bloc.autoCallingResultList[state.customerIndex!].address
                       ?.asMap()
                       .forEach((i, element) {
@@ -420,7 +418,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                     }
                   });
                   if (state.phoneIndex! < tempMobileList.length) {
-                    var requestBodyData = CallCustomerModel(
+                    final requestBodyData = CallCustomerModel(
                       from: voiceAgencyDetails.result?.agentAgencyContact ?? '',
                       // for testing purpose using your number here
                       // from: 'test number',
@@ -453,14 +451,14 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               ? 'TELECALLER'
                               : 'COLLECTOR',
                     );
-                    Map<String, dynamic> postResult =
+                    final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
                       APIRequestType.post,
                       HttpUrl.callCustomerUrl,
                       requestBodydata: jsonEncode(requestBodyData),
                     );
                     if (postResult[Constants.success]) {
-                      showDialog(
+                      await showDialog(
                           context: context,
                           barrierDismissible: false,
                           builder: (BuildContext builderContext) {
@@ -470,7 +468,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                               _timer.cancel();
                               if (state.customerIndex! <
                                   bloc.autoCallingResultList.length) {
-                                List<Address> tempMobileList = [];
+                                final List<Address> tempMobileList = [];
                                 bloc.autoCallingResultList[state.customerIndex!]
                                     .address
                                     ?.asMap()
@@ -480,7 +478,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
-                                  CaseDetailsBloc caseDetailsloc =
+                                  final CaseDetailsBloc caseDetailsloc =
                                       CaseDetailsBloc(bloc)
                                         ..add(CaseDetailsInitialEvent(
                                           paramValues: {
@@ -569,7 +567,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
         if (state is NavigateCaseDetailState) {
           try {
-            dynamic returnValue = await Navigator.pushNamed(
+            final dynamic returnValue = await Navigator.pushNamed(
                 context, AppRoutes.caseDetailsScreen,
                 arguments: CaseDetailsNaviagationModel(state.paramValues,
                     allocationBloc: bloc));
@@ -577,8 +575,9 @@ class _AllocationScreenState extends State<AllocationScreen> {
             // so there is no need to update while back
             if (state.paramValues['isOffline'] != null &&
                 state.paramValues['isOffline'] == false) {
-              RetrunValueModel returnModelValue = RetrunValueModel.fromJson(
-                  Map<String, dynamic>.from(returnValue));
+              final RetrunValueModel returnModelValue =
+                  RetrunValueModel.fromJson(
+                      Map<String, dynamic>.from(returnValue));
               if (returnModelValue.isSubmit) {
                 bloc.add(TapPriorityEvent());
               }
@@ -592,23 +591,23 @@ class _AllocationScreenState extends State<AllocationScreen> {
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
           if (returnValue != null) {
             bloc.add(SearchReturnDataEvent(returnValue: returnValue));
-            var data = returnValue as SearchingDataModel;
+            final data = returnValue as SearchingDataModel;
             if (data.isStarCases!) {
-              searchBasedOnValue = "Stared Cases (High Priority)";
+              searchBasedOnValue = 'Stared Cases (High Priority)';
             } else if (data.isMyRecentActivity!) {
-              searchBasedOnValue = "My Recent Activity";
+              searchBasedOnValue = 'My Recent Activity';
             } else if (data.accountNumber!.isNotEmpty) {
-              searchBasedOnValue = "Account Number: " + data.accountNumber!;
+              searchBasedOnValue = 'Account Number: ' + data.accountNumber!;
             } else if (data.customerName!.isNotEmpty) {
-              searchBasedOnValue = "Customer Name: " + data.customerName!;
+              searchBasedOnValue = 'Customer Name: ' + data.customerName!;
             } else if (data.dpdBucket!.isNotEmpty) {
-              searchBasedOnValue = "DPD/Bucket: " + data.dpdBucket!;
+              searchBasedOnValue = 'DPD/Bucket: ' + data.dpdBucket!;
             } else if (data.status!.isNotEmpty) {
-              searchBasedOnValue = "Status: " + data.status!;
+              searchBasedOnValue = 'Status: ' + data.status!;
             } else if (data.pincode!.isNotEmpty) {
-              searchBasedOnValue = "Pincode: " + data.pincode!;
+              searchBasedOnValue = 'Pincode: ' + data.pincode!;
             } else if (data.customerID!.isNotEmpty) {
-              searchBasedOnValue = "Customer ID: " + data.customerID!;
+              searchBasedOnValue = 'Customer ID: ' + data.customerID!;
             }
           }
         }
@@ -676,7 +675,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             setState(() {
               bloc.starCount++;
             });
-            var postData =
+            final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
             await FirebaseUtils.updateStarred(
                 isStarred: true, caseId: state.caseId);
@@ -688,7 +687,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
-              var removedItem = bloc.resultList[state.selectedIndex];
+              final removedItem = bloc.resultList[state.selectedIndex];
               bloc.resultList.removeAt(state.selectedIndex);
               setState(() {
                 bloc.resultList.insert(0, removedItem);
@@ -698,7 +697,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             setState(() {
               bloc.starCount--;
             });
-            var postData =
+            final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await FirebaseUtils.updateStarred(
                 isStarred: false, caseId: state.caseId);
@@ -710,10 +709,10 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 requestBodydata: jsonEncode(postData),
               );
             }
-            var removedItem = bloc.resultList[state.selectedIndex];
+            final removedItem = bloc.resultList[state.selectedIndex];
             bloc.resultList.removeAt(state.selectedIndex);
             // To pick and add next starred false case
-            var firstWhereIndex =
+            final firstWhereIndex =
                 bloc.resultList.indexWhere((note) => !note.starredCase);
             setState(() {
               bloc.resultList.insert(firstWhereIndex, removedItem);
@@ -737,13 +736,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
           );
           if (Geolocator.checkPermission().toString() !=
               PermissionStatus.granted.toString()) {
-            Position res = await Geolocator.getCurrentPosition(
-                desiredAccuracy: LocationAccuracy.best);
+            final Position res = await Geolocator.getCurrentPosition();
             setState(() {
               positions = res;
             });
           }
-          var requestBodyData = AreYouAtOfficeModel(
+          final requestBodyData = AreYouAtOfficeModel(
             eventId: ConstantEventValues.areYouAtOfficeEventId,
             eventType: 'Office Check In',
             eventAttr: AreYouAtOfficeEventAttr(
@@ -760,13 +758,15 @@ class _AllocationScreenState extends State<AllocationScreen> {
             eventModule: 'Field Allocation',
             eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
           );
-          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          final Map<String, dynamic> postResult =
+              await APIRepository.apiRequest(
             APIRequestType.post,
             HttpUrl.areYouAtOfficeUrl(),
             requestBodydata: jsonEncode(requestBodyData),
           );
           if (postResult[Constants.success]) {
-            SharedPreferences _pref = await SharedPreferences.getInstance();
+            final SharedPreferences _pref =
+                await SharedPreferences.getInstance();
             setState(() {
               isSubmitRUOffice = false;
               bloc.areyouatOffice = false;
@@ -782,7 +782,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is AutoCallContactHealthUpdateState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -878,8 +878,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             body: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 0.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -898,13 +897,12 @@ class _AllocationScreenState extends State<AllocationScreen> {
                             decoration: BoxDecoration(
                               color: ColorResource.colorffffff,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                  color: ColorResource.colorECECEC, width: 1.0),
+                              border:
+                                  Border.all(color: ColorResource.colorECECEC),
                             ),
                             child: Row(
                               children: [
                                 Expanded(
-                                  flex: 1,
                                   child: Row(
                                     children: [
                                       SvgPicture.asset(ImageResource.location),
@@ -921,7 +919,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 1,
                                   child: isSubmitRUOffice
                                       ? const Center(
                                           child: Padding(
@@ -946,10 +943,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                                 child: CustomButton(
                                                   Languages.of(context)!.yes,
                                                   fontSize: FontSize.twelve,
-                                                  borderColor:
-                                                      ColorResource.colorEA6D48,
-                                                  buttonBackgroundColor:
-                                                      ColorResource.colorEA6D48,
                                                   cardShape: 5,
                                                   isRemoveExtraPadding: true,
                                                   onTap: () {
@@ -1034,8 +1027,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 fontWeight: FontWeight.w600,
                               ),
                               CustomText(
-                                searchBasedOnValue ?? "",
-                                fontSize: FontSize.fourteen,
+                                searchBasedOnValue ?? '',
                                 color: ColorResource.color000000,
                                 fontWeight: FontWeight.w700,
                                 style: const TextStyle(
@@ -1183,7 +1175,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                 resultList = [];
                                 bloc.starCount = 0;
                                 for (var element in snapshot.data!.docs) {
-                                  var tempResult = Result.fromJson(
+                                  final tempResult = Result.fromJson(
                                       element.data()! as Map<String, dynamic>);
                                   bloc.resultList.add(tempResult);
                                   resultList.add(tempResult);
@@ -1209,7 +1201,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                   : Flexible(
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 0.0),
+                                            horizontal: 20.0),
                                         child: CustomCardList.buildListView(
                                           bloc,
                                           resultData: resultList,
@@ -1235,7 +1227,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                                       )
                                     : Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 20.0, vertical: 0.0),
+                                            horizontal: 20.0),
                                         child: CustomCardList.buildListView(
                                           bloc,
                                           resultData: resultList,

@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/http/httpurls.dart';
@@ -18,8 +18,8 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_theme.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
 
@@ -47,21 +47,13 @@ void main() async {
   );
 }
 
-void requestNotificationPermission() async {
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  NotificationSettings settings = await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+requestNotificationPermission() async {
+  final FirebaseMessaging messaging = FirebaseMessaging.instance;
+  final NotificationSettings settings = await messaging.requestPermission();
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
     //User granted permission
   } else {
-    openAppSettings();
+    await openAppSettings();
   }
 }
 
@@ -113,9 +105,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       } catch (e) {
         // debugPrint(e.toString());
       }
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      AppleNotification? iOS = message.notification?.apple;
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      final AppleNotification? iOS = message.notification?.apple;
       // debugPrint('Notification print-> ${notification!.title}');
       // debugPrint('notification!.body-> ${notification.body}');
       // listen and Show notification message
@@ -150,7 +142,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-      RemoteNotification? notification = message.notification;
+      final RemoteNotification? notification = message.notification;
       debugPrint(
           'A new onMessageOpenedApp published!... -----> ${message.data}');
       bloc!.add(
@@ -166,13 +158,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void androidAndIOSNotification() async {
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
-      "origa.ai", // title
+      'origa.ai', // title
       importance: Importance.high,
     );
-    var initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var initializationSettingsIOS = const IOSInitializationSettings();
-    var initializationSettings = InitializationSettings(
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initializationSettingsIOS = IOSInitializationSettings();
+    const initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

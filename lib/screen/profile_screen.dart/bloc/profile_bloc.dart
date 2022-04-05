@@ -44,7 +44,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
 
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       Singleton.instance.buildContext = event.context;
 
@@ -55,11 +55,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         yield NoInternetState();
       } else {
         isNoInternetAndServerError = false;
-        Map<String, dynamic> getProfileData = await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.profileUrl);
+        final Map<String, dynamic> getProfileData =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.profileUrl);
 
         if (getProfileData['success']) {
-          Map<String, dynamic> jsonData = getProfileData['data'];
+          final Map<String, dynamic> jsonData = getProfileData['data'];
           profileAPIValue = ProfileApiModel.fromJson(jsonData);
         } else if (getProfileData['statusCode'] == 401 ||
             getProfileData['data'] == Constants.connectionTimeout ||
@@ -146,10 +147,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ChangeProfileImageState();
     }
     if (event is LoginEvent) {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      await _prefs.setString(Constants.accessToken, "");
-      await _prefs.setString(Constants.userType, "");
-      await _prefs.setString('addressValue', "");
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
+      await _prefs.setString(Constants.accessToken, '');
+      await _prefs.setString(Constants.userType, '');
+      await _prefs.setString('addressValue', '');
       await _prefs.setBool('areyouatOffice', true);
       await _prefs.setBool(Constants.appDataLoadedFromFirebase, false);
       Singleton.instance.isOfflineStorageFeatureEnabled = false;
@@ -161,7 +162,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     if (event is PostProfileImageEvent) {
       isProfileImageUpdating = true;
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.singleFileUpload,
         HttpUrl.changeProfileImage,
         imageFile: event.postValue,

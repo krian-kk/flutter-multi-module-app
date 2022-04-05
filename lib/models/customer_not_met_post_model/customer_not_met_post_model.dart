@@ -1,21 +1,4 @@
 class CustomerNotMetPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late CustomerNotMetEventAttr eventAttr;
-  late dynamic contact;
-  late String createdBy;
-  late String eventModule;
-  late String agentName;
-  late String contractor;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-  late String agrRef;
-
   CustomerNotMetPostModel(
       {required this.eventId,
       required this.eventType,
@@ -52,6 +35,22 @@ class CustomerNotMetPostModel {
     invalidNumber = json['invalidNumber'];
     agrRef = json['agrRef'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late CustomerNotMetEventAttr eventAttr;
+  late dynamic contact;
+  late String createdBy;
+  late String eventModule;
+  late String agentName;
+  late String contractor;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
+  late String agrRef;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -78,20 +77,6 @@ class CustomerNotMetPostModel {
 }
 
 class CustomerNotMetEventAttr {
-  late String remarks;
-  late String followUpPriority;
-  late String nextActionDate;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   CustomerNotMetEventAttr({
     required this.remarks,
     required this.followUpPriority,
@@ -123,6 +108,19 @@ class CustomerNotMetEventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String remarks;
+  late String followUpPriority;
+  late String nextActionDate;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

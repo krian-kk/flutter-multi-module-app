@@ -2,10 +2,6 @@ import '../../singleton.dart';
 import '../../utils/constants.dart';
 
 class MyVisitsCaseModel {
-  int? status;
-  String? message;
-  MyvistResult? result;
-
   MyVisitsCaseModel({this.status, this.message, this.result});
 
   MyVisitsCaseModel.fromJson(Map<String, dynamic> json) {
@@ -14,6 +10,9 @@ class MyVisitsCaseModel {
     result =
         json['result'] != null ? MyvistResult.fromJson(json['result']) : null;
   }
+  int? status;
+  String? message;
+  MyvistResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -27,12 +26,6 @@ class MyVisitsCaseModel {
 }
 
 class MyvistResult {
-  int? count;
-  dynamic totalAmt;
-  Met? met;
-  Met? notMet;
-  Met? invalid;
-
   MyvistResult(
       {this.count, this.totalAmt, this.met, this.notMet, this.invalid});
 
@@ -52,6 +45,11 @@ class MyvistResult {
             : null;
     invalid = json['invalid'] != null ? Met.fromJson(json['invalid']) : null;
   }
+  int? count;
+  dynamic totalAmt;
+  Met? met;
+  Met? notMet;
+  Met? invalid;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -71,10 +69,6 @@ class MyvistResult {
 }
 
 class Met {
-  int? count;
-  dynamic totalAmt;
-  List<Cases>? cases;
-
   Met({this.count, this.totalAmt, this.cases});
 
   Met.fromJson(Map<String, dynamic> json) {
@@ -87,6 +81,9 @@ class Met {
       });
     }
   }
+  int? count;
+  dynamic totalAmt;
+  List<Cases>? cases;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -100,25 +97,6 @@ class Met {
 }
 
 class Cases {
-  String? sId;
-  dynamic pos;
-  dynamic due;
-  dynamic originalDue;
-  dynamic odVal;
-  String? cust;
-  String? agrRef;
-  String? collSubStatus;
-  String? fieldfollowUpPriority;
-  String? telSubStatus;
-  String? followUpDate;
-  String? fieldfollowUpDate;
-  String? bankName;
-  String? aRef;
-  List<Contact>? contact;
-  dynamic totalReceiptAmount;
-  String? caseId;
-  String? customerId;
-
   Cases(
       {this.sId,
       this.pos,
@@ -198,6 +176,24 @@ class Cases {
     caseId = json['caseId'];
     customerId = json['customerId'];
   }
+  String? sId;
+  dynamic pos;
+  dynamic due;
+  dynamic originalDue;
+  dynamic odVal;
+  String? cust;
+  String? agrRef;
+  String? collSubStatus;
+  String? fieldfollowUpPriority;
+  String? telSubStatus;
+  String? followUpDate;
+  String? fieldfollowUpDate;
+  String? bankName;
+  String? aRef;
+  List<Contact>? contact;
+  dynamic totalReceiptAmount;
+  String? caseId;
+  String? customerId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -226,12 +222,6 @@ class Cases {
 }
 
 class Contact {
-  String? cType;
-  String? health;
-  String? value;
-  String? resAddressId0;
-  String? contactId0;
-
   Contact(
       {this.cType,
       this.health,
@@ -246,6 +236,11 @@ class Contact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  String? cType;
+  String? health;
+  String? value;
+  String? resAddressId0;
+  String? contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

@@ -8,7 +8,6 @@ class PickDateAndTimeUtils {
       BuildContext context, OnChangeForPickDate function) async {
     final newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 3),
@@ -24,7 +23,6 @@ class PickDateAndTimeUtils {
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -37,8 +35,10 @@ class PickDateAndTimeUtils {
           );
         });
 
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
+    if (newDate == null) {
+      return null;
+    }
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     function(formattedDate, newDate.toString());
   }
 
@@ -55,7 +55,6 @@ class PickDateAndTimeUtils {
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -67,7 +66,9 @@ class PickDateAndTimeUtils {
             child: child!,
           );
         });
-    if (newTime == null) return;
+    if (newTime == null) {
+      return;
+    }
 
     // final time = newTime.format(context).toString();
     final hours = newTime.hour.toString().padLeft(2, '0');

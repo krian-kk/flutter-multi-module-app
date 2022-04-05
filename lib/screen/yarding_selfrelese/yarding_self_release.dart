@@ -13,8 +13,8 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
 class YardingAndSelfRelease extends StatefulWidget {
-  final DashboardBloc bloc;
   const YardingAndSelfRelease(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
 
   @override
   _YardingAndSelfReleaseState createState() => _YardingAndSelfReleaseState();
@@ -92,7 +92,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                           child: CustomButton(
                             Languages.of(context)!.enterRepoDetails,
                             fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
                             onTap: () {
                               if (_selectedIndex != null) {
                                 repoStatusModeSheet(context);
@@ -118,7 +117,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 5),
                               child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
                                   itemCount: widget.bloc
                                       .yardingAndSelfReleaseData.result!.length,
                                   itemBuilder:
@@ -190,8 +188,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                 .result![index]
                                                                 .agrRef ??
                                                             '',
-                                                        fontSize:
-                                                            FontSize.fourteen,
                                                         color: ColorResource
                                                             .color101010,
                                                         fontWeight:
@@ -218,12 +214,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                         context)!
                                                                     .registrationNo +
                                                                 '. ',
-                                                            fontSize: FontSize
-                                                                .fourteen,
                                                             color: ColorResource
                                                                 .color000000,
-                                                            fontWeight:
-                                                                FontWeight.w400,
                                                           ),
                                                           Flexible(
                                                             child: CustomText(
@@ -263,8 +255,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             FontSize.sixteen,
                                                         color: ColorResource
                                                             .color101010,
-                                                        fontWeight:
-                                                            FontWeight.w400,
                                                       ),
                                                     ],
                                                   ),
@@ -334,13 +324,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                               Languages.of(
                                                                       context)!
                                                                   .repoDate,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
                                                               color: ColorResource
                                                                   .color101010,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
                                                             ),
                                                             CustomText(
                                                               widget
@@ -359,8 +344,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                       .eventAttr!
                                                                       .date!)
                                                                   : '-',
-                                                              fontSize: FontSize
-                                                                  .fourteen,
                                                               color: ColorResource
                                                                   .color101010,
                                                               fontWeight:

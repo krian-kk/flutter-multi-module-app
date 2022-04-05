@@ -20,9 +20,8 @@ import 'package:origa/widgets/custom_dialog.dart';
 // enum TravelModes { driving, bicycling, transit, walking }
 
 class MapNavigation extends StatefulWidget {
-  final List<dynamic>? multipleLatLong;
-
   const MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
+  final List<dynamic>? multipleLatLong;
 
   @override
   _MapNavigationState createState() => _MapNavigationState();
@@ -88,15 +87,14 @@ class _MapNavigationState extends State<MapNavigation> {
       // Use the retrieved coordinates of the current position,
       // instead of the address if the start position is user's
       // current position, as it results in better accuracy.
-      double startLatitude = _currentPosition.latitude;
-      double startLongitude = _currentPosition.longitude;
+      final double startLatitude = _currentPosition.latitude;
+      final double startLongitude = _currentPosition.longitude;
 
-      String startCoordinatesString = '($startLatitude, $startLongitude)';
+      final String startCoordinatesString = '($startLatitude, $startLongitude)';
 
       // Start Location Marker
-      Marker startMarker = Marker(
+      final Marker startMarker = Marker(
         markerId: MarkerId(startCoordinatesString),
-        anchor: const Offset(0.5, 1.0),
         position: LatLng(startLatitude, startLongitude),
         icon:
             BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueMagenta),
@@ -107,23 +105,23 @@ class _MapNavigationState extends State<MapNavigation> {
       );
       // Adding the markers to the list
       markers.add(startMarker);
-      var result = jsonDecode(jsonEncode(widget.multipleLatLong!));
+      final result = jsonDecode(jsonEncode(widget.multipleLatLong!));
       for (var element in result) {
         markers.add(Marker(
           markerId: MarkerId(element['latitude'].toString() +
-              ", " +
+              ', ' +
               element['longitude'].toString()),
           position: LatLng(element['latitude'], element['longitude']),
           onTap: () {
             DialogUtils.showDialog(
                 buildContext: context,
-                title: element['name'] ?? "",
+                title: element['name'] ?? '',
                 titleTextAlign: TextAlign.start,
                 titleTextStyle: const TextStyle(
                     fontSize: FontSize.seventeen,
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color23375A),
-                description: element['address'] ?? "",
+                description: element['address'] ?? '',
                 descriptionTextStyle: const TextStyle(
                     fontSize: FontSize.fourteen,
                     fontWeight: FontWeight.w400,
@@ -133,7 +131,8 @@ class _MapNavigationState extends State<MapNavigation> {
                 cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
                 okBtnFunction: (val) async {
                   Navigator.pop(context);
-                  Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+                  await Navigator.pushNamed(
+                      context, AppRoutes.caseDetailsScreen,
                       arguments: CaseDetailsNaviagationModel({
                         'caseID': element['caseId'],
                       }));
@@ -145,7 +144,7 @@ class _MapNavigationState extends State<MapNavigation> {
       // camera view of the current locatio map
       final GoogleMapController controller = await mapController.future;
       // controller.getVisibleRegion();
-      controller.animateCamera(
+      await controller.animateCamera(
         CameraUpdate.newLatLngZoom(LatLng(startLatitude, startLongitude), 13),
       );
 
@@ -182,8 +181,6 @@ class _MapNavigationState extends State<MapNavigation> {
                     initialCameraPosition: _initialLocation,
                     myLocationEnabled: true,
                     myLocationButtonEnabled: false,
-                    mapType: MapType.normal,
-                    zoomGesturesEnabled: true,
                     zoomControlsEnabled: false,
                     polylines: Set<Polyline>.of(polylines.values),
                     onMapCreated: (GoogleMapController controller) {
@@ -219,7 +216,7 @@ class _MapNavigationState extends State<MapNavigation> {
                             onTap: () async {
                               final GoogleMapController controller =
                                   await mapController.future;
-                              controller.animateCamera(
+                              await controller.animateCamera(
                                 CameraUpdate.zoomIn(),
                               );
                             },
@@ -242,7 +239,7 @@ class _MapNavigationState extends State<MapNavigation> {
                             onTap: () async {
                               final GoogleMapController controller =
                                   await mapController.future;
-                              controller.animateCamera(
+                              await controller.animateCamera(
                                 CameraUpdate.zoomOut(),
                               );
                             },
@@ -267,7 +264,7 @@ class _MapNavigationState extends State<MapNavigation> {
                             onTap: () async {
                               final GoogleMapController controller =
                                   await mapController.future;
-                              controller.animateCamera(
+                              await controller.animateCamera(
                                 CameraUpdate.newCameraPosition(
                                   CameraPosition(
                                     target: LatLng(

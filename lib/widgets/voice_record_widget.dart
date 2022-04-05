@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
@@ -23,18 +26,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../languages/app_languages.dart';
 import '../utils/constants.dart';
 
-import 'package:flutter_sound/flutter_sound.dart';
-import 'package:flutter_sound_platform_interface/flutter_sound_recorder_platform_interface.dart';
-
-const theSource = AudioSource.microphone;
+const AudioSource theSource = AudioSource.microphone;
 
 class VoiceRecodingWidget extends StatefulWidget {
-  final String filePath;
-  final Function? recordingData;
-  final String? caseId;
-  final OnChangeCheckRecord? checkRecord;
-  final Function onRecordStart;
-
   const VoiceRecodingWidget({
     Key? key,
     this.recordingData,
@@ -43,6 +37,11 @@ class VoiceRecodingWidget extends StatefulWidget {
     this.checkRecord,
     required this.onRecordStart,
   }) : super(key: key);
+  final String filePath;
+  final Function? recordingData;
+  final String? caseId;
+  final OnChangeCheckRecord? checkRecord;
+  final Function onRecordStart;
 
   @override
   State<VoiceRecodingWidget> createState() => _VoiceRecodingWidgetState();
@@ -67,11 +66,11 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   bool recorderIsInited = false;
   Speech2TextModel getTranslatedData = Speech2TextModel();
 
-  static const platform = MethodChannel('recordAudioChannel');
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   @override
   void initState() {
-    openTheRecorder().then((value) {
+    openTheRecorder().then((void value) {
       setState(() {
         recorderIsInited = true;
       });
@@ -89,7 +88,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   Future<void> openTheRecorder() async {
     await Permission.storage.request();
-    var status = await Permission.microphone.request();
+    final PermissionStatus status = await Permission.microphone.request();
     if (Platform.isAndroid) {
       if (status != PermissionStatus.granted) {
         throw RecordingPermissionException('Microphone permission not granted');
@@ -109,23 +108,24 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       await Permission.storage.request();
       //remove play button
       widget.recordingData!('');
-      await platform.invokeMethod(
-          'startRecordAudio', {'filePath': widget.filePath}).then((value) {
+      await platform
+          .invokeMethod('startRecordAudio', {'filePath': widget.filePath}).then(
+              (dynamic value) {
         setState(() => result = value);
       });
     } else if (Platform.isAndroid) {
       if (!recorderIsInited) {
-        openTheRecorder();
+        await openTheRecorder();
       }
       //remove play button
       widget.recordingData!('');
-      _mRecorder!
+      await _mRecorder!
           .startRecorder(
         toFile: widget.filePath,
         codec: _codec,
         audioSource: theSource,
       )
-          .then((value) {
+          .then((void value) {
         setState(() => result = true);
       });
     }
@@ -137,8 +137,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   stopRecorder() async {
     if (Platform.isIOS) {
-      await platform.invokeMethod(
-          'stopRecordAudio', {'filePath': widget.filePath}).then((value) {
+      await platform
+          .invokeMethod('stopRecordAudio', {'filePath': widget.filePath}).then(
+              (dynamic value) {
         if (value) {
           // startAPICall();
           apiCall();
@@ -148,7 +149,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         }
       });
     } else if (Platform.isAndroid) {
-      await _mRecorder!.stopRecorder().then((value) {
+      await _mRecorder!.stopRecorder().then((String? value) {
         apiCall();
         // getFiles();
         setState(() {
@@ -184,7 +185,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   audioTranslateAPI() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var requestBodyData = AudioRemarksPostModel(
+    final AudioRemarksPostModel requestBodyData = AudioRemarksPostModel(
       // langCode: AppUtils.getLanguageCode(context).toString() + "-IN",
       langCode: prefs.getString(Constants.s2tLangcode),
       agrRef: Singleton.instance.agrRef,
@@ -192,15 +193,15 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     final Map<String, dynamic> postdata =
         jsonDecode(jsonEncode(requestBodyData.toJson()))
             as Map<String, dynamic>;
-    List<dynamic> value = [];
-    for (var element in uploadFileLists) {
+    final List<dynamic> value = [];
+    for (File element in uploadFileLists) {
       value.add(await MultipartFile.fromFile(element.path.toString()));
     }
     postdata.addAll({
       'files': value,
     });
 
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.upload,
       HttpUrl.audioRemarksURL,
       formDatas: FormData.fromMap(postdata),
@@ -266,7 +267,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
                     recordCountText = '60 Sec';
                   });
                 }
-                startRecord();
+                await startRecord();
                 timer = Timer.periodic(const Duration(seconds: 1), (_) {
                   if (secondsRemaining != 0) {
                     if (mounted) {
@@ -296,12 +297,12 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
               }
               widget.recordingData!(isRecordOn);
             } else {
-              DialogUtils.showDialog(
+              await DialogUtils.showDialog(
                   buildContext: context,
                   title: Languages.of(context)!.errorMsgS2TlangCode,
                   description: '',
                   okBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                  okBtnFunction: (val) {
+                  okBtnFunction: (String val) {
                     Navigator.pop(context);
                   });
             }
@@ -314,7 +315,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
               alignment: Alignment.centerRight,
               child: Stack(
                 alignment: Alignment.center,
-                children: [
+                children: <Widget>[
                   Container(
                     alignment: Alignment.centerLeft,
                     height: 40,
@@ -325,7 +326,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
                     child: Center(
                         child: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 500),
                           child: Text(recordCountText),

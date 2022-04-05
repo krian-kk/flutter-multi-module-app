@@ -7,22 +7,22 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
+import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_formate_utils.dart';
-import 'package:origa/widgets/custom_loading_widget.dart';
-import 'package:origa/widgets/no_case_available.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
+import 'package:origa/widgets/no_case_available.dart';
 
 import '../../widgets/case_status_widget.dart';
 
 class MyVisitsBottomSheet extends StatefulWidget {
-  final DashboardBloc bloc;
   const MyVisitsBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
 
   @override
   _MyVisitsBottomSheetState createState() => _MyVisitsBottomSheetState();
@@ -115,7 +115,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     flex: 2,
@@ -133,7 +132,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         CustomText(
                                           widget.bloc.myVisitsData.result!.count
                                               .toString(),
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -158,7 +156,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               widget.bloc.myVisitsData.result!
                                                   .totalAmt
                                                   .toString(),
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -172,7 +169,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                               height: 12,
                             ),
                             Wrap(
-                              runSpacing: 0,
                               spacing: 7,
                               children: _buildFilterOptions(),
                             ),
@@ -217,7 +213,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                               ? Expanded(
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0, vertical: 0.0),
+                                        horizontal: 20.0),
                                     child: SearchCaseList.buildListView(
                                       widget.bloc,
                                       resultData: widget.bloc.searchResultList,
@@ -281,7 +277,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   }
 
   List<Widget> _buildFilterOptions() {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in widget.bloc.filterOption) {
       widgets.add(_buildFilterWidget(element.value!, element.timeperiodText!));
     }
@@ -381,7 +377,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                 ],
               )
             : ListView.builder(
-                scrollDirection: Axis.vertical,
                 itemCount: caseLists.cases?.length ?? 0,
                 // itemCount: 1,
                 itemBuilder: (BuildContext context, int index) {
@@ -392,7 +387,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Expanded(
                                 flex: 2,
@@ -408,7 +402,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     ),
                                     CustomText(
                                       caseLists.count.toString(),
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -430,7 +423,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     CustomText(
                                       Constants.inr +
                                           caseLists.totalAmt.toString(),
-                                      fontSize: FontSize.fourteen,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -496,7 +488,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   padding:
                                       const EdgeInsets.fromLTRB(23, 0, 10, 0),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         child: Column(
@@ -518,7 +509,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               caseLists.cases![index].cust!,
                                               fontSize: FontSize.sixteen,
                                               color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w400,
                                             ),
                                           ],
                                         ),
@@ -527,7 +517,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       if (Singleton.instance.usertype ==
                                           Constants.fieldagent)
                                         caseLists.cases![index].collSubStatus ==
-                                                "new"
+                                                'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
                                                 text:
@@ -544,7 +534,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       if (Singleton.instance.usertype ==
                                           Constants.telecaller)
                                         caseLists.cases![index].telSubStatus ==
-                                                "new"
+                                                'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
                                                 text:
@@ -582,7 +572,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                             caseLists.cases![index].contact![0]
                                                 .value!,
                                             color: ColorResource.color484848,
-                                            fontSize: FontSize.fourteen,
                                           ),
                                         )
                                       : Wrap(
@@ -612,8 +601,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                         item.value!,
                                                         color: ColorResource
                                                             .color484848,
-                                                        fontSize:
-                                                            FontSize.fourteen,
                                                         lineHeight: 1.0,
                                                       ),
                                                     )
@@ -643,9 +630,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     children: [
                                       CustomText(
                                         Languages.of(context)!.followUpDate,
-                                        fontSize: FontSize.fourteen,
                                         color: ColorResource.color101010,
-                                        fontWeight: FontWeight.w400,
                                       ),
                                       Row(
                                         children: [
@@ -664,7 +649,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                               .cases![index]
                                                               .fieldfollowUpDate!)
                                                   : '-',
-                                              fontSize: FontSize.fourteen,
                                               color: ColorResource.color101010,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -683,7 +667,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                               .cases![index]
                                                               .followUpDate!)
                                                   : '-',
-                                              fontSize: FontSize.fourteen,
                                               color: ColorResource.color101010,
                                               fontWeight: FontWeight.w700,
                                             ),
@@ -705,7 +688,6 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                             children: [
                                               CustomText(
                                                 Languages.of(context)!.view,
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color23375A,
                                                 fontWeight: FontWeight.w700,

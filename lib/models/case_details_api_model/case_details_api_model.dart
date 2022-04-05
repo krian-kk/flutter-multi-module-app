@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class CaseDetailsApiModel {
-  int? status;
-  String? message;
-  CaseDetailsResultModel? result;
-
   CaseDetailsApiModel({this.status, this.message, this.result});
 
   factory CaseDetailsApiModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +13,9 @@ class CaseDetailsApiModel {
               json['result'] as Map<String, dynamic>),
     );
   }
+  int? status;
+  String? message;
+  CaseDetailsResultModel? result;
 
   Map<String, dynamic> toJson() => {
         'status': status,

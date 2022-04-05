@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class EventDetailsApiModel {
-  int? status;
-  String? message;
-  List<EventDetailsResultModel>? result = [];
-
   EventDetailsApiModel({this.status, this.message, this.result});
 
   factory EventDetailsApiModel.fromJson(Map<String, dynamic> json) {
@@ -17,6 +13,9 @@ class EventDetailsApiModel {
           .toList(),
     );
   }
+  int? status;
+  String? message;
+  List<EventDetailsResultModel>? result = [];
 
   Map<String, dynamic> toJson() => {
         'status': status,

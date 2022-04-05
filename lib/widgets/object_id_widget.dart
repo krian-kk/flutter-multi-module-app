@@ -1,27 +1,10 @@
-import 'dart:typed_data';
 import 'dart:math' as math;
+import 'dart:typed_data';
 
 const _m = 0x5bd1e995;
 const _r = 24;
 
 class ObjectIdWidget {
-  static const _maxCounterValue = 0xffffff;
-  static const _counterMask = _maxCounterValue + 1;
-
-  static const byteLength = 12;
-
-  static const hexStringLength = byteLength * 2;
-
-  static final int _processUnique = ProcessUnique().getValue();
-
-  static int _counter = math.Random().nextInt(_counterMask);
-
-  static int _getCounter() => (_counter = (_counter + 1) % _counterMask);
-
-  final Uint8List _bytes = Uint8List(byteLength);
-
-  Uint8List get bytes => _bytes;
-
   ObjectIdWidget() {
     _initialize(
       DateTime.now().millisecondsSinceEpoch,
@@ -29,7 +12,20 @@ class ObjectIdWidget {
       _getCounter(),
     );
   }
+  ObjectIdWidget.fromBytes(List<int> bytes) {
+    ArgumentError.checkNotNull(bytes, 'bytes');
+    if (bytes.length != byteLength) {
+      throw ArgumentError.value(
+        bytes,
+        'bytes',
+        'Bytes array should has length equal to $byteLength',
+      );
+    }
 
+    for (var i = 0; i < byteLength; i++) {
+      _bytes[i] = bytes[i];
+    }
+  }
   ObjectIdWidget.fromValues(
     int millisecondsSinceEpoch,
     int processUnique,
@@ -70,6 +66,22 @@ class ObjectIdWidget {
 
     _initialize(millisecondsSinceEpoch, processUnique, counter);
   }
+  static const _maxCounterValue = 0xffffff;
+  static const _counterMask = _maxCounterValue + 1;
+
+  static const byteLength = 12;
+
+  static const hexStringLength = byteLength * 2;
+
+  static final int _processUnique = ProcessUnique().getValue();
+
+  static int _counter = math.Random().nextInt(_counterMask);
+
+  static int _getCounter() => (_counter = (_counter + 1) % _counterMask);
+
+  final Uint8List _bytes = Uint8List(byteLength);
+
+  Uint8List get bytes => _bytes;
 
   void _initialize(int millisecondsSinceEpoch, int processUnique, int counter) {
     final secondsSinceEpoch = millisecondsSinceEpoch ~/ 1000;
@@ -90,25 +102,12 @@ class ObjectIdWidget {
     _bytes[9] = (counter >> 16) & 0xff;
   }
 
-  ObjectIdWidget.fromBytes(List<int> bytes) {
-    ArgumentError.checkNotNull(bytes, 'bytes');
-    if (bytes.length != byteLength) {
-      throw ArgumentError.value(
-        bytes,
-        'bytes',
-        'Bytes array should has length equal to $byteLength',
-      );
-    }
-
-    for (var i = 0; i < byteLength; i++) {
-      _bytes[i] = bytes[i];
-    }
-  }
-
   DateTime? _timestamp;
 
   DateTime get timestamp {
-    if (_timestamp != null) return _timestamp!;
+    if (_timestamp != null) {
+      return _timestamp!;
+    }
 
     var secondsSinceEpoch = 0;
     for (var x = 3, y = 0; x >= 0; x--, y++) {
@@ -136,16 +135,22 @@ class ObjectIdWidget {
 
   @override
   bool operator ==(Object other) {
-    if (other.runtimeType != runtimeType) return false;
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
     for (var i = 0; i < _bytes.length; i++) {
-      if ((other as ObjectIdWidget)._bytes[i] != _bytes[i]) return false;
+      if ((other as ObjectIdWidget)._bytes[i] != _bytes[i]) {
+        return false;
+      }
     }
     return true;
   }
 
   static bool isValid(String hexString) {
     try {
-      if (hexString.length != 24) return false;
+      if (hexString.length != 24) {
+        return false;
+      }
 
       int.parse(hexString.substring(0, 8), radix: 16);
       int.parse(hexString.substring(8, 18), radix: 16);
@@ -199,9 +204,8 @@ int murmurHash2(Uint8List data, [int seed = 0]) {
 }
 
 abstract class ProcessUnique {
-  int getValue();
-
   factory ProcessUnique() => getProcessUnique();
+  int getValue();
 }
 
 class FallbackProcessUnique implements ProcessUnique {

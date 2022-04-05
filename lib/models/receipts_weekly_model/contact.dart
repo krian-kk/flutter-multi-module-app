@@ -1,12 +1,4 @@
 class Contact {
-  String? cType;
-  String? health;
-  String? value;
-  String? resAddressId0;
-  String? contactId0;
-  String? officeAddressId0;
-  String? emailId0;
-
   Contact({
     this.cType,
     this.health,
@@ -26,6 +18,13 @@ class Contact {
         officeAddressId0: json['officeAddressId_0'] as String?,
         emailId0: json['emailId_0'] as String?,
       );
+  String? cType;
+  String? health;
+  String? value;
+  String? resAddressId0;
+  String? contactId0;
+  String? officeAddressId0;
+  String? emailId0;
 
   Map<String, dynamic> toJson() => {
         'cType': cType,

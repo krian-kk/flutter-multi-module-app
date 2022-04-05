@@ -37,7 +37,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     getLanguageCode();
   }
 
-  void getLanguageCode() async {
+  getLanguageCode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       ratioIndex = prefs.getInt('mainLanguage') ?? 0;
@@ -70,7 +70,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -86,7 +85,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                         itemCount: languageList.length,
                         itemBuilder: (context, i) {
                           return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               languageList[i].isTitle
@@ -94,7 +92,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                       languageList[i].title.toUpperCase(),
                                       fontWeight: FontWeight.w700,
                                       fontSize: FontSize.twelve,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     )
                                   : const SizedBox(),
@@ -112,9 +109,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                   title: CustomText(
                                     languageList[i].language,
                                     lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
                                     color: ColorResource.color484848,
                                   ),
                                   groupValue: ratioIndex,

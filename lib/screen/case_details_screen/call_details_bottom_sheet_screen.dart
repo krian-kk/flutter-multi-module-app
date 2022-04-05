@@ -9,7 +9,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -40,7 +39,7 @@ class _CallDetailsBottomSheetScreenState
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -122,20 +121,18 @@ class _CallDetailsBottomSheetScreenState
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "mobile" ||
+                                          'mobile' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "resNo" ||
+                                          'resNo' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "office contact no." ||
+                                          'office contact no.' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "residence contact no."
+                                          'residence contact no.'
                                   ? SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
@@ -147,9 +144,7 @@ class _CallDetailsBottomSheetScreenState
                                                     .toString()
                                                     .toUpperCase() ??
                                                 '_',
-                                            fontSize: FontSize.fourteen,
                                             fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
                                             color: ColorResource.color23375A,
                                           ),
                                           const SizedBox(height: 7),
@@ -168,7 +163,7 @@ class _CallDetailsBottomSheetScreenState
                                                             .result
                                                             ?.callDetails![i]
                                                         ['contactId_0'] ??
-                                                    "";
+                                                    '';
                                                 Singleton.instance
                                                         .customerContactNo =
                                                     widget
@@ -217,14 +212,6 @@ class _CallDetailsBottomSheetScreenState
                                                                 widget.bloc
                                                                         .listOfCallDetails?[
                                                                     i]['value'],
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
                                                                 color: ColorResource
                                                                     .color484848,
                                                               ),
@@ -321,12 +308,6 @@ class _CallDetailsBottomSheetScreenState
                                                                         .color23375A,
                                                                     lineHeight:
                                                                         1,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -350,11 +331,6 @@ class _CallDetailsBottomSheetScreenState
                                                                       context)!
                                                                   .disposition,
                                                               lineHeight: 1,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,

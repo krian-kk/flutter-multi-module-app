@@ -1,21 +1,4 @@
 class OtherFeedBackPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late OtherFeedBackContact contact;
-  late String createdBy;
-  late String eventModule;
-  late String agentName;
-  late String contractor;
-  late String agrRef;
-  late String callID;
-  late String callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-
   OtherFeedBackPostModel({
     required this.eventId,
     required this.eventType,
@@ -53,6 +36,22 @@ class OtherFeedBackPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late OtherFeedBackContact contact;
+  late String createdBy;
+  late String eventModule;
+  late String agentName;
+  late String contractor;
+  late String agrRef;
+  late String callID;
+  late String callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,25 +76,6 @@ class OtherFeedBackPostModel {
 }
 
 class EventAttr {
-  late bool vehicleavailable;
-  late String collectorfeedback;
-  late String actionproposed;
-  late String actionDate;
-  late String remarks;
-  late List<String> imageLocation;
-  late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late List? contact;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.vehicleavailable,
     required this.actionDate,
@@ -139,6 +119,24 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late bool vehicleavailable;
+  late String collectorfeedback;
+  late String actionproposed;
+  late String actionDate;
+  late String remarks;
+  late List<String> imageLocation;
+  late String followUpPriority;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late List? contact;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -192,12 +190,6 @@ class EventAttr {
 // }
 
 class OtherFeedBackContact {
-  late String cType;
-  late String? health;
-  late String value;
-  late String resAddressId0;
-  late String contactId0;
-
   OtherFeedBackContact({
     required this.cType,
     this.health,
@@ -213,6 +205,11 @@ class OtherFeedBackContact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String? health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

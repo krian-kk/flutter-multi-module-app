@@ -3,6 +3,50 @@ import 'package:flutter/material.dart';
 enum LinearStrokeCap { butt, round, roundAll }
 
 class PercentageIndicatorWidget extends StatefulWidget {
+  PercentageIndicatorWidget({
+    Key? key,
+    this.fillColor = Colors.transparent,
+    this.percent = 0.0,
+    this.lineHeight = 5.0,
+    this.width,
+    this.backgroundColor = const Color(0xFFB8C7CB),
+    this.linearGradientBackgroundColor,
+    this.linearGradient,
+    this.progressColor = Colors.red,
+    this.animation = false,
+    this.animationDuration = 500,
+    this.animateFromLastPercent = false,
+    this.isRTL = false,
+    this.leading,
+    this.trailing,
+    this.center,
+    this.addAutomaticKeepAlive = true,
+    this.linearStrokeCap,
+    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
+    this.alignment = MainAxisAlignment.start,
+    this.maskFilter,
+    this.clipLinearGradient = false,
+    this.curve = Curves.linear,
+    this.restartAnimation = false,
+    this.onAnimationEnd,
+    this.widgetIndicator,
+  }) : super(key: key) {
+    // if (linearGradient != null && progressColor != null) {
+    //   throw ArgumentError(
+    //       'Cannot provide both linearGradient and progressColor');
+    // }
+
+    // if (linearGradientBackgroundColor != null && backgroundColor != null) {
+    //   throw ArgumentError(
+    //       'Cannot provide both linearGradientBackgroundColor and backgroundColor');
+    // }
+
+    if (percent < 0.0 || percent > 1.0) {
+      throw Exception(
+          "Percent value must be a double between 0.0 and 1.0, but it's $percent");
+    }
+  }
+
   ///Percent value between 0.0 and 1.0
   final double percent;
   final double? width;
@@ -80,50 +124,6 @@ class PercentageIndicatorWidget extends StatefulWidget {
 
   /// Display a widget indicator at the end of the progress. It only works when `animation` is true
   final Widget? widgetIndicator;
-
-  PercentageIndicatorWidget({
-    Key? key,
-    this.fillColor = Colors.transparent,
-    this.percent = 0.0,
-    this.lineHeight = 5.0,
-    this.width,
-    this.backgroundColor = const Color(0xFFB8C7CB),
-    this.linearGradientBackgroundColor,
-    this.linearGradient,
-    this.progressColor = Colors.red,
-    this.animation = false,
-    this.animationDuration = 500,
-    this.animateFromLastPercent = false,
-    this.isRTL = false,
-    this.leading,
-    this.trailing,
-    this.center,
-    this.addAutomaticKeepAlive = true,
-    this.linearStrokeCap,
-    this.padding = const EdgeInsets.symmetric(horizontal: 10.0),
-    this.alignment = MainAxisAlignment.start,
-    this.maskFilter,
-    this.clipLinearGradient = false,
-    this.curve = Curves.linear,
-    this.restartAnimation = false,
-    this.onAnimationEnd,
-    this.widgetIndicator,
-  }) : super(key: key) {
-    // if (linearGradient != null && progressColor != null) {
-    //   throw ArgumentError(
-    //       'Cannot provide both linearGradient and progressColor');
-    // }
-
-    // if (linearGradientBackgroundColor != null && backgroundColor != null) {
-    //   throw ArgumentError(
-    //       'Cannot provide both linearGradientBackgroundColor and backgroundColor');
-    // }
-
-    if (percent < 0.0 || percent > 1.0) {
-      throw Exception(
-          "Percent value must be a double between 0.0 and 1.0, but it's $percent");
-    }
-  }
 
   @override
   _PercentageIndicatorWidgetState createState() =>
@@ -228,14 +228,14 @@ class _PercentageIndicatorWidgetState extends State<PercentageIndicatorWidget>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    var items = List<Widget>.empty(growable: true);
+    final items = List<Widget>.empty(growable: true);
     if (widget.leading != null) {
       items.add(widget.leading!);
     }
     final hasSetWidth = widget.width != null;
     final percentPositionedHorizontal =
         _containerWidth * _percent - _indicatorWidth / 3;
-    var containerWidget = Container(
+    final containerWidget = Container(
       width: hasSetWidth ? widget.width : double.infinity,
       height: widget.lineHeight,
       padding: widget.padding,
@@ -297,7 +297,6 @@ class _PercentageIndicatorWidgetState extends State<PercentageIndicatorWidget>
         color: widget.fillColor,
         child: Row(
           mainAxisAlignment: widget.alignment,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: items,
         ),
       ),
@@ -309,19 +308,6 @@ class _PercentageIndicatorWidgetState extends State<PercentageIndicatorWidget>
 }
 
 class LinearPainter extends CustomPainter {
-  final Paint _paintBackground = Paint();
-  final Paint _paintLine = Paint();
-  final double lineWidth;
-  final double progress;
-  final bool isRTL;
-  final Color progressColor;
-  final Color backgroundColor;
-  final LinearStrokeCap? linearStrokeCap;
-  final LinearGradient? linearGradient;
-  final LinearGradient? linearGradientBackgroundColor;
-  final MaskFilter? maskFilter;
-  final bool clipLinearGradient;
-
   LinearPainter({
     required this.lineWidth,
     required this.progress,
@@ -338,7 +324,7 @@ class LinearPainter extends CustomPainter {
     _paintBackground.style = PaintingStyle.stroke;
     _paintBackground.strokeWidth = lineWidth;
 
-    _paintLine.color = progress.toString() == "0.0"
+    _paintLine.color = progress.toString() == '0.0'
         ? progressColor.withOpacity(0.0)
         : progressColor;
     _paintLine.style = PaintingStyle.stroke;
@@ -353,6 +339,18 @@ class LinearPainter extends CustomPainter {
       _paintBackground.strokeCap = StrokeCap.round;
     }
   }
+  final Paint _paintBackground = Paint();
+  final Paint _paintLine = Paint();
+  final double lineWidth;
+  final double progress;
+  final bool isRTL;
+  final Color progressColor;
+  final Color backgroundColor;
+  final LinearStrokeCap? linearStrokeCap;
+  final LinearGradient? linearGradient;
+  final LinearGradient? linearGradientBackgroundColor;
+  final MaskFilter? maskFilter;
+  final bool clipLinearGradient;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -364,7 +362,7 @@ class LinearPainter extends CustomPainter {
       _paintLine.maskFilter = maskFilter;
     }
     if (linearGradientBackgroundColor != null) {
-      Offset shaderEndPoint =
+      final Offset shaderEndPoint =
           clipLinearGradient ? Offset.zero : Offset(size.width, size.height);
       _paintBackground.shader = linearGradientBackgroundColor
           ?.createShader(Rect.fromPoints(Offset.zero, shaderEndPoint));
@@ -386,7 +384,7 @@ class LinearPainter extends CustomPainter {
   }
 
   Shader _createGradientShaderRightToLeft(Size size, double xProgress) {
-    Offset shaderEndPoint =
+    final Offset shaderEndPoint =
         clipLinearGradient ? Offset.zero : Offset(xProgress, size.height);
     return linearGradient!.createShader(
       Rect.fromPoints(
@@ -397,7 +395,7 @@ class LinearPainter extends CustomPainter {
   }
 
   Shader _createGradientShaderLeftToRight(Size size, double xProgress) {
-    Offset shaderEndPoint = clipLinearGradient
+    final Offset shaderEndPoint = clipLinearGradient
         ? Offset(size.width, size.height)
         : Offset(xProgress, size.height);
     return linearGradient!.createShader(

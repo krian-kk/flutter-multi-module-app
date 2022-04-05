@@ -1,8 +1,4 @@
 class ChatHistoryModel {
-  int? status;
-  String? message;
-  List<ChatResult>? result;
-
   ChatHistoryModel({this.status, this.message, this.result});
 
   ChatHistoryModel.fromJson(Map<String, dynamic> json) {
@@ -15,6 +11,9 @@ class ChatHistoryModel {
       });
     }
   }
+  int? status;
+  String? message;
+  List<ChatResult>? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -28,13 +27,6 @@ class ChatHistoryModel {
 }
 
 class ChatResult {
-  String? sId;
-  String? messageId;
-  String? dateSent;
-  String? fromId;
-  String? message;
-  String? toId;
-
   ChatResult(
       {this.sId,
       this.messageId,
@@ -51,6 +43,12 @@ class ChatResult {
     message = json['message'];
     toId = json['toId'];
   }
+  String? sId;
+  String? messageId;
+  String? dateSent;
+  String? fromId;
+  String? message;
+  String? toId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

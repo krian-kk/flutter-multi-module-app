@@ -59,12 +59,12 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
+  CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   AllocationBloc allocationBloc;
 
   //Offline purpose
   dynamic selectedAddressModel;
 
-  CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
   String? caseId;
   String? custName;
   String? agentName;
@@ -183,7 +183,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       agentName = _pref.getString(Constants.agentName);
       // check internet
@@ -195,8 +195,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             .doc('${event.paramValues['caseID']}')
             .get(const GetOptions(source: Source.cache))
             .then((value) {
-          Map<String, dynamic>? jsonData = value.data();
-          CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+          final Map<String, dynamic>? jsonData = value.data();
+          final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
           caseDetailsAPIValue.result =
               CaseDetailsResultModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.caseDetails = caseDetails;
@@ -211,11 +211,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         });
       } else {
         isNoInternetAndServerError = false;
-        Map<String, dynamic> caseDetailsData = await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-            isPop: true);
+        final Map<String, dynamic> caseDetailsData =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
+                isPop: true);
         if (caseDetailsData[Constants.success] == true) {
-          Map<String, dynamic> jsonData = caseDetailsData['data'];
+          final Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
               .result?.callDetails
@@ -341,7 +342,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
         PaymentConfigurationModel paymentCofigurationData =
             PaymentConfigurationModel();
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        final Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.get,
           HttpUrl.getPaymentConfiguration,
         );
@@ -505,7 +506,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      List<dynamic> value = [];
+      final List<dynamic> value = [];
       for (var element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
@@ -513,7 +514,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         'files': value,
       });
       //do do do do
-      Map<String, dynamic> firebaseObject = event.postData!.toJson();
+      final Map<String, dynamic> firebaseObject = event.postData!.toJson();
       try {
         firebaseObject
             .addAll(FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
@@ -528,9 +529,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         // For local storage purpose storing while online
         await FirebaseUtils.storeEvents(
             eventsDetails: firebaseObject, caseId: caseId, bloc: this);
-        Map<String, dynamic> postResult = await APIRepository.apiRequest(
+        final Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
-          HttpUrl.imageCaptured + "userType=$userType",
+          HttpUrl.imageCaptured + 'userType=$userType',
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
@@ -893,12 +894,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield SendSMSloadState();
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
         if (Singleton.instance.contractorInformations!.result!.sendSms!) {
-          var requestBodyData = SendSMS(
+          final requestBodyData = SendSMS(
             agentRef: Singleton.instance.agentRef,
             agrRef: Singleton.instance.agrRef,
             type: event.type,
           );
-          Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          final Map<String, dynamic> postResult =
+              await APIRepository.apiRequest(
             APIRequestType.post,
             HttpUrl.sendSMSurl,
             requestBodydata: jsonEncode(requestBodyData),
@@ -936,12 +938,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isGeneratePaymentLinkLoading = true;
 
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      var requestBodyData = GeneratePaymentLinkPost(
+      final requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
         dynamicLink: true,
       );
       // if dynamic_link is true means creating a Ref URL and false means creating QR code
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         HttpUrl.generateDyanamicPaymentLink,
         requestBodydata: jsonEncode(requestBodyData),
@@ -958,12 +960,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is GenerateQRcodeEvent) {
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      var requestBodyData = GeneratePaymentLinkPost(
+      final requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
         dynamicLink: false,
       );
       // if dynamic_link is true means creating a Ref URL and false means creating QR code
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         HttpUrl.generateDyanamicPaymentLink,
         requestBodydata: jsonEncode(requestBodyData),
@@ -1187,7 +1189,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             );
 
           case Constants.callCustomer:
-            List<String> s1 = [];
+            final List<String> s1 = [];
             caseDetailsAPIValue.result?.callDetails?.forEach((element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
@@ -1207,7 +1209,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               listOfMobileNo: s1,
               userType: userType.toString(),
               caseId: caseId.toString(),
-              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
+              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: listOfAddress![paramValue['phoneIndex']].value,
               caseDetailsBloc: this,
@@ -1238,7 +1240,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String selectedClipValue,
     BuildContext context,
   ) async {
-    var requestBodyData = PhoneUnreachablePostModel(
+    final requestBodyData = PhoneUnreachablePostModel(
         eventId: ConstantEventValues.phoneUnreachableEventId,
         eventType: eventType,
         caseId: caseId,
@@ -1343,11 +1345,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
     if (Geolocator.checkPermission().toString() !=
         PermissionStatus.granted.toString()) {
-      Position res = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      final Position res = await Geolocator.getCurrentPosition();
       position = res;
     }
-    var requestBodyData = CustomerNotMetPostModel(
+    final requestBodyData = CustomerNotMetPostModel(
         eventId: ConstantEventValues.addressCustomerNotMetEventId,
         eventType: eventType,
         caseId: caseId,
@@ -1448,12 +1449,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     );
     if (Geolocator.checkPermission().toString() !=
         PermissionStatus.granted.toString()) {
-      Position res = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
+      final Position res = await Geolocator.getCurrentPosition();
 
       position = res;
     }
-    var requestBodyData = AddressInvalidPostModel(
+    final requestBodyData = AddressInvalidPostModel(
         eventId: ConstantEventValues.addressInvalidEventId,
         callerServiceID: Singleton.instance.callerServiceID ?? '',
         callID: Singleton.instance.callID,
@@ -1535,7 +1535,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String selectedClipValue,
     BuildContext context,
   ) async {
-    var requestBodyData = PhoneInvalidPostModel(
+    final requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
         callerServiceID: Singleton.instance.callerServiceID ?? '',

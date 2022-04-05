@@ -1,18 +1,6 @@
 import 'package:flutter/material.dart';
 
 class AvatarGlowWidget extends StatefulWidget {
-  final Widget child;
-  final double endRadius;
-  final BoxShape shape;
-  final Duration duration;
-  final bool repeat;
-  final bool animate;
-  final Duration repeatPauseDuration;
-  final Curve curve;
-  final bool showTwoGlows;
-  final Color glowColor;
-  final Duration? startDelay;
-
   const AvatarGlowWidget({
     Key? key,
     required this.child,
@@ -27,6 +15,17 @@ class AvatarGlowWidget extends StatefulWidget {
     this.glowColor = Colors.white,
     this.startDelay,
   }) : super(key: key);
+  final Widget child;
+  final double endRadius;
+  final BoxShape shape;
+  final Duration duration;
+  final bool repeat;
+  final bool animate;
+  final Duration repeatPauseDuration;
+  final Curve curve;
+  final bool showTwoGlows;
+  final Color glowColor;
+  final Duration? startDelay;
 
   @override
   _AvatarGlowState createState() => _AvatarGlowState();
@@ -60,7 +59,7 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
       await Future.delayed(widget.repeatPauseDuration);
       if (mounted && widget.repeat && widget.animate) {
         controller.reset();
-        controller.forward();
+        await controller.forward();
       }
     }
   }
@@ -85,18 +84,18 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
     super.didUpdateWidget(oldWidget);
   }
 
-  void _startAnimation() async {
+  _startAnimation() async {
     controller.addStatusListener(_statusListener);
     if (widget.startDelay != null) {
       await Future.delayed(widget.startDelay!);
     }
     if (mounted) {
       controller.reset();
-      controller.forward();
+      await controller.forward();
     }
   }
 
-  void _stopAnimation() async {
+  _stopAnimation() async {
     controller.removeStatusListener(_statusListener);
   }
 
@@ -144,7 +143,7 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
               widget.animate && widget.showTwoGlows
                   ? AnimatedBuilder(
                       animation: _smallDiscAnimation,
-                      builder: (context, widget) {
+                      builder: (BuildContext context, Widget? widget) {
                         final num size = _smallDiscAnimation.value.clamp(
                           0.0,
                           double.infinity,

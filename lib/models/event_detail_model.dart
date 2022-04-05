@@ -1,10 +1,4 @@
 class EventExpandModel {
-  bool expanded;
-  String header;
-  String date;
-  String colloctorID;
-  String remarks;
-
   EventExpandModel({
     this.expanded = false,
     required this.header,
@@ -12,4 +6,10 @@ class EventExpandModel {
     required this.colloctorID,
     required this.remarks,
   });
+
+  bool expanded;
+  String header;
+  String date;
+  String colloctorID;
+  String remarks;
 }
