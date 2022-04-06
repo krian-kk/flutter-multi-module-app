@@ -35,6 +35,7 @@ class PhoneUnreachableScreen extends StatefulWidget {
 
 class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -69,15 +70,18 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
+                        SizedBox(
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
+                          ),
                         ),
                         const SizedBox(height: 25),
                         // CustomText(
@@ -134,6 +138,13 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           validationRules: const ['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
+                          editStringCallBack: ((values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
                           returnS2Tresponse: (val) {
                             if (val is Speech2TextModel) {
                               setState(
@@ -213,6 +224,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight)
                       ],
                     ),
                   ),

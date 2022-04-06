@@ -57,6 +57,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.remarkFunction,
     this.lableStyle,
     this.checkRecord,
+    this.editStringCallBack,
     this.isSubmit = true,
   }) : super(key: key);
   final String hintText;
@@ -98,6 +99,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final TextStyle? lableStyle;
   final OnChangeCheckRecord? checkRecord;
   final bool isSubmit;
+  final Function? editStringCallBack;
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -313,6 +315,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                     translateTextController.text =
                                         values.result!.translatedText!;
                                     isActiveSpeaker = true;
+                                    if (widget.editStringCallBack != null) {
+                                      widget.editStringCallBack!(
+                                          translateTextController.text);
+                                    }
                                   });
                                 }
                               },
@@ -323,6 +329,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                   translateTextController.text = '';
                                   isActiveSpeaker = false;
                                 });
+                                if (widget.editStringCallBack != null) {
+                                  widget.editStringCallBack!(
+                                      translateTextController.text);
+                                }
                                 widget.checkRecord!(
                                     Constants.none, '', Speech2TextModel());
                                 widget.returnS2Tresponse!(getTranslatedData);
@@ -527,6 +537,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
+                      if (widget.editStringCallBack != null) {
+                        widget
+                            .editStringCallBack!(translateTextController.text);
+                      }
                       widget.checkRecord!(
                           Constants.none, '', Speech2TextModel());
                       // Here vreturn the value for S2T API respose
@@ -551,6 +565,9 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       widget.checkRecord!(
                           Constants.none, '', Speech2TextModel());
                     });
+                    if (widget.editStringCallBack != null) {
+                      widget.editStringCallBack!(translateTextController.text);
+                    }
                   },
                 ),
               ),

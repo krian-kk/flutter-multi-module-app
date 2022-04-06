@@ -30,6 +30,7 @@ class PhonenInvalidScreen extends StatefulWidget {
 }
 
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
+  double bottomHeight = 0.0;
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
@@ -56,15 +57,18 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 18),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
+                        SizedBox(
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
+                          ),
                         ),
                         const SizedBox(height: 15),
                         Flexible(
@@ -80,6 +84,13 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                                   widget.bloc.returnS2TPhoneInvalid = val);
                             }
                           },
+                          editStringCallBack: ((values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
                           checkRecord: (isRecord, text, returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TPhoneInvalid = returnS2Tdata;
@@ -117,6 +128,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight),
                       ],
                     ),
                   ),

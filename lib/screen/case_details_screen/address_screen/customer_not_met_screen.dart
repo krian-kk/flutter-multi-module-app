@@ -32,6 +32,7 @@ class CustomerNotMetScreen extends StatefulWidget {
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -132,6 +133,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                                   widget.bloc.returnS2TCustomerNotMet = val);
                             }
                           },
+                          editStringCallBack: ((values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
                           checkRecord: (isRecord, text, returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TCustomerNotMet =
@@ -190,6 +198,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight),
                       ],
                     ),
                   ),

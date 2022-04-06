@@ -5,7 +5,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/bloc/phone_screen_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
@@ -42,7 +41,6 @@ class PhoneScreen extends StatefulWidget {
 class _PhoneScreenState extends State<PhoneScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  late PhoneScreenBloc bloc;
 
   bool isSubmitFirst = true;
   bool isSubmitSecond = true;

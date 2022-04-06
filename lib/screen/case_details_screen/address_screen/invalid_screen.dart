@@ -29,6 +29,7 @@ class AddressInvalidScreen extends StatefulWidget {
 
 class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -83,6 +84,13 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                                 widget.bloc.returnS2TAddressInvalid = val);
                           }
                         },
+                        editStringCallBack: ((values) {
+                          setState(() {
+                            bottomHeight = (values == '')
+                                ? 0.0
+                                : MediaQuery.of(context).size.height * 0.1;
+                          });
+                        }),
                         checkRecord: (isRecord, text, returnS2T) {
                           setState(() {
                             widget.bloc.returnS2TAddressInvalid = returnS2T;
@@ -136,6 +144,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           selectedOptionBottomSheetButton,
                         ),
                       ),
+                      SizedBox(height: bottomHeight),
                     ],
                   ),
                 ),
