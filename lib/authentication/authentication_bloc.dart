@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/authentication/authentication_state.dart';
 import 'package:origa/http/api_repository.dart';
@@ -11,6 +10,7 @@ import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/widgets/jwt_decorder_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationBloc
@@ -21,7 +21,7 @@ class AuthenticationBloc
   Stream<AuthenticationState> mapEventToState(
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
-      await Future.delayed(const Duration(seconds: 2));
+      await Future<dynamic>.delayed(const Duration(seconds: 2));
       // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
       final SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -52,7 +52,7 @@ class AuthenticationBloc
               notificationData: event.notificationData);
         } else {
           debugPrint('Token Issue is === > $getToken');
-          if (JwtDecoder.isExpired(getToken!)) {
+          if (JwtDecoderWidget.isExpired(getToken!)) {
             yield AuthenticationUnAuthenticated(
                 notificationData: event.notificationData);
           } else {

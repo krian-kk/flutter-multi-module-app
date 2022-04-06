@@ -29,12 +29,14 @@ late AndroidNotificationChannel channel;
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 // late AuthenticationBloc bloc;
 
-void main() async {
+Future<void> main() async {
   // bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-// Requesting Push Notification Permission
-  requestNotificationPermission();
+  // Requesting Push Notification Permission
+  if (Platform.isIOS) {
+    requestNotificationPermission();
+  }
 
   Bloc.observer = EchoBlocDelegate();
   runApp(
@@ -155,7 +157,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // debugPrint("Handling a background message: ${message.messageId}");
   }
 
-  void androidAndIOSNotification() async {
+  androidAndIOSNotification() async {
     channel = const AndroidNotificationChannel(
       'high_importance_channel', // id
       'origa.ai', // title
@@ -163,9 +165,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initializationSettingsIOS = IOSInitializationSettings();
-    const initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    const IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings();
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+            android: initializationSettingsAndroid,
+            iOS: initializationSettingsIOS);
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,

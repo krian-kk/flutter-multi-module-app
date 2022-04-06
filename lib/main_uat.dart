@@ -7,7 +7,7 @@ import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_event.dart';
 import 'bloc.dart';
 
-void main() async {
+Future<void> main() async {
   //development = 1, uat = 2, production = 3
   Singleton.instance.serverPointingType = 2;
   Bloc.observer = EchoBlocDelegate();

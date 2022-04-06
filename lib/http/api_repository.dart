@@ -46,7 +46,7 @@ class APIRepository {
         'Initial -> urlString-->$urlString \n  requestBodydata-->$requestBodydata}');
 
     try {
-      Response? response;
+      Response<dynamic>? response;
       switch (requestType) {
         case APIRequestType.get:
         case APIRequestType.delete:
@@ -160,7 +160,7 @@ class APIRepository {
             await Navigator.pushNamedAndRemoveUntil(
                 Singleton.instance.buildContext!,
                 AppRoutes.loginScreen,
-                (route) => false);
+                (Route<dynamic> route) => false);
           }
           apiErrorStatus(
               errorString: errVal ?? e.response!.data['message'],
