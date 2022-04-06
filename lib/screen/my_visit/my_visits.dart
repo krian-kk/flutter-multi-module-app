@@ -493,7 +493,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: <Widget>[
                                             CustomText(
                                               Constants.inr +
                                                   caseLists.cases![index].due
@@ -575,7 +575,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           ),
                                         )
                                       : Wrap(
-                                          children: [
+                                          children: <Widget>[
                                             for (var item in caseLists
                                                 .cases![index].contact!)
                                               item.cType!.contains('mobile') ||
@@ -627,13 +627,13 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
+                                    children: <Widget>[
                                       CustomText(
                                         Languages.of(context)!.followUpDate,
                                         color: ColorResource.color101010,
                                       ),
                                       Row(
-                                        children: [
+                                        children: <Widget>[
                                           if (Singleton.instance.usertype ==
                                               Constants.fieldagent)
                                             CustomText(
@@ -685,7 +685,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           // ),
                                           const Spacer(),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               CustomText(
                                                 Languages.of(context)!.view,
                                                 color:
