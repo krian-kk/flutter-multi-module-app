@@ -29,7 +29,7 @@ class _PriorityFollowUpBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
       bloc: widget.bloc,
-      listener: (context, state) async {
+      listener: (BuildContext context, DashboardState state) async {
         if (state is SelectedTimeperiodDataLoadingState) {
           widget.bloc.selectedFilterDataLoading = true;
         }
@@ -65,7 +65,7 @@ class _PriorityFollowUpBottomSheetState
                   },
                 ),
                 body: Column(
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: Languages.of(context)!.priorityFollowUp,
                     ),
@@ -83,7 +83,7 @@ class _PriorityFollowUpBottomSheetState
                               )
                             : Expanded(
                                 child: Column(
-                                  children: [
+                                  children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 50, right: 20, left: 20),

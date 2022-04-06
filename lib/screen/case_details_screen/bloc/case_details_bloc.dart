@@ -90,8 +90,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String addressSelectedCustomerNotMetClip = '';
   String addressSelectedInvalidClip = '';
 
-  final addressCustomerNotMetFormKey = GlobalKey<FormState>();
-  final addressInvalidFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> addressCustomerNotMetFormKey =
+      GlobalKey<FormState>();
+  final GlobalKey<FormState> addressInvalidFormKey = GlobalKey<FormState>();
 
   TextEditingController addressInvalidRemarksController =
       TextEditingController();
@@ -104,9 +105,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   FocusNode addressCustomerNotMetNextActionDateFocusNode = FocusNode();
   FocusNode addressCustomerNotMetRemarksFocusNode = FocusNode();
 
-  List<CustomerMetGridModel> addressCustomerMetGridList = [];
-  List<OtherFeedbackExpandModel> expandOtherFeedback = [];
-  List<EventExpandModel> expandEvent = [];
+  List<CustomerMetGridModel> addressCustomerMetGridList =
+      <CustomerMetGridModel>[];
+  List<OtherFeedbackExpandModel> expandOtherFeedback =
+      <OtherFeedbackExpandModel>[];
+  List<EventExpandModel> expandEvent = <EventExpandModel>[];
 
   Speech2TextModel returnS2TCustomerNotMet = Speech2TextModel();
   String? isRecordCustomerNotMet;
@@ -131,10 +134,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   // Phone Details screen
   String phoneSelectedUnreadableClip = '';
   String phoneSelectedInvalidClip = '';
-  List<CustomerMetGridModel> phoneCustomerMetGridList = [];
+  List<CustomerMetGridModel> phoneCustomerMetGridList =
+      <CustomerMetGridModel>[];
 
-  final phoneUnreachableFormKey = GlobalKey<FormState>();
-  final phoneInvalidFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> phoneUnreachableFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> phoneInvalidFormKey = GlobalKey<FormState>();
 
   TextEditingController phoneUnreachableNextActionDateController =
       TextEditingController();
@@ -157,10 +161,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   late TextEditingController batchNoController = TextEditingController();
 
 //store list off Address
-  List<dynamic>? listOfAddressDetails = [];
+  List<dynamic>? listOfAddressDetails = <dynamic>[];
 
 //store list off Mobile no
-  List<dynamic>? listOfCallDetails = [];
+  List<dynamic>? listOfCallDetails = <dynamic>[];
   List<Address>? listOfAddress;
 
 // Repayment info send sms loading
@@ -194,7 +198,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             .collection(Constants.firebaseCase)
             .doc('${event.paramValues['caseID']}')
             .get(const GetOptions(source: Source.cache))
-            .then((value) {
+            .then((DocumentSnapshot<Map<String, dynamic>> value) {
           final Map<String, dynamic>? jsonData = value.data();
           final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
           caseDetailsAPIValue.result =
@@ -202,10 +206,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue.result?.caseDetails = caseDetails;
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
               .result?.callDetails
-              ?.where((element) => (element['cType'] == 'mobile'))
+              ?.where((dynamic element) => (element['cType'] == 'mobile'))
               .toList();
           caseDetailsAPIValue.result?.callDetails?.sort(
-              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+              (dynamic a, dynamic b) =>
+                  (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
         });
@@ -220,10 +225,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
               .result?.callDetails
-              ?.where((element) => (element['cType'] == 'mobile'))
+              ?.where((dynamic element) => (element['cType'] == 'mobile'))
               .toList();
           caseDetailsAPIValue.result?.callDetails?.sort(
-              (a, b) => (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+              (dynamic a, dynamic b) =>
+                  (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
         } else if (caseDetailsData['statusCode'] == 401 ||
@@ -301,7 +307,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //Stor list of contacts (mobile Numbers)
       listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
 
-      addressCustomerMetGridList.addAll([
+      addressCustomerMetGridList.addAll(<CustomerMetGridModel>[
         CustomerMetGridModel(
             ImageResource.ptp, Languages.of(event.context!)!.ptp.toUpperCase(),
             onTap: () => add(EventDetailsEvent(Constants.ptp,
@@ -366,7 +372,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is PhoneBottomSheetInitialEvent) {
       yield PhoneBottomSheetLoadingState();
       phoneCustomerMetGridList.clear();
-      phoneCustomerMetGridList.addAll([
+      phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
         CustomerMetGridModel(
             ImageResource.ptp, Languages.of(event.context)!.ptp.toUpperCase(),
             onTap: () => add(EventDetailsEvent(
@@ -484,8 +490,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is EventDetailsEvent) {
       yield CaseDetailsLoadingState();
       if (isAutoCalling || paramValue['contactIndex'] != null) {
-        openBottomSheet(
-            caseDetailsContext!, event.title, event.list ?? [], event.isCall);
+        openBottomSheet(caseDetailsContext!, event.title,
+            event.list ?? <dynamic>[], event.isCall);
       } else {
         yield ClickOpenBottomSheetState(
           event.title,
@@ -506,11 +512,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      final List<dynamic> value = [];
-      for (var element in event.fileData!) {
+      final List<dynamic> value = <dynamic>[];
+      for (File element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
-      postdata.addAll({
+      postdata.addAll(<String, dynamic>{
         'files': value,
       });
       //do do do do
@@ -542,7 +548,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickCustomerNotMetButtonEvent) {
       yield DisableCustomerNotMetBtnState();
-      Map<String, dynamic> resultValue = {'success': false};
+      Map<String, dynamic> resultValue = <String, dynamic>{'success': false};
       if (addressSelectedCustomerNotMetClip ==
           Languages.of(event.context)!.leftMessage) {
         resultValue = await customerNotMetButtonClick(
@@ -553,7 +559,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             userType.toString(),
           ),
           'PTP',
-          {
+          <String, dynamic>{
             'cType': caseDetailsAPIValue
                 .result?.addressDetails?[indexValue!]['cType']
                 .toString(),
@@ -573,8 +579,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseId.toString(),
           HttpUrl.doorLockedUrl('doorLocked', userType.toString()),
           'NEW',
-          [
-            {
+          <dynamic>[
+            <String, dynamic>{
               'cType': caseDetailsAPIValue
                   .result?.addressDetails?[indexValue!]['cType']
                   .toString(),
@@ -595,8 +601,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseId.toString(),
           HttpUrl.entryRestrictedUrl('entryRestricted', userType.toString()),
           'PTP',
-          [
-            {
+          <dynamic>[
+            <String, dynamic>{
               'cType': caseDetailsAPIValue
                   .result?.addressDetails?[indexValue!]['cType']
                   .toString(),
@@ -619,7 +625,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is ClickAddressInvalidButtonEvent) {
       yield DisableAddressInvalidBtnState();
-      late Map<String, dynamic> resultValue = {Constants.success: false};
+      late Map<String, dynamic> resultValue = <String, dynamic>{
+        Constants.success: false
+      };
       if (addressInvalidFormKey.currentState!.validate()) {
         if (addressSelectedInvalidClip != '') {
           if (addressSelectedInvalidClip ==
@@ -688,12 +696,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                     ? event.callId
                     : paramValue['callId'],
                 context: event.context)
-            .then((value) {
+            .then((bool value) {
           isNotAutoCalling = value;
         });
       }
       if (isNotAutoCalling) {
-        late Map<String, dynamic> resultValue = {Constants.success: false};
+        late Map<String, dynamic> resultValue = <String, dynamic>{
+          Constants.success: false
+        };
         if (phoneInvalidFormKey.currentState!.validate()) {
           if (phoneSelectedInvalidClip != '') {
             if (phoneSelectedInvalidClip ==
@@ -787,7 +797,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                     ? event.callId
                     : paramValue['callId'],
                 context: event.context)
-            .then((value) {
+            .then((bool value) {
           isNotAutoCalling = value;
         });
       }
@@ -894,7 +904,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield SendSMSloadState();
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
         if (Singleton.instance.contractorInformations!.result!.sendSms!) {
-          final requestBodyData = SendSMS(
+          final SendSMS requestBodyData = SendSMS(
             agentRef: Singleton.instance.agentRef,
             agrRef: Singleton.instance.agrRef,
             type: event.type,
@@ -938,7 +948,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isGeneratePaymentLinkLoading = true;
 
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      final requestBodyData = GeneratePaymentLinkPost(
+      final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
         dynamicLink: true,
       );
@@ -960,7 +970,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is GenerateQRcodeEvent) {
       GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      final requestBodyData = GeneratePaymentLinkPost(
+      final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
         caseId: event.caseID,
         dynamicLink: false,
       );
@@ -980,7 +990,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
     }
     if (event is UpdateHealthStatusEvent) {
-      Singleton.instance.updateHealthStatus = {
+      Singleton.instance.updateHealthStatus = <String, dynamic>{
         'selectedHealthIndex': event.selectedHealthIndex!,
         'tabIndex': event.tabIndex,
         'currentHealth': event.currentHealth,
@@ -1001,8 +1011,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   }
 
   // Open the Bottom Sheet Only in Auto Calling Feature
-  openBottomSheet(
-      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+  openBottomSheet(BuildContext buildContext, String cardTitle,
+      List<dynamic> list, bool? isCall,
       {String? health}) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -1189,8 +1199,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             );
 
           case Constants.callCustomer:
-            final List<String> s1 = [];
-            caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+            final List<String> s1 = <String>[];
+            caseDetailsAPIValue.result?.callDetails?.forEach((dynamic element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
                   s1.add(element['value']);
@@ -1221,7 +1231,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 height: MediaQuery.of(context).size.height * 0.89,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: const <Widget>[
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
                     Expanded(child: CustomLoadingWidget()),
@@ -1240,7 +1250,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String selectedClipValue,
     BuildContext context,
   ) async {
-    final requestBodyData = PhoneUnreachablePostModel(
+    final PhoneUnreachablePostModel requestBodyData = PhoneUnreachablePostModel(
         eventId: ConstantEventValues.phoneUnreachableEventId,
         eventType: eventType,
         caseId: caseId,
@@ -1277,7 +1287,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
 
-    Map<String, dynamic> postResult = {'success': false};
+    Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(
               eventsDetails: requestBodyData.toJson(),
@@ -1285,8 +1295,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               selectedClipValue: ConvertString.convertLanguageToConstant(
                   selectedClipValue, context),
               bloc: this)
-          .then((value) {
-        postResult = {'success': true};
+          .then((bool value) {
+        postResult = <String, dynamic>{'success': true};
       });
     } else {
       // For local storage purpose storing while online
@@ -1348,7 +1358,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       final Position res = await Geolocator.getCurrentPosition();
       position = res;
     }
-    final requestBodyData = CustomerNotMetPostModel(
+    final CustomerNotMetPostModel requestBodyData = CustomerNotMetPostModel(
         eventId: ConstantEventValues.addressCustomerNotMetEventId,
         eventType: eventType,
         caseId: caseId,
@@ -1379,7 +1389,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           translatedText: returnS2TCustomerNotMet.result?.translatedText,
           audioS3Path: returnS2TCustomerNotMet.result?.audioS3Path,
         ));
-    Map<String, dynamic> postResult = {'success': false};
+    Map<String, dynamic> postResult = <String, dynamic>{'success': false};
 
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(
@@ -1391,9 +1401,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               selectedClipValue: ConvertString.convertLanguageToConstant(
                   selectedClipValue, context),
               bloc: this)
-          .then((value) {
+          .then((bool value) {
         //For navigation purpose - back screen
-        postResult = {'success': true};
+        postResult = <String, dynamic>{'success': true};
       });
     } else {
       await FirebaseUtils.storeEvents(
@@ -1453,7 +1463,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
       position = res;
     }
-    final requestBodyData = AddressInvalidPostModel(
+    final AddressInvalidPostModel requestBodyData = AddressInvalidPostModel(
         eventId: ConstantEventValues.addressInvalidEventId,
         callerServiceID: Singleton.instance.callerServiceID ?? '',
         callID: Singleton.instance.callID,
@@ -1480,7 +1490,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           audioS3Path: returnS2TAddressInvalid.result?.audioS3Path,
         ),
         eventModule: 'Field Allocation',
-        contact: [
+        contact: <AddressInvalidContact>[
           AddressInvalidContact(
             cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]
                 ['cType'],
@@ -1490,7 +1500,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             resAddressId_0: Singleton.instance.resAddressId_0 ?? '',
           )
         ]);
-    Map<String, dynamic> postResult = {'success': false};
+    Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(
               eventsDetails: requestBodyData.toJson(),
@@ -1498,8 +1508,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               selectedClipValue: ConvertString.convertLanguageToConstant(
                   selectedClipValue, context),
               bloc: this)
-          .then((value) {
-        postResult = {'success': true};
+          .then((bool value) {
+        postResult = <String, dynamic>{'success': true};
       });
     } else {
       // For local storage purpose storing while online
@@ -1535,7 +1545,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String selectedClipValue,
     BuildContext context,
   ) async {
-    final requestBodyData = PhoneInvalidPostModel(
+    final PhoneInvalidPostModel requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
         callerServiceID: Singleton.instance.callerServiceID ?? '',
@@ -1569,7 +1579,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           contactId0: Singleton.instance.contactId_0 ?? '',
         ));
 
-    Map<String, dynamic> postResult = {'success': false};
+    Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(
               eventsDetails: requestBodyData.toJson(),
@@ -1577,8 +1587,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               selectedClipValue: ConvertString.convertLanguageToConstant(
                   selectedClipValue, context),
               bloc: this)
-          .then((value) {
-        postResult = {'success': true};
+          .then((bool value) {
+        postResult = <String, dynamic>{'success': true};
       });
     } else {
       // For local storage purpose storing while online

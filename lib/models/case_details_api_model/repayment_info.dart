@@ -41,7 +41,7 @@ class RepaymentInfo {
   String? refUrl;
   String? refLender;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'reference2': reference2,
         'officeMobile': officeMobile,
         'repaymentIfscCode': repaymentIfscCode,

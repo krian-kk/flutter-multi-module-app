@@ -48,21 +48,21 @@ class _CustomerLanguagePreferenceState
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, ProfileState state) {},
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, ProfileState state) {
           return SingleChildScrollView(
             child: SizedBox(
               height: MediaQuery.of(context).size.height * 0.87,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         Padding(
                           padding:
                               const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10),
@@ -90,7 +90,7 @@ class _CustomerLanguagePreferenceState
                               shrinkWrap: true,
                               itemCount: widget
                                   .bloc.customerLanguagePreferenceList.length,
-                              itemBuilder: (context, i) {
+                              itemBuilder: (BuildContext context, int i) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0, vertical: 4),
@@ -104,7 +104,7 @@ class _CustomerLanguagePreferenceState
                                         color: ColorResource.colorF8F9FB,
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0))),
-                                    child: RadioListTile(
+                                    child: RadioListTile<int>(
                                       activeColor: ColorResource.color23375A,
                                       title: CustomText(
                                         widget
@@ -137,7 +137,7 @@ class _CustomerLanguagePreferenceState
                     width: double.infinity,
                     decoration: BoxDecoration(
                       color: ColorResource.colorFFFFFF,
-                      boxShadow: [
+                      boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: ColorResource.color000000.withOpacity(0.2),
                           blurRadius: 2.0,
@@ -149,7 +149,7 @@ class _CustomerLanguagePreferenceState
                       padding: const EdgeInsets.symmetric(vertical: 11.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           SizedBox(
                             width: 190,
                             child: CustomButton(

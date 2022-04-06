@@ -73,22 +73,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   // Check which event to call for load more cases
   bool isPriorityLoadMore = false;
 
-  List<String> selectOptions = [];
-  List<AutoCallingModel> mobileNumberList = [];
+  List<String> selectOptions = <String>[];
+  List<AutoCallingModel> mobileNumberList = <AutoCallingModel>[];
 
-  List<String> filterBuildRoute = [
+  List<String> filterBuildRoute = <String>[
     // StringResource.all,
     // StringResource.under5km,
     // StringResource.more5km,
   ];
 
-  List<AllocationListModel> allocationList = [];
+  List<AllocationListModel> allocationList = <AllocationListModel>[];
   late Position currentLocation;
-  List<dynamic> multipleLatLong = [];
+  List<dynamic> multipleLatLong = <dynamic>[];
 
   int starCount = 0;
-  List<Result> resultList = [];
-  List<Result> autoCallingResultList = [];
+  List<Result> resultList = <Result>[];
+  List<Result> autoCallingResultList = <Result>[];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
 
   int? selectedStar;

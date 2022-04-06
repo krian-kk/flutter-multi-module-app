@@ -46,14 +46,15 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.lineBusy.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.switchOff.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.rnr.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.outOfNetwork.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -66,7 +67,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           key: widget.bloc.phoneUnreachableFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -75,7 +76,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         SizedBox(
                           child: Wrap(
                             runSpacing: 10,
@@ -101,9 +102,10 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             focusNode: widget
                                 .bloc.phoneUnreachableNextActionDateFocusNode,
                             isReadOnly: true,
-                            validationRules: const ['required'],
-                            onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate, followUpDate) {
+                            validationRules: const <String>['required'],
+                            onTapped: () =>
+                                PickDateAndTimeUtils.pickDate(context,
+                                    (String? newDate, String? followUpDate) {
                               if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
@@ -135,23 +137,24 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.phoneUnreachableRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          editStringCallBack: ((values) {
+                          editStringCallBack: ((dynamic values) {
                             setState(() {
                               bottomHeight = (values == '')
                                   ? 0.0
                                   : MediaQuery.of(context).size.height * 0.1;
                             });
                           }),
-                          returnS2Tresponse: (val) {
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(
                                   () => widget.bloc.returnS2TUnReachable = val);
                             }
                           },
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TUnReachable = returnS2Tdata;
                               widget.bloc.isRecordUnReachable = isRecord;
@@ -183,7 +186,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
+                                    children: <Widget>[
                                       const Icon(
                                         Icons.message_rounded,
                                         color: ColorResource.colorffffff,
@@ -206,7 +209,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -238,9 +241,9 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    final List<Widget> widgets = [];
+    final List<Widget> widgets = <Widget>[];
 
-    for (var element in list) {
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.phoneSelectedUnreadableClip = element.clipTitle;

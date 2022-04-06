@@ -38,7 +38,7 @@ class CustomTextField extends StatefulWidget {
     this.autovalidateMode,
     this.cursorColor = ColorResource.color666666,
     this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
-    this.validationRules = const [],
+    this.validationRules = const <String>[],
   }) : super(key: key);
   final String hintText;
   final bool obscureText;
@@ -114,7 +114,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         }
       },
 
-      onFieldSubmitted: (text) {
+      onFieldSubmitted: (String text) {
         setState(() {});
         FocusScope.of(context).requestFocus(FocusNode());
         if (widget.onEditing != null) {
@@ -128,7 +128,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           widget.onTapped!();
         }
       },
-      onChanged: (q) {
+      onChanged: (String q) {
         setState(() {
           if (widget.onChange != null) {
             widget.onChange!();

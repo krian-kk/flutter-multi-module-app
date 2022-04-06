@@ -41,7 +41,8 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
@@ -50,7 +51,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is GenerateQRcodeState) {
           widget.bloc.isQRcodeBtnLoading = false;
           qrBottomSheet(qrLink: state.qrUrl);
@@ -58,10 +59,10 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -69,7 +70,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         GridView.builder(
                           padding: EdgeInsets.zero,
                           itemCount:
@@ -90,7 +91,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: ColorResource.colorF8F9FB,
-                                      boxShadow: [
+                                      boxShadow: <BoxShadow>[
                                         BoxShadow(
                                           color: ColorResource.color000000
                                               .withOpacity(0.2),
@@ -102,7 +103,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                           Radius.circular(10.0))),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: <Widget>[
                                       SvgPicture.asset(widget
                                           .bloc
                                           .addressCustomerMetGridList[
@@ -152,7 +153,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         widget.bloc.isShowQRcode
                             ? Stack(
                                 alignment: AlignmentDirectional.center,
-                                children: [
+                                children: <Widget>[
                                   CustomButton(
                                     Languages.of(context)!
                                         .showQRcode
@@ -200,7 +201,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() => selectedOptionBottomSheetButton =
                                   element.title);
                               widget.bloc.add(EventDetailsEvent(

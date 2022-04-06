@@ -14,7 +14,7 @@ class ReceiptEvent {
   String? caseId;
   EventAttr? eventAttr;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'caseId': caseId,
         'eventAttr': eventAttr?.toJson(),

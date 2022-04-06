@@ -98,7 +98,7 @@ class CaseLists {
                         child: InkWell(
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(
-                              paramValues: {
+                              paramValues: <String, dynamic>{
                                 'caseID': listData.result!.cases![index].caseId,
                               },
                               isUnTouched: untouchedCases,
@@ -118,7 +118,7 @@ class CaseLists {
                               border: Border.all(
                                   color: ColorResource.colorDADADA, width: 0.5),
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
+                              boxShadow: const <BoxShadow>[
                                 BoxShadow(
                                   color: Color.fromRGBO(0, 0, 0, 0.25),
                                   // spreadRadius: 1,

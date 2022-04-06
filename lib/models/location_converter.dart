@@ -4,7 +4,7 @@ class LocationConverterModel {
   LocationConverterModel.fromJson(Map<String, dynamic> json) {
     if (json['results'] != null) {
       results = <Results>[];
-      json['results'].forEach((v) {
+      json['results'].forEach((dynamic v) {
         results!.add(Results.fromJson(v));
       });
     }
@@ -16,7 +16,7 @@ class LocationConverterModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (results != null) {
-      data['results'] = results!.map((v) => v.toJson()).toList();
+      data['results'] = results!.map((Results v) => v.toJson()).toList();
     }
     data['status'] = status;
     return data;
@@ -34,7 +34,7 @@ class Results {
   Results.fromJson(Map<String, dynamic> json) {
     if (json['address_components'] != null) {
       addressComponents = <AddressComponents>[];
-      json['address_components'].forEach((v) {
+      json['address_components'].forEach((dynamic v) {
         addressComponents!.add(AddressComponents.fromJson(v));
       });
     }
@@ -54,7 +54,7 @@ class Results {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (addressComponents != null) {
       data['address_components'] =
-          addressComponents!.map((v) => v.toJson()).toList();
+          addressComponents!.map((AddressComponents v) => v.toJson()).toList();
     }
     data['formatted_address'] = formattedAddress;
     if (geometry != null) {

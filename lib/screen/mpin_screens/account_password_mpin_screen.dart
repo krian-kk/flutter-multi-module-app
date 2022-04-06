@@ -31,7 +31,7 @@ class AccountPasswordMpinScreen extends StatefulWidget {
 class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
   late TextEditingController contoller;
   late FocusNode focusNode;
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -48,12 +48,12 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
         width: 400,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: CustomText(
                       Languages.of(context)!.forgotPin.replaceAll('?', ''),
@@ -84,7 +84,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
               keyBoardType: TextInputType.emailAddress,
               errorborderColor: ColorResource.color23375A,
               borderColor: ColorResource.color23375A,
-              validationRules: const ['required'],
+              validationRules: const <String>['required'],
               focusNode: focusNode,
               // onEditing: () {
               //   username.unfocus();
@@ -109,7 +109,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Flexible(child: CustomCancelButton.cancelButton(context)),
                 SizedBox(
                   width: 163,

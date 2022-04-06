@@ -66,7 +66,7 @@ class _AddressScreenState extends State<AddressScreen>
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is DisableCustomerNotMetBtnState) {
           setState(() => isSubmitFirst = false);
         }
@@ -111,7 +111,7 @@ class _AddressScreenState extends State<AddressScreen>
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return MediaQuery.removePadding(
             context: context,
             removeBottom: true,
@@ -124,7 +124,7 @@ class _AddressScreenState extends State<AddressScreen>
                 child: Container(
                   decoration: BoxDecoration(
                       color: ColorResource.colorFFFFFF,
-                      boxShadow: [
+                      boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: ColorResource.colorCACACA.withOpacity(.25),
                           blurRadius: 20.0,
@@ -135,16 +135,16 @@ class _AddressScreenState extends State<AddressScreen>
                           top: Radius.circular(30))),
                   width: double.infinity,
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: <Widget>[
                                 CustomText(
                                   widget
                                           .bloc
@@ -160,7 +160,7 @@ class _AddressScreenState extends State<AddressScreen>
                                 ),
                                 Wrap(
                                   spacing: 27,
-                                  children: [
+                                  children: <Widget>[
                                     ShowHealthStatus.healthStatus(widget
                                             .bloc
                                             .caseDetailsAPIValue
@@ -198,13 +198,13 @@ class _AddressScreenState extends State<AddressScreen>
                               height: 10,
                             ),
                             Row(
-                              children: [
+                              children: <Widget>[
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () async {
                                       Position? currentLocation;
                                       await MapUtils.getCurrentLocation(context)
-                                          .then((value) {
+                                          .then((Position value) {
                                         setState(() {
                                           currentLocation = value;
                                         });
@@ -239,7 +239,7 @@ class _AddressScreenState extends State<AddressScreen>
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(75.0))),
                                         child: Row(
-                                          children: [
+                                          children: <Widget>[
                                             CircleAvatar(
                                               backgroundColor:
                                                   ColorResource.color23375A,
@@ -350,7 +350,7 @@ class _AddressScreenState extends State<AddressScreen>
                           indicatorWeight: 5.0,
                           labelColor: ColorResource.color23375A,
                           unselectedLabelColor: ColorResource.colorC4C4C4,
-                          onTap: (index) {
+                          onTap: (int index) {
                             // change address health status based on selected tab customer met / customer not met / invalid
                             widget.bloc.add(UpdateHealthStatusEvent(context,
                                 selectedHealthIndex: widget.index,
@@ -369,7 +369,7 @@ class _AddressScreenState extends State<AddressScreen>
                             widget.bloc.addressInvalidRemarksFocusNode
                                 .unfocus();
                           },
-                          tabs: [
+                          tabs: <Widget>[
                             Tab(text: Languages.of(context)!.customerMet),
                             Tab(text: Languages.of(context)!.customerNotMet),
                             Tab(text: Languages.of(context)!.invalid)
@@ -379,15 +379,15 @@ class _AddressScreenState extends State<AddressScreen>
                       Expanded(
                           child: SingleChildScrollView(
                         child: Column(
-                          children: [
-                            Column(children: [
+                          children: <Widget>[
+                            Column(children: <Widget>[
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.65,
                                 child: TabBarView(
                                   controller: _controller,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  children: [
+                                  children: <Widget>[
                                     CustomerMetScreen(
                                         bloc: widget.bloc, context: context),
                                     CustomerNotMetScreen(
@@ -410,7 +410,7 @@ class _AddressScreenState extends State<AddressScreen>
                       height: 75,
                       decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: ColorResource.color000000.withOpacity(.25),
                             blurRadius: 2.0,
@@ -424,7 +424,7 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 85, vertical: 11.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             SizedBox(
                               width: 190,
                               child: CustomButton(
@@ -441,7 +441,7 @@ class _AddressScreenState extends State<AddressScreen>
                       height: 75,
                       decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: ColorResource.color000000.withOpacity(.25),
                             blurRadius: 2.0,
@@ -455,7 +455,7 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 20, vertical: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: <Widget>[
                             Expanded(
                               child: CustomCancelButton.cancelButton(context),
                             ),
@@ -470,7 +470,7 @@ class _AddressScreenState extends State<AddressScreen>
                                           : null,
                                       isLeading: !isSubmitFirst,
                                       trailingWidget: CustomLoadingWidget(
-                                        gradientColors: [
+                                        gradientColors: <Color>[
                                           ColorResource.colorFFFFFF,
                                           ColorResource.colorFFFFFF
                                               .withOpacity(0.7),
@@ -533,7 +533,7 @@ class _AddressScreenState extends State<AddressScreen>
                                           : null,
                                       isLeading: !isSubmitSecond,
                                       trailingWidget: CustomLoadingWidget(
-                                        gradientColors: [
+                                        gradientColors: <Color>[
                                           ColorResource.colorFFFFFF,
                                           ColorResource.colorFFFFFF
                                               .withOpacity(0.7),

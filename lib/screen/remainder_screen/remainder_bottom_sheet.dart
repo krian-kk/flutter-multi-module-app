@@ -75,7 +75,7 @@ class _CustomRemainderBottomSheetState
 
   bool isSubmit = true;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String? isRecord;
   String translateText = '';
@@ -104,7 +104,7 @@ class _CustomRemainderBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
           final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
@@ -133,7 +133,7 @@ class _CustomRemainderBottomSheetState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -143,7 +143,7 @@ class _CustomRemainderBottomSheetState
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: widget.cardTitle,
                       padding: const EdgeInsets.symmetric(
@@ -161,13 +161,13 @@ class _CustomRemainderBottomSheetState
                               widget.customerLoanUserWidget,
                               const SizedBox(height: 11),
                               Row(
-                                children: [
+                                children: <Widget>[
                                   Flexible(
                                       child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
+                                    children: <Widget>[
                                       // CustomText(
                                       //   Languages.of(context)!.nextActionDate,
                                       //   fontSize: FontSize.twelve,
@@ -183,13 +183,15 @@ class _CustomRemainderBottomSheetState
                                         child: CustomReadOnlyTextField(
                                           Languages.of(context)!.nextActionDate,
                                           nextActionDateControlller,
-                                          validationRules: const ['required'],
+                                          validationRules: const <String>[
+                                            'required'
+                                          ],
                                           isReadOnly: true,
                                           isLabel: true,
                                           onTapped: () =>
                                               PickDateAndTimeUtils.pickDate(
-                                                  context,
-                                                  (newDate, followUpDate) {
+                                                  context, (String? newDate,
+                                                      String? followUpDate) {
                                             if (newDate != null &&
                                                 followUpDate != null) {
                                               setState(() {
@@ -216,7 +218,7 @@ class _CustomRemainderBottomSheetState
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
+                                    children: <Widget>[
                                       // CustomText(
                                       //   Languages.of(context)!.nextActionTime,
                                       //   fontSize: FontSize.twelve,
@@ -232,12 +234,14 @@ class _CustomRemainderBottomSheetState
                                         child: CustomReadOnlyTextField(
                                           Languages.of(context)!.nextActionTime,
                                           nextActionTimeControlller,
-                                          validationRules: const ['required'],
+                                          validationRules: const <String>[
+                                            'required'
+                                          ],
                                           isReadOnly: true,
                                           isLabel: true,
                                           onTapped: () =>
                                               PickDateAndTimeUtils.pickTime(
-                                                  context, (newTime) {
+                                                  context, (String? newTime) {
                                             if (newTime != null) {
                                               setState(() {
                                                 nextActionTimeControlller.text =
@@ -261,14 +265,15 @@ class _CustomRemainderBottomSheetState
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
                                 isVoiceRecordWidget: true,
-                                returnS2Tresponse: (val) {
+                                returnS2Tresponse: (dynamic val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {
                                       returnS2Tdata = val;
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord, text, returnS2Tdata) {
+                                checkRecord: (String? isRecord, String? text,
+                                    Speech2TextModel returnS2Tdata) {
                                   setState(() {
                                     this.returnS2Tdata = returnS2Tdata;
                                     this.isRecord = isRecord;
@@ -277,7 +282,7 @@ class _CustomRemainderBottomSheetState
                                   });
                                 },
                                 isSubmit: isTranslate,
-                                validationRules: const ['required'],
+                                validationRules: const <String>['required'],
                                 isLabel: true,
                               )),
                               const SizedBox(height: 15),
@@ -293,7 +298,7 @@ class _CustomRemainderBottomSheetState
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -307,7 +312,7 @@ class _CustomRemainderBottomSheetState
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Singleton.instance.startCalling ?? false
                           ? const SizedBox()
                           : Expanded(
@@ -334,7 +339,7 @@ class _CustomRemainderBottomSheetState
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
-                                  gradientColors: [
+                                  gradientColors: <Color>[
                                     ColorResource.colorFFFFFF,
                                     ColorResource.colorFFFFFF.withOpacity(0.7),
                                   ],
@@ -357,7 +362,7 @@ class _CustomRemainderBottomSheetState
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
-                            gradientColors: [
+                            gradientColors: <Color>[
                               ColorResource.colorFFFFFF,
                               ColorResource.colorFFFFFF.withOpacity(0.7),
                             ],
@@ -400,7 +405,7 @@ class _CustomRemainderBottomSheetState
                 ? widget.callId
                 : widget.paramValue['callId'],
             context: context,
-          ).then((value) {
+          ).then((bool value) {
             isNotAutoCalling = value;
           });
         }
@@ -413,7 +418,7 @@ class _CustomRemainderBottomSheetState
               latLng = LatLng(res.latitude, res.longitude);
             });
           }
-          final requestBodyData = ReminderPostAPI(
+          final ReminderPostAPI requestBodyData = ReminderPostAPI(
             eventId: ConstantEventValues.remainderEventId,
             eventType:
                 (widget.userType == Constants.telecaller || widget.isCall!)

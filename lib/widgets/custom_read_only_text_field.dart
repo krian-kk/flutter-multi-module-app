@@ -48,7 +48,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.isFill = false,
     this.contentPadding,
     this.cursorColor = ColorResource.color666666,
-    this.validationRules = const [],
+    this.validationRules = const <String>[],
     this.textCapitalization,
     this.isVoiceRecordWidget = false,
     this.caseId = 'case_id',
@@ -115,7 +115,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
-  static const platform = MethodChannel('recordAudioChannel');
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
   Speech2TextModel getTranslatedData = Speech2TextModel();
@@ -138,14 +138,14 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   playAudio() async {
-    await platform
-        .invokeMethod('playRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('playRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() => isPlaying = true);
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           isPlaying = false;
@@ -156,8 +156,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   stopAudio() async {
-    await platform
-        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('stopPlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPlaying = false;
@@ -168,8 +168,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   pauseAudio() async {
-    await platform.invokeMethod(
-        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('pausePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPaused = true;
@@ -179,16 +179,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   resumeAudio() async {
-    await platform.invokeMethod(
-        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('resumePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPaused = false;
         });
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           isPlaying = false;
@@ -212,7 +212,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
@@ -242,7 +242,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                 }
               },
 
-              onFieldSubmitted: (text) {
+              onFieldSubmitted: (String text) {
                 setState(() {});
                 FocusScope.of(context).requestFocus(FocusNode());
                 if (widget.onEditing != null) {
@@ -256,7 +256,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   widget.onTapped!();
                 }
               },
-              onChanged: (q) {
+              onChanged: (String q) {
                 widget.onChanged;
                 setState(() {});
                 // FocusScope.of(context).unfocus();
@@ -264,7 +264,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               textCapitalization:
                   widget.textCapitalization ?? TextCapitalization.none,
               inputFormatters: widget.inputformaters ??
-                  [
+                  <TextInputFormatter>[
                     FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                     if (widget.controller.text.isEmpty)
                       FilteringTextInputFormatter.deny(' '),
@@ -305,7 +305,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       ? (filePath != '')
                           ? VoiceRecodingWidget(
                               filePath: filePath,
-                              recordingData: (values) {
+                              recordingData: (dynamic values) {
                                 if (values is bool) {
                                   //Click action true/false
                                 } else if (values is Speech2TextModel) {
@@ -407,7 +407,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             widget.isSubmit)
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
@@ -499,7 +499,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: SizedBox(
                   height: 48,

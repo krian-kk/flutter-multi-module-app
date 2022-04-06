@@ -33,7 +33,7 @@ class OtherLoanDetail {
   String? bankName;
   String? agrRef;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'original_due': originalDue,

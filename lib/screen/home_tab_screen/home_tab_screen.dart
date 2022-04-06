@@ -70,13 +70,13 @@ class _HomeTabScreenState extends State<HomeTabScreen>
   }
 
   Future<void> internetChecking() async {
-    await Connectivity().checkConnectivity().then((value) {
+    await Connectivity().checkConnectivity().then((ConnectivityResult value) {
       setState(() {
         internetAvailability = value.name;
       });
       timeCalculateForOffline();
     });
-    Connectivity().onConnectivityChanged.listen((event) {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult event) {
       setState(() {
         internetAvailability = event.name;
         if (internetAvailability == 'none') {
@@ -92,18 +92,18 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
   Future<void> timeCalculateForOffline() async {
     final SharedPreferences _pref = await SharedPreferences.getInstance();
-    await SharedPreferences.getInstance().then((value) {
+    await SharedPreferences.getInstance().then((SharedPreferences value) {
       try {
-        final nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
+        final int nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
                     .parse(value
                         .getString(Constants.appDataLoadedFromFirebaseTime)!)
                     .add(const Duration(days: 1)))
                 .millisecondsSinceEpoch -
             DateTime.now().millisecondsSinceEpoch;
         if (nextLoginTime > 0) {
-          Future.delayed(
+          Future<dynamic>.delayed(
             Duration(milliseconds: nextLoginTime),
-          ).asStream().listen((value) {
+          ).asStream().listen((dynamic value) {
             if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
               _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
               Singleton.instance.isOfflineStorageFeatureEnabled = false;
@@ -137,7 +137,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
-      listener: (context, state) async {
+      listener: (BuildContext context, HomeTabState state) async {
         if (state is NavigateTabState) {
           const CustomLoadingWidget();
           // NotificationDataModel notificationData =
@@ -168,7 +168,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               // Initiate chat bloc
               final ChatScreenBloc chatbloc = ChatScreenBloc();
               chatbloc.add(ChatInitialEvent());
-              await Future.delayed(const Duration(milliseconds: 1000));
+              await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
               // Navigate Chat Screen
               OnclickNotificationNavigateScreen().messageScreenBottomSheet(
                   context,
@@ -181,7 +181,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyVisitsEvent());
               // dashboardbloc.add(SetTimeperiodValueEvent());
-              await Future.delayed(const Duration(milliseconds: 2000));
+              await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
               if (dashboardbloc.myVisitsData.result != null) {
                 OnclickNotificationNavigateScreen()
                     .myVisitsSheet(context, dashboardbloc);
@@ -198,7 +198,8 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                 //Navigate MyDeposists Screen
                 dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
                 dashboardbloc.add(MyDeposistsEvent());
-                await Future.delayed(const Duration(milliseconds: 2000));
+                await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 2000));
                 if (dashboardbloc.myDeposistsData.result != null) {
                   OnclickNotificationNavigateScreen()
                       .myDeposistsSheet(context, dashboardbloc);

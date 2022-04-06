@@ -57,9 +57,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   late CallCustomerBloc bloc;
   late TextEditingController agentContactNoControlller;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  List<String> customerContactNoDropdownList = [];
+  List<String> customerContactNoDropdownList = <String>[];
   String customerContactNoDropDownValue = '';
 
   @override
@@ -68,7 +68,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
     agentContactNoControlller = TextEditingController();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
     customerContactNoDropDownValue = widget.contactNumber!;
-    for (var element in widget.listOfMobileNo) {
+    for (String element in widget.listOfMobileNo) {
       customerContactNoDropdownList.add(element);
     }
   }
@@ -85,7 +85,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
       height: MediaQuery.of(context).size.height * 0.89,
       child: BlocListener<CallCustomerBloc, CallCustomerState>(
         bloc: bloc,
-        listener: (context, state) {
+        listener: (BuildContext context, CallCustomerState state) {
           if (state is NoInternetState) {
             AppUtils.noInternetSnackbar(context);
           }
@@ -108,7 +108,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
         },
         child: BlocBuilder<CallCustomerBloc, CallCustomerState>(
           bloc: bloc,
-          builder: (context, state) {
+          builder: (BuildContext context, CallCustomerState state) {
             if (state is CallCustomerLoadedState) {
               return const CustomLoadingWidget();
             } else if (state is CallCustomerSuccessState) {
@@ -121,7 +121,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       BottomSheetAppbar(
                         title: Languages.of(context)!.callCustomer,
                         padding: const EdgeInsets.symmetric(
@@ -140,13 +140,13 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 const SizedBox(height: 18),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     Flexible(
                                         child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: [
+                                      children: <Widget>[
                                         CustomText(
                                           Languages.of(context)!.agentContactNo,
                                           fontSize: FontSize.twelve,
@@ -155,7 +155,9 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         CustomReadOnlyTextField(
                                           '',
                                           agentContactNoControlller,
-                                          validationRules: const ['required'],
+                                          validationRules: const <String>[
+                                            'required'
+                                          ],
                                           height: 46,
                                           isReadOnly: true,
                                           contentPadding:
@@ -172,7 +174,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         customerContactNoDropdownList,
                                         selectedValue:
                                             customerContactNoDropDownValue,
-                                        onChanged: (newValue) => setState(() {
+                                        onChanged: (String? newValue) =>
+                                            setState(() {
                                           customerContactNoDropDownValue =
                                               newValue.toString();
                                         }),
@@ -189,7 +192,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   Languages.of(context)!.serviceProvidersList,
                                   bloc.serviceProviderListDropdownList,
                                   selectedValue: bloc.serviceProviderListValue,
-                                  onChanged: (newValue) {
+                                  onChanged: (String? newValue) {
                                     Singleton.instance.callerServiceID =
                                         (newValue == '') ? null : newValue;
                                     setState(() =>
@@ -205,7 +208,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                   Languages.of(context)!.callersId,
                                   bloc.callersIDDropdownList,
                                   selectedValue: bloc.callersIDDropdownValue,
-                                  onChanged: (newValue) {
+                                  onChanged: (String? newValue) {
                                     Singleton.instance.callingID =
                                         (newValue == '') ? null : newValue;
                                     setState(() => bloc.callersIDDropdownValue =
@@ -227,7 +230,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                   height: MediaQuery.of(context).size.height * 0.1,
                   decoration: BoxDecoration(
                     color: ColorResource.colorFFFFFF,
-                    boxShadow: [
+                    boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: ColorResource.color000000.withOpacity(.25),
                         blurRadius: 2.0,
@@ -241,7 +244,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                         horizontal: 20, vertical: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Expanded(
                             child: CustomButton(
                           Languages.of(context)!.done.toUpperCase(),
@@ -270,7 +273,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                               if (_formKey.currentState!.validate()) {
                                 if (Singleton.instance.cloudTelephony! &&
                                     Singleton.instance.callingID != null) {
-                                  final requestBodyData = CallCustomerModel(
+                                  final CallCustomerModel requestBodyData =
+                                      CallCustomerModel(
                                     //Mobile user number as Agent contact number
                                     from: agentContactNoControlller.text,
                                     //Customer mobile number

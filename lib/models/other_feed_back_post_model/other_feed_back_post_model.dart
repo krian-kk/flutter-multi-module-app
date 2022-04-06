@@ -112,7 +112,7 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    contact = json['contact'].forEach((v) {
+    contact = json['contact'].forEach((dynamic v) {
       contact?.add(v);
     });
     reginalText = json['reginal_text'];
@@ -133,7 +133,7 @@ class EventAttr {
   late double speed;
   late double latitude;
   late double longitude;
-  late List? contact;
+  late List<dynamic>? contact;
   late String? reginalText;
   late String? translatedText;
   late String? audioS3Path;
@@ -154,7 +154,7 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['contact'] = contact?.map((v) => v.toJson()).toList();
+    data['contact'] = contact?.map((dynamic v) => v.toJson()).toList();
     if (reginalText != null && translatedText != null && audioS3Path != null) {
       data['reginal_text'] = reginalText;
       data['translated_text'] = translatedText;

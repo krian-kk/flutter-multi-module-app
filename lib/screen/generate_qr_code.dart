@@ -27,15 +27,15 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, CaseDetailsState state) {},
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.97,
             width: MediaQuery.of(context).size.width,
             child: Column(
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -64,7 +64,7 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: ColorResource.colorFFFFFF,
-                    boxShadow: [
+                    boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: ColorResource.color000000.withOpacity(0.2),
                         blurRadius: 2.0,
@@ -76,7 +76,7 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
                     padding: const EdgeInsets.symmetric(vertical: 11.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         SizedBox(
                           width: 190,
                           child: CustomButton(

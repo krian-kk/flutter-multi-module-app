@@ -33,19 +33,20 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, CaseDetailsState state) {},
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -53,7 +54,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         GridView.builder(
                           padding: EdgeInsets.zero,
                           itemCount:
@@ -72,7 +73,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: ColorResource.colorF8F9FB,
-                                      boxShadow: [
+                                      boxShadow: <BoxShadow>[
                                         BoxShadow(
                                           color: ColorResource.color000000
                                               .withOpacity(0.2),
@@ -84,7 +85,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                           Radius.circular(10.0))),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: <Widget>[
                                       SvgPicture.asset(widget
                                           .bloc
                                           .phoneCustomerMetGridList[innerIndex]
@@ -115,7 +116,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });

@@ -13,7 +13,8 @@ part 'call_customer_state.dart';
 
 class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
   CallCustomerBloc() : super(CallCustomerInitial()) {
-    on<CallCustomerEvent>((event, emit) async {
+    on<CallCustomerEvent>(
+        (CallCustomerEvent event, Emitter<CallCustomerState> emit) async {
       if (event is CallCustomerInitialEvent) {
         emit.call(CallCustomerLoadedState());
         if (ConnectivityResult.none ==
@@ -69,9 +70,9 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
       }
     });
   }
-  List<String> serviceProviderListDropdownList = [''];
+  List<String> serviceProviderListDropdownList = <String>[''];
   String serviceProviderListValue = '';
-  List<String> callersIDDropdownList = [''];
+  List<String> callersIDDropdownList = <String>[''];
   String callersIDDropdownValue = '';
   bool isSubmit = true;
 

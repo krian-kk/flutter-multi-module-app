@@ -59,7 +59,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   bool isRecordOn = false;
 
   bool isStartLoading = false;
-  List<File> uploadFileLists = [];
+  List<File> uploadFileLists = <File>[];
 
   final Codec _codec = Codec.pcm16WAV;
   // final String _mPath = '/sdcard/Download/taNew.wav';
@@ -111,9 +111,8 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
       await Permission.storage.request();
       //remove play button
       widget.recordingData!('');
-      await platform
-          .invokeMethod('startRecordAudio', {'filePath': widget.filePath}).then(
-              (dynamic value) {
+      await platform.invokeMethod('startRecordAudio',
+          <String, dynamic>{'filePath': widget.filePath}).then((dynamic value) {
         widget.enableTextFieldFunction(!value);
         setState(() => result = value);
         // setState(() => widget.isEnableTextField = value);
@@ -143,9 +142,8 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   stopRecorder() async {
     if (Platform.isIOS) {
-      await platform
-          .invokeMethod('stopRecordAudio', {'filePath': widget.filePath}).then(
-              (dynamic value) {
+      await platform.invokeMethod('stopRecordAudio',
+          <String, dynamic>{'filePath': widget.filePath}).then((dynamic value) {
         if (value) {
           // startAPICall();
           apiCall();
@@ -168,7 +166,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
 
   apiCall() async {
     if (mounted) {
-      setState(() => uploadFileLists = [File(widget.filePath)]);
+      setState(() => uploadFileLists = <File>[File(widget.filePath)]);
     }
     await audioTranslateAPI();
   }
@@ -199,11 +197,11 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     final Map<String, dynamic> postdata =
         jsonDecode(jsonEncode(requestBodyData.toJson()))
             as Map<String, dynamic>;
-    final List<dynamic> value = [];
+    final List<dynamic> value = <dynamic>[];
     for (File element in uploadFileLists) {
       value.add(await MultipartFile.fromFile(element.path.toString()));
     }
-    postdata.addAll({
+    postdata.addAll(<String, dynamic>{
       'files': value,
     });
 

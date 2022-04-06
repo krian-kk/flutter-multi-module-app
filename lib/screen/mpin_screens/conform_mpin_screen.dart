@@ -45,12 +45,12 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
       width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomText(
                     Languages.of(context)!.enterYourSecureFourdDigitPin,
@@ -78,10 +78,10 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
               length: 4,
               mainAxisAlignment: MainAxisAlignment.center,
               animationType: AnimationType.scale,
-              onChanged: (value) {
+              onChanged: (String value) {
                 setState(() => isError = false);
               },
-              onCompleted: (value) {
+              onCompleted: (String value) {
                 if (contoller.text == widget.mPin) {
                   Navigator.pop(context);
                   widget.successFunction();
@@ -94,7 +94,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                 color: ColorResource.color23375A,
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [
+              inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                 FilteringTextInputFormatter.deny(' '),
                 FilteringTextInputFormatter.digitsOnly,

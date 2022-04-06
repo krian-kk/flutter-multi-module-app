@@ -8,7 +8,7 @@ class EventAttr {
   int? amountCollected;
   String? appStatus;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'amountCollected': amountCollected,
         'appStatus': appStatus,
       };

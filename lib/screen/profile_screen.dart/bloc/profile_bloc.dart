@@ -29,7 +29,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
 
-  List<NotificationMainModel> notificationList = [];
+  List<NotificationMainModel> notificationList = <NotificationMainModel>[];
   List<LanguageModel> languageList = [];
   String? userType;
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');

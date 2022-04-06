@@ -60,13 +60,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     addressValue = (_pref.getString('addressValue') ?? '').toString();
   }
 
-  Future pickImage(
+  Future<dynamic> pickImage(
       ImageSource source, BuildContext cameraDialogueContext) async {
     Navigator.pop(cameraDialogueContext);
     try {
-      final image = await ImagePicker().pickImage(source: source);
+      final XFile? image = await ImagePicker().pickImage(source: source);
       if (image != null) {
-        final getProfileImage = File(image.path);
+        final File getProfileImage = File(image.path);
         setState(() {
           bloc.image = getProfileImage;
           bloc.add(PostProfileImageEvent(postValue: getProfileImage));
@@ -87,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
-      requestBodydata: {
+      requestBodydata: <String, dynamic>{
         'aRef': aRef,
       },
     );
@@ -103,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     bool returnValue = false;
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.put, HttpUrl.createMpin,
-        requestBodydata: {
+        requestBodydata: <String, dynamic>{
           'mPin': mPin,
         });
     if (postResult[Constants.success]) {
@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     bool returnValue = false;
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post, HttpUrl.verifyOTP(),
-        requestBodydata: {
+        requestBodydata: <String, dynamic>{
           'aRef': aRef,
           'otp': otp,
         });
@@ -144,7 +144,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
-              submitOtpFunction: (otp, isError, function) async {
+              submitOtpFunction:
+                  (String? otp, bool? isError, Function()? function) async {
                 final bool result = await verifyOTP(userName, otp);
                 if (result) {
                   Navigator.pop(context);
@@ -172,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
-              saveFuction: (mPin) async {
+              saveFuction: (String? mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
                   AppUtils.showToast('Change MPin Successfully');
@@ -191,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    final List<ProfileNavigation> profileNavigationList = [
+    final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
       // ProfileNavigation(
       //     title: Languages.of(context)!.notification,
       //     notificationCount: 3,
@@ -226,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, ProfileState state) {
         if (state is PostDataApiSuccessState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
@@ -259,7 +260,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is LoginState) {
           Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.loginScreen, (route) => false);
+              context, AppRoutes.loginScreen, (Route<dynamic> route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
           showForgorSecurePinDialogBox(
@@ -269,7 +270,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoadingState) {
             return const CustomLoadingWidget();
           } else {
@@ -281,7 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         CustomText(bloc.noInternetAndServerErrorMsg!),
                         const SizedBox(
                           height: 5,
@@ -302,12 +303,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   color: ColorResource.colorFFFFFF,
-                                  boxShadow: [
+                                  boxShadow: <BoxShadow>[
                                     BoxShadow(
                                       color: ColorResource.color000000
                                           .withOpacity(0.2),
@@ -321,13 +322,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0, vertical: 19.0),
                                 child: Column(
-                                  children: [
+                                  children: <Widget>[
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: <Widget>[
                                         Stack(
-                                          children: [
+                                          children: <Widget>[
                                             GestureDetector(
                                               onTap: () => bloc.add(
                                                   ChangeProfileImageEvent()),
@@ -383,7 +384,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: <Widget>[
                                             CustomText(
                                               bloc.profileAPIValue.result?.first
                                                       .aRef
@@ -422,7 +423,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             mainAxisSize: MainAxisSize.min,
-                                            children: [
+                                            children: <Widget>[
                                               const Spacer(),
                                               // CustomText(
                                               //   Languages.of(context)!
@@ -473,9 +474,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
+                                                children: <Widget>[
                                                   Row(
-                                                    children: [
+                                                    children: <Widget>[
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .homeAddress
@@ -559,7 +560,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       trailing: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.min,
-                                                        children: [
+                                                        children: <Widget>[
                                                           SvgPicture.asset(
                                                               ImageResource
                                                                   .forwardArrow),
@@ -609,7 +610,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 11.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             SizedBox(
                               width: 200,
                               child: CustomButton(
@@ -665,10 +666,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: <Widget>[
                             CustomText(
                               Languages.of(context)!
                                   .addAProfilePhoto
@@ -836,7 +837,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, BoxConstraints settate) =>
                 MapViewBottomSheetScreen(
                   title: Languages.of(context)!.markAsHome,
-                  onClose: (value) async {
+                  onClose: (dynamic value) async {
                     final SharedPreferences _pref =
                         await SharedPreferences.getInstance();
                     setState(() {

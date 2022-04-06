@@ -76,7 +76,7 @@ class Met {
     totalAmt = json['totalAmt'];
     if (json['cases'] != null) {
       cases = <Cases>[];
-      json['cases'].forEach((v) {
+      json['cases'].forEach((dynamic v) {
         cases!.add(Cases.fromJson(v));
       });
     }
@@ -90,7 +90,7 @@ class Met {
     data['count'] = count;
     data['totalAmt'] = totalAmt;
     if (cases != null) {
-      data['cases'] = cases!.map((v) => v.toJson()).toList();
+      data['cases'] = cases!.map((Cases v) => v.toJson()).toList();
     }
     return data;
   }
@@ -168,7 +168,7 @@ class Cases {
     aRef = json['aRef'];
     if (json['contact'] != null) {
       contact = <Contact>[];
-      json['contact'].forEach((v) {
+      json['contact'].forEach((dynamic v) {
         contact!.add(Contact.fromJson(v));
       });
     }
@@ -212,7 +212,7 @@ class Cases {
     data['bankName'] = bankName;
     data['aRef'] = aRef;
     if (contact != null) {
-      data['contact'] = contact!.map((v) => v.toJson()).toList();
+      data['contact'] = contact!.map((Contact v) => v.toJson()).toList();
     }
     data['totalReceiptAmount'] = totalReceiptAmount;
     data['caseId'] = caseId;

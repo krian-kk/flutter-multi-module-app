@@ -210,15 +210,15 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
       _cursorController.repeat();
     }
 
-    _controller.addStatusListener((status) {
+    _controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _controller.reverse();
       }
     });
 
     if (widget.errorAnimationController != null) {
-      _errorAnimationSubscription =
-          widget.errorAnimationController!.stream.listen((errorAnimation) {
+      _errorAnimationSubscription = widget.errorAnimationController!.stream
+          .listen((ErrorAnimationType errorAnimation) {
         if (errorAnimation == ErrorAnimationType.shake) {
           _controller.forward();
           setState(() => isInErrorMode = true);
@@ -292,7 +292,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
 
       _debounceBlink();
 
-      var currentText = _textEditingController!.text;
+      String currentText = _textEditingController!.text;
 
       if (widget.enabled && _inputList.join() != currentText) {
         if (currentText.length >= widget.length) {
@@ -301,7 +301,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
               currentText = currentText.substring(0, widget.length);
             }
 
-            Future.delayed(const Duration(milliseconds: 300),
+            Future<dynamic>.delayed(const Duration(milliseconds: 300),
                 () => widget.onCompleted!(currentText));
           }
 
@@ -319,7 +319,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
   void _debounceBlink() {
     if (widget.blinkWhenObscuring &&
         _textEditingController!.text.length >
-            _inputList.where((x) => x.isNotEmpty).length) {
+            _inputList.where((String x) => x.isNotEmpty).length) {
       setState(() {
         _hasBlinked = false;
       });
@@ -381,7 +381,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
 
     final bool showObscured = !widget.blinkWhenObscuring ||
         (widget.blinkWhenObscuring && _hasBlinked) ||
-        index != _inputList.where((x) => x.isNotEmpty).length - 1;
+        index != _inputList.where((String x) => x.isNotEmpty).length - 1;
 
     if (widget.obscuringWidget != null) {
       if (showObscured) {
@@ -394,12 +394,12 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
     if (_inputList[index!].isEmpty && _hintAvailable) {
       return Text(
         widget.hintCharacter!,
-        key: ValueKey(_inputList[index]),
+        key: ValueKey<String>(_inputList[index]),
         style: _hintStyle,
       );
     }
 
-    final text =
+    final String text =
         widget.obscureText && _inputList[index].isNotEmpty && showObscured
             ? widget.obscuringCharacter
             : _inputList[index];
@@ -408,13 +408,13 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
             gradient: widget.textGradient!,
             child: Text(
               text,
-              key: ValueKey(_inputList[index]),
+              key: ValueKey<String>(_inputList[index]),
               style: _textStyle.copyWith(color: Colors.white),
             ),
           )
         : Text(
             text,
-            key: ValueKey(_inputList[index]),
+            key: ValueKey<String>(_inputList[index]),
             style: _textStyle,
           );
   }
@@ -438,15 +438,16 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
             (_selectedIndex == index + 1 && index + 1 == widget.length)) &&
         _focusNode!.hasFocus &&
         widget.showCursor) {
-      final cursorColor = widget.cursorColor ??
+      final Color cursorColor = widget.cursorColor ??
           Theme.of(widget.appContext).textSelectionTheme.cursorColor ??
           Theme.of(context).colorScheme.secondary;
-      final cursorHeight = widget.cursorHeight ?? _textStyle.fontSize! + 8;
+      final double cursorHeight =
+          widget.cursorHeight ?? _textStyle.fontSize! + 8;
 
       if ((_selectedIndex == index + 1 && index + 1 == widget.length)) {
         return Stack(
           alignment: Alignment.center,
-          children: [
+          children: <Widget>[
             Center(
               child: Padding(
                 padding: EdgeInsets.only(left: _textStyle.fontSize! / 1.5),
@@ -488,11 +489,11 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
   }
 
   Future<void> _showPasteDialog(String pastedText) {
-    final formattedPastedText = pastedText
+    final String formattedPastedText = pastedText
         .trim()
         .substring(0, min(pastedText.trim().length, widget.length));
 
-    final defaultPastedTextStyle = TextStyle(
+    final TextStyle defaultPastedTextStyle = TextStyle(
       fontWeight: FontWeight.bold,
       color: Theme.of(context).colorScheme.secondary,
     );
@@ -500,7 +501,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
     return showDialog(
       context: context,
       useRootNavigator: true,
-      builder: (context) => _dialogConfig.platform.toString() ==
+      builder: (BuildContext context) => _dialogConfig.platform.toString() ==
               Platform.isIOS.toString()
           ? CupertinoAlertDialog(
               title: Text(_dialogConfig.dialogTitle!),
@@ -510,7 +511,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
                   style: TextStyle(
                     color: Theme.of(context).textTheme.button!.color,
                   ),
-                  children: [
+                  children: <InlineSpan>[
                     TextSpan(
                       text: formattedPastedText,
                       style: widget.pastedTextStyle ?? defaultPastedTextStyle,
@@ -536,7 +537,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
                   text: _dialogConfig.dialogContent,
                   style: TextStyle(
                       color: Theme.of(context).textTheme.button!.color),
-                  children: [
+                  children: <InlineSpan>[
                     TextSpan(
                       text: formattedPastedText,
                       style: widget.pastedTextStyle ?? defaultPastedTextStyle,
@@ -557,7 +558,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
 
   @override
   Widget build(BuildContext context) {
-    final textField = TextFormField(
+    final TextFormField textField = TextFormField(
       textInputAction: widget.textInputAction,
       controller: _textEditingController,
       focusNode: _focusNode,
@@ -573,7 +574,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
       validator: widget.validator,
       onSaved: widget.onSaved,
       autovalidateMode: widget.autovalidateMode,
-      inputFormatters: [
+      inputFormatters: <TextInputFormatter>[
         ...widget.inputFormatters,
         LengthLimitingTextInputFormatter(
           widget.length,
@@ -631,7 +632,8 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
                 },
                 onLongPress: widget.enabled
                     ? () async {
-                        final data = await Clipboard.getData('text/plain');
+                        final ClipboardData? data =
+                            await Clipboard.getData('text/plain');
                         if (data?.text?.isNotEmpty ?? false) {
                           if (widget.beforeTextPaste != null) {
                             if (widget.beforeTextPaste!(data!.text)) {
@@ -656,7 +658,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
   }
 
   List<Widget> _generateFields() {
-    final result = <Widget>[];
+    final List<Widget> result = <Widget>[];
     for (int i = 0; i < widget.length; i++) {
       result.add(
         Container(
@@ -692,7 +694,8 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
                   switchInCurve: widget.animationCurve,
                   switchOutCurve: widget.animationCurve,
                   duration: widget.animationDuration,
-                  transitionBuilder: (child, animation) {
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
                     if (widget.animationType == AnimationType.scale) {
                       return ScaleTransition(
                         scale: animation,
@@ -728,7 +731,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
     if (_focusNode!.hasFocus &&
         MediaQuery.of(widget.appContext).viewInsets.bottom == 0) {
       _focusNode!.unfocus();
-      Future.delayed(
+      Future<dynamic>.delayed(
           const Duration(microseconds: 1), () => _focusNode!.requestFocus());
     } else {
       _focusNode!.requestFocus();
@@ -736,7 +739,8 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
   }
 
   _setTextToInput(String data) async {
-    final replaceInputList = List<String>.filled(widget.length, '');
+    final List<String> replaceInputList =
+        List<String>.filled(widget.length, '');
 
     for (int i = 0; i < widget.length; i++) {
       replaceInputList[i] = data.length > i ? data[i] : '';
@@ -751,9 +755,9 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
   }
 
   List<Widget> _getActionButtons(String pastedText) {
-    final resultList = <Widget>[];
+    final List<Widget> resultList = <Widget>[];
     if (_dialogConfig.platform.toString() == Platform.isIOS.toString()) {
-      resultList.addAll([
+      resultList.addAll(<CupertinoDialogAction>[
         CupertinoDialogAction(
           child: Text(_dialogConfig.negativeText!),
           onPressed: () {
@@ -769,7 +773,7 @@ class _PinCodeTextFieldWidgetState extends State<PinCodeTextFieldWidget>
         ),
       ]);
     } else {
-      resultList.addAll([
+      resultList.addAll(<Widget>[
         TextButton(
           child: Text(_dialogConfig.negativeText!),
           onPressed: () {
@@ -808,9 +812,9 @@ class CursorPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    const p1 = Offset(0, 0);
-    final p2 = Offset(0, size.height);
-    final paint = Paint()
+    const Offset p1 = Offset(0, 0);
+    final Offset p2 = Offset(0, size.height);
+    final Paint paint = Paint()
       ..color = cursorColor
       ..strokeWidth = cursorWidth;
     canvas.drawLine(p1, p2, paint);
@@ -856,7 +860,7 @@ class PinTheme {
       double? borderWidth,
       PinCodeFieldShape? shape,
       EdgeInsetsGeometry? fieldOuterPadding}) {
-    const defaultValues = PinTheme.defaults();
+    const PinTheme defaultValues = PinTheme.defaults();
     return PinTheme.defaults(
       activeColor: activeColor ?? defaultValues.activeColor,
       activeFillColor: activeFillColor ?? defaultValues.activeFillColor,

@@ -34,12 +34,12 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: CustomText(
                   Languages.of(context)!
@@ -68,7 +68,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
             length: 4,
             mainAxisAlignment: MainAxisAlignment.center,
             animationType: AnimationType.scale,
-            onChanged: (value) {
+            onChanged: (String value) {
               setState(() => isError = false);
             },
             textStyle: const TextStyle(
@@ -76,7 +76,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
               color: ColorResource.color23375A,
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: [
+            inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
               FilteringTextInputFormatter.deny(' '),
               FilteringTextInputFormatter.digitsOnly,

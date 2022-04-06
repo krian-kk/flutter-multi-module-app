@@ -12,8 +12,8 @@ class SelectPaymentModeButtonWidget {
     OnClickForPaymentMode function,
     String selectValue,
   ) {
-    final List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (OptionBottomSheetButtonModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           function(element);

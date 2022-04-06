@@ -55,7 +55,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         CustomText(
           widget.labelText,
           color: ColorResource.color666666,

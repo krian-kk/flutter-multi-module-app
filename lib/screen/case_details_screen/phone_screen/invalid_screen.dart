@@ -34,13 +34,14 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    final List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.doesNotExist.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.incorrectNumber.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.numberNotWorking.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -53,7 +54,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           key: widget.bloc.phoneInvalidFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -62,7 +63,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         SizedBox(
                           child: Wrap(
                             runSpacing: 10,
@@ -75,23 +76,24 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.phoneInvalidRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          returnS2Tresponse: (val) {
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(() =>
                                   widget.bloc.returnS2TPhoneInvalid = val);
                             }
                           },
-                          editStringCallBack: ((values) {
+                          editStringCallBack: ((dynamic values) {
                             setState(() {
                               bottomHeight = (values == '')
                                   ? 0.0
                                   : MediaQuery.of(context).size.height * 0.1;
                             });
                           }),
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TPhoneInvalid = returnS2Tdata;
                               widget.bloc.isRecordPhoneInvalid = isRecord;
@@ -110,7 +112,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -142,8 +144,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    final List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.phoneSelectedInvalidClip = element.clipTitle;

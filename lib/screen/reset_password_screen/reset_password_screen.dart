@@ -40,7 +40,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool isCheck = true;
   bool isSaveNewPasswordLoad = true;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   FocusNode userIdFocusNode = FocusNode();
   FocusNode mobileNumberFocusNode = FocusNode();
@@ -94,7 +94,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               BottomSheetAppbar(
                 title: Languages.of(context)!.resetPassword.toUpperCase(),
                 padding: const EdgeInsets.symmetric(
@@ -111,7 +111,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       CustomTextField(
                         Languages.of(context)!.userName,
                         userIdController,
@@ -299,7 +299,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           ? const SizedBox()
                           : Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
+                              children: <Widget>[
                                 const SizedBox(height: 5),
                                 if (isTime)
                                   CustomText(
@@ -316,7 +316,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     length: 6,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     animationType: AnimationType.scale,
-                                    onChanged: (value) {
+                                    onChanged: (String value) {
                                       setState(() {});
                                     },
                                     textStyle: const TextStyle(
@@ -350,7 +350,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                 await APIRepository.apiRequest(
                                               APIRequestType.post,
                                               HttpUrl.resendOTPUrl(),
-                                              requestBodydata: {
+                                              requestBodydata: <String,
+                                                  dynamic>{
                                                 'aRef': userIdController.text
                                               },
                                             );
@@ -423,7 +424,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           await APIRepository.apiRequest(
                                         APIRequestType.post,
                                         HttpUrl.requestOTPUrl(),
-                                        requestBodydata: {
+                                        requestBodydata: <String, dynamic>{
                                           'aRef': userIdController.text
                                         },
                                       );
@@ -462,7 +463,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             await APIRepository.apiRequest(
                                                 APIRequestType.post,
                                                 HttpUrl.verifyOTP(),
-                                                requestBodydata: {
+                                                requestBodydata: <String,
+                                                    dynamic>{
                                               'aRef': userIdController.text,
                                               'otp': pinCodeController.text
                                             });
@@ -526,7 +528,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         TextEditingController();
     final FocusNode newPasswordFocusNode = FocusNode();
     final FocusNode confirmPasswordFocusNode = FocusNode();
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
     showModalBottomSheet(
         context: context,
@@ -547,7 +549,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     height: MediaQuery.of(context).size.height * 0.89,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         BottomSheetAppbar(
                           title: Languages.of(context)!
                               .resetPassword
@@ -562,7 +564,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                             padding: const EdgeInsets.all(20.0),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: [
+                              children: <Widget>[
                                 CustomTextField(
                                   Languages.of(context)!.enterNewPassword,
                                   newPasswordController,
@@ -571,7 +573,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   isBorder: true,
                                   isLabel: true,
                                   borderColor: ColorResource.colorFFFFFF,
-                                  validationRules: const ['required'],
+                                  validationRules: const <String>['required'],
                                   maximumWordCount: 10,
                                   focusNode: newPasswordFocusNode,
                                   onEditing: () {
@@ -592,7 +594,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   isBorder: true,
                                   isLabel: true,
                                   borderColor: ColorResource.colorFFFFFF,
-                                  validationRules: const ['required'],
+                                  validationRules: const <String>['required'],
                                   maximumWordCount: 10,
                                   focusNode: confirmPasswordFocusNode,
                                   onEditing: () {
@@ -615,7 +617,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         : null,
                                     isLeading: !isSaveNewPasswordLoad,
                                     trailingWidget: CustomLoadingWidget(
-                                      gradientColors: [
+                                      gradientColors: <Color>[
                                         ColorResource.colorFFFFFF,
                                         ColorResource.colorFFFFFF
                                             .withOpacity(0.7),
@@ -634,7 +636,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               setState(() =>
                                                   isSaveNewPasswordLoad =
                                                       false);
-                                              final requestBodyData =
+                                              final ResetPasswordModel
+                                                  requestBodyData =
                                                   ResetPasswordModel(
                                                       otp: pinCodeController
                                                           .text,
@@ -661,7 +664,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                 // AppUtils.showToast(
                                                 //     Constants.successfullyUpdated,
                                                 //     gravity: ToastGravity.BOTTOM);
-                                                await Future.delayed(
+                                                await Future<dynamic>.delayed(
                                                     const Duration(seconds: 2));
                                                 Navigator.pop(context);
                                               }

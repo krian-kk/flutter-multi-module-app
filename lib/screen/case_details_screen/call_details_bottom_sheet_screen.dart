@@ -33,7 +33,7 @@ class _CallDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is AddedNewCallContactListState) {
           widget.bloc.listOfCallDetails;
         }
@@ -67,13 +67,13 @@ class _CallDetailsBottomSheetScreenState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           widget.bloc.listOfCallDetails;
 
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
-              children: [
+              children: <Widget>[
                 BottomSheetAppbar(
                   title: Languages.of(context)!.callDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
@@ -102,7 +102,7 @@ class _CallDetailsBottomSheetScreenState
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -117,7 +117,7 @@ class _CallDetailsBottomSheetScreenState
                             //             'residence contact no.')
                             //     .toList()
                             //     .length,
-                            itemBuilder: (context, i) {
+                            itemBuilder: (BuildContext context, int i) {
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
@@ -135,7 +135,7 @@ class _CallDetailsBottomSheetScreenState
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
+                                        children: <Widget>[
                                           CustomText(
                                             widget
                                                     .bloc
@@ -196,7 +196,7 @@ class _CallDetailsBottomSheetScreenState
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -204,10 +204,10 @@ class _CallDetailsBottomSheetScreenState
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: [
+                                                      children: <Widget>[
                                                         Flexible(
                                                           child: Row(
-                                                            children: [
+                                                            children: <Widget>[
                                                               CustomText(
                                                                 widget.bloc
                                                                         .listOfCallDetails?[
@@ -240,7 +240,7 @@ class _CallDetailsBottomSheetScreenState
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () async {
@@ -282,7 +282,8 @@ class _CallDetailsBottomSheetScreenState
                                                                           Radius.circular(
                                                                               75.0))),
                                                               child: Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CircleAvatar(
                                                                     backgroundColor:
                                                                         ColorResource
@@ -325,7 +326,7 @@ class _CallDetailsBottomSheetScreenState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
-                                                          children: [
+                                                          children: <Widget>[
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!

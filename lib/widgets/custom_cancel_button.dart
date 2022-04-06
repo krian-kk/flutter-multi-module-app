@@ -5,7 +5,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_button.dart';
 
 class CustomCancelButton {
-  static Widget cancelButton(context,
+  static Widget cancelButton(BuildContext? context,
       {Function()? function, double? fontsize}) {
     return CustomButton(
       Languages.of(context!)!.cancel.toUpperCase(),

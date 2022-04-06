@@ -9,7 +9,7 @@ class PriorityCaseListModel {
     message = json['message'];
     if (json['result'] != null) {
       result = <Result>[];
-      json['result'].forEach((v) {
+      json['result'].forEach((dynamic v) {
         result?.add(Result.fromJson(v));
       });
     }
@@ -23,7 +23,7 @@ class PriorityCaseListModel {
     data['status'] = status;
     data['message'] = message;
     if (result != null) {
-      data['result'] = result?.map((v) => v.toJson()).toList();
+      data['result'] = result?.map((Result v) => v.toJson()).toList();
     }
     return data;
   }
@@ -102,16 +102,16 @@ class Result {
     accNo = json['accNo'];
     if (json['contact'] != null) {
       address = <Address>[];
-      json['contact'].forEach((v) {
+      json['contact'].forEach((dynamic v) {
         address?.add(Address.fromJson(v));
       });
       if (address!.isNotEmpty) {
-        address
-            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+        address?.sort((Address a, Address b) =>
+            (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
       }
     } else {
       address = <Address>[];
-      json['address'].forEach((v) {
+      json['address'].forEach((dynamic v) {
         address?.add(Address.fromJson(v));
       });
     }
@@ -159,7 +159,7 @@ class Result {
     data['fieldfollowUpDate'] = fieldfollowUpDate;
     data['sortId'] = sortId;
     if (address != null) {
-      data['address'] = address?.map((v) => v.toJson()).toList();
+      data['address'] = address?.map((Address v) => v.toJson()).toList();
     }
     if (location != null) {
       data['location'] = location!.toJson();

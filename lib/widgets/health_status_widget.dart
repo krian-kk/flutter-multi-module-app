@@ -4,7 +4,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
 class ShowHealthStatus {
-  static Widget healthStatus(healthValue) {
+  static Widget healthStatus(dynamic healthValue) {
     Widget? returnWidget;
     switch (healthValue) {
       case '0':

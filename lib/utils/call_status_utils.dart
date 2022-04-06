@@ -13,10 +13,10 @@ class CallCustomerStatus {
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
-      requestBodydata: {'id': callId},
+      requestBodydata: <String, dynamic>{'id': callId},
     );
     if (postResult[Constants.success]) {
-      if ((postResult['data']['result'] as List).isEmpty) {
+      if ((postResult['data']['result'] as List<dynamic>).isEmpty) {
         AppUtils.showToast(
             Languages.of(context)!.waitFewSecondsYouGetCallFromAdmin);
         return false;
@@ -48,10 +48,10 @@ class CallCustomerStatus {
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
-      requestBodydata: {'id': callId},
+      requestBodydata: <String, dynamic>{'id': callId},
     );
     if (postResult[Constants.success]) {
-      return (postResult['data']['result'] as List).isEmpty;
+      return (postResult['data']['result'] as List<dynamic>).isEmpty;
     } else {
       return false;
     }

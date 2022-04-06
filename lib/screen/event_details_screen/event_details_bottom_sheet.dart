@@ -43,7 +43,7 @@ class _CustomEventDetailsBottomSheetState
   AudioConvertModel audioConvertyData = AudioConvertModel();
   late EventDetailsBloc bloc;
 
-  static const platform = MethodChannel('recordAudioChannel');
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   @override
   void initState() {
@@ -71,17 +71,18 @@ class _CustomEventDetailsBottomSheetState
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.getAudioFile,
-      requestBodydata: {'pathOfFile': audioPath},
+      requestBodydata: <String, dynamic>{'pathOfFile': audioPath},
     );
     if (postResult[Constants.success]) {
-      final audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
-      final base64 = const Base64Encoder()
+      final AudioConvertModel audioConvertyData =
+          AudioConvertModel.fromJson(postResult['data']);
+      final String base64 = const Base64Encoder()
           .convert(List<int>.from(audioConvertyData.result!.body!.data!));
 
       final Uint8List audioBytes = const Base64Codec().decode(base64);
       await File(filePath).writeAsBytes(audioBytes);
-      await platform.invokeMethod(
-          'playRecordAudio', {'filePath': filePath}).then((value) {
+      await platform.invokeMethod('playRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
         if (value) {
           setState(
               () => bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
@@ -89,8 +90,8 @@ class _CustomEventDetailsBottomSheetState
               bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
         }
       });
-      await platform.invokeMethod(
-          'completeRecordAudio', {'filePath': filePath}).then((value) {
+      await platform.invokeMethod('completeRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
         if (value != null) {
           setState(() {
             bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -105,8 +106,8 @@ class _CustomEventDetailsBottomSheetState
   }
 
   stopAudio(int index) async {
-    await platform
-        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('stopPlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -117,8 +118,8 @@ class _CustomEventDetailsBottomSheetState
   }
 
   pauseAudio(int index) async {
-    await platform.invokeMethod(
-        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('pausePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPaused = true;
@@ -128,16 +129,16 @@ class _CustomEventDetailsBottomSheetState
   }
 
   resumeAudio(int index) async {
-    await platform.invokeMethod(
-        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('resumePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPaused = false;
         });
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -156,7 +157,7 @@ class _CustomEventDetailsBottomSheetState
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             BottomSheetAppbar(
               title: widget.cardTitle,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
@@ -169,10 +170,10 @@ class _CustomEventDetailsBottomSheetState
             const SizedBox(height: 10),
             BlocListener<EventDetailsBloc, EventDetailsState>(
               bloc: bloc,
-              listener: (context, state) {},
+              listener: (BuildContext context, EventDetailsState state) {},
               child: BlocBuilder<EventDetailsBloc, EventDetailsState>(
                 bloc: bloc,
-                builder: (context, state) {
+                builder: (BuildContext context, EventDetailsState state) {
                   if (state is EventDetailsLoadingState) {
                     return const Expanded(
                       child: Center(
@@ -184,7 +185,7 @@ class _CustomEventDetailsBottomSheetState
                         child: ListView.builder(
                             itemCount:
                                 bloc.eventDetailsAPIValues.result?.length ?? 0,
-                            itemBuilder: (context, int index) {
+                            itemBuilder: (BuildContext context, int index) {
                               final dynamic listVal = bloc
                                   .eventDetailsAPIValues.result!.reversed
                                   .toList();
@@ -200,7 +201,7 @@ class _CustomEventDetailsBottomSheetState
           height: MediaQuery.of(context).size.height * 0.1,
           decoration: BoxDecoration(
             color: ColorResource.colorFFFFFF,
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color: ColorResource.color000000.withOpacity(.25),
                 blurRadius: 2.0,
@@ -213,7 +214,7 @@ class _CustomEventDetailsBottomSheetState
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 SizedBox(
                   width: 190,
                   child: CustomButton(
@@ -234,7 +235,7 @@ class _CustomEventDetailsBottomSheetState
   expandList(List<EvnetDetailsResultsModel> expandedList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const SizedBox(
           height: 10,
         ),
@@ -254,7 +255,7 @@ class _CustomEventDetailsBottomSheetState
                 expandedAlignment: Alignment.centerLeft,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: <Widget>[
                     if (expandedList[index].createdAt != null)
                       CustomText(
                         DateFormateUtils.followUpDateFormate(
@@ -272,7 +273,7 @@ class _CustomEventDetailsBottomSheetState
                 ),
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
-                children: [
+                children: <Widget>[
                   if (expandedList[index].createdBy != null)
                     CustomText(
                       '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
@@ -483,10 +484,10 @@ class _CustomEventDetailsBottomSheetState
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const SizedBox(height: 9),
         Row(
-          children: [
+          children: <Widget>[
             Container(
               decoration: const BoxDecoration(
                   color: ColorResource.color23375A,
@@ -521,7 +522,7 @@ class _CustomEventDetailsBottomSheetState
                       ? CustomLoadingWidget(
                           radius: 11,
                           strokeWidth: 3.0,
-                          gradientColors: [
+                          gradientColors: <Color>[
                             ColorResource.colorFFFFFF,
                             ColorResource.colorFFFFFF.withOpacity(0.7),
                           ],

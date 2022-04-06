@@ -39,7 +39,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             CustomText(
               widget.userName.toUpperCase(),
               fontWeight: FontWeight.w700,
@@ -48,7 +48,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
             SizedBox(height: widget.isAccountNo ? 9 : 7),
             widget.isAccountNo
                 ? Column(
-                    children: [
+                    children: <Widget>[
                       CustomText(
                         Languages.of(context)!.accountNo,
                         fontSize: FontSize.twelve,

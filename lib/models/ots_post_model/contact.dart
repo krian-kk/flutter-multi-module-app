@@ -14,7 +14,7 @@ class OTSContact {
   String health;
   String value;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'cType': cType,
         'health': health,
         'value': value,

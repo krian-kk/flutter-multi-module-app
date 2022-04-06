@@ -6,7 +6,7 @@ class DateFormateUtils {
 // DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(date));
   static String followUpDateFormate(String date) {
     // String? convertedDate = DateFormat.yMMMEd().format(DateTime.parse(date));
-    final utcFormate = DateTime.parse(date).toUtc();
+    final DateTime utcFormate = DateTime.parse(date).toUtc();
     String? convertedDate = DateFormat.yMMMEd()
         .format(DateTime.parse(utcFormate.toLocal().toString()));
     final String todayDate = DateFormat.yMMMEd().format(DateTime.now());

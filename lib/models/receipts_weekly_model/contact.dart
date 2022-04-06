@@ -26,7 +26,7 @@ class Contact {
   String? officeAddressId0;
   String? emailId0;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'cType': cType,
         'health': health,
         'value': value,

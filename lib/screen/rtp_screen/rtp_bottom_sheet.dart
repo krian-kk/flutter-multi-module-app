@@ -72,7 +72,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   late TextEditingController nextActionDateControlller;
   late TextEditingController remarksControlller;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isSubmit = true;
 
@@ -112,7 +112,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
           final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
@@ -141,7 +141,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -151,7 +151,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: widget.cardTitle,
                       padding: const EdgeInsets.symmetric(
@@ -175,7 +175,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
-                                  children: [
+                                  children: <Widget>[
                                     // CustomText(
                                     //   Languages.of(context)!.nextActionDate,
                                     //   fontSize: FontSize.twelve,
@@ -191,15 +191,17 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                       child: CustomReadOnlyTextField(
                                         Languages.of(context)!.nextActionDate,
                                         nextActionDateControlller,
-                                        validationRules: const ['required'],
+                                        validationRules: const <String>[
+                                          'required'
+                                        ],
                                         isReadOnly: true,
                                         isLabel: true,
                                         onEditing: () =>
                                             _formKey.currentState!.validate(),
                                         onTapped: () =>
                                             PickDateAndTimeUtils.pickDate(
-                                                context,
-                                                (newDate, followUpDate) {
+                                                context, (String? newDate,
+                                                    String? followUpDate) {
                                           if (newDate != null &&
                                               followUpDate != null) {
                                             setState(() {
@@ -226,16 +228,17 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   child: CustomReadOnlyTextField(
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
-                                validationRules: const ['required'],
+                                validationRules: const <String>['required'],
                                 isVoiceRecordWidget: true,
-                                returnS2Tresponse: (val) {
+                                returnS2Tresponse: (dynamic val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {
                                       returnS2Tdata = val;
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord, text, returnS2Tdata) {
+                                checkRecord: (String? isRecord, String? text,
+                                    Speech2TextModel returnS2Tdata) {
                                   setState(() {
                                     this.returnS2Tdata = returnS2Tdata;
                                     this.isRecord = isRecord;
@@ -249,7 +252,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                               const SizedBox(height: 15),
                               CustomDropDownButton(
                                 Languages.of(context)!.rtpDenialReason,
-                                [
+                                <String>[
                                   'select',
                                   Languages.of(context)!.businessLoss,
                                   Languages.of(context)!.covidImpacted,
@@ -264,7 +267,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 ],
                                 selectedValue: selectedDropdownValue,
                                 menuMaxHeight: 200,
-                                onChanged: (newValue) {
+                                onChanged: (String? newValue) {
                                   setState(() {
                                     selectedDropdownValue = newValue.toString();
                                   });
@@ -283,7 +286,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -297,7 +300,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Singleton.instance.startCalling ?? false
                           ? const SizedBox()
                           : Expanded(
@@ -324,7 +327,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
-                                  gradientColors: [
+                                  gradientColors: <Color>[
                                     ColorResource.colorFFFFFF,
                                     ColorResource.colorFFFFFF.withOpacity(0.7),
                                   ],
@@ -346,7 +349,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 : null,
                             isLeading: !isSubmit,
                             trailingWidget: CustomLoadingWidget(
-                              gradientColors: [
+                              gradientColors: <Color>[
                                 ColorResource.colorFFFFFF,
                                 ColorResource.colorFFFFFF.withOpacity(0.7),
                               ],
@@ -389,7 +392,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                         ? widget.callId
                         : widget.paramValue['callId'],
                     context: context)
-                .then((value) {
+                .then((bool value) {
               isNotAutoCalling = value;
             });
           }
@@ -403,7 +406,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 latLng = LatLng(res.latitude, res.longitude);
               });
             }
-            final requestBodyData = DenialPostModel(
+            final DenialPostModel requestBodyData = DenialPostModel(
               eventId: ConstantEventValues.rtpDenialEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)

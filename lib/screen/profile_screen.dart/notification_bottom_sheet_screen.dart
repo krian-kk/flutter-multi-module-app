@@ -20,12 +20,12 @@ class NotificationBottomSheetScreen extends StatelessWidget {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.87,
       child: Column(
-        children: [
+        children: <Widget>[
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
-                children: [
+                children: <Widget>[
                   BottomSheetAppbar(
                     title: Languages.of(context)!.notification.toUpperCase(),
                     color: ColorResource.color23375A,
@@ -35,7 +35,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           const SizedBox(height: 15),
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -45,7 +45,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                                children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 8, horizontal: 10.0),
@@ -79,7 +79,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               mainAxisSize: MainAxisSize.min,
-                                              children: [
+                                              children: <Widget>[
                                                 CustomText(
                                                   bloc
                                                       .notificationList[index]
@@ -122,7 +122,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               color: ColorResource.colorFFFFFF,
-              boxShadow: [
+              boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
@@ -135,7 +135,7 @@ class NotificationBottomSheetScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 20, vertical: 11.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   SizedBox(
                     width: 190,
                     child: CustomButton(

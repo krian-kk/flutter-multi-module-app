@@ -98,7 +98,7 @@ class _CustomButtonState extends State<CustomButton> {
               child: Flex(
                 direction: widget.axis,
                 mainAxisAlignment: widget.alignment,
-                children: [
+                children: <Widget>[
                   if (widget.isLeading) widget.trailingWidget,
                   if (widget.text != null)
                     Padding(

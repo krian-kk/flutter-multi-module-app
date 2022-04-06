@@ -6,7 +6,7 @@ class ProfileApiModel {
     message = json['message'];
     if (json['result'] != null) {
       result = <Result>[];
-      json['result'].forEach((v) {
+      json['result'].forEach((dynamic v) {
         result!.add(Result.fromJson(v));
       });
     }
@@ -20,7 +20,7 @@ class ProfileApiModel {
     data['status'] = status;
     data['message'] = message;
     if (result != null) {
-      data['result'] = result!.map((v) => v.toJson()).toList();
+      data['result'] = result!.map((Result v) => v.toJson()).toList();
     }
     return data;
   }
@@ -56,11 +56,11 @@ class Result {
     areaCode = json['areaCode'].cast<String>();
     audit = json['audit'] != null ? Audit.fromJson(json['audit']) : null;
     if (json['children'] != null) {
-      children = [];
+      children = <dynamic>[];
     }
     if (json['contact'] != null) {
       contact = <Contact>[];
-      json['contact'].forEach((v) {
+      json['contact'].forEach((dynamic v) {
         contact!.add(Contact.fromJson(v));
       });
     }
@@ -83,7 +83,7 @@ class Result {
   String? aRef;
   List<String>? areaCode;
   Audit? audit;
-  List? children;
+  List<dynamic>? children;
   List<Contact>? contact;
   String? contractor;
   String? dateJoining;
@@ -109,10 +109,10 @@ class Result {
       data['audit'] = audit!.toJson();
     }
     if (children != null) {
-      data['children'] = children!.map((v) => v.toJson()).toList();
+      data['children'] = children!.map((dynamic v) => v.toJson()).toList();
     }
     if (contact != null) {
-      data['contact'] = contact!.map((v) => v.toJson()).toList();
+      data['contact'] = contact!.map((dynamic v) => v.toJson()).toList();
     }
     data['contractor'] = contractor;
     data['dateJoining'] = dateJoining;

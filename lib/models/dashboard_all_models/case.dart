@@ -29,7 +29,7 @@ class Case {
         customerId: json['customerId'] as String?,
         caseId: json['caseId'] as String?,
         address: (json['contact'] as List<dynamic>?)
-            ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
   String? id;
@@ -45,7 +45,7 @@ class Case {
   String? caseId;
   List<Address>? address;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'cust': cust,
@@ -57,6 +57,6 @@ class Case {
         'fieldfollowUpDate': fieldfollowUpDate,
         'customerId': customerId,
         'caseId': caseId,
-        'address': address?.map((e) => e.toJson()).toList(),
+        'address': address?.map((Address e) => e.toJson()).toList(),
       };
 }

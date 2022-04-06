@@ -30,7 +30,7 @@ class DashboardBrokenPTPResult {
         fieldfollowUpDate: json['fieldfollowUpDate'] as String?,
         sortId: json['sortId'] as int?,
         address: (json['address'] as List<dynamic>?)
-            ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
   String? id;
@@ -46,7 +46,7 @@ class DashboardBrokenPTPResult {
   int? sortId;
   List<Address>? address;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'starredCase': starredCase,
@@ -58,6 +58,6 @@ class DashboardBrokenPTPResult {
         'caseId': caseId,
         'fieldfollowUpDate': fieldfollowUpDate,
         'sortId': sortId,
-        'address': address?.map((e) => e.toJson()).toList(),
+        'address': address?.map((Address e) => e.toJson()).toList(),
       };
 }

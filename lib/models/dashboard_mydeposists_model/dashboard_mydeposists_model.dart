@@ -57,7 +57,7 @@ class Cheque {
     count = json['count'];
     if (json['cases'] != null) {
       cases = <Cases>[];
-      json['cases'].forEach((v) {
+      json['cases'].forEach((dynamic v) {
         cases!.add(Cases.fromJson(v));
       });
     }
@@ -71,7 +71,7 @@ class Cheque {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['count'] = count;
     if (cases != null) {
-      data['cases'] = cases!.map((v) => v.toJson()).toList();
+      data['cases'] = cases!.map((Cases v) => v.toJson()).toList();
     }
     data['totalAmt'] = totalAmt;
     return data;

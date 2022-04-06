@@ -11,7 +11,7 @@ class Attr {
   String? state;
   String? pincode;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'city': city,
         'state': state,
         'pincode': pincode,

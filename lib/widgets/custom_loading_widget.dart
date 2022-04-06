@@ -7,7 +7,7 @@ class CustomLoadingWidget extends StatefulWidget {
   const CustomLoadingWidget({
     Key? key,
     this.radius = 20,
-    this.gradientColors = const [
+    this.gradientColors = const <Color>[
       ColorResource.colorFFC23B,
       ColorResource.colorEA8A38,
     ],
@@ -44,7 +44,8 @@ class _CustomLoadingWidgetState extends State<CustomLoadingWidget>
   Widget build(BuildContext context) {
     return Center(
       child: RotationTransition(
-        turns: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+        turns:
+            Tween<double>(begin: 0.0, end: 1.0).animate(_animationController),
         child: CustomPaint(
           size: Size.fromRadius(widget.radius),
           painter: GradientCircularProgressPainter(
@@ -74,7 +75,7 @@ class GradientCircularProgressPainter extends CustomPainter {
     final double offset = strokeWidth / 2;
     final Rect rect = Offset(offset, offset) &
         Size(size.width - strokeWidth, size.height - strokeWidth);
-    final paint = Paint()
+    final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
     paint.shader = SweepGradient(colors: gradientColors).createShader(rect);

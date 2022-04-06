@@ -6,7 +6,7 @@ class YardingData {
     message = json['message'];
     if (json['result'] != null) {
       result = <YardingResult>[];
-      json['result'].forEach((v) {
+      json['result'].forEach((dynamic v) {
         result!.add(YardingResult.fromJson(v));
       });
     }
@@ -20,7 +20,7 @@ class YardingData {
     data['status'] = status;
     data['message'] = message;
     if (result != null) {
-      data['result'] = result!.map((v) => v.toJson()).toList();
+      data['result'] = result!.map((YardingResult v) => v.toJson()).toList();
     }
     return data;
   }

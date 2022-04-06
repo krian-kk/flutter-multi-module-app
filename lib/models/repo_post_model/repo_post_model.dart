@@ -24,7 +24,7 @@ class RepoPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((v) {
+    contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
     createdBy = json['createdBy'];
@@ -62,7 +62,7 @@ class RepoPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] = contact.map((RepoContact v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;

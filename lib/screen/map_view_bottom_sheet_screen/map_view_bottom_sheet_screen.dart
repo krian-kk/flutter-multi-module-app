@@ -32,10 +32,11 @@ class MapViewBottomSheetScreen extends StatefulWidget {
 }
 
 class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
-  final Completer<GoogleMapController> _controller = Completer();
+  final Completer<GoogleMapController> _controller =
+      Completer<GoogleMapController>();
   static const LatLng _center = LatLng(28.644800, 77.216721);
   LatLng position = const LatLng(0, 0);
-  Set<Marker> _markers = {};
+  Set<Marker> _markers = <Marker>{};
   LatLng tabLatLng = const LatLng(0, 0);
   String tabAddress = '';
 
@@ -48,7 +49,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
 
   getLocation() async {
     Position? currentLocation;
-    await MapUtils.getCurrentLocation(context).then((value) {
+    await MapUtils.getCurrentLocation(context).then((Position value) {
       setState(() {
         currentLocation = value;
         position = LatLng(value.latitude, value.longitude);
@@ -114,7 +115,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
       height: MediaQuery.of(context).size.height * 0.89,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           BottomSheetAppbar(
               title: widget.title,
               color: ColorResource.color23375A,
@@ -132,7 +133,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
               // polylines: _polyline,
               compassEnabled: false,
               tiltGesturesEnabled: false,
-              onTap: (tabPositions) async {
+              onTap: (LatLng tabPositions) async {
                 setState(() {
                   tabLatLng = tabPositions;
                 });
@@ -147,7 +148,7 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                       placemarks.toList().first.locality.toString() +
                       ',' +
                       placemarks.toList().first.postalCode.toString();
-                  _markers = {};
+                  _markers = <Marker>{};
                   _markers.add(
                     Marker(
                       markerId: const MarkerId('Tap Locations'),
@@ -187,7 +188,8 @@ class _MapViewBottomSheetScreenState extends State<MapViewBottomSheetScreen> {
                     // } else {
                     //   AppUtils.topSnackBar(context, "Please Select address!");
                     // }
-                    final requestBodyData = HomeAddressPostModel(
+                    final HomeAddressPostModel requestBodyData =
+                        HomeAddressPostModel(
                       latitude: position.latitude,
                       longitude: position.longitude,
                       homeAddress: tabAddress,

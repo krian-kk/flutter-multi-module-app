@@ -40,16 +40,16 @@ class AutoCalling {
   static Widget buildAutoCalling(BuildContext context, AllocationBloc bloc) {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, AllocationState state) {},
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, AllocationState state) {
           if (state is AutoCallingLoadingState) {
             return const CustomLoadingWidget();
           } else {
             return bloc.autoCallingResultList.isEmpty
                 ? Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 50, right: 20, left: 20),
@@ -66,7 +66,7 @@ class AutoCalling {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             const SizedBox(height: 10),
                             CustomText(
                               Languages.of(context)!.customer.toUpperCase(),
@@ -88,7 +88,7 @@ class AutoCalling {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: <Widget>[
                                 CustomText(
                                   bloc.customerCount.toString(),
                                   fontSize: FontSize.sixteen,
@@ -128,7 +128,7 @@ class AutoCalling {
                                             color: ColorResource.colorDADADA,
                                             width: 0.5),
                                         borderRadius: BorderRadius.circular(10),
-                                        boxShadow: const [
+                                        boxShadow: const <BoxShadow>[
                                           BoxShadow(
                                             color:
                                                 Color.fromRGBO(0, 0, 0, 0.25),
@@ -138,7 +138,7 @@ class AutoCalling {
                                         ],
                                       ),
                                       child: Column(
-                                        children: [
+                                        children: <Widget>[
                                           const SizedBox(
                                             height: 2.0,
                                           ),
@@ -173,11 +173,11 @@ class AutoCalling {
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                              children: [
+                                              children: <Widget>[
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
+                                                  children: <Widget>[
                                                     CustomText(
                                                       bloc.resultList[indexs]
                                                                   .due !=
@@ -283,7 +283,9 @@ class AutoCalling {
                                               shrinkWrap: true,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, i) {
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int i) {
                                                 if (bloc
                                                         .autoCallingResultList[
                                                             indexs]
@@ -304,7 +306,9 @@ class AutoCalling {
                                                           CaseDetailsBloc(bloc)
                                                             ..add(
                                                                 CaseDetailsInitialEvent(
-                                                              paramValues: {
+                                                              paramValues: <
+                                                                  String,
+                                                                  dynamic>{
                                                                 'caseID': bloc
                                                                     .autoCallingResultList[
                                                                         indexs]
@@ -369,9 +373,9 @@ class AutoCalling {
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
-                                                        children: [
+                                                        children: <Widget>[
                                                           Row(
-                                                            children: [
+                                                            children: <Widget>[
                                                               CustomText(
                                                                 bloc
                                                                         .autoCallingResultList[
@@ -395,7 +399,8 @@ class AutoCalling {
                                                                   ''),
                                                               const Spacer(),
                                                               Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!
@@ -433,7 +438,8 @@ class AutoCalling {
                                             onTap: () {
                                               bloc.add(
                                                 NavigateCaseDetailEvent(
-                                                    paramValues: {
+                                                    paramValues: <String,
+                                                        dynamic>{
                                                       'caseID': bloc
                                                           .autoCallingResultList[
                                                               indexs]
@@ -444,7 +450,7 @@ class AutoCalling {
                                             child: SizedBox(
                                               width: double.infinity,
                                               child: Column(
-                                                children: [
+                                                children: <Widget>[
                                                   CustomText(
                                                     Languages.of(context)!
                                                         .caseView

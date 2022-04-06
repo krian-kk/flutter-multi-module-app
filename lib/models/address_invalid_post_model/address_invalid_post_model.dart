@@ -23,7 +23,7 @@ class AddressInvalidPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = AddressInvalidEventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((v) {
+    contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
     createdBy = json['createdBy'];
@@ -46,7 +46,8 @@ class AddressInvalidPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] =
+        contact.map((AddressInvalidContact v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

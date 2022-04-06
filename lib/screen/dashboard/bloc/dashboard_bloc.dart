@@ -32,7 +32,7 @@ part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
-  List<DashboardListModel> dashboardList = [];
+  List<DashboardListModel> dashboardList = <DashboardListModel>[];
   String? userType;
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -47,7 +47,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   String? selectedFilter = Constants.today;
   String? selectedFilterIndex = '0';
-  List<FilterCasesByTimeperiod> filterOption = [];
+  List<FilterCasesByTimeperiod> filterOption = <FilterCasesByTimeperiod>[];
 
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
@@ -56,7 +56,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   String? todayDate;
   // This is search result cases
-  List<Result> searchResultList = [];
+  List<Result> searchResultList = <Result>[];
   bool isShowSearchResult = false;
 
 // Dashboard card onclick loading
@@ -77,11 +77,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       userType = _pref.getString(Constants.userType);
       Singleton.instance.buildContext = event.context;
 
-      final currentDateTime = DateTime.now();
+      final DateTime currentDateTime = DateTime.now();
       final String currentDate = DateFormat.yMMMEd().format(currentDateTime);
       todayDate = currentDate;
 
-      filterOption.addAll([
+      filterOption.addAll(<FilterCasesByTimeperiod>[
         FilterCasesByTimeperiod(
             timeperiodText: Languages.of(event.context!)!.today, value: '0'),
         FilterCasesByTimeperiod(

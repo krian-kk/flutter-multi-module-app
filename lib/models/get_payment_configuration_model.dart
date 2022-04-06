@@ -6,7 +6,7 @@ class PaymentConfigurationModel {
     msg = json['msg'];
     if (json['data'] != null) {
       data = <Data>[];
-      json['data'].forEach((v) {
+      json['data'].forEach((dynamic v) {
         data!.add(Data.fromJson(v));
       });
     }
@@ -20,7 +20,7 @@ class PaymentConfigurationModel {
     data['status'] = status;
     data['msg'] = msg;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.map((Data v) => v.toJson()).toList();
     }
     return data;
   }
@@ -33,7 +33,7 @@ class Data {
     sId = json['_id'];
     if (json['payment'] != null) {
       payment = <Payment>[];
-      json['payment'].forEach((v) {
+      json['payment'].forEach((dynamic v) {
         payment!.add(Payment.fromJson(v));
       });
     }
@@ -45,7 +45,7 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     if (payment != null) {
-      data['payment'] = payment!.map((v) => v.toJson()).toList();
+      data['payment'] = payment!.map((Payment v) => v.toJson()).toList();
     }
     return data;
   }

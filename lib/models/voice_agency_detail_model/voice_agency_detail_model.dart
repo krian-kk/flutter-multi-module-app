@@ -28,7 +28,7 @@ class AgencyResult {
   AgencyResult.fromJson(Map<String, dynamic> json) {
     if (json['voiceAgencyData'] != null) {
       voiceAgencyData = <VoiceAgencyData>[];
-      json['voiceAgencyData'].forEach((v) {
+      json['voiceAgencyData'].forEach((dynamic v) {
         voiceAgencyData!.add(VoiceAgencyData.fromJson(v));
       });
     }
@@ -41,7 +41,7 @@ class AgencyResult {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (voiceAgencyData != null) {
       data['voiceAgencyData'] =
-          voiceAgencyData!.map((v) => v.toJson()).toList();
+          voiceAgencyData!.map((VoiceAgencyData v) => v.toJson()).toList();
     }
     data['agentAgencyContact'] = agentAgencyContact;
     return data;

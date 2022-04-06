@@ -55,7 +55,7 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
     this.callId,
   });
   final String title;
-  final List list;
+  final List<dynamic> list;
   final bool? isCall;
   final String? health;
   final String? selectedContactNumber;

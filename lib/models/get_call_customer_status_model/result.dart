@@ -47,7 +47,7 @@ class Result {
   String? location;
   String? provider;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'callfrom': callfrom,
         'callto': callto,

@@ -59,7 +59,7 @@ class EventAttr {
   String? translatedText;
   String? audioS3Path;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'date': date,
         'time': time,
         'remarks': remarks,

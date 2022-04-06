@@ -24,7 +24,7 @@ class DashboardEventCountResult {
   String? createdBy;
   int? v;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'eventType': eventType,
         'eventCode': eventCode,

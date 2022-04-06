@@ -192,7 +192,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 
-  Future forgroundOnClickNotification(String? payload) async {
+  Future<dynamic> forgroundOnClickNotification(String? payload) async {
     //Handle notification tapped logic here
     bloc!.add(AppStarted(context: context, notificationData: payload));
   }
@@ -266,7 +266,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       themeCollection: AppThemes().getThemeCollections(),
       builder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
-          builder: (context, child) => MediaQuery(
+          builder: (BuildContext context, Widget? child) => MediaQuery(
               data:
                   MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
               child: child!),
@@ -296,7 +296,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           debugShowCheckedModeBanner: false,
           home: FutureBuilder(
               future: setupRemoteConfig(),
-              builder: (context, snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
                 if (snapshot.hasError || HttpUrl.url.isEmpty) {
                   return Container(
                     color: Colors.white,

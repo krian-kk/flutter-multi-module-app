@@ -98,7 +98,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       margin: const EdgeInsets.only(left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomText(
                             titleString,
                             style: Theme.of(context)

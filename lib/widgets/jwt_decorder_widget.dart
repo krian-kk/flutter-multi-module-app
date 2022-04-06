@@ -8,18 +8,20 @@ class JwtDecoderWidget {
   ///
   /// Throws [FormatException] if parameter is not a valid JWT token.
   static Map<String, dynamic> decode(String token) {
-    final splitToken = token.split('.'); // Split the token by '.'
+    final List<String> splitToken = token.split('.'); // Split the token by '.'
     if (splitToken.length != 3) {
       throw const FormatException('Invalid token');
     }
     try {
-      final payloadBase64 = splitToken[1]; // Payload is always the index 1
+      final String payloadBase64 =
+          splitToken[1]; // Payload is always the index 1
       // Base64 should be multiple of 4. Normalize the payload before decode it
-      final normalizedPayload = base64.normalize(payloadBase64);
+      final String normalizedPayload = base64.normalize(payloadBase64);
       // Decode payload, the result is a String
-      final payloadString = utf8.decode(base64.decode(normalizedPayload));
+      final String payloadString =
+          utf8.decode(base64.decode(normalizedPayload));
       // Parse the String to a Map<String, dynamic>
-      final decodedPayload = jsonDecode(payloadString);
+      final dynamic decodedPayload = jsonDecode(payloadString);
 
       // Return the decoded payload
       return decodedPayload;
@@ -48,7 +50,7 @@ class JwtDecoderWidget {
   ///
   /// Throws [FormatException] if parameter is not a valid JWT token.
   static bool isExpired(String token) {
-    final expirationDate = getExpirationDate(token);
+    final DateTime expirationDate = getExpirationDate(token);
     // If the current date is after the expiration date, the token is already expired
     return DateTime.now().isAfter(expirationDate);
   }
@@ -57,9 +59,9 @@ class JwtDecoderWidget {
   ///
   /// Throws [FormatException] if parameter is not a valid JWT token.
   static DateTime getExpirationDate(String token) {
-    final decodedToken = decode(token);
+    final Map<String, dynamic> decodedToken = decode(token);
 
-    final expirationDate = DateTime.fromMillisecondsSinceEpoch(0)
+    final DateTime expirationDate = DateTime.fromMillisecondsSinceEpoch(0)
         .add(Duration(seconds: decodedToken['exp'].toInt()));
     return expirationDate;
   }
@@ -68,9 +70,9 @@ class JwtDecoderWidget {
   ///
   /// Throws [FormatException] if parameter is not a valid JWT token.
   static Duration getTokenTime(String token) {
-    final decodedToken = decode(token);
+    final Map<String, dynamic> decodedToken = decode(token);
 
-    final issuedAtDate = DateTime.fromMillisecondsSinceEpoch(0)
+    final DateTime issuedAtDate = DateTime.fromMillisecondsSinceEpoch(0)
         .add(Duration(seconds: decodedToken['iat']));
     return DateTime.now().difference(issuedAtDate);
   }
@@ -79,7 +81,7 @@ class JwtDecoderWidget {
   ///
   /// Throws [FormatException] if parameter is not a valid JWT token.
   static Duration getRemainingTime(String token) {
-    final expirationDate = getExpirationDate(token);
+    final DateTime expirationDate = getExpirationDate(token);
 
     return expirationDate.difference(DateTime.now());
   }

@@ -11,7 +11,7 @@ class AudioRemarksPostModel {
   String? langCode;
   String? agrRef;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'lang_code': langCode,
         'agrRef': agrRef,
       };

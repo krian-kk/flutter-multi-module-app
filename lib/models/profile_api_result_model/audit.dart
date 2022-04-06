@@ -12,7 +12,7 @@ class Audit {
   String? upBy;
   String? upAt;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'crBy': crBy,
         'crAt': crAt,
         'upBy': upBy,

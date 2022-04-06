@@ -36,7 +36,7 @@ class _AddressDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is AddedNewAddressListState) {
           widget.bloc.listOfAddressDetails;
         }
@@ -73,12 +73,12 @@ class _AddressDetailsBottomSheetScreenState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           widget.bloc.listOfAddressDetails;
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
-              children: [
+              children: <Widget>[
                 BottomSheetAppbar(
                   title: Languages.of(context)!.addressDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
@@ -107,13 +107,13 @@ class _AddressDetailsBottomSheetScreenState
                           .copyWith(top: 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount:
                                 widget.bloc.listOfAddressDetails?.length ?? 0,
-                            itemBuilder: (context, i) {
+                            itemBuilder: (BuildContext context, int i) {
                               return widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
                                           'residence address' ||
@@ -125,7 +125,7 @@ class _AddressDetailsBottomSheetScreenState
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: [
+                                        children: <Widget>[
                                           CustomText(
                                             widget
                                                     .bloc
@@ -155,7 +155,7 @@ class _AddressDetailsBottomSheetScreenState
                                                       ['resAddressId_0'] ??
                                                   '';
 
-                                              for (var element in widget
+                                              for (dynamic element in widget
                                                   .bloc
                                                   .caseDetailsAPIValue
                                                   .result!
@@ -185,12 +185,12 @@ class _AddressDetailsBottomSheetScreenState
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         Flexible(
                                                           child: CustomText(
                                                             widget
@@ -208,7 +208,8 @@ class _AddressDetailsBottomSheetScreenState
                                                             alignment: Alignment
                                                                 .topRight,
                                                             child: Row(
-                                                              children: [
+                                                              children: <
+                                                                  Widget>[
                                                                 const SizedBox(
                                                                     width: 10),
                                                                 ShowHealthStatus
@@ -226,7 +227,7 @@ class _AddressDetailsBottomSheetScreenState
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         GestureDetector(
                                                           onTap: () async {
                                                             if (ConnectivityResult
@@ -238,8 +239,8 @@ class _AddressDetailsBottomSheetScreenState
                                                               await MapUtils
                                                                       .getCurrentLocation(
                                                                           context)
-                                                                  .then(
-                                                                      (value) {
+                                                                  .then((Position
+                                                                      value) {
                                                                 setState(() {
                                                                   currentLocation =
                                                                       value;
@@ -290,7 +291,8 @@ class _AddressDetailsBottomSheetScreenState
                                                                           Radius.circular(
                                                                               75.0))),
                                                               child: Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CircleAvatar(
                                                                     backgroundColor:
                                                                         ColorResource
@@ -334,7 +336,7 @@ class _AddressDetailsBottomSheetScreenState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
-                                                          children: [
+                                                          children: <Widget>[
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!

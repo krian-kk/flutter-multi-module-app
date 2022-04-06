@@ -52,7 +52,7 @@ class OTSEventAttr {
 
   Map<String, dynamic> toJson() =>
       reginalText != null && translatedText != null && audioS3Path != null
-          ? {
+          ? <String, dynamic>{
               'date': date,
               'remarkOts': remarkOts,
               'amntOts': amntOts,
@@ -69,7 +69,7 @@ class OTSEventAttr {
               'translated_text': translatedText,
               'reginal_text': reginalText,
             }
-          : {
+          : <String, dynamic>{
               'date': date,
               'remarkOts': remarkOts,
               'amntOts': amntOts,

@@ -48,7 +48,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, DashboardState state) {
         if (state is SelectedTimeperiodDataLoadingState) {
           widget.bloc.selectedFilterDataLoading = true;
         }
@@ -96,7 +96,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                   ),
                   body: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       BottomSheetAppbar(
                         title: widget.bloc.userType == Constants.fieldagent
                             ? Languages.of(context)!.myVisits
@@ -111,17 +111,17 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                             horizontal: 20, vertical: 5),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Row(
-                                children: [
+                                children: <Widget>[
                                   Expanded(
                                     flex: 2,
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: <Widget>[
                                         CustomText(
                                           Languages.of(context)!
                                               .count
@@ -143,7 +143,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: <Widget>[
                                         CustomText(
                                           Languages.of(context)!
                                               .amount
@@ -193,7 +193,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           indicatorWeight: 5.0,
                           labelColor: ColorResource.color23375A,
                           unselectedLabelColor: ColorResource.colorC4C4C4,
-                          tabs: [
+                          tabs: <Widget>[
                             Tab(
                                 text:
                                     widget.bloc.userType == Constants.fieldagent
@@ -222,7 +222,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 )
                               : Expanded(
                                   child: Column(
-                                    children: [
+                                    children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 50, right: 20, left: 20),
@@ -235,7 +235,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           : Expanded(
                               child: TabBarView(
                                 physics: const NeverScrollableScrollPhysics(),
-                                children: [
+                                children: <Widget>[
                                   // CustomerMetNotmetInvalidTab(bloc.caseList),
                                   // Customer Met
                                   Padding(
@@ -369,7 +369,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
         ? const CustomLoadingWidget()
         : caseLists!.cases!.isEmpty
             ? Column(
-                children: [
+                children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.only(top: 40),
                     child: NoCaseAvailble.buildNoCaseAvailable(),
@@ -382,17 +382,17 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                 itemBuilder: (BuildContext context, int index) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    children: <Widget>[
                       if (index == 0)
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                           child: Row(
-                            children: [
+                            children: <Widget>[
                               Expanded(
                                 flex: 2,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                       Languages.of(context)!
                                           .count
@@ -412,7 +412,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 flex: 7,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                       Languages.of(context)!
                                           .amount
@@ -452,7 +452,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                               border: Border.all(
                                   color: ColorResource.colorDADADA, width: 0.5),
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
+                              boxShadow: const <BoxShadow>[
                                 BoxShadow(
                                   color: Color.fromRGBO(0, 0, 0, 0.25),
                                   blurRadius: 2,
@@ -488,7 +488,7 @@ class _MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   padding:
                                       const EdgeInsets.fromLTRB(23, 0, 10, 0),
                                   child: Row(
-                                    children: [
+                                    children: <Widget>[
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:

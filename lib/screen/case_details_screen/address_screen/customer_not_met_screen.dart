@@ -48,13 +48,14 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.leftMessage.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
     ];
 
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
@@ -65,7 +66,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         key: widget.bloc.addressCustomerNotMetFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Expanded(
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
@@ -75,7 +76,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         Wrap(
                           runSpacing: 10,
                           spacing: 10,
@@ -92,9 +93,10 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             focusNode:
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
-                            validationRules: const ['required'],
-                            onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate, followUpDate) {
+                            validationRules: const <String>['required'],
+                            onTapped: () =>
+                                PickDateAndTimeUtils.pickDate(context,
+                                    (String? newDate, String? followUpDate) {
                               if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
@@ -124,23 +126,24 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.addressCustomerNotMetRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          returnS2Tresponse: (val) {
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(() =>
                                   widget.bloc.returnS2TCustomerNotMet = val);
                             }
                           },
-                          editStringCallBack: ((values) {
+                          editStringCallBack: ((dynamic values) {
                             setState(() {
                               bottomHeight = (values == '')
                                   ? 0.0
                                   : MediaQuery.of(context).size.height * 0.1;
                             });
                           }),
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TCustomerNotMet =
                                   returnS2Tdata;
@@ -181,7 +184,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -212,8 +215,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    final List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;

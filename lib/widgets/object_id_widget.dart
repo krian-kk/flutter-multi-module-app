@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 import 'dart:typed_data';
 
-const _m = 0x5bd1e995;
-const _r = 24;
+const int _m = 0x5bd1e995;
+const int _r = 24;
 
 class ObjectIdWidget {
   ObjectIdWidget() {
@@ -22,7 +22,7 @@ class ObjectIdWidget {
       );
     }
 
-    for (var i = 0; i < byteLength; i++) {
+    for (int i = 0; i < byteLength; i++) {
       _bytes[i] = bytes[i];
     }
   }
@@ -41,7 +41,7 @@ class ObjectIdWidget {
   ObjectIdWidget.fromTimestamp(DateTime timestamp) {
     ArgumentError.checkNotNull(timestamp, 'timestamp');
 
-    final secondsSinceEpoch = timestamp.millisecondsSinceEpoch ~/ 1000;
+    final int secondsSinceEpoch = timestamp.millisecondsSinceEpoch ~/ 1000;
 
     _bytes[3] = secondsSinceEpoch & 0xff;
     _bytes[2] = (secondsSinceEpoch >> 8) & 0xff;
@@ -56,22 +56,23 @@ class ObjectIdWidget {
           hexString, 'hexString', 'Provided hexString has wrong length.');
     }
 
-    final secondsSinceEpoch = int.parse(hexString.substring(0, 8), radix: 16);
-    final millisecondsSinceEpoch = secondsSinceEpoch * 1000;
+    final int secondsSinceEpoch =
+        int.parse(hexString.substring(0, 8), radix: 16);
+    final int millisecondsSinceEpoch = secondsSinceEpoch * 1000;
 
-    final processUnique = int.parse(hexString.substring(8, 18), radix: 16);
-    final counter = int.parse(hexString.substring(18, 24), radix: 16);
+    final int processUnique = int.parse(hexString.substring(8, 18), radix: 16);
+    final int counter = int.parse(hexString.substring(18, 24), radix: 16);
 
     _hexString = hexString;
 
     _initialize(millisecondsSinceEpoch, processUnique, counter);
   }
-  static const _maxCounterValue = 0xffffff;
-  static const _counterMask = _maxCounterValue + 1;
+  static const int _maxCounterValue = 0xffffff;
+  static const int _counterMask = _maxCounterValue + 1;
 
-  static const byteLength = 12;
+  static const int byteLength = 12;
 
-  static const hexStringLength = byteLength * 2;
+  static const int hexStringLength = byteLength * 2;
 
   static final int _processUnique = ProcessUnique().getValue();
 
@@ -84,7 +85,7 @@ class ObjectIdWidget {
   Uint8List get bytes => _bytes;
 
   void _initialize(int millisecondsSinceEpoch, int processUnique, int counter) {
-    final secondsSinceEpoch = millisecondsSinceEpoch ~/ 1000;
+    final int secondsSinceEpoch = millisecondsSinceEpoch ~/ 1000;
 
     _bytes[3] = secondsSinceEpoch & 0xff;
     _bytes[2] = (secondsSinceEpoch >> 8) & 0xff;
@@ -109,8 +110,8 @@ class ObjectIdWidget {
       return _timestamp!;
     }
 
-    var secondsSinceEpoch = 0;
-    for (var x = 3, y = 0; x >= 0; x--, y++) {
+    int secondsSinceEpoch = 0;
+    for (int x = 3, y = 0; x >= 0; x--, y++) {
       secondsSinceEpoch += _bytes[x] * math.pow(256, y).toInt();
     }
 
@@ -123,8 +124,8 @@ class ObjectIdWidget {
 
   String get hexString {
     if (_hexString == null) {
-      final _buffer = StringBuffer();
-      for (var i = 0; i < _bytes.length; i++) {
+      final StringBuffer _buffer = StringBuffer();
+      for (int i = 0; i < _bytes.length; i++) {
         _buffer.write(_bytes[i].toRadixString(16).padLeft(2, '0'));
       }
       _hexString = _buffer.toString();
@@ -138,7 +139,7 @@ class ObjectIdWidget {
     if (other.runtimeType != runtimeType) {
       return false;
     }
-    for (var i = 0; i < _bytes.length; i++) {
+    for (int i = 0; i < _bytes.length; i++) {
       if ((other as ObjectIdWidget)._bytes[i] != _bytes[i]) {
         return false;
       }
@@ -170,12 +171,12 @@ class ObjectIdWidget {
 }
 
 int murmurHash2(Uint8List data, [int seed = 0]) {
-  var len = data.length;
-  var h = seed ^ len;
+  int len = data.length;
+  int h = seed ^ len;
 
-  var pointer = 0;
+  int pointer = 0;
   while (len >= 4) {
-    var k = data[pointer + 3] +
+    int k = data[pointer + 3] +
         data[pointer + 2] * 16 +
         data[pointer + 1] * 256 +
         data[pointer] * 4096;
@@ -211,7 +212,7 @@ abstract class ProcessUnique {
 class FallbackProcessUnique implements ProcessUnique {
   @override
   int getValue() {
-    var value = 0;
+    int value = 0;
 
     math.Random random;
     try {
@@ -220,7 +221,7 @@ class FallbackProcessUnique implements ProcessUnique {
       random = math.Random();
     }
 
-    for (var i = 0; i < 10; i++) {
+    for (int i = 0; i < 10; i++) {
       value += random.nextInt(256) * math.pow(16, i).toInt();
     }
 

@@ -60,7 +60,7 @@ class OtsPostModel {
   String contractor;
   List<String> imageLocation;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'eventId': eventId,
         'eventType': eventType,
         'caseId': caseId,

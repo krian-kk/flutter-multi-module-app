@@ -33,30 +33,30 @@ class AvatarGlowWidget extends StatefulWidget {
 
 class _AvatarGlowState extends State<AvatarGlowWidget>
     with SingleTickerProviderStateMixin {
-  late final controller = AnimationController(
+  late final AnimationController controller = AnimationController(
     duration: widget.duration,
     vsync: this,
   );
-  late final _curve = CurvedAnimation(
+  late final CurvedAnimation _curve = CurvedAnimation(
     parent: controller,
     curve: widget.curve,
   );
-  late final Animation<double> _smallDiscAnimation = Tween(
+  late final Animation<double> _smallDiscAnimation = Tween<double>(
     begin: (widget.endRadius * 2) / 6,
     end: (widget.endRadius * 2) * (3 / 4),
   ).animate(_curve);
-  late final Animation<double> _bigDiscAnimation = Tween(
+  late final Animation<double> _bigDiscAnimation = Tween<double>(
     begin: 0.0,
     end: (widget.endRadius * 2),
   ).animate(_curve);
-  late final Animation<double> _alphaAnimation = Tween(
+  late final Animation<double> _alphaAnimation = Tween<double>(
     begin: 0.30,
     end: 0.0,
   ).animate(controller);
 
   _statusListener(_) async {
     if (controller.status == AnimationStatus.completed) {
-      await Future.delayed(widget.repeatPauseDuration);
+      await Future<dynamic>.delayed(widget.repeatPauseDuration);
       if (mounted && widget.repeat && widget.animate) {
         controller.reset();
         await controller.forward();
@@ -87,7 +87,7 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
   _startAnimation() async {
     controller.addStatusListener(_statusListener);
     if (widget.startDelay != null) {
-      await Future.delayed(widget.startDelay!);
+      await Future<dynamic>.delayed(widget.startDelay!);
     }
     if (mounted) {
       controller.reset();
@@ -104,8 +104,8 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
     return AnimatedBuilder(
       animation: _alphaAnimation,
       child: widget.child,
-      builder: (context, widgetChild) {
-        final decoration = BoxDecoration(
+      builder: (BuildContext context, Widget? widgetChild) {
+        final BoxDecoration decoration = BoxDecoration(
           shape: widget.shape,
           // If the user picks a curve that goes below 0 or above 1
           // this opacity will have unexpected effects without clamping
@@ -125,7 +125,7 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
               widget.animate
                   ? AnimatedBuilder(
                       animation: _bigDiscAnimation,
-                      builder: (context, widget) {
+                      builder: (BuildContext context, Widget? widget) {
                         // If the user picks a curve that goes below 0,
                         // this will throw without clamping
                         final num size = _bigDiscAnimation.value.clamp(

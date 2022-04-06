@@ -10,7 +10,7 @@ class Rejected {
   int? totalAmt;
   List<dynamic>? cases;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'totalAmt': totalAmt,
         'cases': cases,

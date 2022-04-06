@@ -53,7 +53,7 @@ class CaseDetailsScreen extends StatefulWidget {
 
 class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late CaseDetailsBloc bloc;
-  late StreamSubscription subscription;
+  late StreamSubscription<dynamic> subscription;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       onWillPop: () {
         Navigator.pop(
           context,
-          {
+          <String, dynamic>{
             'isSubmit': bloc.isEventSubmited,
             'caseId': bloc.caseId!,
             'isSubmitForMyVisit': bloc.isSubmitedForMyVisits,
@@ -84,13 +84,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             'followUpDate': bloc.changeFollowUpDate,
           },
         );
-        return Future(() => false);
+        return Future<bool>(() => false);
       },
       child: Scaffold(
         backgroundColor: ColorResource.colorF7F8FA,
         body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
-          listener: (context, state) {
+          listener: (BuildContext context, CaseDetailsState state) {
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
@@ -156,25 +156,25 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           },
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
             bloc: bloc,
-            builder: (context, state) {
+            builder: (BuildContext context, CaseDetailsState state) {
               if (state is CaseDetailsLoadingState) {
                 return const CustomLoadingWidget();
               } else {
                 return Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
                   body: Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: CustomAppbar(
                           titleString: Languages.of(context)!.caseDetials,
                           titleSpacing: 10,
                           iconEnumValues: IconEnum.back,
-                          onItemSelected: (value) {
+                          onItemSelected: (dynamic value) {
                             if (value == 'IconEnum.back') {
                               Navigator.pop(
                                 context,
-                                {
+                                <String, dynamic>{
                                   'isSubmit': bloc.isEventSubmited,
                                   'caseId': bloc.caseId!,
                                   'isSubmitForMyVisit':
@@ -203,7 +203,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                         bloc.noInternetAndServerErrorMsg!),
                                     const SizedBox(
@@ -229,9 +229,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                         mainAxisSize: MainAxisSize.min,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
+                                        children: <Widget>[
                                           Stack(
-                                            children: [
+                                            children: <Widget>[
                                               Align(
                                                 alignment:
                                                     Alignment.bottomCenter,
@@ -338,7 +338,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ),
                                           const SizedBox(height: 16),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               Flexible(
                                                 child: SizedBox(
                                                   child:
@@ -367,7 +367,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ),
                                           const SizedBox(height: 16),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               Flexible(
                                                 child: CustomReadOnlyTextField(
                                                   Languages.of(context)!
@@ -434,7 +434,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: [
+                                              children: <Widget>[
                                                 Container(
                                                   margin:
                                                       const EdgeInsets.all(6.0),
@@ -458,7 +458,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: [
+                                                      children: <Widget>[
                                                         CustomText(
                                                           Languages.of(context)!
                                                               .beneficiaryDetails,
@@ -512,7 +512,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
-                                                    children: [
+                                                    children: <Widget>[
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .repaymentBankName,
@@ -589,7 +589,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
-                                                        children: [
+                                                        children: <Widget>[
                                                           Singleton
                                                                       .instance
                                                                       .contractorInformations
@@ -649,7 +649,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             Row(
                                                                           mainAxisSize:
                                                                               MainAxisSize.min,
-                                                                          children: [
+                                                                          children: <
+                                                                              Widget>[
                                                                             SvgPicture.asset(ImageResource.sms),
                                                                             const SizedBox(width: 7),
                                                                             CustomText(Languages.of(context)!.sendSMS,
@@ -755,12 +756,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 return Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     const SizedBox(height: 10),
                                                     GestureDetector(
                                                       onTap: () => bloc.add(
                                                           ClickPushAndPOPCaseDetailsEvent(
-                                                              paramValues: {
+                                                              paramValues: <
+                                                                  String,
+                                                                  dynamic>{
                                                             'caseID': bloc
                                                                 .caseDetailsAPIValue
                                                                 .result
@@ -772,7 +775,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       child: Container(
                                                         width: double.infinity,
                                                         decoration: BoxDecoration(
-                                                            boxShadow: [
+                                                            boxShadow: <
+                                                                BoxShadow>[
                                                               BoxShadow(
                                                                 color: ColorResource
                                                                     .color000000
@@ -810,7 +814,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
-                                                            children: [
+                                                            children: <Widget>[
                                                               CustomText(
                                                                 Languages.of(
                                                                         context)!
@@ -863,7 +867,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CustomText(
                                                                     bloc
                                                                             .caseDetailsAPIValue
@@ -879,7 +884,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             .w700,
                                                                   ),
                                                                   Row(
-                                                                    children: [
+                                                                    children: <
+                                                                        Widget>[
                                                                       CustomText(
                                                                         Languages.of(context)!
                                                                             .view,
@@ -917,7 +923,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Container(
                               width: double.infinity,
                               decoration: const BoxDecoration(
@@ -930,13 +936,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                 child: Align(
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: <Widget>[
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
                                               onTap: () => bloc.add(
                                                   EventDetailsEvent(
                                                       Constants.addressDetails,
-                                                      const [],
+                                                      const <dynamic>[],
                                                       false)),
                                               child: Container(
                                                 height: 50,
@@ -960,7 +966,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       horizontal: 10.0,
                                                       vertical: 5.0),
                                                   child: Row(
-                                                    children: [
+                                                    children: <Widget>[
                                                       CircleAvatar(
                                                         backgroundColor:
                                                             ColorResource
@@ -1002,7 +1008,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       GestureDetector(
                                         onTap: () => bloc.add(EventDetailsEvent(
                                             Constants.callDetails,
-                                            const [],
+                                            const <dynamic>[],
                                             true)),
                                         child: Container(
                                           height: 50,
@@ -1024,7 +1030,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 horizontal: 10.0,
                                                 vertical: 5.0),
                                             child: Row(
-                                              children: [
+                                              children: <Widget>[
                                                 CircleAvatar(
                                                   backgroundColor:
                                                       ColorResource.color23375A,
@@ -1098,8 +1104,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         });
   }
 
-  openBottomSheet(
-      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+  openBottomSheet(BuildContext buildContext, String cardTitle,
+      List<dynamic> list, bool? isCall,
       {String? health,
       String? selectedContact,
       required bool isCallFromCallDetails,
@@ -1311,8 +1317,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
-            final List<String> s1 = [];
-            bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+            final List<String> s1 = <String>[];
+            bloc.caseDetailsAPIValue.result?.callDetails
+                ?.forEach((dynamic element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
                   s1.add(element['value']);
@@ -1359,7 +1366,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 height: MediaQuery.of(context).size.height * 0.89,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: const <Widget>[
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
                     Expanded(child: CustomLoadingWidget()),

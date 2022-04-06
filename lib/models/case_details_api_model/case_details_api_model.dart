@@ -17,7 +17,7 @@ class CaseDetailsApiModel {
   String? message;
   CaseDetailsResultModel? result;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'status': status,
         'message': message,
         'result': result?.toJson(),

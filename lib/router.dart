@@ -64,13 +64,14 @@ Route<dynamic> getRoute(RouteSettings settings) {
 }
 
 Route<dynamic> _buildSplashScreen() {
-  return MaterialPageRoute(
-    builder: (context) => addAuthBloc(context, PageBuilder.buildSplashScreen()),
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
+        addAuthBloc(context, PageBuilder.buildSplashScreen()),
   );
 }
 
 Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     if (settings.arguments != null) {}
 
     // final AuthenticationBloc authBloc =
@@ -83,13 +84,13 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
 }
 
 Route<dynamic> _buildChatScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     return addAuthBloc(context, PageBuilder.buildChatScreenPage());
   });
 }
 
 Route<dynamic> _buildLoginScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(
@@ -100,15 +101,15 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
 }
 
 Route<dynamic> _buildSearchScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
         addAuthBloc(context, PageBuilder.buildSearchScreenPage()),
   );
 }
 
 Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
-  return MaterialPageRoute(
-    builder: (context) =>
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
         addAuthBloc(context, PageBuilder.buildCaseDetailsPage(settings)),
   );
 }

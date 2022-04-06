@@ -42,12 +42,12 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
       width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomText(
                     Languages.of(context)!.forgotPin.replaceAll('?', ''),
@@ -78,10 +78,10 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
               length: 6,
               mainAxisAlignment: MainAxisAlignment.center,
               animationType: AnimationType.scale,
-              onChanged: (value) {
+              onChanged: (String value) {
                 setState(() => isError = false);
               },
-              onCompleted: (value) {
+              onCompleted: (String value) {
                 // if (!(contoller.text == "1111")) {
                 //   setState(() => isError = true);
                 // }
@@ -91,7 +91,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
                 color: ColorResource.color23375A,
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [
+              inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                 FilteringTextInputFormatter.deny(' '),
                 FilteringTextInputFormatter.digitsOnly,

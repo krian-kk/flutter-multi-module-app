@@ -16,7 +16,7 @@ class DashboardAllModels {
   String? message;
   Result? result;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'status': status,
         'message': message,
         'result': result?.toJson(),

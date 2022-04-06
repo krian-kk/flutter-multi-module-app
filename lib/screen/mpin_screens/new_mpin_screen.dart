@@ -33,12 +33,12 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
       width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomText(
                     Languages.of(context)!
@@ -69,14 +69,14 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
               length: 4,
               mainAxisAlignment: MainAxisAlignment.center,
               animationType: AnimationType.scale,
-              onChanged: (value) {
+              onChanged: (String value) {
                 setState(() {});
               },
               textStyle: const TextStyle(
                 fontSize: FontSize.fourteen,
                 color: ColorResource.color23375A,
               ),
-              inputFormatters: [
+              inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                 FilteringTextInputFormatter.deny(' '),
                 FilteringTextInputFormatter.digitsOnly,

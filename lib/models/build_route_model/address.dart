@@ -9,7 +9,7 @@ class Address {
   String? cType;
   String? value;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'cType': cType,
         'value': value,
       };

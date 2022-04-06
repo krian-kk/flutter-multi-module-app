@@ -30,7 +30,8 @@ class EventDetailsPlayAudioModel {
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
   EventDetailsBloc() : super(EventDetailsInitial()) {
-    on<EventDetailsEvent>((event, emit) async {
+    on<EventDetailsEvent>(
+        (EventDetailsEvent event, Emitter<EventDetailsState> emit) async {
       if (event is EventDetailsInitialEvent) {
         emit.call(EventDetailsLoadingState());
         if (ConnectivityResult.none ==
@@ -52,8 +53,10 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
               // ignore: prefer_final_locals
-              List<EvnetDetailsResultsModel>? results = [];
-              for (var element in value.docs) {
+              List<EvnetDetailsResultsModel>? results =
+                  <EvnetDetailsResultsModel>[];
+              for (QueryDocumentSnapshot<Map<String, dynamic>> element
+                  in value.docs) {
                 try {
                   results
                       .add(EvnetDetailsResultsModel.fromJson(element.data()));
@@ -63,7 +66,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               }
               eventDetailsAPIValues.result = results;
             } else {
-              eventDetailsAPIValues.result = [];
+              eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
             }
           });
         } else {
@@ -101,7 +104,8 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         //     AppUtils.showToast(getEventDetailsData['data']['message']);
         //   }
         // }
-        eventDetailsAPIValues.result?.forEach((element) {
+        eventDetailsAPIValues.result
+            ?.forEach((EvnetDetailsResultsModel element) {
           eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
         });
         emit.call(EventDetailsLoadedState());
@@ -109,5 +113,6 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
     });
   }
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
-  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
+  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
+      <EventDetailsPlayAudioModel>[];
 }

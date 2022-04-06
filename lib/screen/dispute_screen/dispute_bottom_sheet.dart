@@ -75,7 +75,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   String disputeDropDownValue = 'select';
   bool isSubmit = true;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -109,7 +109,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
           final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
@@ -139,7 +139,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -149,7 +149,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: widget.cardTitle,
                       padding: const EdgeInsets.symmetric(
@@ -169,7 +169,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
-                                children: [
+                                children: <Widget>[
                                   // CustomText(
                                   //   Languages.of(context)!.nextActionDate,
                                   //   fontSize: FontSize.twelve,
@@ -185,11 +185,14 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                       Languages.of(context)!.nextActionDate,
                                       nextActionDateControlller,
                                       isLabel: true,
-                                      validationRules: const ['required'],
+                                      validationRules: const <String>[
+                                        'required'
+                                      ],
                                       isReadOnly: true,
                                       onTapped: () =>
                                           PickDateAndTimeUtils.pickDate(context,
-                                              (newDate, followUpDate) {
+                                              (String? newDate,
+                                                  String? followUpDate) {
                                         if (newDate != null &&
                                             followUpDate != null) {
                                           setState(() {
@@ -214,17 +217,18 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                   child: CustomReadOnlyTextField(
                                 Languages.of(context)!.remarks,
                                 remarksControlller,
-                                validationRules: const ['required'],
+                                validationRules: const <String>['required'],
                                 isLabel: true,
                                 isVoiceRecordWidget: true,
-                                returnS2Tresponse: (val) {
+                                returnS2Tresponse: (dynamic val) {
                                   if (val is Speech2TextModel) {
                                     setState(() {
                                       returnS2Tdata = val;
                                     });
                                   }
                                 },
-                                checkRecord: (isRecord, text, returnS2Tdata) {
+                                checkRecord: (String? isRecord, String? text,
+                                    Speech2TextModel returnS2Tdata) {
                                   setState(() {
                                     this.isRecord = isRecord;
                                     this.returnS2Tdata = returnS2Tdata;
@@ -239,15 +243,15 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               Flexible(
                                 child: CustomDropDownButton(
                                   Languages.of(context)!.disputeReason,
-                                  [
+                                  <String>[
                                     'select',
                                     Languages.of(context)!.disputeWithCharges,
                                     Languages.of(context)!.loanCleared,
                                   ],
                                   menuMaxHeight: 200,
                                   selectedValue: disputeDropDownValue,
-                                  onChanged: (newValue) => setState(() =>
-                                      disputeDropDownValue =
+                                  onChanged: (String? newValue) => setState(
+                                      () => disputeDropDownValue =
                                           newValue.toString()),
                                 ),
                               ),
@@ -264,7 +268,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -278,7 +282,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Singleton.instance.startCalling ?? false
                           ? const SizedBox()
                           : Expanded(
@@ -305,7 +309,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
-                                  gradientColors: [
+                                  gradientColors: <Color>[
                                     ColorResource.colorFFFFFF,
                                     ColorResource.colorFFFFFF.withOpacity(0.7),
                                   ],
@@ -328,7 +332,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
-                            gradientColors: [
+                            gradientColors: <Color>[
                               ColorResource.colorFFFFFF,
                               ColorResource.colorFFFFFF.withOpacity(0.7),
                             ],
@@ -373,7 +377,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                     ? widget.callId
                     : widget.paramValue['callId'],
                 context: context,
-              ).then((value) {
+              ).then((bool value) {
                 isNotAutoCalling = value;
               });
             }
@@ -386,7 +390,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   latLng = LatLng(res.latitude, res.longitude);
                 });
               }
-              final requestBodyData = DisputePostModel(
+              final DisputePostModel requestBodyData = DisputePostModel(
                 eventId: ConstantEventValues.disputeEventId,
                 eventType:
                     (widget.userType == Constants.telecaller || widget.isCall!)

@@ -4,14 +4,14 @@ import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class PickDateAndTimeUtils {
-  static Future pickDate(
+  static Future<dynamic> pickDate(
       BuildContext context, OnChangeForPickDate function) async {
-    final newDate = await showDatePicker(
+    final DateTime? newDate = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
@@ -42,11 +42,12 @@ class PickDateAndTimeUtils {
     function(formattedDate, newDate.toString());
   }
 
-  static Future pickTime(BuildContext context, OnChange function) async {
-    final newTime = await showTimePicker(
+  static Future<dynamic> pickTime(
+      BuildContext context, OnChange function) async {
+    final TimeOfDay? newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        builder: (context, child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
@@ -71,8 +72,8 @@ class PickDateAndTimeUtils {
     }
 
     // final time = newTime.format(context).toString();
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minites = newTime.minute.toString().padLeft(2, '0');
+    final String hours = newTime.hour.toString().padLeft(2, '0');
+    final String minites = newTime.minute.toString().padLeft(2, '0');
     function('$hours:$minites');
   }
 }

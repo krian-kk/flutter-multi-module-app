@@ -7,7 +7,7 @@ class BankDepositPostModel {
   });
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
-    caseIds = json['caseIds'].forEach((v) {
+    caseIds = json['caseIds'].forEach((dynamic v) {
       caseIds.add(v);
     });
     deposition = json['deposition'];
