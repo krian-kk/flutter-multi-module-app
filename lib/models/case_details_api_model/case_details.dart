@@ -220,7 +220,6 @@ class CaseDetails {
       };
 }
 
-
 // import 'attr.dart';
 // import 'contact.dart';
 // import 'repayment_info.dart';

@@ -75,7 +75,6 @@ class GeneratePaymentLinkPost {
   String? caseId;
   bool? dynamicLink;
 
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['caseId'] = caseId;

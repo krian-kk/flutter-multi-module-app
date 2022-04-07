@@ -30,7 +30,17 @@ class ShowHealthStatus {
         break;
       default:
         // returnWidget = colorWidget(ColorResource.grey);
-        returnWidget = SvgPicture.asset(
+        returnWidget =
+            // CircleAvatar(
+            //   backgroundColor: ColorResource.color23375A,
+            //   radius: 10,
+            //   child: Center(
+            //     child: SvgPicture.asset(
+            //       ImageResource.direction,
+            //     ),
+            //   ),
+            // );
+            SvgPicture.asset(
           ImageResource.activePerson,
           color: ColorResource.grey,
         );
