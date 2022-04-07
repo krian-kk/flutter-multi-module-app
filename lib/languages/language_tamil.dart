@@ -935,4 +935,82 @@ class LanguageTa extends Languages {
 
   @override
   String get agent => 'முகவர்';
+
+  @override
+  String get dateOfLoanDisbursement => 'கடன் வழங்கப்பட்ட தேதி';
+
+  @override
+  String get tos => 'TOS';
+
+  @override
+  String get emiAmount => 'EMI தொகை';
+
+  @override
+  String get noOfPendingEMI => 'நிலுவையில் உள்ள EMI இன் எண்ணிக்கை';
+
+  @override
+  String get penaltyAmount => 'அபராதத் தொகை';
+
+  @override
+  String get odInterest => 'OD வட்டி';
+
+  @override
+  String get assetDetails => 'சொத்து விவரங்கள்';
+
+  @override
+  String get coLender => 'கோ-கடன் வழங்குபவர் ';
+
+  @override
+  String get employerBusinessEntity => 'முதலாளி வணிக நிறுவனம்';
+
+  @override
+  String get lastPaymentDate => 'கடைசி கட்டணம் செலுத்தும் தேதி';
+
+  @override
+  String get sourcingRmName => 'ஆர்எம் பெயர் ஆதாரம்';
+
+  @override
+  String get lastPaidAmount => 'கடைசியாக செலுத்தப்பட்ட தொகை';
+
+  @override
+  String get riskRanking => 'இடர் தரவரிசை';
+
+  @override
+  String get reviewFlag => 'மதிப்பாய்வு கொடி';
+
+  @override
+  String get location => 'இடம்';
+
+  @override
+  String get agency => 'ஏஜென்சி';
+
+  @override
+  String get minDueAmount => 'குறைந்தபட்ச நிலுவைத் தொகை';
+
+  @override
+  String get cardOutstanding => 'கார்டு நிலுவையில் உள்ளது';
+
+  @override
+  String get statementDate => 'அறிக்கை தேதி';
+
+  @override
+  String get dueDate => 'நிலுவைத் தேதி';
+
+  @override
+  String get cardStatus => 'அட்டை நிலை';
+
+  @override
+  String get lastBilledAmount => 'கடைசியாக பில் செய்யப்பட்ட தொகை';
+
+  @override
+  String get chassisNumber => 'சேஸ் எண்';
+
+  @override
+  String get riskBucket => 'ரிஸ்க் வாளி';
+
+  @override
+  String get ref1 => 'குறிப்பு 1';
+
+  @override
+  String get ref2 => 'குறிப்பு 2';
 }

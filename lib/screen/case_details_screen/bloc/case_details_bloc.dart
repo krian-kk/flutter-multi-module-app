@@ -270,12 +270,12 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
 
       Singleton.instance.overDueAmount =
-          caseDetailsAPIValue.result?.caseDetails!.odVal.toString() ?? '';
+          caseDetailsAPIValue.result?.caseDetails?.odVal.toString() ?? '';
       Singleton.instance.agrRef =
           caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
 
       loanAmountController.text = caseDetailsAPIValue
-              .result?.caseDetails!.loanAmt
+              .result?.caseDetails?.loanAmt
               .toString()
               .replaceAll('null', '-') ??
           '-';

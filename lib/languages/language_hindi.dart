@@ -931,4 +931,82 @@ class LanguageHi extends Languages {
 
   @override
   String get agent => 'एजेंट';
+
+  @override
+  String get dateOfLoanDisbursement => 'ऋण वितरण की तिथि';
+
+  @override
+  String get tos => 'TOS';
+
+  @override
+  String get emiAmount => 'ईएमआई राशि';
+
+  @override
+  String get noOfPendingEMI => 'कोई लंबित ईएमआई नहीं';
+
+  @override
+  String get penaltyAmount => 'जुर्माना राशि';
+
+  @override
+  String get odInterest => 'ओडी ब्याज';
+
+  @override
+  String get assetDetails => 'संपत्ति विवरण';
+
+  @override
+  String get coLender => 'सह ऋणदाता ';
+
+  @override
+  String get employerBusinessEntity => 'नियोक्ता व्यवसाय इकाई';
+
+  @override
+  String get lastPaymentDate => 'अंतिम भुगतान तिथि';
+
+  @override
+  String get sourcingRmName => 'सोर्सिंग आरएम नाम';
+
+  @override
+  String get lastPaidAmount => 'अंतिम भुगतान की गई राशि';
+
+  @override
+  String get riskRanking => 'जोखिम रैंकिंग';
+
+  @override
+  String get reviewFlag => 'समीक्षा ध्वज';
+
+  @override
+  String get location => 'स्थान';
+
+  @override
+  String get agency => 'एजेंसी';
+
+  @override
+  String get minDueAmount => 'न्यूनतम देय राशि';
+
+  @override
+  String get cardOutstanding => 'कार्ड बकाया';
+
+  @override
+  String get statementDate => 'स्टेटमेंट की तारीख';
+
+  @override
+  String get dueDate => 'नियत तारीख';
+
+  @override
+  String get cardStatus => 'कार्ड की स्थिति';
+
+  @override
+  String get lastBilledAmount => 'अंतिम बिल राशि';
+
+  @override
+  String get chassisNumber => 'चेसिस नंबर';
+
+  @override
+  String get riskBucket => 'जोखिम बाल्टी';
+
+  @override
+  String get ref1 => 'रेफरी 1';
+
+  @override
+  String get ref2 => 'रेफरी 2';
 }

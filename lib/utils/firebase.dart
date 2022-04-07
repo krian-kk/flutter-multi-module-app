@@ -117,31 +117,31 @@ class FirebaseUtils {
 
   // to update the case detail starred cases or not
   static Future<bool> updateStarred({dynamic isStarred, dynamic caseId}) async {
-    bool returnValues = false;
-    if (Singleton.instance.usertype == Constants.fieldagent) {
-      await FirebaseFirestore.instance
-          .collection(Singleton.instance.firebaseDatabaseName)
-          .doc(Singleton.instance.agentRef)
-          .collection(Constants.firebaseCase)
-          .doc(caseId)
-          .update({'starredCase': isStarred});
-      returnValues = true;
-    } else {
-      returnValues = false;
-    }
+    bool returnValues = true;
+    // if (Singleton.instance.usertype == Constants.fieldagent) {
+    //   await FirebaseFirestore.instance
+    //       .collection(Singleton.instance.firebaseDatabaseName)
+    //       .doc(Singleton.instance.agentRef)
+    //       .collection(Constants.firebaseCase)
+    //       .doc(caseId)
+    //       .update({'starredCase': isStarred});
+    //   returnValues = true;
+    // } else {
+    //   returnValues = false;
+    // }
     return returnValues;
   }
 
   //For offline purpose -> it'll storing inside of all event submission if files added
   static Map<String, dynamic> toPrepareFileStoringModel(List<File> files) {
     List<Map<String, dynamic>> returnResult = [];
-    for (var element in files) {
-      returnResult.add({
-        'fileName': element.path.split('/').last,
-        'base64String': base64Encode(element.readAsBytesSync()),
-        'mimeType': lookupMimeType(element.path)
-      });
-    }
+    // for (var element in files) {
+    //   returnResult.add({
+    //     'fileName': element.path.split('/').last,
+    //     'base64String': base64Encode(element.readAsBytesSync()),
+    //     'mimeType': lookupMimeType(element.path)
+    //   });
+    // }
     return {'events': returnResult};
   }
 }

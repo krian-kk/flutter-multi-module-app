@@ -415,119 +415,152 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          // Extra text field
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+
+                                          // ), // Extra text field
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
                                           extraTextField(
-                                              title:
-                                                  'Date of loan disbursement',
+                                              title: Languages.of(context)!
+                                                  .dateOfLoanDisbursement,
                                               controller: bloc
                                                   .dateOfLoanDisbursementController),
                                           extraTextField(
-                                              title: 'TOS',
+                                              title: Languages.of(context)!.tos,
                                               controller: bloc.tosController),
                                           extraTextField(
-                                              title: 'EMI Amount',
+                                              title: Languages.of(context)!
+                                                  .emiAmount,
                                               controller:
                                                   bloc.emiAmountController),
                                           extraTextField(
-                                              title: 'No of pending EMI',
+                                              title: Languages.of(context)!
+                                                  .noOfPendingEMI,
                                               controller: bloc
                                                   .noOfPendingEmiController),
                                           extraTextField(
-                                              title: 'Penalty Amount',
+                                              title: Languages.of(context)!
+                                                  .penaltyAmount,
                                               controller:
                                                   bloc.penaltyAmountController),
                                           extraTextField(
-                                              title: 'OD interest',
+                                              title: Languages.of(context)!
+                                                  .odInterest,
                                               controller:
                                                   bloc.odInterestController),
                                           extraTextField(
-                                              title: 'Asset details',
+                                              title: Languages.of(context)!
+                                                  .assetDetails,
                                               controller:
                                                   bloc.assetDetailsController),
                                           extraTextField(
-                                              title: 'CO-Lender ',
+                                              title: Languages.of(context)!
+                                                  .coLender,
                                               controller:
                                                   bloc.coLenderController),
                                           extraTextField(
-                                              title: 'Employer Business Entity',
+                                              title: Languages.of(context)!
+                                                  .employerBusinessEntity,
                                               controller: bloc
                                                   .employerBussinessEntityController),
                                           extraTextField(
-                                              title: 'Last payment date',
+                                              title: Languages.of(context)!
+                                                  .lastPaymentDate,
                                               controller: bloc
                                                   .lastPaymentDateController),
                                           extraTextField(
-                                              title: 'Sourcing RM Name',
+                                              title: Languages.of(context)!
+                                                  .sourcingRmName,
                                               controller: bloc
                                                   .sourcingRmnameController),
 
                                           extraTextField(
-                                              title: 'Last paid amount',
+                                              title: Languages.of(context)!
+                                                  .lastPaidAmount,
                                               controller: bloc
                                                   .lastPaidAmountController),
                                           extraTextField(
-                                              title: 'Risk Ranking',
+                                              title: Languages.of(context)!
+                                                  .riskRanking,
                                               controller:
                                                   bloc.riskRankingController),
                                           extraTextField(
-                                              title: 'Review flag',
+                                              title: Languages.of(context)!
+                                                  .reviewFlag,
                                               controller:
                                                   bloc.reviewFlagController),
                                           extraTextField(
-                                              title: 'Location',
+                                              title: Languages.of(context)!
+                                                  .location,
                                               controller:
                                                   bloc.locationController),
                                           extraTextField(
-                                              title: 'Agency',
+                                              title:
+                                                  Languages.of(context)!.agency,
                                               controller:
                                                   bloc.agencyController),
                                           extraTextField(
-                                              title: 'Customer ID',
+                                              title: Languages.of(context)!
+                                                  .customerID,
                                               controller:
                                                   bloc.customerIdController),
                                           extraTextField(
-                                              title: 'Min due amount',
+                                              title: Languages.of(context)!
+                                                  .minDueAmount,
                                               controller:
                                                   bloc.minDueAmountController),
                                           extraTextField(
-                                              title: 'Card outstanding',
+                                              title: Languages.of(context)!
+                                                  .cardOutstanding,
                                               controller: bloc
                                                   .cardOutstandingController),
                                           extraTextField(
-                                              title: 'Statement date',
+                                              title: Languages.of(context)!
+                                                  .statementDate,
                                               controller:
                                                   bloc.statementDateController),
                                           extraTextField(
-                                              title: 'Due date',
+                                              title: Languages.of(context)!
+                                                  .dueDate,
                                               controller:
                                                   bloc.dueDateController),
                                           extraTextField(
-                                              title: 'Card status',
+                                              title: Languages.of(context)!
+                                                  .cardStatus,
                                               controller:
                                                   bloc.cardStatusController),
                                           extraTextField(
-                                              title: 'Last billed amount',
+                                              title: Languages.of(context)!
+                                                  .lastBilledAmount,
                                               controller: bloc
                                                   .lastBilledAmountController),
 
                                           extraTextField(
-                                              title: 'Chassis Number',
+                                              title: Languages.of(context)!
+                                                  .chassisNo,
                                               controller:
                                                   bloc.chassisNumberController),
                                           extraTextField(
-                                              title: 'Model make',
+                                              title: Languages.of(context)!
+                                                  .modelMake,
                                               controller:
                                                   bloc.modelMakeController),
                                           extraTextField(
-                                              title: 'Risk bucket',
+                                              title: Languages.of(context)!
+                                                  .riskBucket,
                                               controller:
                                                   bloc.riskBucketController),
                                           extraTextField(
-                                              title: 'Ref 1',
+                                              title:
+                                                  Languages.of(context)!.ref1,
                                               controller:
                                                   bloc.reference1Controller),
                                           extraTextField(
-                                              title: 'Ref 2',
+                                              title:
+                                                  Languages.of(context)!.ref2,
                                               controller:
                                                   bloc.reference2Controller),
                                           const SizedBox(height: 23),

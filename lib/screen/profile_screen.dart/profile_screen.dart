@@ -36,6 +36,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../widgets/case_detail_expand_list_wiget.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -594,6 +596,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
+                            // const SizedBox(height: 22),
+                            // ListOfCaseDetails.listOfDetails(context,
+                            //     bloc: bloc, title: 'Loan Detail 1'),
                             const SizedBox(height: 22),
                             GestureDetector(
                               onTap: () => bloc.add(LoginEvent()),
