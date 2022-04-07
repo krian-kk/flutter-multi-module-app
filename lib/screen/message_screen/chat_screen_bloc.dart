@@ -21,6 +21,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
   List<ChatHistory> messageHistory = [];
 
+  String? toId;
+
   ProfileApiModel profileAPIValue = ProfileApiModel();
 
   @override
@@ -63,6 +65,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
           if (getProfileData['success']) {
             final Map<String, dynamic> jsonData = getProfileData['data'];
             profileAPIValue = ProfileApiModel.fromJson(jsonData);
+            toId = profileAPIValue.result![0].parent;
           } else if (getProfileData['statusCode'] == 401 ||
               getProfileData['data'] == Constants.connectionTimeout ||
               getProfileData['statusCode'] == 502) {

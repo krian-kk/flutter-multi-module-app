@@ -228,6 +228,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             //     debugPrint(e.toString());
             //   }
             //   if (isOfflineSynced == false) {
+            //     print("------------------NK-------------");
             //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
             //   }
             // }

@@ -292,13 +292,13 @@ class _CustomEventDetailsBottomSheetState
                           Constants.ptp.toLowerCase() &&
                       expandedList[index].eventAttr?.ptpAmount != null)
                     CustomText(
-                      '${Languages.of(context)!.ptpAmount} : ${expandedList[index].eventAttr?.ptpAmount}',
+                      '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
-                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${expandedList[index].eventAttr?.date.toString()}',
+                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),

@@ -680,7 +680,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
             await FirebaseUtils.updateStarred(
                 isStarred: true, caseId: state.caseId);
 
-            if (ConnectivityResult.none ==
+            if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
                 APIRequestType.post,
@@ -701,7 +701,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
             await FirebaseUtils.updateStarred(
                 isStarred: false, caseId: state.caseId);
-            if (ConnectivityResult.none ==
+            if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
                 APIRequestType.post,

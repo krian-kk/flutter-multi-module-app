@@ -26,7 +26,7 @@ class CustomCardList {
           String? distanceValues;
           if (resultData[index].distanceMeters != null) {
             distanceValues = resultData[index].distanceMeters < 1000
-                ? '${resultData[index].distanceMeters.toStringAsFixed(1)} Km'
+                ? '${(resultData[index].distanceMeters / 1000).toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
           return Column(

@@ -375,17 +375,20 @@ class AutoCalling {
                                                                 .start,
                                                         children: <Widget>[
                                                           Row(
-                                                            children: <Widget>[
-                                                              CustomText(
-                                                                bloc
-                                                                        .autoCallingResultList[
-                                                                            indexs]
-                                                                        .address?[
-                                                                            i]
-                                                                        .value ??
-                                                                    '_',
-                                                                color: ColorResource
-                                                                    .color484848,
+                                                            children: [
+                                                              Expanded(
+                                                                child:
+                                                                    CustomText(
+                                                                  bloc
+                                                                          .autoCallingResultList[
+                                                                              indexs]
+                                                                          .address?[
+                                                                              i]
+                                                                          .value ??
+                                                                      '_',
+                                                                  color: ColorResource
+                                                                      .color484848,
+                                                                ),
                                                               ),
                                                               const SizedBox(
                                                                 width: 15,

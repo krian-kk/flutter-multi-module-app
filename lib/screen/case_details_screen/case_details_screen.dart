@@ -389,27 +389,177 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 15),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
-                                            Languages.of(context)!.bankName,
+                                            Languages.of(context)!
+                                                .bankName
+                                                .replaceAll('*', ''),
                                             bloc.bankNameController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.product,
                                             bloc.productController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.batchNo,
                                             bloc.batchNoController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+
+                                          // ), // Extra text field
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .dateOfLoanDisbursement,
+                                              controller: bloc
+                                                  .dateOfLoanDisbursementController),
+                                          extraTextField(
+                                              title: Languages.of(context)!.tos,
+                                              controller: bloc.tosController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .emiAmount,
+                                              controller:
+                                                  bloc.emiAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .noOfPendingEMI,
+                                              controller: bloc
+                                                  .noOfPendingEmiController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .penaltyAmount,
+                                              controller:
+                                                  bloc.penaltyAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .odInterest,
+                                              controller:
+                                                  bloc.odInterestController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .assetDetails,
+                                              controller:
+                                                  bloc.assetDetailsController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .coLender,
+                                              controller:
+                                                  bloc.coLenderController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .employerBusinessEntity,
+                                              controller: bloc
+                                                  .employerBussinessEntityController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastPaymentDate,
+                                              controller: bloc
+                                                  .lastPaymentDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .sourcingRmName,
+                                              controller: bloc
+                                                  .sourcingRmnameController),
+
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastPaidAmount,
+                                              controller: bloc
+                                                  .lastPaidAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .riskRanking,
+                                              controller:
+                                                  bloc.riskRankingController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .reviewFlag,
+                                              controller:
+                                                  bloc.reviewFlagController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .location,
+                                              controller:
+                                                  bloc.locationController),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.agency,
+                                              controller:
+                                                  bloc.agencyController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .customerID,
+                                              controller:
+                                                  bloc.customerIdController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .minDueAmount,
+                                              controller:
+                                                  bloc.minDueAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .cardOutstanding,
+                                              controller: bloc
+                                                  .cardOutstandingController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .statementDate,
+                                              controller:
+                                                  bloc.statementDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .dueDate,
+                                              controller:
+                                                  bloc.dueDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .cardStatus,
+                                              controller:
+                                                  bloc.cardStatusController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastBilledAmount,
+                                              controller: bloc
+                                                  .lastBilledAmountController),
+
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .chassisNo,
+                                              controller:
+                                                  bloc.chassisNumberController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .modelMake,
+                                              controller:
+                                                  bloc.modelMakeController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .riskBucket,
+                                              controller:
+                                                  bloc.riskBucketController),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.ref1,
+                                              controller:
+                                                  bloc.reference1Controller),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.ref2,
+                                              controller:
+                                                  bloc.reference2Controller),
                                           const SizedBox(height: 23),
                                           CustomText(
                                             Languages.of(context)!
@@ -817,8 +967,35 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             children: <Widget>[
                                                               CustomText(
                                                                 Languages.of(
-                                                                        context)!
-                                                                    .accountNo,
+                                                                            context)!
+                                                                        .bankName
+                                                                        .replaceAll(
+                                                                            '*',
+                                                                            '') +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .bankName!,
+                                                                color: ColorResource
+                                                                    .color666666,
+                                                                fontSize:
+                                                                    FontSize
+                                                                        .twelve,
+                                                              ),
+                                                              CustomText(
+                                                                Languages.of(
+                                                                            context)!
+                                                                        .accountNo +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .accNo!,
                                                                 color: ColorResource
                                                                     .color666666,
                                                                 fontSize:
@@ -1072,6 +1249,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         ),
       ),
     );
+  }
+
+  Widget extraTextField(
+      {required String title, required TextEditingController controller}) {
+    return controller.text != '-'
+        ? Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: CustomReadOnlyTextField(
+              title,
+              controller,
+              isLabel: true,
+              isEnable: false,
+            ),
+          )
+        : const SizedBox();
   }
 
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,

@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -58,8 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
-    userId.text = 'CDE_46';
-    password.text = 'Origa123';
+    if (kDebugMode) {
+      userId.text = 'CDE_46';
+      password.text = 'Origa123';
+    }
+    // userId.text = 'CDE_46';
+    // password.text = 'Origa123';
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
@@ -532,21 +537,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ColorResource.colorffffff,
                                           ),
                                         const SizedBox(height: 10),
-                                        CustomButton(
-                                          Languages.of(context)!.help,
-                                          onTap: () => webViewScreen(
-                                            context,
-                                            urlAddress:
-                                                'https://www.google.com/?client=safari',
-                                          ),
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                        // CustomButton(
+                                        //   Languages.of(context)!.help,
+                                        //   onTap: () => webViewScreen(
+                                        //     context,
+                                        //     urlAddress:
+                                        //         'https://www.google.com/?client=safari',
+                                        //   ),
+                                        //   borderColor:
+                                        //       ColorResource.color23375A,
+                                        //   cardShape: 90,
+                                        //   fontSize: FontSize.sixteen,
+                                        //   fontWeight: FontWeight.w600,
+                                        //   textColor: ColorResource.color23375A,
+                                        //   buttonBackgroundColor:
+                                        //       ColorResource.colorffffff,
+                                        // ),
                                       ],
                                     ),
                                   ),

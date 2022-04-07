@@ -208,6 +208,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ProfileNavigation(
           title: Languages.of(context)!.selectSpeechToTextLanguage,
           isEnable: true,
+          // Singleton.instance.usertype == Constants.fieldagent
+          //     ? true
+          //     : false,
           onTap: () {
             bloc.add(CustomerLaunguagePrefrerenceEvent(context));
           }),
@@ -217,13 +220,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      ProfileNavigation(
-        title: Languages.of(context)!.changeSecurePIN,
-        onTap: () {
-          bloc.add(ClickChangeSecurityPinEvent());
-        },
-        isEnable: true,
-      )
+      // ProfileNavigation(
+      //   title: Languages.of(context)!.changeSecurePIN,
+      //   onTap: () {
+      //     bloc.add(ClickChangeSecurityPinEvent());
+      //   },
+      //   isEnable: true,
+      // )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -575,6 +578,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
+                            // const SizedBox(height: 22),
+                            // ListOfCaseDetails.listOfDetails(context,
+                            //     bloc: bloc, title: 'Loan Detail 1'),
                             const SizedBox(height: 22),
                             GestureDetector(
                               onTap: () => bloc.add(LoginEvent()),
