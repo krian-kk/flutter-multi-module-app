@@ -412,14 +412,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(
-                                            height: 50,
-                                          ),
+                                          // const SizedBox(
+                                          //   height: 50,
+                                          // ),
 
                                           // ), // Extra text field
-                                          const SizedBox(
-                                            height: 50,
-                                          ),
+                                          // const SizedBox(
+                                          //   height: 50,
+                                          // ),
                                           extraTextField(
                                               title: Languages.of(context)!
                                                   .dateOfLoanDisbursement,
