@@ -21,7 +21,6 @@ import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -209,27 +208,6 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
 
         await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
             arguments: state.notificationData);
-<<<<<<< HEAD
-        final String? mPin =
-            await PreferenceHelper.getPreference(Constants.mPin);
-        final String? agentRef =
-            await PreferenceHelper.getPreference(Constants.agentRef);
-        // await SharedPreferences.getInstance().then((value) {
-        //   String? mPin = value.getString(Constants.mPin);
-        //   String? agentRef = value.getString(Constants.agentRef);
-        //   print('Mpin ======= > ${mPin}');
-        if (mPin != null) {
-          await showMPinDialog(
-              mPin: mPin,
-              buildContext: context,
-              userName: agentRef,
-              notificationData: state.notificationData);
-        } else {
-          await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-              arguments: state.notificationData);
-        }
-        // });
-=======
         // String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
         // String? agentRef =
         //     await PreferenceHelper.getPreference(Constants.agentRef);
@@ -248,7 +226,6 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         //       arguments: state.notificationData);
         // }
         // // });
->>>>>>> b48e3f082e784484fccadf86b6fbe9f962ad47c2
       }
 
       if (state is AuthenticationUnAuthenticated) {
@@ -293,30 +270,6 @@ Future<void> showMPinDialog(
       context: buildContext!,
       barrierDismissible: false,
       builder: (BuildContext context) {
-<<<<<<< HEAD
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          contentPadding: const EdgeInsets.all(20),
-          content: ConformMpinScreen(
-            successFunction: () => Navigator.pushReplacementNamed(
-                context, AppRoutes.homeTabScreen,
-                arguments: notificationData),
-            forgotPinFunction: () async {
-              if (ConnectivityResult.none ==
-                  await Connectivity().checkConnectivity()) {
-                AppUtils.showErrorToast(
-                    Languages.of(context)!.noInternetConnection);
-              } else {
-                await Navigator.pushReplacementNamed(
-                    context, AppRoutes.loginScreen,
-                    arguments: notificationData);
-              }
-            },
-            mPin: mPin!,
-=======
         return WillPopScope(
           onWillPop: () async => false,
           child: AlertDialog(
@@ -335,13 +288,13 @@ Future<void> showMPinDialog(
                   AppUtils.showErrorToast(
                       Languages.of(context)!.noInternetConnection);
                 } else {
-                  Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+                  await Navigator.pushReplacementNamed(
+                      context, AppRoutes.loginScreen,
                       arguments: notificationData);
                 }
               },
               mPin: mPin!,
             ),
->>>>>>> b48e3f082e784484fccadf86b6fbe9f962ad47c2
           ),
         );
       });
