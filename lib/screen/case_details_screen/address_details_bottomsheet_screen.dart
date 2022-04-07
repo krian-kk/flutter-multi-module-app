@@ -10,7 +10,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -37,13 +36,13 @@ class _AddressDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is AddedNewAddressListState) {
           widget.bloc.listOfAddressDetails;
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -74,12 +73,12 @@ class _AddressDetailsBottomSheetScreenState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           widget.bloc.listOfAddressDetails;
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
-              children: [
+              children: <Widget>[
                 BottomSheetAppbar(
                   title: Languages.of(context)!.addressDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
@@ -108,27 +107,25 @@ class _AddressDetailsBottomSheetScreenState
                           .copyWith(top: 0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
                             itemCount:
                                 widget.bloc.listOfAddressDetails?.length ?? 0,
-                            itemBuilder: (context, i) {
+                            itemBuilder: (BuildContext context, int i) {
                               return widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
-                                          "residence address" ||
+                                          'residence address' ||
                                       widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
-                                          "office address"
+                                          'office address'
                                   ? SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: [
+                                        children: <Widget>[
                                           CustomText(
                                             widget
                                                     .bloc
@@ -138,9 +135,7 @@ class _AddressDetailsBottomSheetScreenState
                                                     .toUpperCase() ??
                                                 '_',
                                             fontWeight: FontWeight.w700,
-                                            fontSize: FontSize.fourteen,
                                             color: ColorResource.color23375A,
-                                            fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 7),
                                           GestureDetector(
@@ -158,15 +153,15 @@ class _AddressDetailsBottomSheetScreenState
                                                           .result
                                                           ?.addressDetails![i]
                                                       ['resAddressId_0'] ??
-                                                  "";
+                                                  '';
 
-                                              for (var element in widget
+                                              for (dynamic element in widget
                                                   .bloc
                                                   .caseDetailsAPIValue
                                                   .result!
                                                   .callDetails!) {
                                                 if (element['cType'] ==
-                                                    "mobile") {
+                                                    'mobile') {
                                                   Singleton.instance
                                                           .customerContactNo =
                                                       element['value'];
@@ -190,12 +185,12 @@ class _AddressDetailsBottomSheetScreenState
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         Flexible(
                                                           child: CustomText(
                                                             widget
@@ -205,12 +200,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                         'value']
                                                                     .toString() ??
                                                                 '_',
-                                                            fontSize: FontSize
-                                                                .fourteen,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontStyle: FontStyle
-                                                                .normal,
                                                             color: ColorResource
                                                                 .color484848,
                                                           ),
@@ -219,7 +208,8 @@ class _AddressDetailsBottomSheetScreenState
                                                             alignment: Alignment
                                                                 .topRight,
                                                             child: Row(
-                                                              children: [
+                                                              children: <
+                                                                  Widget>[
                                                                 const SizedBox(
                                                                     width: 10),
                                                                 ShowHealthStatus
@@ -237,7 +227,7 @@ class _AddressDetailsBottomSheetScreenState
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         GestureDetector(
                                                           onTap: () async {
                                                             if (ConnectivityResult
@@ -249,14 +239,14 @@ class _AddressDetailsBottomSheetScreenState
                                                               await MapUtils
                                                                       .getCurrentLocation(
                                                                           context)
-                                                                  .then(
-                                                                      (value) {
+                                                                  .then((Position
+                                                                      value) {
                                                                 setState(() {
                                                                   currentLocation =
                                                                       value;
                                                                 });
                                                               });
-                                                              Northeast?
+                                                              final Northeast?
                                                                   destinationLocation =
                                                                   await MapUtils
                                                                       .convertAddressToLarlng(
@@ -271,7 +261,7 @@ class _AddressDetailsBottomSheetScreenState
                                                               );
                                                               if (destinationLocation !=
                                                                   null) {
-                                                                MapUtils.openMap(
+                                                                await MapUtils.openMap(
                                                                     startLatitude:
                                                                         currentLocation!
                                                                             .latitude,
@@ -301,7 +291,8 @@ class _AddressDetailsBottomSheetScreenState
                                                                           Radius.circular(
                                                                               75.0))),
                                                               child: Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CircleAvatar(
                                                                     backgroundColor:
                                                                         ColorResource
@@ -323,9 +314,6 @@ class _AddressDetailsBottomSheetScreenState
                                                                     Languages.of(
                                                                             context)!
                                                                         .viewMap,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -348,7 +336,7 @@ class _AddressDetailsBottomSheetScreenState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
-                                                          children: [
+                                                          children: <Widget>[
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!
@@ -356,11 +344,6 @@ class _AddressDetailsBottomSheetScreenState
                                                               lineHeight: 1,
                                                               color: ColorResource
                                                                   .color23375A,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,

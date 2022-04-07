@@ -1,11 +1,4 @@
 class MapMarkerModel {
-  String? caseId;
-  String? address;
-  String? due;
-  String? name;
-  double? latitude;
-  double? longitude;
-
   MapMarkerModel({
     this.caseId,
     this.address,
@@ -23,6 +16,12 @@ class MapMarkerModel {
     latitude = json['latitude'];
     longitude = json['longitude'];
   }
+  String? caseId;
+  String? address;
+  String? due;
+  String? name;
+  double? latitude;
+  double? longitude;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

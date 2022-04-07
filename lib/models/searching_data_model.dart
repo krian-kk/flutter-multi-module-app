@@ -1,12 +1,4 @@
 class SearchingDataModel {
-  String? accountNumber;
-  String? customerName;
-  String? dpdBucket;
-  String? status;
-  String? pincode;
-  String? customerID;
-  bool? isStarCases;
-  bool? isMyRecentActivity;
   SearchingDataModel(
       {this.accountNumber,
       this.customerID,
@@ -16,4 +8,12 @@ class SearchingDataModel {
       this.status,
       this.isStarCases,
       this.isMyRecentActivity});
+  String? accountNumber;
+  String? customerName;
+  String? dpdBucket;
+  String? status;
+  String? pincode;
+  String? customerID;
+  bool? isStarCases;
+  bool? isMyRecentActivity;
 }

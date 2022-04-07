@@ -21,7 +21,6 @@ import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -64,13 +63,14 @@ Route<dynamic> getRoute(RouteSettings settings) {
 }
 
 Route<dynamic> _buildSplashScreen() {
-  return MaterialPageRoute(
-    builder: (context) => addAuthBloc(context, PageBuilder.buildSplashScreen()),
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
+        addAuthBloc(context, PageBuilder.buildSplashScreen()),
   );
 }
 
 Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     if (settings.arguments != null) {}
 
     // final AuthenticationBloc authBloc =
@@ -83,13 +83,13 @@ Route<dynamic> _buildHomeTabScreen(RouteSettings settings) {
 }
 
 Route<dynamic> _buildChatScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     return addAuthBloc(context, PageBuilder.buildChatScreenPage());
   });
 }
 
 Route<dynamic> _buildLoginScreen(RouteSettings settings) {
-  return MaterialPageRoute(builder: (context) {
+  return MaterialPageRoute<dynamic>(builder: (BuildContext context) {
     final AuthenticationBloc authBloc =
         BlocProvider.of<AuthenticationBloc>(context);
     return addAuthBloc(
@@ -100,15 +100,15 @@ Route<dynamic> _buildLoginScreen(RouteSettings settings) {
 }
 
 Route<dynamic> _buildSearchScreen() {
-  return MaterialPageRoute(
-    builder: (context) =>
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
         addAuthBloc(context, PageBuilder.buildSearchScreenPage()),
   );
 }
 
 Route<dynamic> _buildCaseDetailsScreen(RouteSettings settings) {
-  return MaterialPageRoute(
-    builder: (context) =>
+  return MaterialPageRoute<dynamic>(
+    builder: (BuildContext context) =>
         addAuthBloc(context, PageBuilder.buildCaseDetailsPage(settings)),
   );
 }
@@ -204,28 +204,28 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         debugPrint(
-            "Router AuthenticationAuthenticated @notification tyep ${state.notificationData}");
+            'Router AuthenticationAuthenticated @notification tyep ${state.notificationData}');
 
-        Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+        await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
             arguments: state.notificationData);
-        String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
-        String? agentRef =
-            await PreferenceHelper.getPreference(Constants.agentRef);
-        // await SharedPreferences.getInstance().then((value) {
-        //   String? mPin = value.getString(Constants.mPin);
-        //   String? agentRef = value.getString(Constants.agentRef);
-        //   print('Mpin ======= > ${mPin}');
-        if (mPin != null) {
-          showMPinDialog(
-              mPin: mPin,
-              buildContext: context,
-              userName: agentRef,
-              notificationData: state.notificationData);
-        } else {
-          Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-              arguments: state.notificationData);
-        }
-        // });
+        // String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
+        // String? agentRef =
+        //     await PreferenceHelper.getPreference(Constants.agentRef);
+        // // await SharedPreferences.getInstance().then((value) {
+        // //   String? mPin = value.getString(Constants.mPin);
+        // //   String? agentRef = value.getString(Constants.agentRef);
+        // //   print('Mpin ======= > ${mPin}');
+        // if (mPin != null) {
+        //   showMPinDialog(
+        //       mPin: mPin,
+        //       buildContext: context,
+        //       userName: agentRef,
+        //       notificationData: state.notificationData);
+        // } else {
+        //   Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+        //       arguments: state.notificationData);
+        // }
+        // // });
       }
 
       if (state is AuthenticationUnAuthenticated) {
@@ -233,22 +233,23 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           Navigator.pop(context);
         }
         debugPrint(
-            "Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}");
+            'Router AuthenticationUnAuthenticated @notification tyep ${state.notificationData}');
 
-        Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+        await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
             arguments: state.notificationData);
       }
 
       if (state is OfflineState) {
         await SharedPreferences.getInstance().then((value) {
-          String mPin = value.getString(Constants.mPin).toString();
-          String agentRef = value.getString(Constants.agentRef).toString();
+          final String mPin = value.getString(Constants.mPin).toString();
+          final String agentRef =
+              value.getString(Constants.agentRef).toString();
           showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
         });
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
       if (state is SplashScreenState) {
-        Navigator.pushNamed(context, AppRoutes.splashScreen);
+        await Navigator.pushNamed(context, AppRoutes.splashScreen);
       }
     },
     child: BlocBuilder(
@@ -269,27 +270,31 @@ Future<void> showMPinDialog(
       context: buildContext!,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return AlertDialog(
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-          ),
-          contentPadding: const EdgeInsets.all(20),
-          content: ConformMpinScreen(
-            successFunction: () => Navigator.pushReplacementNamed(
-                context, AppRoutes.homeTabScreen,
-                arguments: notificationData),
-            forgotPinFunction: () async {
-              if (ConnectivityResult.none ==
-                  await Connectivity().checkConnectivity()) {
-                AppUtils.showErrorToast(
-                    Languages.of(context)!.noInternetConnection);
-              } else {
-                Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-                    arguments: notificationData);
-              }
-            },
-            mPin: mPin!,
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: AlertDialog(
+            shape: const RoundedRectangleBorder(
+              side: BorderSide(width: 0.5, color: ColorResource.colorDADADA),
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            ),
+            contentPadding: const EdgeInsets.all(20),
+            content: ConformMpinScreen(
+              successFunction: () => Navigator.pushReplacementNamed(
+                  context, AppRoutes.homeTabScreen,
+                  arguments: notificationData),
+              forgotPinFunction: () async {
+                if (ConnectivityResult.none ==
+                    await Connectivity().checkConnectivity()) {
+                  AppUtils.showErrorToast(
+                      Languages.of(context)!.noInternetConnection);
+                } else {
+                  await Navigator.pushReplacementNamed(
+                      context, AppRoutes.loginScreen,
+                      arguments: notificationData);
+                }
+              },
+              mPin: mPin!,
+            ),
           ),
         );
       });

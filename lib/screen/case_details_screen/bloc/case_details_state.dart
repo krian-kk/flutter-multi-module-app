@@ -4,8 +4,8 @@ part of 'case_details_bloc.dart';
 class CaseDetailsState extends BaseEquatable {}
 
 class CaseDetailsInitial extends CaseDetailsState {
-  final dynamic paramValues;
   CaseDetailsInitial({this.paramValues});
+  final dynamic paramValues;
 }
 
 class CaseDetailsLoadingState extends CaseDetailsState {}
@@ -19,39 +19,32 @@ class PhoneBottomSheetLoadedState extends CaseDetailsState {}
 class CDNoInternetState extends CaseDetailsState {}
 
 class ClickMainAddressBottomSheetState extends CaseDetailsState {
+  ClickMainAddressBottomSheetState(this.i, {this.addressModel});
   final int i;
   final dynamic addressModel;
-  ClickMainAddressBottomSheetState(this.i, {this.addressModel});
 }
 
 class ClickMainCallBottomSheetState extends CaseDetailsState {
+  ClickMainCallBottomSheetState(this.i,
+      {this.isCallFromCaseDetails = false, this.callId});
   final int i;
   final bool isCallFromCaseDetails;
   final String? callId;
-  ClickMainCallBottomSheetState(this.i,
-      {this.isCallFromCaseDetails = false, this.callId});
 }
 
 class ClickViewMapState extends CaseDetailsState {}
 
 class CallCaseDetailsState extends CaseDetailsState {
-  final dynamic paramValues;
   CallCaseDetailsState({this.paramValues});
+  final dynamic paramValues;
 }
 
 class PushAndPOPNavigationCaseDetailsState extends CaseDetailsState {
-  final dynamic paramValues;
   PushAndPOPNavigationCaseDetailsState({this.paramValues});
+  final dynamic paramValues;
 }
 
 class ClickOpenBottomSheetState extends CaseDetailsState {
-  final String title;
-  final List list;
-  final bool? isCall;
-  final String? health;
-  final String? selectedContactNumber;
-  final bool isCallFromCallDetails;
-  final String? callId;
   ClickOpenBottomSheetState(
     this.title,
     this.list,
@@ -61,6 +54,13 @@ class ClickOpenBottomSheetState extends CaseDetailsState {
     this.isCallFromCallDetails = false,
     this.callId,
   });
+  final String title;
+  final List<dynamic> list;
+  final bool? isCall;
+  final String? health;
+  final String? selectedContactNumber;
+  final bool isCallFromCallDetails;
+  final String? callId;
 }
 
 class PostDataApiSuccessState extends CaseDetailsState {}
@@ -96,13 +96,13 @@ class UpdateSuccessfullState extends CaseDetailsState {}
 class SendSMSloadState extends CaseDetailsState {}
 
 class GenerateQRcodeState extends CaseDetailsState {
-  final String? qrUrl;
   GenerateQRcodeState({this.qrUrl});
+  final String? qrUrl;
 }
 
 class UpdateRefUrlState extends CaseDetailsState {
-  final String? refUrl;
   UpdateRefUrlState({this.refUrl});
+  final String? refUrl;
 }
 
 class UpdateHealthStatusState extends CaseDetailsState {

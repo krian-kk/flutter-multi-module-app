@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class EventDetailsModel {
-  int? status;
-  String? message;
-  List<EvnetDetailsResultsModel>? result;
-
   EventDetailsModel({this.status, this.message, this.result});
 
   factory EventDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -12,15 +8,19 @@ class EventDetailsModel {
       status: json['status'] as int?,
       message: json['message'] as String?,
       result: (json['result'] as List<dynamic>?)
-          ?.map((e) =>
+          ?.map((dynamic e) =>
               EvnetDetailsResultsModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }
+  int? status;
+  String? message;
+  List<EvnetDetailsResultsModel>? result;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'status': status,
         'message': message,
-        'result': result?.map((e) => e.toJson()).toList(),
+        'result':
+            result?.map((EvnetDetailsResultsModel e) => e.toJson()).toList(),
       };
 }

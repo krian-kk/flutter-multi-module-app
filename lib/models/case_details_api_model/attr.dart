@@ -1,8 +1,4 @@
 class Attr {
-  String? city;
-  String? state;
-  String? pincode;
-
   Attr({this.city, this.state, this.pincode});
 
   factory Attr.fromJson(Map<String, dynamic> json) => Attr(
@@ -11,7 +7,11 @@ class Attr {
         pincode: json['pincode'] as String?,
       );
 
-  Map<String, dynamic> toJson() => {
+  String? city;
+  String? state;
+  String? pincode;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'city': city,
         'state': state,
         'pincode': pincode,

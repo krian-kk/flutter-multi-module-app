@@ -8,7 +8,7 @@ import 'package:origa/singleton.dart';
 
 class DioClient {
   static dynamic dioConfig() {
-    Dio dio = Dio(
+    final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
         connectTimeout: 60000, //60s
@@ -38,7 +38,7 @@ class DioClient {
   }
 
   static dynamic dioFileConfig() {
-    Dio dio = Dio(
+    final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
         connectTimeout: 60000, //60s

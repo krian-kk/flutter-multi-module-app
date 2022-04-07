@@ -1,8 +1,4 @@
 class PaymentConfigurationModel {
-  String? status;
-  String? msg;
-  List<Data>? data;
-
   PaymentConfigurationModel({this.status, this.msg, this.data});
 
   PaymentConfigurationModel.fromJson(Map<String, dynamic> json) {
@@ -10,61 +6,52 @@ class PaymentConfigurationModel {
     msg = json['msg'];
     if (json['data'] != null) {
       data = <Data>[];
-      json['data'].forEach((v) {
+      json['data'].forEach((dynamic v) {
         data!.add(Data.fromJson(v));
       });
     }
   }
+  String? status;
+  String? msg;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['msg'] = msg;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.map((Data v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Data {
-  String? sId;
-  List<Payment>? payment;
-
   Data({this.sId, this.payment});
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     if (json['payment'] != null) {
       payment = <Payment>[];
-      json['payment'].forEach((v) {
+      json['payment'].forEach((dynamic v) {
         payment!.add(Payment.fromJson(v));
       });
     }
   }
+  String? sId;
+  List<Payment>? payment;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = sId;
     if (payment != null) {
-      data['payment'] = payment!.map((v) => v.toJson()).toList();
+      data['payment'] = payment!.map((Payment v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Payment {
-  Audit? audit;
-  String? sId;
-  String? paymentGateway;
-  String? keyId;
-  String? keySecret;
-  bool? active;
-  bool? partialPayment;
-  bool? dynamicLink;
-  bool? qrCode;
-  int? expire;
-
   Payment(
       {this.audit,
       this.sId,
@@ -89,6 +76,16 @@ class Payment {
     qrCode = json['qr_code'];
     expire = json['expire'];
   }
+  Audit? audit;
+  String? sId;
+  String? paymentGateway;
+  String? keyId;
+  String? keySecret;
+  bool? active;
+  bool? partialPayment;
+  bool? dynamicLink;
+  bool? qrCode;
+  int? expire;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -109,15 +106,14 @@ class Payment {
 }
 
 class Audit {
-  String? crAt;
-  String? upAt;
-
   Audit({this.crAt, this.upAt});
 
   Audit.fromJson(Map<String, dynamic> json) {
     crAt = json['crAt'];
     upAt = json['upAt'];
   }
+  String? crAt;
+  String? upAt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

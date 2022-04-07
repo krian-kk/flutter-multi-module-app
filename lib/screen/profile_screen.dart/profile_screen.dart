@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -55,18 +55,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  void getAddress() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+  getAddress() async {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
     addressValue = (_pref.getString('addressValue') ?? '').toString();
   }
 
-  Future pickImage(
+  Future<dynamic> pickImage(
       ImageSource source, BuildContext cameraDialogueContext) async {
     Navigator.pop(cameraDialogueContext);
     try {
-      final image = await ImagePicker().pickImage(source: source);
+      final XFile? image = await ImagePicker().pickImage(source: source);
       if (image != null) {
-        final getProfileImage = File(image.path);
+        final File getProfileImage = File(image.path);
         setState(() {
           bloc.image = getProfileImage;
           bloc.add(PostProfileImageEvent(postValue: getProfileImage));
@@ -84,11 +84,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> requestOTP(String aRef) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
-      requestBodydata: {
-        "aRef": aRef,
+      requestBodydata: <String, dynamic>{
+        'aRef': aRef,
       },
     );
     if (await postResult[Constants.success]) {
@@ -101,9 +101,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> createMpin(String? mPin) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.put, HttpUrl.createMpin,
-        requestBodydata: {
+        requestBodydata: <String, dynamic>{
           'mPin': mPin,
         });
     if (postResult[Constants.success]) {
@@ -117,11 +117,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> verifyOTP(String? aRef, String? otp) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post, HttpUrl.verifyOTP(),
-        requestBodydata: {
-          "aRef": aRef,
-          "otp": otp,
+        requestBodydata: <String, dynamic>{
+          'aRef': aRef,
+          'otp': otp,
         });
     if (postResult[Constants.success]) {
       setState(() => returnValue = true);
@@ -144,11 +144,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
-              submitOtpFunction: (otp, isError, function) async {
-                bool result = await verifyOTP(userName, otp);
+              submitOtpFunction:
+                  (String? otp, bool? isError, Function()? function) async {
+                final bool result = await verifyOTP(userName, otp);
                 if (result) {
                   Navigator.pop(context);
-                  showNewMpinDialogBox();
+                  await showNewMpinDialogBox();
                 } else {
                   function;
                 }
@@ -172,7 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             contentPadding: const EdgeInsets.all(20),
             content: NewMpinScreen(
-              saveFuction: (mPin) async {
+              saveFuction: (String? mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
                   AppUtils.showToast('Change MPin Successfully');
@@ -191,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-    List<ProfileNavigation> profileNavigationList = [
+    final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
       // ProfileNavigation(
       //     title: Languages.of(context)!.notification,
       //     notificationCount: 3,
@@ -206,9 +207,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }),
       ProfileNavigation(
           title: Languages.of(context)!.selectSpeechToTextLanguage,
-          isEnable: Singleton.instance.usertype == Constants.fieldagent
-              ? true
-              : false,
+          isEnable: true,
+          // Singleton.instance.usertype == Constants.fieldagent
+          //     ? true
+          //     : false,
           onTap: () {
             bloc.add(CustomerLaunguagePrefrerenceEvent(context));
           }),
@@ -218,17 +220,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      ProfileNavigation(
-        title: Languages.of(context)!.changeSecurePIN,
-        onTap: () {
-          bloc.add(ClickChangeSecurityPinEvent());
-        },
-        isEnable: true,
-      )
+      // ProfileNavigation(
+      //   title: Languages.of(context)!.changeSecurePIN,
+      //   onTap: () {
+      //     bloc.add(ClickChangeSecurityPinEvent());
+      //   },
+      //   isEnable: true,
+      // )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, ProfileState state) {
         if (state is PostDataApiSuccessState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
@@ -261,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
         if (state is LoginState) {
           Navigator.pushNamedAndRemoveUntil(
-              context, AppRoutes.loginScreen, (route) => false);
+              context, AppRoutes.loginScreen, (Route<dynamic> route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
           showForgorSecurePinDialogBox(
@@ -271,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoadingState) {
             return const CustomLoadingWidget();
           } else {
@@ -283,7 +285,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         CustomText(bloc.noInternetAndServerErrorMsg!),
                         const SizedBox(
                           height: 5,
@@ -302,15 +304,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
                       child: SingleChildScrollView(
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Container(
                               width: double.infinity,
                               decoration: BoxDecoration(
                                   color: ColorResource.colorFFFFFF,
-                                  boxShadow: [
+                                  boxShadow: <BoxShadow>[
                                     BoxShadow(
                                       color: ColorResource.color000000
                                           .withOpacity(0.2),
@@ -324,13 +325,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16.0, vertical: 19.0),
                                 child: Column(
-                                  children: [
+                                  children: <Widget>[
                                     Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: <Widget>[
                                         Stack(
-                                          children: [
+                                          children: <Widget>[
                                             GestureDetector(
                                               onTap: () => bloc.add(
                                                   ChangeProfileImageEvent()),
@@ -386,14 +387,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
-                                          children: [
+                                          children: <Widget>[
                                             CustomText(
                                               bloc.profileAPIValue.result?.first
                                                       .aRef
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.eighteen,
-                                              fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color101010,
                                             ),
@@ -404,8 +404,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
-                                              fontWeight: FontWeight.w400,
                                               color: ColorResource.color101010,
                                             ),
                                             CustomText(
@@ -414,7 +412,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       .toString() ??
                                                   '_',
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color101010,
                                             ),
@@ -429,7 +426,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             mainAxisSize: MainAxisSize.min,
-                                            children: [
+                                            children: <Widget>[
                                               const Spacer(),
                                               // CustomText(
                                               //   Languages.of(context)!
@@ -450,7 +447,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                         .markAsHome,
                                                     fontSize: FontSize.twelve,
                                                     isUnderLine: true,
-                                                    fontStyle: FontStyle.normal,
                                                     fontWeight: FontWeight.w700,
                                                     color: ColorResource
                                                         .color101010,
@@ -479,21 +475,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                 vertical: 16.0,
                                               ),
                                               child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: [
+                                                children: <Widget>[
                                                   Row(
-                                                    children: [
+                                                    children: <Widget>[
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .homeAddress
                                                             .toUpperCase(),
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -517,9 +507,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                             Languages.of(
                                                                     context)!
                                                                 .homeAddressNotAvailable,
-                                                    fontSize: FontSize.fourteen,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontStyle: FontStyle.normal,
                                                     color: ColorResource
                                                         .color484848,
                                                   ),
@@ -569,8 +556,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               FontSize.sixteen,
                                                           fontWeight:
                                                               FontWeight.w700,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           color: ColorResource
                                                               .color23375A,
                                                         ),
@@ -578,7 +563,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       trailing: Row(
                                                         mainAxisSize:
                                                             MainAxisSize.min,
-                                                        children: [
+                                                        children: <Widget>[
                                                           SvgPicture.asset(
                                                               ImageResource
                                                                   .forwardArrow),
@@ -593,6 +578,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
+                            // const SizedBox(height: 22),
+                            // ListOfCaseDetails.listOfDetails(context,
+                            //     bloc: bloc, title: 'Loan Detail 1'),
                             const SizedBox(height: 22),
                             GestureDetector(
                               onTap: () => bloc.add(LoginEvent()),
@@ -628,7 +616,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 11.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             SizedBox(
                               width: 200,
                               child: CustomButton(
@@ -639,7 +627,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 )),
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
-                                isTrailing: false,
                                 leadingWidget: const CircleAvatar(
                                   radius: 13,
                                   backgroundColor: ColorResource.colorFFFFFF,
@@ -649,7 +636,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     lineHeight: 1,
                                     color: ColorResource.colorEA6D48,
                                     fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
                                   ),
                                 ),
                               ),
@@ -686,18 +672,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
+                          children: <Widget>[
                             CustomText(
                               Languages.of(context)!
                                   .addAProfilePhoto
                                   .toUpperCase(),
                               color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
                             ),
                             const Spacer(),
                             GestureDetector(
@@ -859,8 +843,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             builder: (BuildContext buildContext, BoxConstraints settate) =>
                 MapViewBottomSheetScreen(
                   title: Languages.of(context)!.markAsHome,
-                  onClose: (value) async {
-                    SharedPreferences _pref =
+                  onClose: (dynamic value) async {
+                    final SharedPreferences _pref =
                         await SharedPreferences.getInstance();
                     setState(() {
                       addressValue = value;

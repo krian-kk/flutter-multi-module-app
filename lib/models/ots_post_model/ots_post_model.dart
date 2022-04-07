@@ -2,23 +2,6 @@ import 'contact.dart';
 import 'event_attr.dart';
 
 class OtsPostModel {
-  int eventId;
-  String eventType;
-  String caseId;
-  OTSEventAttr eventAttr;
-  String eventCode;
-  String createdBy;
-  String agentName;
-  String eventModule;
-  OTSContact contact;
-  String? callId;
-  String? callingId;
-  String callerServiceId;
-  String voiceCallEventCode;
-  bool? invalidNumber;
-  String agrRef;
-  String contractor;
-  List<String> imageLocation;
   OtsPostModel({
     required this.eventId,
     required this.eventType,
@@ -59,8 +42,25 @@ class OtsPostModel {
         contractor: json['contractor'] as String,
         imageLocation: json['imageLocation'],
       );
+  int eventId;
+  String eventType;
+  String caseId;
+  OTSEventAttr eventAttr;
+  String eventCode;
+  String createdBy;
+  String agentName;
+  String eventModule;
+  OTSContact contact;
+  String? callId;
+  String? callingId;
+  String callerServiceId;
+  String voiceCallEventCode;
+  bool? invalidNumber;
+  String agrRef;
+  String contractor;
+  List<String> imageLocation;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'eventId': eventId,
         'eventType': eventType,
         'caseId': caseId,

@@ -1,8 +1,4 @@
 class HomeAddressPostModel {
-  late double latitude;
-  late double longitude;
-  late String homeAddress;
-
   HomeAddressPostModel(
       {required this.latitude,
       required this.longitude,
@@ -13,6 +9,9 @@ class HomeAddressPostModel {
     longitude = json['Longitude'];
     homeAddress = json['homeAddress'];
   }
+  late double latitude;
+  late double longitude;
+  late String homeAddress;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

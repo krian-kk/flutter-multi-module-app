@@ -1,20 +1,4 @@
 class OTSEventAttr {
-  String date;
-  String remarkOts;
-  String amntOts;
-  String appStatus;
-  String mode;
-  double altitude;
-  double accuracy;
-  double altitudeAccuracy;
-  double heading;
-  double speed;
-  double latitude;
-  double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   OTSEventAttr({
     required this.date,
     required this.remarkOts,
@@ -50,10 +34,25 @@ class OTSEventAttr {
         translatedText: json['translated_text'],
         audioS3Path: json['audioS3Path'],
       );
+  String date;
+  String remarkOts;
+  String amntOts;
+  String appStatus;
+  String mode;
+  double altitude;
+  double accuracy;
+  double altitudeAccuracy;
+  double heading;
+  double speed;
+  double latitude;
+  double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() =>
       reginalText != null && translatedText != null && audioS3Path != null
-          ? {
+          ? <String, dynamic>{
               'date': date,
               'remarkOts': remarkOts,
               'amntOts': amntOts,
@@ -70,7 +69,7 @@ class OTSEventAttr {
               'translated_text': translatedText,
               'reginal_text': reginalText,
             }
-          : {
+          : <String, dynamic>{
               'date': date,
               'remarkOts': remarkOts,
               'amntOts': amntOts,

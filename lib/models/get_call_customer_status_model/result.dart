@@ -1,19 +1,4 @@
 class Result {
-  String? id;
-  String? callfrom;
-  String? callto;
-  String? agent;
-  String? startTime;
-  String? endTime;
-  int? duration;
-  String? billsec;
-  String? credits;
-  String? status;
-  String? status2;
-  String? recording;
-  String? location;
-  String? provider;
-
   Result({
     this.id,
     this.callfrom,
@@ -47,8 +32,22 @@ class Result {
         location: json['location'] as String?,
         provider: json['provider'] as String?,
       );
+  String? id;
+  String? callfrom;
+  String? callto;
+  String? agent;
+  String? startTime;
+  String? endTime;
+  int? duration;
+  String? billsec;
+  String? credits;
+  String? status;
+  String? status2;
+  String? recording;
+  String? location;
+  String? provider;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'callfrom': callfrom,
         'callto': callto,

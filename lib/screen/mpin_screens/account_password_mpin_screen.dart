@@ -11,10 +11,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 
 class AccountPasswordMpinScreen extends StatefulWidget {
-  final GestureTapCallback submitBtnFunction;
-  final String password;
-  final String userName;
-  final GestureTapCallback forgotPasswordFunction;
   const AccountPasswordMpinScreen({
     Key? key,
     required this.submitBtnFunction,
@@ -22,6 +18,10 @@ class AccountPasswordMpinScreen extends StatefulWidget {
     required this.userName,
     required this.forgotPasswordFunction,
   }) : super(key: key);
+  final GestureTapCallback submitBtnFunction;
+  final String password;
+  final String userName;
+  final GestureTapCallback forgotPasswordFunction;
 
   @override
   State<AccountPasswordMpinScreen> createState() =>
@@ -31,7 +31,7 @@ class AccountPasswordMpinScreen extends StatefulWidget {
 class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
   late TextEditingController contoller;
   late FocusNode focusNode;
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -48,17 +48,16 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
         width: 400,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: <Widget>[
                   Expanded(
                     child: CustomText(
                       Languages.of(context)!.forgotPin.replaceAll('?', ''),
                       fontSize: FontSize.eighteen,
-                      fontStyle: FontStyle.normal,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -70,12 +69,9 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
                       ))
                 ]),
             Align(
-              alignment: Alignment.center,
               child: CustomText(
                 'Enter your account password to edit 4-digit PIN for ${widget.userName}’s account.',
                 fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
-                fontWeight: FontWeight.w400,
               ),
             ),
             const SizedBox(height: 15),
@@ -88,7 +84,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
               keyBoardType: TextInputType.emailAddress,
               errorborderColor: ColorResource.color23375A,
               borderColor: ColorResource.color23375A,
-              validationRules: const ['required'],
+              validationRules: const <String>['required'],
               focusNode: focusNode,
               // onEditing: () {
               //   username.unfocus();
@@ -105,7 +101,6 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
                 child: CustomText(
                   Languages.of(context)!.forgotPin.toUpperCase(),
                   fontSize: FontSize.sixteen,
-                  fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -114,7 +109,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
             Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+              children: <Widget>[
                 Flexible(child: CustomCancelButton.cancelButton(context)),
                 SizedBox(
                   width: 163,

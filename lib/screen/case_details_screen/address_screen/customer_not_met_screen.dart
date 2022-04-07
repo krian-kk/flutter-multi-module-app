@@ -32,6 +32,7 @@ class CustomerNotMetScreen extends StatefulWidget {
 
 class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -47,13 +48,14 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.leftMessage.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
     ];
 
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
@@ -64,7 +66,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
         key: widget.bloc.addressCustomerNotMetFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Expanded(
               child: Scaffold(
                 resizeToAvoidBottomInset: true,
@@ -72,35 +74,29 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(18.0),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         Wrap(
                           runSpacing: 10,
                           spacing: 10,
                           children: _buildSelectedClip(selectedClipList),
                         ),
                         const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.nextActionDate.toUpperCase(),
-                          color: ColorResource.color666666,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
-                            '',
+                            Languages.of(context)!.nextActionDate,
                             widget.bloc
                                 .addressCustomerNotMetNextActionDateController,
+                            isLabel: true,
                             focusNode:
                                 widget.bloc.addressInvalidRemarksFocusNode,
                             isReadOnly: true,
-                            validationRules: const ['required'],
-                            onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate, followUpDate) {
+                            validationRules: const <String>['required'],
+                            onTapped: () =>
+                                PickDateAndTimeUtils.pickDate(context,
+                                    (String? newDate, String? followUpDate) {
                               if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
@@ -130,16 +126,24 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.addressCustomerNotMetRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          returnS2Tresponse: (val) {
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(() =>
                                   widget.bloc.returnS2TCustomerNotMet = val);
                             }
                           },
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          editStringCallBack: ((dynamic values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TCustomerNotMet =
                                   returnS2Tdata;
@@ -180,7 +184,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -197,6 +201,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight),
                       ],
                     ),
                   ),
@@ -210,8 +215,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.addressSelectedCustomerNotMetClip = element.clipTitle;
@@ -229,8 +234,6 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

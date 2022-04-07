@@ -31,75 +31,30 @@ class PhoneConnectedScreen extends StatefulWidget {
 
 class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
-  // List<CustomerMetGridModel> phoneCustomerMetGridList = [];
   @override
   Widget build(BuildContext context) {
-    // phoneCustomerMetGridList.addAll([
-    //   CustomerMetGridModel(
-    //       ImageResource.ptp, Languages.of(context)!.ptp.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.ptp,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.rtp, Languages.of(context)!.rtp.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(Constants.rtp,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!, true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.dispute, Languages.of(context)!.dispute.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.dispute,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(
-    //       ImageResource.remainder,
-    //       (Languages.of(context)!.remainderCb.toUpperCase())
-    //           .toUpperCase()
-    //           .toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.remainder,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(ImageResource.collections,
-    //       Languages.of(context)!.collections.toUpperCase(),
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Constants.collections,
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    //   CustomerMetGridModel(ImageResource.ots, Constants.ots,
-    //       onTap: () => widget.bloc.add(ClickOpenBottomSheetEvent(
-    //           Languages.of(context)!.ots.toUpperCase(),
-    //           widget.bloc.caseDetailsAPIValue.result?.callDetails!,
-    //           true)),
-    //       isCall: true),
-    // ]);
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
-      // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, CaseDetailsState state) {},
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(14, 20, 14, 25),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
+                      children: <Widget>[
                         GridView.builder(
                           padding: EdgeInsets.zero,
                           itemCount:
@@ -118,7 +73,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                 child: Container(
                                   decoration: BoxDecoration(
                                       color: ColorResource.colorF8F9FB,
-                                      boxShadow: [
+                                      boxShadow: <BoxShadow>[
                                         BoxShadow(
                                           color: ColorResource.color000000
                                               .withOpacity(0.2),
@@ -130,9 +85,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                                           Radius.circular(10.0))),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
+                                    children: <Widget>[
                                       SvgPicture.asset(widget
                                           .bloc
                                           .phoneCustomerMetGridList[innerIndex]
@@ -163,7 +116,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });

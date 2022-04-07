@@ -1,16 +1,13 @@
 import 'event_attr.dart';
 
 class EvnetDetailsResultsModel {
-  String? id;
-  String? caseId;
-  String? eventType;
-  EventAttr? eventAttr;
-
   EvnetDetailsResultsModel({
     this.id,
     this.caseId,
     this.eventType,
     this.eventAttr,
+    this.createdAt,
+    this.createdBy,
   });
 
   factory EvnetDetailsResultsModel.fromJson(Map<String, dynamic> json) =>
@@ -21,12 +18,22 @@ class EvnetDetailsResultsModel {
         eventAttr: json['eventAttr'] == null
             ? null
             : EventAttr.fromJson(json['eventAttr'] as Map<String, dynamic>),
+        createdAt: json['createdAt'] as String?,
+        createdBy: json['createdBy'] as String?,
       );
+  String? id;
+  String? caseId;
+  String? eventType;
+  EventAttr? eventAttr;
+  String? createdAt;
+  String? createdBy;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'caseId': caseId,
         'eventType': eventType,
         'eventAttr': eventAttr?.toJson(),
+        'createdAt': createdAt,
+        'createdBy': createdBy,
       };
 }

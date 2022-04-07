@@ -30,7 +30,7 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> dropDownList = [
+    final List<String> dropDownList = [
       'select',
       'Residence Address',
       'Mobile',
@@ -71,7 +71,6 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                               return Padding(
                                 padding: const EdgeInsets.fromLTRB(0, 20, 0, 5),
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -125,7 +124,6 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                                   'ADD MORE CONTACT',
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.thirteen,
-                                  fontStyle: FontStyle.normal,
                                 ),
                               ),
                             ),
@@ -166,7 +164,6 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                           Languages.of(context)!.cancel.toUpperCase(),
                           color: ColorResource.colorEA6D48,
                           fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
                           fontSize: FontSize.sixteen,
                         ))),
                   ),
@@ -176,7 +173,6 @@ class _AddNewContactBottomSheetState extends State<AddNewContactBottomSheet> {
                     child: CustomButton(
                       Languages.of(context)!.submit.toUpperCase(),
                       fontSize: FontSize.sixteen,
-                      fontWeight: FontWeight.w600,
                       onTap: () async {},
                       cardShape: 5,
                     ),

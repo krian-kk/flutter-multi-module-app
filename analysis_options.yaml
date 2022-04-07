@@ -22,8 +22,40 @@ linter:
   # `// ignore_for_file: name_of_lint` syntax on the line or in the file
   # producing the lint.
   rules:
-    # avoid_print: false  # Uncomment to disable the `avoid_print` rule
-    # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
+    # Make constructors the first thing in every class
 
-# Additional information about this file can be found at
-# https://dart.dev/guides/language/analysis-options
+    sort_constructors_first: true
+
+    # The new tabs vs. spaces. Choose wisely
+
+    prefer_single_quotes: true
+
+    prefer_final_locals: true
+
+    avoid_redundant_argument_values: true
+
+    prefer_generic_function_type_aliases: true
+
+    directives_ordering: true
+
+    curly_braces_in_flow_control_structures: true
+
+    always_put_control_body_on_new_line: true
+
+    prefer_collection_literals: true
+
+    provide_deprecation_message: true
+
+    unawaited_futures: true
+
+    avoid_void_async: true
+
+    join_return_with_assignment: true
+
+    file_names: false
+
+    # Blindly follow the Flutter code style, which prefers types everywhere
+
+    # always_specify_types: true
+
+    # Back to the 80s

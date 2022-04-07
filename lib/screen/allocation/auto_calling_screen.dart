@@ -17,7 +17,7 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:origa/widgets/percent_indicatior_widget.dart';
 
 class AutoCalling {
   static Future<void> phoneBottomSheet(
@@ -40,16 +40,16 @@ class AutoCalling {
   static Widget buildAutoCalling(BuildContext context, AllocationBloc bloc) {
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
-      listener: (context, state) {},
+      listener: (BuildContext context, AllocationState state) {},
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, AllocationState state) {
           if (state is AutoCallingLoadingState) {
             return const CustomLoadingWidget();
           } else {
             return bloc.autoCallingResultList.isEmpty
                 ? Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding:
                             const EdgeInsets.only(top: 50, right: 20, left: 20),
@@ -66,7 +66,7 @@ class AutoCalling {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                          children: <Widget>[
                             const SizedBox(height: 10),
                             CustomText(
                               Languages.of(context)!.customer.toUpperCase(),
@@ -75,7 +75,7 @@ class AutoCalling {
                               fontWeight: FontWeight.w700,
                             ),
                             const SizedBox(height: 5),
-                            LinearPercentIndicator(
+                            PercentageIndicatorWidget(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 6, vertical: 4),
                               animation: true,
@@ -88,7 +88,7 @@ class AutoCalling {
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: <Widget>[
                                 CustomText(
                                   bloc.customerCount.toString(),
                                   fontSize: FontSize.sixteen,
@@ -107,7 +107,6 @@ class AutoCalling {
                             CustomText(
                               Languages.of(context)!.customer.toUpperCase(),
                               color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
                               fontWeight: FontWeight.w700,
                             ),
                             const SizedBox(height: 5),
@@ -129,7 +128,7 @@ class AutoCalling {
                                             color: ColorResource.colorDADADA,
                                             width: 0.5),
                                         borderRadius: BorderRadius.circular(10),
-                                        boxShadow: const [
+                                        boxShadow: const <BoxShadow>[
                                           BoxShadow(
                                             color:
                                                 Color.fromRGBO(0, 0, 0, 0.25),
@@ -139,9 +138,7 @@ class AutoCalling {
                                         ],
                                       ),
                                       child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
+                                        children: <Widget>[
                                           const SizedBox(
                                             height: 2.0,
                                           ),
@@ -157,7 +154,7 @@ class AutoCalling {
                                                         .autoCallingResultList[
                                                             indexs]
                                                         .bankName! +
-                                                    " / " +
+                                                    ' / ' +
                                                     bloc
                                                         .autoCallingResultList[
                                                             indexs]
@@ -176,11 +173,11 @@ class AutoCalling {
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
-                                              children: [
+                                              children: <Widget>[
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
+                                                  children: <Widget>[
                                                     CustomText(
                                                       bloc.resultList[indexs]
                                                                   .due !=
@@ -211,8 +208,6 @@ class AutoCalling {
                                                             FontSize.sixteen,
                                                         color: ColorResource
                                                             .color101010,
-                                                        fontWeight:
-                                                            FontWeight.w400,
                                                       ),
                                                     ),
                                                     const SizedBox(
@@ -288,7 +283,9 @@ class AutoCalling {
                                               shrinkWrap: true,
                                               physics:
                                                   const NeverScrollableScrollPhysics(),
-                                              itemBuilder: (context, i) {
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int i) {
                                                 if (bloc
                                                         .autoCallingResultList[
                                                             indexs]
@@ -304,12 +301,14 @@ class AutoCalling {
                                                                   indexs]
                                                               .agrRef;
 
-                                                      CaseDetailsBloc
+                                                      final CaseDetailsBloc
                                                           caseDetailsloc =
                                                           CaseDetailsBloc(bloc)
                                                             ..add(
                                                                 CaseDetailsInitialEvent(
-                                                              paramValues: {
+                                                              paramValues: <
+                                                                  String,
+                                                                  dynamic>{
                                                                 'caseID': bloc
                                                                     .autoCallingResultList[
                                                                         indexs]
@@ -347,7 +346,7 @@ class AutoCalling {
                                                                 .autoCallingResultList[
                                                                     indexs]
                                                                 .bankName! +
-                                                            " / " +
+                                                            ' / ' +
                                                             bloc
                                                                 .autoCallingResultList[
                                                                     indexs]
@@ -374,24 +373,22 @@ class AutoCalling {
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
-                                                        children: [
+                                                        children: <Widget>[
                                                           Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
                                                             children: [
-                                                              CustomText(
-                                                                bloc
-                                                                        .autoCallingResultList[
-                                                                            indexs]
-                                                                        .address?[
-                                                                            i]
-                                                                        .value ??
-                                                                    '_',
-                                                                color: ColorResource
-                                                                    .color484848,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
+                                                              Expanded(
+                                                                child:
+                                                                    CustomText(
+                                                                  bloc
+                                                                          .autoCallingResultList[
+                                                                              indexs]
+                                                                          .address?[
+                                                                              i]
+                                                                          .value ??
+                                                                      '_',
+                                                                  color: ColorResource
+                                                                      .color484848,
+                                                                ),
                                                               ),
                                                               const SizedBox(
                                                                 width: 15,
@@ -405,14 +402,12 @@ class AutoCalling {
                                                                   ''),
                                                               const Spacer(),
                                                               Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!
                                                                         .view,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
                                                                     color: ColorResource
                                                                         .color23375A,
                                                                     fontWeight:
@@ -446,7 +441,8 @@ class AutoCalling {
                                             onTap: () {
                                               bloc.add(
                                                 NavigateCaseDetailEvent(
-                                                    paramValues: {
+                                                    paramValues: <String,
+                                                        dynamic>{
                                                       'caseID': bloc
                                                           .autoCallingResultList[
                                                               indexs]
@@ -457,12 +453,11 @@ class AutoCalling {
                                             child: SizedBox(
                                               width: double.infinity,
                                               child: Column(
-                                                children: [
+                                                children: <Widget>[
                                                   CustomText(
                                                     Languages.of(context)!
                                                         .caseView
                                                         .toUpperCase(),
-                                                    fontSize: FontSize.fourteen,
                                                     color: ColorResource
                                                         .color23375A,
                                                     fontWeight: FontWeight.w700,

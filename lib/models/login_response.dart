@@ -1,23 +1,4 @@
 class LoginResponseModel {
-  String? code;
-  String? status;
-  String? msg;
-  String? auth;
-  Data? data;
-  // Casecount? casecount;
-  // Casecount? flag;
-  String? path;
-  List<dynamic>? bank;
-  List<dynamic>? region;
-  List<dynamic>? area;
-  List<dynamic>? contractor;
-  Casecount? summary;
-  Casecount? usageSummary;
-  String? searchKey;
-  String? searchValue;
-  String? totalCaseCount;
-  Casecount? totalsEventObj;
-
   LoginResponseModel(
       {this.code,
       this.status,
@@ -86,6 +67,24 @@ class LoginResponseModel {
         ? Casecount.fromJson(json['totalsEventObj'])
         : null;
   }
+  String? code;
+  String? status;
+  String? msg;
+  String? auth;
+  Data? data;
+  // Casecount? casecount;
+  // Casecount? flag;
+  String? path;
+  List<dynamic>? bank;
+  List<dynamic>? region;
+  List<dynamic>? area;
+  List<dynamic>? contractor;
+  Casecount? summary;
+  Casecount? usageSummary;
+  String? searchKey;
+  String? searchValue;
+  String? totalCaseCount;
+  Casecount? totalsEventObj;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -132,17 +131,6 @@ class LoginResponseModel {
 }
 
 class Data {
-  String? accessToken;
-  int? expiresIn;
-  int? refreshExpiresIn;
-  String? refreshToken;
-  String? tokenType;
-  int? notBeforePolicy;
-  String? sessionState;
-  String? scope;
-  bool? resetFlag;
-  String? keycloakId;
-
   Data(
       {this.accessToken,
       this.expiresIn,
@@ -167,6 +155,16 @@ class Data {
     resetFlag = json['resetFlag'];
     keycloakId = json['keycloak_id'];
   }
+  String? accessToken;
+  int? expiresIn;
+  int? refreshExpiresIn;
+  String? refreshToken;
+  String? tokenType;
+  int? notBeforePolicy;
+  String? sessionState;
+  String? scope;
+  bool? resetFlag;
+  String? keycloakId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

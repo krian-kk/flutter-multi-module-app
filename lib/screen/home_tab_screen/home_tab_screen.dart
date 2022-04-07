@@ -11,8 +11,8 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
-import 'package:origa/screen/notification_navigate_screen.dart';
 import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
+import 'package:origa/screen/notification_navigate_screen.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -31,8 +31,8 @@ import '../notification_navigate_screen.dart';
 import 'bloc/home_tab_event.dart';
 
 class HomeTabScreen extends StatefulWidget {
-  final dynamic notificationData;
   const HomeTabScreen({Key? key, this.notificationData}) : super(key: key);
+  final dynamic notificationData;
 
   @override
   _HomeTabScreenState createState() => _HomeTabScreenState();
@@ -70,13 +70,13 @@ class _HomeTabScreenState extends State<HomeTabScreen>
   }
 
   Future<void> internetChecking() async {
-    Connectivity().checkConnectivity().then((value) {
+    await Connectivity().checkConnectivity().then((ConnectivityResult value) {
       setState(() {
         internetAvailability = value.name;
       });
       timeCalculateForOffline();
     });
-    Connectivity().onConnectivityChanged.listen((event) {
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult event) {
       setState(() {
         internetAvailability = event.name;
         if (internetAvailability == 'none') {
@@ -91,19 +91,19 @@ class _HomeTabScreenState extends State<HomeTabScreen>
   }
 
   Future<void> timeCalculateForOffline() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    await SharedPreferences.getInstance().then((value) {
+    final SharedPreferences _pref = await SharedPreferences.getInstance();
+    await SharedPreferences.getInstance().then((SharedPreferences value) {
       try {
-        var nextLoginTime = (DateFormat("yyyy-MM-dd hh:mm:ss")
+        final int nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
                     .parse(value
                         .getString(Constants.appDataLoadedFromFirebaseTime)!)
                     .add(const Duration(days: 1)))
                 .millisecondsSinceEpoch -
             DateTime.now().millisecondsSinceEpoch;
         if (nextLoginTime > 0) {
-          Future.delayed(
+          Future<dynamic>.delayed(
             Duration(milliseconds: nextLoginTime),
-          ).asStream().listen((value) {
+          ).asStream().listen((dynamic value) {
             if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
               _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
               Singleton.instance.isOfflineStorageFeatureEnabled = false;
@@ -137,7 +137,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
-      listener: (context, state) async {
+      listener: (BuildContext context, HomeTabState state) async {
         if (state is NavigateTabState) {
           const CustomLoadingWidget();
           // NotificationDataModel notificationData =
@@ -163,11 +163,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               });
               break;
             case '3':
-              SharedPreferences _prefs = await SharedPreferences.getInstance();
+              final SharedPreferences _prefs =
+                  await SharedPreferences.getInstance();
               // Initiate chat bloc
-              ChatScreenBloc chatbloc = ChatScreenBloc();
+              final ChatScreenBloc chatbloc = ChatScreenBloc();
               chatbloc.add(ChatInitialEvent());
-              await Future.delayed(const Duration(milliseconds: 1000));
+              await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
               // Navigate Chat Screen
               OnclickNotificationNavigateScreen().messageScreenBottomSheet(
                   context,
@@ -175,12 +176,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               break;
             case '4':
               // Initiate Dashboard bloc
-              DashboardBloc dashboardbloc = DashboardBloc();
+              final DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyVisit and MyCalls Screen
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyVisitsEvent());
               // dashboardbloc.add(SetTimeperiodValueEvent());
-              await Future.delayed(const Duration(milliseconds: 2000));
+              await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
               if (dashboardbloc.myVisitsData.result != null) {
                 OnclickNotificationNavigateScreen()
                     .myVisitsSheet(context, dashboardbloc);
@@ -189,14 +190,16 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               }
               break;
             case '5':
-              SharedPreferences _pref = await SharedPreferences.getInstance();
+              final SharedPreferences _pref =
+                  await SharedPreferences.getInstance();
               if (_pref.getString(Constants.userType) == Constants.fieldagent) {
                 // Initiate Dashboard bloc
-                DashboardBloc dashboardbloc = DashboardBloc();
+                final DashboardBloc dashboardbloc = DashboardBloc();
                 //Navigate MyDeposists Screen
                 dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
                 dashboardbloc.add(MyDeposistsEvent());
-                await Future.delayed(const Duration(milliseconds: 2000));
+                await Future<dynamic>.delayed(
+                    const Duration(milliseconds: 2000));
                 if (dashboardbloc.myDeposistsData.result != null) {
                   OnclickNotificationNavigateScreen()
                       .myDeposistsSheet(context, dashboardbloc);
@@ -207,7 +210,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               break;
             case '6':
               // Initiate Dashboard bloc
-              DashboardBloc dashboardbloc = DashboardBloc();
+              final DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyReceipts Screen
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyReceiptsEvent());
@@ -323,8 +326,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                         borderRadius: const BorderRadius.only(
                                             bottomLeft: Radius.circular(12)),
                                         border: Border.all(
-                                            color: ColorResource.colorECECEC,
-                                            width: 1.0),
+                                            color: ColorResource.colorECECEC),
                                         color: ColorResource.colorffffff),
                                     tabs: <Widget>[
                                       Tab(

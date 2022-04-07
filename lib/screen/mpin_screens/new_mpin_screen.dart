@@ -9,11 +9,11 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class NewMpinScreen extends StatefulWidget {
-  final OnChange saveFuction;
   const NewMpinScreen({Key? key, required this.saveFuction}) : super(key: key);
+  final OnChange saveFuction;
 
   @override
   State<NewMpinScreen> createState() => _NewMpinScreenState();
@@ -33,19 +33,18 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
       width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomText(
                     Languages.of(context)!
                         .changeYourSecureDigitPIN
                         .replaceAll('?', ''),
                     fontSize: FontSize.eighteen,
-                    fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -57,31 +56,27 @@ class _NewMpinScreenState extends State<NewMpinScreen> {
                     ))
               ]),
           Align(
-            alignment: Alignment.center,
             child: CustomText(
               Languages.of(context)!.newPin,
               fontSize: FontSize.sixteen,
-              fontStyle: FontStyle.normal,
-              fontWeight: FontWeight.w400,
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: PinCodeTextField(
+            child: PinCodeTextFieldWidget(
               appContext: context,
               controller: contoller,
               length: 4,
               mainAxisAlignment: MainAxisAlignment.center,
-              obscureText: false,
               animationType: AnimationType.scale,
-              onChanged: (value) {
+              onChanged: (String value) {
                 setState(() {});
               },
               textStyle: const TextStyle(
                 fontSize: FontSize.fourteen,
                 color: ColorResource.color23375A,
               ),
-              inputFormatters: [
+              inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                 FilteringTextInputFormatter.deny(' '),
                 FilteringTextInputFormatter.digitsOnly,

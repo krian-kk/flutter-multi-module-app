@@ -4,30 +4,31 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/color_resource.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
+
 import 'deposistion_mode/deposistion_mode.dart';
 
 class SelectedValue {
+  SelectedValue(this._id, this.isSelected);
   final String _id;
   bool isSelected;
-  SelectedValue(this._id, this.isSelected);
 }
 
 class ChegueAndCasshResults extends StatefulWidget {
-  final DashboardBloc bloc;
-  // final String? mode;
-  final Cheque? result;
   const ChegueAndCasshResults(
     this.bloc, {
     Key? key,
     // this.mode,
     this.result,
   }) : super(key: key);
+  final DashboardBloc bloc;
+  // final String? mode;
+  final Cheque? result;
 
   @override
   _ChegueAndCasshResultsState createState() => _ChegueAndCasshResultsState();
@@ -69,7 +70,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
             child: CustomButton(
               Languages.of(context)!.enterDepositionDetails,
               fontSize: FontSize.sixteen,
-              fontWeight: FontWeight.w600,
               onTap: () {
                 if (ids.isNotEmpty) {
                   depositionModeSheet(context);
@@ -90,7 +90,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 child: ListView.builder(
-                    scrollDirection: Axis.vertical,
                     // widget.result!.cash!.cases!.length,
                     itemCount: widget.result!.cases!.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -102,7 +101,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                               padding:
                                   const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     flex: 2,
@@ -119,7 +117,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         ),
                                         CustomText(
                                           widget.result!.count!.toString(),
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -143,7 +140,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                           Constants.inr +
                                               widget.result!.totalAmt!
                                                   .toString(),
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -199,7 +195,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                         child: CustomText(
                                           widget.result!.cases![index].agrRef ??
                                               '',
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -236,7 +231,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                               '',
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w400,
                                         ),
                                       ],
                                     ),
@@ -287,10 +281,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                               CustomText(
                                                 Languages.of(context)!
                                                     .receiptDate,
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,
-                                                fontWeight: FontWeight.w400,
                                               ),
                                               CustomText(
                                                 widget.result!.cases![index]
@@ -304,7 +296,6 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                                 .eventAttr!
                                                                 .date!)
                                                     : '-',
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,
                                                 fontWeight: FontWeight.w700,

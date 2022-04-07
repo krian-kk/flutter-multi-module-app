@@ -40,7 +40,6 @@ class RepoStatus {
                             bottom:
                                 BorderSide(color: ColorResource.colorD8D8D8))),
                     child: TabBar(
-                      isScrollable: false,
                       indicatorColor: ColorResource.colorD5344C,
                       labelStyle: const TextStyle(
                         fontWeight: FontWeight.w700,

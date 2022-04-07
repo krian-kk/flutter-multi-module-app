@@ -1,21 +1,4 @@
 class PTPPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late String createdBy;
-  late String agentName;
-  late String contractor;
-  late String eventModule;
-  late PTPContact contact;
-  late String agrRef;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String? voiceCallEventCode;
-  late bool? invalidNumber;
-
   PTPPostModel(
       {required this.eventId,
       required this.eventType,
@@ -52,6 +35,22 @@ class PTPPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late String createdBy;
+  late String agentName;
+  late String contractor;
+  late String eventModule;
+  late PTPContact contact;
+  late String agrRef;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String? voiceCallEventCode;
+  late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,25 +76,6 @@ class PTPPostModel {
 }
 
 class EventAttr {
-  late String date;
-  late String time;
-  late String remarks;
-  late int ptpAmount;
-  late String reference;
-  late String mode;
-  late String? pTPType;
-  late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double? altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.date,
     required this.time,
@@ -137,6 +117,24 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String date;
+  late String time;
+  late String remarks;
+  late int ptpAmount;
+  late String reference;
+  late String mode;
+  late String? pTPType;
+  late String followUpPriority;
+  late double altitude;
+  late double accuracy;
+  late double? altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -165,38 +163,32 @@ class EventAttr {
   }
 }
 
-class AgentLocation {
-  late double latitude;
-  late double longitude;
-  late String missingAgentLocation;
+// class AgentLocation {
+//   late double latitude;
+//   late double longitude;
+//   late String missingAgentLocation;
 
-  AgentLocation(
-      {required this.latitude,
-      required this.longitude,
-      required this.missingAgentLocation});
+//   AgentLocation(
+//       {required this.latitude,
+//       required this.longitude,
+//       required this.missingAgentLocation});
 
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
+//   AgentLocation.fromJson(Map<String, dynamic> json) {
+//     latitude = json['latitude'];
+//     longitude = json['longitude'];
+//     missingAgentLocation = json['missingAgentLocation'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['latitude'] = latitude;
+//     data['longitude'] = longitude;
+//     data['missingAgentLocation'] = missingAgentLocation;
+//     return data;
+//   }
+// }
 
 class PTPContact {
-  late String cType;
-  late String health;
-  late String value;
-  late String resAddressId0;
-  late String contactId0;
-
   PTPContact(
       {required this.cType,
       required this.health,
@@ -211,6 +203,11 @@ class PTPContact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

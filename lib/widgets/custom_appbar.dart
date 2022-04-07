@@ -7,27 +7,6 @@ import 'package:origa/utils/image_resource.dart';
 import 'custom_text.dart';
 
 class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
-  final bool? showSettings;
-  final bool? showNotification;
-  final bool? showFilter;
-  final bool? showClose;
-  final bool? showDownload;
-  final bool? isAuthentication;
-  final bool? showSearch;
-  final bool? showTextButton;
-  final String? textButtonString;
-  final Color? backgroundColor;
-  final OnItemSelected? onItemSelected;
-  final OnChange? onChanged;
-  final String? titleString;
-  final String? subTitle;
-  final String? clear;
-  final int? actionIndex;
-  final int? notificationCount;
-  final IconEnum? iconEnumValues;
-  final TextStyle? style;
-  final double? titleSpacing;
-
   const CustomAppbar({
     Key? key,
     this.titleString,
@@ -51,6 +30,26 @@ class CustomAppbar extends StatefulWidget implements PreferredSizeWidget {
     this.style,
     this.titleSpacing,
   }) : super(key: key);
+  final bool? showSettings;
+  final bool? showNotification;
+  final bool? showFilter;
+  final bool? showClose;
+  final bool? showDownload;
+  final bool? isAuthentication;
+  final bool? showSearch;
+  final bool? showTextButton;
+  final String? textButtonString;
+  final Color? backgroundColor;
+  final OnItemSelected? onItemSelected;
+  final OnChange? onChanged;
+  final String? titleString;
+  final String? subTitle;
+  final String? clear;
+  final int? actionIndex;
+  final int? notificationCount;
+  final IconEnum? iconEnumValues;
+  final TextStyle? style;
+  final double? titleSpacing;
 
   @override
   _CustomAppbarState createState() => _CustomAppbarState();
@@ -99,7 +98,7 @@ class _CustomAppbarState extends State<CustomAppbar> {
                       margin: const EdgeInsets.only(left: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: <Widget>[
                           CustomText(
                             titleString,
                             style: Theme.of(context)

@@ -1,8 +1,4 @@
 class AudioConvertModel {
-  int? status;
-  String? message;
-  Result? result;
-
   AudioConvertModel({this.status, this.message, this.result});
 
   AudioConvertModel.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,10 @@ class AudioConvertModel {
     message = json['message'];
     result = json['result'] != null ? Result.fromJson(json['result']) : null;
   }
+
+  int? status;
+  String? message;
+  Result? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,14 +23,6 @@ class AudioConvertModel {
 }
 
 class Result {
-  String? acceptRanges;
-  String? lastModified;
-  int? contentLength;
-  String? eTag;
-  String? contentType;
-  // Metadata? metadata;
-  Body? body;
-
   Result(
       {this.acceptRanges,
       this.lastModified,
@@ -50,6 +42,14 @@ class Result {
     body = json['Body'] != null ? Body.fromJson(json['Body']) : null;
   }
 
+  String? acceptRanges;
+  String? lastModified;
+  int? contentLength;
+  String? eTag;
+  String? contentType;
+  // Metadata? metadata;
+  Body? body;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['AcceptRanges'] = acceptRanges;
@@ -67,28 +67,28 @@ class Result {
   }
 }
 
-class Metadata {
-  // Metadata({});
+// class Metadata {
+//   // Metadata({});
 
-  // Metadata.fromJson(Map<String, dynamic> json) {
-  // }
+//   // Metadata.fromJson(Map<String, dynamic> json) {
+//   // }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     return data;
+//   }
+// }
 
 class Body {
-  String? type;
-  List<int>? data;
-
   Body({this.type, this.data});
 
   Body.fromJson(Map<String, dynamic> json) {
     type = json['type'];
     data = json['data'].cast<int>();
   }
+
+  String? type;
+  List<int>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

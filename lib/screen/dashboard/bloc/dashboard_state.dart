@@ -17,16 +17,15 @@ class BrokenPTPState extends DashboardState {}
 class MyReceiptsState extends DashboardState {}
 
 class ReturnReceiptsApiState extends DashboardState {
-  final dynamic returnData;
   ReturnReceiptsApiState({this.returnData});
+  final dynamic returnData;
 }
 
 class MyVisitsState extends DashboardState {}
 
 class ReturnVisitsApiState extends DashboardState {
-  final dynamic returnData;
-
   ReturnVisitsApiState({this.returnData});
+  final dynamic returnData;
 }
 
 class MyDeposistsState extends DashboardState {}
@@ -34,11 +33,6 @@ class MyDeposistsState extends DashboardState {}
 class YardingAndSelfReleaseState extends DashboardState {}
 
 class NavigateCaseDetailState extends DashboardState {
-  final dynamic paramValues;
-  final bool unTouched;
-  final bool isPriorityFollowUp;
-  final bool isBrokenPTP;
-  final bool isMyReceipts;
   NavigateCaseDetailState({
     this.paramValues,
     this.unTouched = false,
@@ -46,13 +40,18 @@ class NavigateCaseDetailState extends DashboardState {
     this.isBrokenPTP = false,
     this.isMyReceipts = false,
   });
+  final dynamic paramValues;
+  final bool unTouched;
+  final bool isPriorityFollowUp;
+  final bool isBrokenPTP;
+  final bool isMyReceipts;
 }
 
 class NavigateSearchState extends DashboardState {}
 
 class GetSearchDataState extends DashboardState {
-  final dynamic getReturnValues;
   GetSearchDataState({this.getReturnValues});
+  final dynamic getReturnValues;
 }
 
 class SetTimeperiodValueState extends DashboardState {}

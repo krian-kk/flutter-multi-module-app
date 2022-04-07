@@ -9,12 +9,12 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class CreateMpinScreen extends StatefulWidget {
-  final OnChange saveFunction;
   const CreateMpinScreen({Key? key, required this.saveFunction})
       : super(key: key);
+  final OnChange saveFunction;
 
   @override
   State<CreateMpinScreen> createState() => _CreateMpinScreenState();
@@ -34,18 +34,17 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: [
+      children: <Widget>[
         Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: CustomText(
                   Languages.of(context)!
                       .secureYourAccountByCreatingAFourDigitPin,
                   fontSize: FontSize.eighteen,
-                  fontStyle: FontStyle.normal,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -63,14 +62,13 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
         const SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: PinCodeTextField(
+          child: PinCodeTextFieldWidget(
             appContext: context,
             controller: contoller,
             length: 4,
             mainAxisAlignment: MainAxisAlignment.center,
-            obscureText: false,
             animationType: AnimationType.scale,
-            onChanged: (value) {
+            onChanged: (String value) {
               setState(() => isError = false);
             },
             textStyle: const TextStyle(
@@ -78,7 +76,7 @@ class _CreateMpinScreenState extends State<CreateMpinScreen> {
               color: ColorResource.color23375A,
             ),
             keyboardType: TextInputType.number,
-            inputFormatters: [
+            inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
               FilteringTextInputFormatter.deny(' '),
               FilteringTextInputFormatter.digitsOnly,

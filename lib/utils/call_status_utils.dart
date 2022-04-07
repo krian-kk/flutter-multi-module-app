@@ -10,13 +10,13 @@ class CallCustomerStatus {
 
   static Future<bool> callStatusCheck(
       {required String callId, required BuildContext context}) async {
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
-      requestBodydata: {'id': callId},
+      requestBodydata: <String, dynamic>{'id': callId},
     );
     if (postResult[Constants.success]) {
-      if ((postResult['data']['result'] as List).isEmpty) {
+      if ((postResult['data']['result'] as List<dynamic>).isEmpty) {
         AppUtils.showToast(
             Languages.of(context)!.waitFewSecondsYouGetCallFromAdmin);
         return false;
@@ -45,13 +45,13 @@ class CallCustomerStatus {
     move next index of number (maybe next case or nex number of current case)  */
   static Future<bool> callStatusCheckForAutoJump(
       {required String callId, required BuildContext context}) async {
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.callCustomerStatusGetUrl,
-      requestBodydata: {'id': callId},
+      requestBodydata: <String, dynamic>{'id': callId},
     );
     if (postResult[Constants.success]) {
-      return (postResult['data']['result'] as List).isEmpty;
+      return (postResult['data']['result'] as List<dynamic>).isEmpty;
     } else {
       return false;
     }

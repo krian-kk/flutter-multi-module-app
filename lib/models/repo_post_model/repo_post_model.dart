@@ -1,21 +1,4 @@
 class RepoPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late List<RepoContact> contact;
-  late String createdBy;
-  late String agentName;
-  late String contractor;
-  late String eventModule;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-  late String agrRef;
-
   RepoPostModel({
     required this.eventId,
     required this.eventType,
@@ -41,7 +24,7 @@ class RepoPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((v) {
+    contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
     createdBy = json['createdBy'];
@@ -55,6 +38,22 @@ class RepoPostModel {
     invalidNumber = json['invalidNumber'];
     agrRef = json['agrRef'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late List<RepoContact> contact;
+  late String createdBy;
+  late String agentName;
+  late String contractor;
+  late String eventModule;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
+  late String agrRef;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -63,7 +62,7 @@ class RepoPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((v) => v.toJson()).toList();
+    data['contact'] = contact.map((RepoContact v) => v.toJson()).toList();
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
@@ -79,26 +78,6 @@ class RepoPostModel {
 }
 
 class EventAttr {
-  late String modelMake;
-  late String registrationNo;
-  late String chassisNo;
-  late String remarks;
-  late Repo repo;
-  late String date;
-  late String followUpPriority;
-  late List<String> imageLocation;
-  late String customerName;
-  late double? altitude;
-  late double accuracy;
-  late double? altitudeAccuracy;
-  late double? heading;
-  late double? speed;
-  late double latitude;
-  late double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.modelMake,
     required this.registrationNo,
@@ -142,6 +121,25 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String modelMake;
+  late String registrationNo;
+  late String chassisNo;
+  late String remarks;
+  late Repo repo;
+  late String date;
+  late String followUpPriority;
+  late List<String> imageLocation;
+  late String customerName;
+  late double? altitude;
+  late double accuracy;
+  late double? altitudeAccuracy;
+  late double? heading;
+  late double? speed;
+  late double latitude;
+  late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -171,13 +169,12 @@ class EventAttr {
 }
 
 class Repo {
-  late String status;
-
   Repo({this.status = 'pending'});
 
   Repo.fromJson(Map<String, dynamic> json) {
     status = json['status'];
   }
+  late String status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -187,12 +184,6 @@ class Repo {
 }
 
 class RepoContact {
-  late String cType;
-  late String health;
-  late String value;
-  // late String resAddressId0;
-  // late String contactId0;
-
   RepoContact({
     required this.cType,
     required this.health,
@@ -208,6 +199,11 @@ class RepoContact {
     // resAddressId0 = json['resAddressId_0'];
     // contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String health;
+  late String value;
+  // late String resAddressId0;
+  // late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

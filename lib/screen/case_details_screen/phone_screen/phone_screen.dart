@@ -5,7 +5,6 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/phone_screen/bloc/phone_screen_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/unreachable_screen.dart';
@@ -23,11 +22,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
 class PhoneScreen extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-  final bool isCallFromCaseDetails;
-  final int index;
-  final String? callId;
-
   const PhoneScreen(
       {Key? key,
       required this.bloc,
@@ -35,6 +29,10 @@ class PhoneScreen extends StatefulWidget {
       this.isCallFromCaseDetails = false,
       this.callId})
       : super(key: key);
+  final CaseDetailsBloc bloc;
+  final bool isCallFromCaseDetails;
+  final int index;
+  final String? callId;
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -43,7 +41,6 @@ class PhoneScreen extends StatefulWidget {
 class _PhoneScreenState extends State<PhoneScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-  late PhoneScreenBloc bloc;
 
   bool isSubmitFirst = true;
   bool isSubmitSecond = true;
@@ -76,7 +73,7 @@ class _PhoneScreenState extends State<PhoneScreen>
     /* if agent doesn't get the call from VOIP -> after 30 seconds it'll
     move next index of number (maybe next case or nex number of current case)  */
     if (widget.bloc.isAutoCalling) {
-      Future.delayed(const Duration(seconds: 30), () {
+      Future<void>.delayed(const Duration(seconds: 30), () {
         debugPrint('Screen Navigate after 30 sec--> ');
         autoCallingTriggering();
       });
@@ -110,7 +107,7 @@ class _PhoneScreenState extends State<PhoneScreen>
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is DisableUnreachableBtnState) {
           setState(() => isSubmitFirst = false);
         }
@@ -125,7 +122,7 @@ class _PhoneScreenState extends State<PhoneScreen>
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -153,7 +150,7 @@ class _PhoneScreenState extends State<PhoneScreen>
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           if (state is CaseDetailsLoadingState ||
               state is PhoneBottomSheetLoadingState) {
             return SizedBox(
@@ -163,7 +160,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                   body: Container(
                     decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                               color: ColorResource.colorCACACA.withOpacity(.25),
                               blurRadius: 30.0,
@@ -189,7 +186,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                     body: Container(
                       decoration: BoxDecoration(
                           color: ColorResource.colorFFFFFF,
-                          boxShadow: [
+                          boxShadow: <BoxShadow>[
                             BoxShadow(
                                 color:
                                     ColorResource.colorCACACA.withOpacity(.25),
@@ -200,19 +197,17 @@ class _PhoneScreenState extends State<PhoneScreen>
                               top: Radius.circular(30))),
                       width: double.infinity,
                       child: Column(
-                        children: [
+                        children: <Widget>[
                           Container(
                             margin: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
-                              children: [
+                              children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                       widget.bloc.isAutoCalling
                                           ? 'mobile'.toUpperCase()
@@ -226,13 +221,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .toUpperCase() ??
                                               '_',
                                       fontWeight: FontWeight.w700,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     ),
                                     Wrap(
                                       spacing: 27,
-                                      children: [
+                                      children: <Widget>[
                                         ShowHealthStatus.healthStatus(widget
                                                 .bloc
                                                 .caseDetailsAPIValue
@@ -281,15 +274,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                       ['value']
                                                   .toString() ??
                                               '_',
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: FontSize.fourteen,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     ),
                                   ),
                                 ),
                                 Row(
-                                  children: [
+                                  children: <Widget>[
                                     Expanded(
                                         child: SizedBox(
                                             width: 10,
@@ -321,7 +311,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                               Radius.circular(
                                                                   75.0))),
                                                   child: Row(
-                                                    children: [
+                                                    children: <Widget>[
                                                       CircleAvatar(
                                                         backgroundColor:
                                                             ColorResource
@@ -339,8 +329,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         Languages.of(context)!
                                                             .call
                                                             .toUpperCase(),
-                                                        fontSize:
-                                                            FontSize.fourteen,
                                                         lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
@@ -368,7 +356,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           color: ColorResource.color23375A,
                                           lineHeight: 1,
                                           fontWeight: FontWeight.w700,
-                                          fontStyle: FontStyle.normal,
                                         ),
                                         onTap: () => widget.bloc.add(
                                             EventDetailsEvent(
@@ -397,7 +384,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                               controller: _controller,
                               isScrollable: true,
                               indicatorColor: ColorResource.colorD5344C,
-                              onTap: (index) {
+                              onTap: (int index) {
                                 // change address health status based on selected tab customer met / customer not met / invalid
                                 widget.bloc.add(UpdateHealthStatusEvent(context,
                                     selectedHealthIndex: widget.index,
@@ -425,7 +412,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                               indicatorWeight: 5.0,
                               labelColor: ColorResource.color23375A,
                               unselectedLabelColor: ColorResource.colorC4C4C4,
-                              tabs: [
+                              tabs: <Widget>[
                                 Tab(text: Languages.of(context)!.connected),
                                 Tab(text: Languages.of(context)!.unreachable),
                                 Tab(text: Languages.of(context)!.invalid)
@@ -435,8 +422,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                           Expanded(
                               child: SingleChildScrollView(
                             child: Column(
-                              children: [
-                                Column(children: [
+                              children: <Widget>[
+                                Column(children: <Widget>[
                                   SizedBox(
                                     height: MediaQuery.of(context).size.height *
                                         0.65,
@@ -444,7 +431,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                       physics:
                                           const NeverScrollableScrollPhysics(),
                                       controller: _controller,
-                                      children: [
+                                      children: <Widget>[
                                         PhoneConnectedScreen(
                                           bloc: widget.bloc,
                                           context: context,
@@ -481,7 +468,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                             height: 75,
                             decoration: BoxDecoration(
                               color: ColorResource.colorFFFFFF,
-                              boxShadow: [
+                              boxShadow: <BoxShadow>[
                                 BoxShadow(
                                   color: ColorResource.color000000
                                       .withOpacity(.25),
@@ -496,13 +483,11 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   const EdgeInsets.symmetric(vertical: 11.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   SizedBox(
                                     width: 190,
                                     child: CustomButton(
                                       Languages.of(context)!.done.toUpperCase(),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: () async {
                                         if (widget.bloc.isAutoCalling) {
                                           if (await CallCustomerStatus
@@ -536,7 +521,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                             height: 75,
                             decoration: BoxDecoration(
                               color: ColorResource.colorFFFFFF,
-                              boxShadow: [
+                              boxShadow: <BoxShadow>[
                                 BoxShadow(
                                   color: ColorResource.color000000
                                       .withOpacity(.25),
@@ -552,8 +537,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
+                                children: <Widget>[
                                   Singleton.instance.startCalling ?? false
                                       ? const SizedBox()
                                       : Expanded(
@@ -587,7 +571,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   isLeading: !isSubmitFirst,
                                                   trailingWidget:
                                                       CustomLoadingWidget(
-                                                    gradientColors: [
+                                                    gradientColors: <Color>[
                                                       ColorResource.colorFFFFFF,
                                                       ColorResource.colorFFFFFF
                                                           .withOpacity(0.7),
@@ -595,7 +579,6 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   ),
                                                   isRemoveExtraPadding: true,
                                                   fontSize: FontSize.ten,
-                                                  fontWeight: FontWeight.w600,
                                                   onTap: isSubmitFirst
                                                       ? () {
                                                           if (widget
@@ -638,14 +621,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   isLeading: !isSubmitSecond,
                                                   trailingWidget:
                                                       CustomLoadingWidget(
-                                                    gradientColors: [
+                                                    gradientColors: <Color>[
                                                       ColorResource.colorFFFFFF,
                                                       ColorResource.colorFFFFFF
                                                           .withOpacity(0.7),
                                                     ],
                                                   ),
-                                                  fontSize: FontSize.eighteen,
-                                                  fontWeight: FontWeight.w600,
                                                   onTap: isSubmitSecond
                                                       ? () {
                                                           widget.bloc.add(
@@ -674,14 +655,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                 : null,
                                             isLeading: !isSubmitFirst,
                                             trailingWidget: CustomLoadingWidget(
-                                              gradientColors: [
+                                              gradientColors: <Color>[
                                                 ColorResource.colorFFFFFF,
                                                 ColorResource.colorFFFFFF
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.eighteen,
-                                            fontWeight: FontWeight.w600,
                                             onTap: isSubmitFirst
                                                 ? () {
                                                     if (widget.bloc
@@ -706,7 +685,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                                 .translateTextUnReachable);
                                                         setState(() => widget
                                                                 .bloc
-                                                                .isTranslatePhoneInvalid =
+                                                                .isTranslateUnReachable =
                                                             false);
                                                       }
                                                       if (widget
@@ -747,14 +726,12 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                 : null,
                                             isLeading: !isSubmitSecond,
                                             trailingWidget: CustomLoadingWidget(
-                                              gradientColors: [
+                                              gradientColors: <Color>[
                                                 ColorResource.colorFFFFFF,
                                                 ColorResource.colorFFFFFF
                                                     .withOpacity(0.7),
                                               ],
                                             ),
-                                            fontSize: FontSize.eighteen,
-                                            fontWeight: FontWeight.w600,
                                             onTap: isSubmitSecond
                                                 ? () {
                                                     if (widget.bloc

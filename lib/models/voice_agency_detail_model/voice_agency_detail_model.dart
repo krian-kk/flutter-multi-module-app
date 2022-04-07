@@ -1,8 +1,4 @@
 class AgencyDetailsModel {
-  int? status;
-  String? message;
-  AgencyResult? result;
-
   AgencyDetailsModel({this.status, this.message, this.result});
 
   AgencyDetailsModel.fromJson(Map<String, dynamic> json) {
@@ -11,6 +7,9 @@ class AgencyDetailsModel {
     result =
         json['result'] != null ? AgencyResult.fromJson(json['result']) : null;
   }
+  int? status;
+  String? message;
+  AgencyResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -24,26 +23,25 @@ class AgencyDetailsModel {
 }
 
 class AgencyResult {
-  List<VoiceAgencyData>? voiceAgencyData;
-  String? agentAgencyContact;
-
   AgencyResult({this.voiceAgencyData, this.agentAgencyContact});
 
   AgencyResult.fromJson(Map<String, dynamic> json) {
     if (json['voiceAgencyData'] != null) {
       voiceAgencyData = <VoiceAgencyData>[];
-      json['voiceAgencyData'].forEach((v) {
+      json['voiceAgencyData'].forEach((dynamic v) {
         voiceAgencyData!.add(VoiceAgencyData.fromJson(v));
       });
     }
     agentAgencyContact = json['agentAgencyContact'];
   }
+  List<VoiceAgencyData>? voiceAgencyData;
+  String? agentAgencyContact;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (voiceAgencyData != null) {
       data['voiceAgencyData'] =
-          voiceAgencyData!.map((v) => v.toJson()).toList();
+          voiceAgencyData!.map((VoiceAgencyData v) => v.toJson()).toList();
     }
     data['agentAgencyContact'] = agentAgencyContact;
     return data;
@@ -51,20 +49,6 @@ class AgencyResult {
 }
 
 class VoiceAgencyData {
-  String? sId;
-  List<String>? callerIds;
-  bool? currentlyUsed;
-  String? agencyId;
-  String? agencyName;
-  String? url;
-  String? contractor;
-  String? smsApiKey;
-  String? voiceApiKey;
-  int? iV;
-  String? roleLevel;
-  bool? tokenVerified;
-  String? version;
-
   VoiceAgencyData(
       {this.sId,
       this.callerIds,
@@ -95,6 +79,19 @@ class VoiceAgencyData {
     tokenVerified = json['tokenVerified'];
     version = json['version'];
   }
+  String? sId;
+  List<String>? callerIds;
+  bool? currentlyUsed;
+  String? agencyId;
+  String? agencyName;
+  String? url;
+  String? contractor;
+  String? smsApiKey;
+  String? voiceApiKey;
+  int? iV;
+  String? roleLevel;
+  bool? tokenVerified;
+  String? version;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

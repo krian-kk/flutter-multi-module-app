@@ -1,15 +1,4 @@
 class IOSDeviceInfoModel {
-  late String platform;
-  late String name;
-  late String systemName;
-  late String systemVersion;
-  late String model;
-  late String localizedModel;
-  late String identifierForVendor;
-  late bool isPhysicalDevice;
-  late Utsname utsname;
-  late String? created;
-
   IOSDeviceInfoModel({
     this.platform = 'IOS',
     required this.name,
@@ -35,6 +24,16 @@ class IOSDeviceInfoModel {
     utsname = Utsname.fromJson(json['utsname']);
     created = json['created'];
   }
+  late String platform;
+  late String name;
+  late String systemName;
+  late String systemVersion;
+  late String model;
+  late String localizedModel;
+  late String identifierForVendor;
+  late bool isPhysicalDevice;
+  late Utsname utsname;
+  late String? created;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -53,12 +52,6 @@ class IOSDeviceInfoModel {
 }
 
 class Utsname {
-  late String sysname;
-  late String nodename;
-  late String release;
-  late String version;
-  late String machine;
-
   Utsname({
     required this.sysname,
     required this.nodename,
@@ -74,6 +67,11 @@ class Utsname {
     version = json['version'];
     machine = json['machine'];
   }
+  late String sysname;
+  late String nodename;
+  late String release;
+  late String version;
+  late String machine;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

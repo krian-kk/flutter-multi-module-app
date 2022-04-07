@@ -1,16 +1,4 @@
 class AreYouAtOfficeModel {
-  late int eventId;
-  late String eventType;
-  late AreYouAtOfficeEventAttr eventAttr;
-  late String eventCode;
-  late String createdBy;
-  late String agentName;
-  late String eventModule;
-  late String contractor;
-  // late double roleLevel;
-  // late String version;
-  // late bool tokenVerified;
-
   AreYouAtOfficeModel({
     required this.eventId,
     required this.eventType,
@@ -39,6 +27,18 @@ class AreYouAtOfficeModel {
     // tokenVerified = json['tokenVerified'];
   }
 
+  late int eventId;
+  late String eventType;
+  late AreYouAtOfficeEventAttr eventAttr;
+  late String eventCode;
+  late String createdBy;
+  late String agentName;
+  late String eventModule;
+  late String contractor;
+  // late double roleLevel;
+  // late String version;
+  // late bool tokenVerified;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
@@ -57,14 +57,6 @@ class AreYouAtOfficeModel {
 }
 
 class AreYouAtOfficeEventAttr {
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-
   AreYouAtOfficeEventAttr(
       {required this.altitude,
       required this.accuracy,
@@ -83,6 +75,14 @@ class AreYouAtOfficeEventAttr {
     latitude = json['Latitude'];
     longitude = json['Longitude'];
   }
+
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

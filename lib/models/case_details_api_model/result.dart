@@ -2,11 +2,6 @@ import 'case_details.dart';
 import 'other_loan_detail.dart';
 
 class CaseDetailsResultModel {
-  CaseDetails? caseDetails;
-  List<dynamic>? addressDetails;
-  List<dynamic>? callDetails;
-  List<OtherLoanDetail>? otherLoanDetails = [];
-
   CaseDetailsResultModel({
     this.caseDetails,
     this.addressDetails,
@@ -24,17 +19,22 @@ class CaseDetailsResultModel {
         callDetails: json['callDetails'] as List<dynamic>?,
         otherLoanDetails: json['otherLoanDetails'] != null
             ? (json['otherLoanDetails'] as List<dynamic>?)
-                ?.map((e) =>
+                ?.map((dynamic e) =>
                     OtherLoanDetail.fromJson(Map<String, dynamic>.from(e)))
                 .take(25)
                 .toList()
-            : [],
+            : <OtherLoanDetail>[],
       );
+  CaseDetails? caseDetails;
+  List<dynamic>? addressDetails;
+  List<dynamic>? callDetails;
+  List<OtherLoanDetail>? otherLoanDetails = <OtherLoanDetail>[];
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'caseDetails': caseDetails?.toJson(),
         'addressDetails': addressDetails,
         'callDetails': callDetails,
-        'otherLoanDetails': otherLoanDetails?.map((e) => e.toJson()).toList(),
+        'otherLoanDetails':
+            otherLoanDetails?.map((OtherLoanDetail e) => e.toJson()).toList(),
       };
 }

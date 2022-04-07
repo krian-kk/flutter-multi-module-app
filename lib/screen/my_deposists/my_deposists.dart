@@ -13,8 +13,8 @@ import 'package:origa/widgets/no_case_available.dart';
 import 'chegue_and_cash_tab.dart';
 
 class MyDeposistsBottomSheet extends StatefulWidget {
-  final DashboardBloc bloc;
   const MyDeposistsBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
 
   @override
   _MyDeposistsBottomSheetState createState() => _MyDeposistsBottomSheetState();
@@ -81,8 +81,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: [
                                         Expanded(
                                           flex: 2,
@@ -100,7 +98,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                 widget.bloc.myDeposistsData
                                                     .result!.count
                                                     .toString(),
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,
                                                 fontWeight: FontWeight.w700,
@@ -125,8 +122,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                                     widget.bloc.myDeposistsData
                                                         .result!.totalAmt
                                                         .toString(),
-                                                // .substring(0, 20),
-                                                fontSize: FontSize.fourteen,
                                                 color:
                                                     ColorResource.color101010,
                                                 fontWeight: FontWeight.w700,
@@ -141,7 +136,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                     height: 12,
                                   ),
                                   Wrap(
-                                    runSpacing: 0,
                                     spacing: 7,
                                     children: _buildFilterOptions(),
                                   ),
@@ -154,7 +148,6 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
                                       bottom: BorderSide(
                                           color: ColorResource.colorD8D8D8))),
                               child: TabBar(
-                                isScrollable: false,
                                 indicatorColor: ColorResource.colorD5344C,
                                 labelStyle: const TextStyle(
                                     fontWeight: FontWeight.w700,
@@ -229,7 +222,7 @@ class _MyDeposistsBottomSheetState extends State<MyDeposistsBottomSheet> {
   }
 
   List<Widget> _buildFilterOptions() {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = [];
     for (var element in widget.bloc.filterOption) {
       widgets.add(_buildFilterWidget(element.value!, element.timeperiodText!));
     }

@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -21,16 +24,15 @@ import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/intl.dart';
-import 'package:flutter/material.dart';
 
 import '../../../models/searching_data_model.dart';
+
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardBloc() : super(DashboardInitial());
-  List<DashboardListModel> dashboardList = [];
+  List<DashboardListModel> dashboardList = <DashboardListModel>[];
   String? userType;
   bool selectedFilterDataLoading = false;
   DashboardAllModels priortyFollowUpData = DashboardAllModels();
@@ -45,7 +47,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   String? selectedFilter = Constants.today;
   String? selectedFilterIndex = '0';
-  List<FilterCasesByTimeperiod> filterOption = [];
+  List<FilterCasesByTimeperiod> filterOption = <FilterCasesByTimeperiod>[];
 
   dynamic mtdCaseCompleted = 0;
   dynamic mtdCaseTotal = 0;
@@ -54,7 +56,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   String? todayDate;
   // This is search result cases
-  List<Result> searchResultList = [];
+  List<Result> searchResultList = <Result>[];
   bool isShowSearchResult = false;
 
 // Dashboard card onclick loading
@@ -71,15 +73,15 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
       yield DashboardLoadingState();
-      SharedPreferences _pref = await SharedPreferences.getInstance();
+      final SharedPreferences _pref = await SharedPreferences.getInstance();
       userType = _pref.getString(Constants.userType);
       Singleton.instance.buildContext = event.context;
 
-      var currentDateTime = DateTime.now();
-      String currentDate = DateFormat.yMMMEd().format(currentDateTime);
+      final DateTime currentDateTime = DateTime.now();
+      final String currentDate = DateFormat.yMMMEd().format(currentDateTime);
       todayDate = currentDate;
 
-      filterOption.addAll([
+      filterOption.addAll(<FilterCasesByTimeperiod>[
         FilterCasesByTimeperiod(
             timeperiodText: Languages.of(event.context!)!.today, value: '0'),
         FilterCasesByTimeperiod(
@@ -102,10 +104,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic>? dashboardData;
         if (userType == Constants.fieldagent) {
           dashboardData = await APIRepository.apiRequest(
-              APIRequestType.get, HttpUrl.dashboardUrl + "userType=$userType");
+              APIRequestType.get, HttpUrl.dashboardUrl + 'userType=$userType');
         } else if (userType == Constants.telecaller) {
           dashboardData = await APIRepository.apiRequest(APIRequestType.get,
-              HttpUrl.telDashboardUrl + "userType=$userType");
+              HttpUrl.telDashboardUrl + 'userType=$userType');
         }
 
         if (dashboardData!['success']) {
@@ -338,7 +340,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getPriorityFollowUpData =
+        final Map<String, dynamic> getPriorityFollowUpData =
             await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.dashboardPriorityFollowUpUrl);
         priortyFollowUpData =
@@ -360,7 +362,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getUntouchedCasesData =
+        final Map<String, dynamic> getUntouchedCasesData =
             await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.dashboardUntouchedCasesUrl);
         untouchedCasesData =
@@ -382,8 +384,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getBrokenPTPData = await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.dashboardBrokenPTPUrl);
+        final Map<String, dynamic> getBrokenPTPData =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.dashboardBrokenPTPUrl);
         brokenPTPData = DashboardAllModels.fromJson(getBrokenPTPData['data']);
         if (getBrokenPTPData[Constants.success]) {
           yield BrokenPTPState();
@@ -402,9 +405,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=' + selectedFilter!);
+        final Map<String, dynamic> getMyReceiptsData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.dashboardMyReceiptsUrl +
+                    'timePeriod=' +
+                    selectedFilter!);
         myReceiptsData =
             MyReceiptsCaseModel.fromJson(getMyReceiptsData['data']);
         if (getMyReceiptsData[Constants.success]) {
@@ -423,9 +429,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyReceiptsData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.dashboardMyReceiptsUrl + 'timePeriod=${event.timePeiod}');
+        final Map<String, dynamic> getMyReceiptsData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.dashboardMyReceiptsUrl +
+                    'timePeriod=${event.timePeiod}');
         if (getMyReceiptsData[Constants.success]) {
           yield ReturnReceiptsApiState(returnData: getMyReceiptsData['data']);
         }
@@ -442,7 +450,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        SharedPreferences _pref = await SharedPreferences.getInstance();
+        final SharedPreferences _pref = await SharedPreferences.getInstance();
         userType = _pref.getString(Constants.userType);
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
@@ -474,10 +482,10 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         Map<String, dynamic> getMyVisitsData;
         if (userType == Constants.fieldagent) {
           getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
-              HttpUrl.dashboardMyVisitsUrl + "timePeriod=${event.timePeiod}");
+              HttpUrl.dashboardMyVisitsUrl + 'timePeriod=${event.timePeiod}');
         } else {
           getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
-              HttpUrl.dashboardMyCallsUrl + "timePeriod=${event.timePeiod}");
+              HttpUrl.dashboardMyCallsUrl + 'timePeriod=${event.timePeiod}');
         }
         // Map<String, dynamic> getMyVisitsData = await APIRepository.apiRequest(
         //     APIRequestType.get,
@@ -496,9 +504,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.dashboardMyDeposistsUrl + 'timePeriod=' + selectedFilter!);
+        final Map<String, dynamic> getMyDepositsData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.dashboardMyDeposistsUrl +
+                    'timePeriod=' +
+                    selectedFilter!);
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {
           // yield SelectedTimeperiodDataLoadedState();
@@ -515,9 +526,11 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getMyDepositsData = await APIRepository.apiRequest(
-            APIRequestType.get,
-            HttpUrl.dashboardMyDeposistsUrl + "timePeriod=${event.timePeiod}");
+        final Map<String, dynamic> getMyDepositsData =
+            await APIRepository.apiRequest(
+                APIRequestType.get,
+                HttpUrl.dashboardMyDeposistsUrl +
+                    'timePeriod=${event.timePeiod}');
         myDeposistsData = MyDeposistModel.fromJson(getMyDepositsData['data']);
         if (getMyDepositsData[Constants.success]) {}
       }
@@ -531,7 +544,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        Map<String, dynamic> getYardingAndSelfReleaseData =
+        final Map<String, dynamic> getYardingAndSelfReleaseData =
             await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.dashboardYardingAndSelfReleaseUrl);
         yardingAndSelfReleaseData =
@@ -553,16 +566,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      List<dynamic> value = [];
+      final List<dynamic> value = [];
       for (var element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
       postdata.addAll({
         'files': value,
       });
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.upload,
-        HttpUrl.bankDeposit + "userType=$userType",
+        HttpUrl.bankDeposit + 'userType=$userType',
         formDatas: FormData.fromMap(postdata),
       );
 
@@ -577,16 +590,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      List<dynamic> value = [];
+      final List<dynamic> value = [];
       for (var element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
       postdata.addAll({
         'files': value,
       });
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.upload,
-        HttpUrl.companyBranchDeposit + "userType=$userType",
+        HttpUrl.companyBranchDeposit + 'userType=$userType',
         formDatas: FormData.fromMap(postdata),
       );
 
@@ -601,16 +614,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      List<dynamic> value = [];
+      final List<dynamic> value = [];
       for (var element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
       postdata.addAll({
         'files': value,
       });
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.upload,
-        HttpUrl.yarding + "userType=$userType",
+        HttpUrl.yarding + 'userType=$userType',
         formDatas: FormData.fromMap(postdata),
       );
 
@@ -625,16 +638,16 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final Map<String, dynamic> postdata =
           jsonDecode(jsonEncode(event.postData!.toJson()))
               as Map<String, dynamic>;
-      List<dynamic> value = [];
+      final List<dynamic> value = [];
       for (var element in event.fileData!) {
         value.add(await MultipartFile.fromFile(element.path.toString()));
       }
       postdata.addAll({
         'files': value,
       });
-      Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.upload,
-        HttpUrl.selfRelease + "userType=$userType",
+        HttpUrl.selfRelease + 'userType=$userType',
         formDatas: FormData.fromMap(postdata),
       );
 
@@ -747,52 +760,52 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        var data = event.returnValue as SearchingDataModel;
+        final data = event.returnValue as SearchingDataModel;
         Map<String, dynamic> getSearchResultData;
         if (data.isStarCases! && data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "starredOnly=${data.isStarCases}&" +
-                  "recentActivity=${data.isMyRecentActivity}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'starredOnly=${data.isStarCases}&' +
+                  'recentActivity=${data.isMyRecentActivity}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "starredOnly=${data.isStarCases}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'starredOnly=${data.isStarCases}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "recentActivity=${data.isMyRecentActivity}&" +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'recentActivity=${data.isMyRecentActivity}&' +
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         } else {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
               HttpUrl.searchUrl +
-                  "accNo=${data.accountNumber}&" +
-                  "cust=${data.customerName}&" +
-                  "dpdStr=${data.dpdBucket}&" +
-                  "customerId=${data.customerID}&" +
-                  "pincode=${data.pincode}&" +
-                  "collSubStatus=${data.status}");
+                  'accNo=${data.accountNumber}&' +
+                  'cust=${data.customerName}&' +
+                  'dpdStr=${data.dpdBucket}&' +
+                  'customerId=${data.customerID}&' +
+                  'pincode=${data.pincode}&' +
+                  'collSubStatus=${data.status}');
         }
 
         // Map<String, dynamic> getSearchResultData =

@@ -17,6 +17,49 @@ import 'package:path_provider/path_provider.dart';
 import '../singleton.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
+  const CustomReadOnlyTextField(
+    this.hintText,
+    this.controller, {
+    Key? key,
+    this.obscureText = false,
+    this.suffixWidget,
+    this.prefixWidget,
+    this.isEnable = true,
+    this.onTapped,
+    this.onChanged,
+    this.isReadOnly = false,
+    this.maximumWordCount,
+    this.titleColor = ColorResource.color666666,
+    this.textColor = ColorResource.color333333,
+    this.borderColor = ColorResource.colorE5EAF6,
+    this.isHighlighted = false,
+    this.highlightColor = ColorResource.colorDADADA,
+    this.focusNode,
+    this.focusTextColor,
+    this.height = 40,
+    this.keyBoardType = TextInputType.name,
+    this.descriptionText,
+    this.validatorCallBack,
+    this.onEditing,
+    this.returnS2Tresponse,
+    this.inputformaters,
+    this.isLabel = false,
+    this.isBorder = true,
+    this.isFill = false,
+    this.contentPadding,
+    this.cursorColor = ColorResource.color666666,
+    this.validationRules = const <String>[],
+    this.textCapitalization,
+    this.isVoiceRecordWidget = false,
+    this.caseId = 'case_id',
+    this.isNumberOnly = false,
+    this.agrRef,
+    this.remarkFunction,
+    this.lableStyle,
+    this.checkRecord,
+    this.editStringCallBack,
+    this.isSubmit = true,
+  }) : super(key: key);
   final String hintText;
   final bool obscureText;
   final TextEditingController controller;
@@ -56,49 +99,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final TextStyle? lableStyle;
   final OnChangeCheckRecord? checkRecord;
   final bool isSubmit;
-
-  const CustomReadOnlyTextField(
-    this.hintText,
-    this.controller, {
-    Key? key,
-    this.obscureText = false,
-    this.suffixWidget,
-    this.prefixWidget,
-    this.isEnable = true,
-    this.onTapped,
-    this.onChanged,
-    this.isReadOnly = false,
-    this.maximumWordCount,
-    this.titleColor = ColorResource.color666666,
-    this.textColor = ColorResource.color333333,
-    this.borderColor = ColorResource.colorE5EAF6,
-    this.isHighlighted = false,
-    this.highlightColor = ColorResource.colorDADADA,
-    this.focusNode,
-    this.focusTextColor,
-    this.height = 40,
-    this.keyBoardType = TextInputType.name,
-    this.descriptionText,
-    this.validatorCallBack,
-    this.onEditing,
-    this.returnS2Tresponse,
-    this.inputformaters,
-    this.isLabel = false,
-    this.isBorder = true,
-    this.isFill = false,
-    this.contentPadding,
-    this.cursorColor = ColorResource.color666666,
-    this.validationRules = const [],
-    this.textCapitalization,
-    this.isVoiceRecordWidget = false,
-    this.caseId = 'case_id',
-    this.isNumberOnly = false,
-    this.agrRef,
-    this.remarkFunction,
-    this.lableStyle,
-    this.checkRecord,
-    this.isSubmit = true,
-  }) : super(key: key);
+  final Function? editStringCallBack;
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -110,10 +111,11 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   bool isPlaying = false;
   bool isPaused = false;
   bool isActiveSpeaker = false;
+  bool isEnableReadOnly = false;
   TextEditingController translateTextController =
       TextEditingController(text: '');
   bool isEdit = false;
-  static const platform = MethodChannel('recordAudioChannel');
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
   FocusNode? focus = FocusNode();
 
   Speech2TextModel getTranslatedData = Speech2TextModel();
@@ -128,7 +130,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   getFileDirectory() async {
-    String dir = ((await getApplicationDocumentsDirectory()).path) +
+    final String dir = ((await getApplicationDocumentsDirectory()).path) +
         '/${Singleton.instance.agrRef}_${((DateTime.now().toIso8601String()).split('.').first.toString()).replaceAll(':', '-')}.wav';
     setState(() {
       filePath = dir;
@@ -136,14 +138,14 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   playAudio() async {
-    await platform
-        .invokeMethod('playRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('playRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() => isPlaying = true);
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           isPlaying = false;
@@ -154,8 +156,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   stopAudio() async {
-    await platform
-        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('stopPlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPlaying = false;
@@ -166,8 +168,8 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   pauseAudio() async {
-    await platform.invokeMethod(
-        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('pausePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPaused = true;
@@ -177,16 +179,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
   }
 
   resumeAudio() async {
-    await platform.invokeMethod(
-        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('resumePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           isPaused = false;
         });
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           isPlaying = false;
@@ -210,13 +212,14 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
             height: widget.isLabel ? null : widget.height,
             child: TextFormField(
               textInputAction: TextInputAction.done,
+
               cursorHeight: 17,
               validator: (String? value) {
                 if (widget.validationRules.isNotEmpty) {
@@ -239,7 +242,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                 }
               },
 
-              onFieldSubmitted: (text) {
+              onFieldSubmitted: (String text) {
                 setState(() {});
                 FocusScope.of(context).requestFocus(FocusNode());
                 if (widget.onEditing != null) {
@@ -253,7 +256,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   widget.onTapped!();
                 }
               },
-              onChanged: (q) {
+              onChanged: (String q) {
                 widget.onChanged;
                 setState(() {});
                 // FocusScope.of(context).unfocus();
@@ -261,7 +264,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               textCapitalization:
                   widget.textCapitalization ?? TextCapitalization.none,
               inputFormatters: widget.inputformaters ??
-                  [
+                  <TextInputFormatter>[
                     FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                     if (widget.controller.text.isEmpty)
                       FilteringTextInputFormatter.deny(' '),
@@ -274,7 +277,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               enableSuggestions: false,
               obscureText: widget.obscureText,
               controller: widget.controller,
-              readOnly: widget.isReadOnly,
+              readOnly: widget.isReadOnly || isEnableReadOnly,
               enabled: widget.isEnable,
               keyboardType: widget.keyBoardType,
               cursorColor: widget.cursorColor,
@@ -302,7 +305,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       ? (filePath != '')
                           ? VoiceRecodingWidget(
                               filePath: filePath,
-                              recordingData: (values) {
+                              recordingData: (dynamic values) {
                                 if (values is bool) {
                                   //Click action true/false
                                 } else if (values is Speech2TextModel) {
@@ -312,6 +315,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                     translateTextController.text =
                                         values.result!.translatedText!;
                                     isActiveSpeaker = true;
+                                    if (widget.editStringCallBack != null) {
+                                      widget.editStringCallBack!(
+                                          translateTextController.text);
+                                    }
                                   });
                                 }
                               },
@@ -322,9 +329,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                   translateTextController.text = '';
                                   isActiveSpeaker = false;
                                 });
+                                if (widget.editStringCallBack != null) {
+                                  widget.editStringCallBack!(
+                                      translateTextController.text);
+                                }
                                 widget.checkRecord!(
                                     Constants.none, '', Speech2TextModel());
                                 widget.returnS2Tresponse!(getTranslatedData);
+                              },
+                              enableTextFieldFunction: (bool val) {
+                                setState(() => isEnableReadOnly = !val);
                               },
                               caseId: widget.caseId,
                               checkRecord: widget.checkRecord,
@@ -347,10 +361,16 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   // errorText: validatePassword(widget.controller.text.trim()),
                   labelStyle: widget.lableStyle ??
                       const TextStyle(
+                          color: ColorResource.color666666,
+                          fontFamily: 'Lato',
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.normal,
-                          fontSize: FontSize.twelve,
-                          color: ColorResource.color23375A),
+                          fontSize: FontSize.fifteen),
+                  // const TextStyle(
+                  //     fontWeight: FontWeight.w400,
+                  //     fontStyle: FontStyle.normal,
+                  //     fontSize: FontSize.twelve,
+                  //     color: ColorResource.color23375A),
 
                   // Theme.of(context).textTheme.subtitle1!.copyWith(
                   //     color: (widget.focusNode != null && widget.focusNode!.hasFocus)
@@ -387,7 +407,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             widget.isSubmit)
           Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 13, vertical: 11),
@@ -398,8 +418,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                   Languages.of(context)!.remarksRecording,
                   lineHeight: 1,
                   color: ColorResource.color000000,
-                  fontSize: FontSize.fourteen,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(width: 5),
@@ -469,8 +487,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                 : CustomText(
                     translateTextController.text,
                     color: ColorResource.color000000,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w400,
                   ),
           ),
         if (widget.isVoiceRecordWidget &&
@@ -483,7 +499,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: <Widget>[
               Expanded(
                 child: SizedBox(
                   height: 48,
@@ -521,6 +537,10 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                         translateTextController.text = '';
                         isActiveSpeaker = false;
                       });
+                      if (widget.editStringCallBack != null) {
+                        widget
+                            .editStringCallBack!(translateTextController.text);
+                      }
                       widget.checkRecord!(
                           Constants.none, '', Speech2TextModel());
                       // Here vreturn the value for S2T API respose
@@ -545,6 +565,9 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                       widget.checkRecord!(
                           Constants.none, '', Speech2TextModel());
                     });
+                    if (widget.editStringCallBack != null) {
+                      widget.editStringCallBack!(translateTextController.text);
+                    }
                   },
                 ),
               ),

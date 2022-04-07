@@ -5,7 +5,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseStatusWidget {
-  static Widget satusTextWidget(context,
+  static Widget satusTextWidget(BuildContext context,
       {double? width,
       // double? height,
       String? text,
@@ -37,7 +37,7 @@ class CaseStatusWidget {
     return child;
   }
 
-  static List<String> health_1 = [
+  static List<String> health_1 = <String>[
     // Telecaller unreachable
     Constants.telsubstatuslineBusy.toLowerCase(),
     Constants.telsubstatusswitchOff.toLowerCase(),
@@ -50,7 +50,7 @@ class CaseStatusWidget {
     Constants.entryRestricted.toLowerCase(),
   ];
 
-  static List<String> health_0 = [
+  static List<String> health_0 = <String>[
     // Telecaller Invalid
     Constants.telsubstatusdoesNotExist.toLowerCase(),
     Constants.telsubstatusincorrectNumber.toLowerCase(),

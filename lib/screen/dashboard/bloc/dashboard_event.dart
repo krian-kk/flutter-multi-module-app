@@ -3,8 +3,8 @@ part of 'dashboard_bloc.dart';
 class DashboardEvent extends BaseEquatable {}
 
 class DashboardInitialEvent extends DashboardEvent {
-  final BuildContext? context;
   DashboardInitialEvent(this.context);
+  final BuildContext? context;
 }
 
 class PriorityFollowEvent extends DashboardEvent {}
@@ -16,32 +16,27 @@ class BrokenPTPEvent extends DashboardEvent {}
 class MyReceiptsEvent extends DashboardEvent {}
 
 class ReceiptsApiEvent extends DashboardEvent {
-  final dynamic timePeiod;
   ReceiptsApiEvent({this.timePeiod});
+  final dynamic timePeiod;
 }
 
 class MyVisitsEvent extends DashboardEvent {}
 
 class MyVisitApiEvent extends DashboardEvent {
-  final dynamic timePeiod;
   MyVisitApiEvent({this.timePeiod});
+  final dynamic timePeiod;
 }
 
 class MyDeposistsEvent extends DashboardEvent {}
 
 class DeposistsApiEvent extends DashboardEvent {
-  final dynamic timePeiod;
   DeposistsApiEvent({this.timePeiod});
+  final dynamic timePeiod;
 }
 
 class YardingAndSelfReleaseEvent extends DashboardEvent {}
 
 class NavigateCaseDetailEvent extends DashboardEvent {
-  final dynamic paramValues;
-  final bool isUnTouched;
-  final bool isPriorityFollowUp;
-  final bool isBrokenPTP;
-  final bool isMyReceipts;
   NavigateCaseDetailEvent({
     this.paramValues,
     this.isUnTouched = false,
@@ -49,78 +44,83 @@ class NavigateCaseDetailEvent extends DashboardEvent {
     this.isBrokenPTP = false,
     this.isMyReceipts = false,
   });
+  final dynamic paramValues;
+  final bool isUnTouched;
+  final bool isPriorityFollowUp;
+  final bool isBrokenPTP;
+  final bool isMyReceipts;
 }
 
 class NavigateSearchEvent extends DashboardEvent {}
 
 class SearchReturnDataEvent extends DashboardEvent {
-  final dynamic returnValue;
   SearchReturnDataEvent({this.returnValue});
+  final dynamic returnValue;
 }
 
 class SetTimeperiodValueEvent extends DashboardEvent {}
 
 class PostBankDepositDataEvent extends DashboardEvent {
+  PostBankDepositDataEvent({this.postData, this.fileData, this.context});
   final dynamic postData;
   final List<File>? fileData;
   final BuildContext? context;
-  PostBankDepositDataEvent({this.postData, this.fileData, this.context});
 }
 
 class PostCompanyDepositDataEvent extends DashboardEvent {
+  PostCompanyDepositDataEvent({this.postData, this.fileData, this.context});
   final dynamic postData;
   final List<File>? fileData;
   final BuildContext? context;
-  PostCompanyDepositDataEvent({this.postData, this.fileData, this.context});
 }
 
 class PostYardingDataEvent extends DashboardEvent {
+  PostYardingDataEvent({this.postData, this.fileData});
   final dynamic postData;
   final List<File>? fileData;
-  PostYardingDataEvent({this.postData, this.fileData});
 }
 
 class PostSelfreleaseDataEvent extends DashboardEvent {
+  PostSelfreleaseDataEvent({this.postData, this.fileData});
   final dynamic postData;
   final List<File>? fileData;
-  PostSelfreleaseDataEvent({this.postData, this.fileData});
 }
 
 class HelpEvent extends DashboardEvent {}
 
 class UpdateUnTouchedCasesEvent extends DashboardEvent {
+  UpdateUnTouchedCasesEvent(this.caseId, this.caseAmount);
   final String caseId;
   final dynamic caseAmount;
-  UpdateUnTouchedCasesEvent(this.caseId, this.caseAmount);
 }
 
 class UpdatePriorityFollowUpCasesEvent extends DashboardEvent {
+  UpdatePriorityFollowUpCasesEvent(this.caseId, this.caseAmount);
   final String caseId;
   final dynamic caseAmount;
-  UpdatePriorityFollowUpCasesEvent(this.caseId, this.caseAmount);
 }
 
 class UpdateMyVisitCasesEvent extends DashboardEvent {
+  UpdateMyVisitCasesEvent(this.caseId, this.caseAmount,
+      {this.isNotMyReceipts = true});
   final String caseId;
   final dynamic caseAmount;
   final bool isNotMyReceipts;
-  UpdateMyVisitCasesEvent(this.caseId, this.caseAmount,
-      {this.isNotMyReceipts = true});
 }
 
 class UpdateMyReceiptsCasesEvent extends DashboardEvent {
+  UpdateMyReceiptsCasesEvent(this.caseId, this.caseAmount);
   final String caseId;
   final dynamic caseAmount;
-  UpdateMyReceiptsCasesEvent(this.caseId, this.caseAmount);
 }
 
 class UpdateBrokenCasesEvent extends DashboardEvent {
+  UpdateBrokenCasesEvent(this.caseId, this.caseAmount);
   final String caseId;
   final dynamic caseAmount;
-  UpdateBrokenCasesEvent(this.caseId, this.caseAmount);
 }
 
 class AddFilterTimeperiodFromNotification extends DashboardEvent {
-  final BuildContext? context;
   AddFilterTimeperiodFromNotification(this.context);
+  final BuildContext? context;
 }

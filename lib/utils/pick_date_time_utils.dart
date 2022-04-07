@@ -4,15 +4,14 @@ import 'package:origa/listener/item_selected_listener.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class PickDateAndTimeUtils {
-  static Future pickDate(
+  static Future<dynamic> pickDate(
       BuildContext context, OnChangeForPickDate function) async {
-    final newDate = await showDatePicker(
+    final DateTime? newDate = await showDatePicker(
         context: context,
-        initialDatePickerMode: DatePickerMode.day,
         initialDate: DateTime.now(),
         firstDate: DateTime.now(),
         lastDate: DateTime(DateTime.now().year + 3),
-        builder: (context, child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
@@ -24,7 +23,6 @@ class PickDateAndTimeUtils {
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -37,16 +35,19 @@ class PickDateAndTimeUtils {
           );
         });
 
-    if (newDate == null) return null;
-    String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
+    if (newDate == null) {
+      return null;
+    }
+    final String formattedDate = DateFormat('yyyy-MM-dd').format(newDate);
     function(formattedDate, newDate.toString());
   }
 
-  static Future pickTime(BuildContext context, OnChange function) async {
-    final newTime = await showTimePicker(
+  static Future<dynamic> pickTime(
+      BuildContext context, OnChange function) async {
+    final TimeOfDay? newTime = await showTimePicker(
         context: context,
         initialTime: TimeOfDay.now(),
-        builder: (context, child) {
+        builder: (BuildContext context, Widget? child) {
           return Theme(
             data: Theme.of(context).copyWith(
               textTheme: const TextTheme(
@@ -55,7 +56,6 @@ class PickDateAndTimeUtils {
               ),
               colorScheme: const ColorScheme.light(
                 primary: ColorResource.color23375A,
-                onPrimary: ColorResource.colorFFFFFF,
                 onSurface: ColorResource.color23375A,
               ),
               textButtonTheme: TextButtonThemeData(
@@ -67,11 +67,13 @@ class PickDateAndTimeUtils {
             child: child!,
           );
         });
-    if (newTime == null) return;
+    if (newTime == null) {
+      return;
+    }
 
     // final time = newTime.format(context).toString();
-    final hours = newTime.hour.toString().padLeft(2, '0');
-    final minites = newTime.minute.toString().padLeft(2, '0');
+    final String hours = newTime.hour.toString().padLeft(2, '0');
+    final String minites = newTime.minute.toString().padLeft(2, '0');
     function('$hours:$minites');
   }
 }

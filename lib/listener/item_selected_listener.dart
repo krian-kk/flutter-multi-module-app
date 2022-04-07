@@ -4,6 +4,7 @@ import 'package:origa/models/speech2text_model.dart';
 
 typedef OnItemSelected = void Function(dynamic selectedItem);
 typedef OnChange = void Function(String?);
+typedef OnChangeIsEnable = void Function(bool);
 typedef OnChangeBoolFuction = void Function(
     String?, bool?, GestureTapCallback?);
 typedef OnChangeForPickDate = void Function(String?, String?);

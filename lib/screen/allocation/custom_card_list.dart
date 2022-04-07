@@ -19,15 +19,14 @@ class CustomCardList {
       {List<Result>? resultData,
       required ScrollController listViewController}) {
     return ListView.builder(
-        scrollDirection: Axis.vertical,
         controller: listViewController,
         itemCount: resultData!.length,
         itemBuilder: (BuildContext context, int index) {
-          int listCount = index + 1;
+          final int listCount = index + 1;
           String? distanceValues;
           if (resultData[index].distanceMeters != null) {
             distanceValues = resultData[index].distanceMeters < 1000
-                ? '${resultData[index].distanceMeters.toStringAsFixed(1)} Km'
+                ? '${(resultData[index].distanceMeters / 1000).toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
           return Column(
@@ -46,7 +45,6 @@ class CustomCardList {
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
                               height: 26,
@@ -69,10 +67,8 @@ class CustomCardList {
                             ),
                             CustomText(
                               resultData[index].distanceMeters != null
-                                  ? Constants.approx + " " + distanceValues!
+                                  ? Constants.approx + ' ' + distanceValues!
                                   : '-',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w400,
                               lineHeight: 1,
                               color: ColorResource.color101010,
                             ),
@@ -86,13 +82,11 @@ class CustomCardList {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CustomText(
                         resultData.length.toString() +
                             ' ' +
                             Languages.of(context)!.allocation,
-                        fontSize: FontSize.fourteen,
                         color: ColorResource.color000000,
                         fontWeight: FontWeight.w700,
                       ),
@@ -108,7 +102,7 @@ class CustomCardList {
                       ),
                       CustomText(
                         bloc.starCount.toString() +
-                            " " +
+                            ' ' +
                             Languages.of(context)!.hignPriority,
                         fontSize: FontSize.ten,
                         color: ColorResource.color101010,
@@ -171,7 +165,6 @@ class CustomCardList {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(23, 0, 10, 0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: Column(
@@ -190,14 +183,13 @@ class CustomCardList {
                                           resultData[index].cust!,
                                           fontSize: FontSize.sixteen,
                                           color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w400,
                                         ),
                                       ],
                                     ),
                                   ),
                                   if (Singleton.instance.usertype ==
                                       Constants.fieldagent)
-                                    resultData[index].collSubStatus == "new"
+                                    resultData[index].collSubStatus == 'new'
                                         ? CaseStatusWidget.satusTextWidget(
                                             context,
                                             text: Languages.of(context)!.new_,
@@ -211,7 +203,7 @@ class CustomCardList {
                                           ),
                                   if (Singleton.instance.usertype ==
                                       Constants.telecaller)
-                                    resultData[index].telSubStatus == "new"
+                                    resultData[index].telSubStatus == 'new'
                                         ? CaseStatusWidget.satusTextWidget(
                                             context,
                                             text: Languages.of(context)!.new_,
@@ -250,7 +242,6 @@ class CustomCardList {
                                                     .value!
                                                 : '-',
                                             color: ColorResource.color484848,
-                                            fontSize: FontSize.fourteen,
                                           ),
                                         ],
                                       ),
@@ -279,7 +270,6 @@ class CustomCardList {
                                                     item.value!,
                                                     color: ColorResource
                                                         .color484848,
-                                                    fontSize: FontSize.fourteen,
                                                     lineHeight: 1.0,
                                                   ),
                                                 )
@@ -300,9 +290,7 @@ class CustomCardList {
                                 children: [
                                   CustomText(
                                     Languages.of(context)!.followUpDate,
-                                    fontSize: FontSize.fourteen,
                                     color: ColorResource.color101010,
-                                    fontWeight: FontWeight.w400,
                                   ),
                                   Row(
                                     children: [
@@ -316,7 +304,6 @@ class CustomCardList {
                                                       resultData[index]
                                                           .fieldfollowUpDate!)
                                               : '-',
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -329,7 +316,6 @@ class CustomCardList {
                                                       resultData[index]
                                                           .followUpDate!)
                                               : '-',
-                                          fontSize: FontSize.fourteen,
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
                                         ),
@@ -338,7 +324,6 @@ class CustomCardList {
                                         children: [
                                           CustomText(
                                             Languages.of(context)!.view,
-                                            fontSize: FontSize.fourteen,
                                             lineHeight: 1,
                                             color: ColorResource.color23375A,
                                             fontWeight: FontWeight.w700,

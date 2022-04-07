@@ -9,7 +9,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/utils/select_payment_mode_button_widget.dart';
@@ -36,6 +35,7 @@ class PhoneUnreachableScreen extends StatefulWidget {
 
 class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -46,14 +46,15 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.lineBusy.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.switchOff.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.rnr.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.outOfNetwork.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.disConnecting.toUpperCase()),
     ];
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -66,41 +67,45 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           key: widget.bloc.phoneUnreachableFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 18),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
+                      children: <Widget>[
+                        SizedBox(
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
+                          ),
                         ),
                         const SizedBox(height: 25),
-                        CustomText(
-                          Languages.of(context)!.nextActionDate.toUpperCase(),
-                          color: ColorResource.color666666,
-                          fontSize: FontSize.twelve,
-                          fontWeight: FontWeight.w400,
-                          fontStyle: FontStyle.normal,
-                        ),
+                        // CustomText(
+                        //   Languages.of(context)!.nextActionDate,
+                        //   color: ColorResource.color666666,
+                        //   fontSize: FontSize.twelve,
+                        //   fontWeight: FontWeight.w400,
+                        //   fontStyle: FontStyle.normal,
+                        // ),
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
-                            '',
+                            Languages.of(context)!.nextActionDate,
                             widget
                                 .bloc.phoneUnreachableNextActionDateController,
+                            isLabel: true,
                             focusNode: widget
                                 .bloc.phoneUnreachableNextActionDateFocusNode,
                             isReadOnly: true,
-                            validationRules: const ['required'],
-                            onTapped: () => PickDateAndTimeUtils.pickDate(
-                                context, (newDate, followUpDate) {
+                            validationRules: const <String>['required'],
+                            onTapped: () =>
+                                PickDateAndTimeUtils.pickDate(context,
+                                    (String? newDate, String? followUpDate) {
                               if (newDate != null && followUpDate != null) {
                                 setState(() {
                                   widget
@@ -132,16 +137,24 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.phoneUnreachableRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          returnS2Tresponse: (val) {
+                          editStringCallBack: ((dynamic values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(
                                   () => widget.bloc.returnS2TUnReachable = val);
                             }
                           },
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TUnReachable = returnS2Tdata;
                               widget.bloc.isRecordUnReachable = isRecord;
@@ -169,12 +182,11 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                                     color: ColorResource.color23375A,
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(
-                                        color: ColorResource.colorECECEC,
-                                        width: 1.0),
+                                        color: ColorResource.colorECECEC),
                                   ),
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    children: [
+                                    children: <Widget>[
                                       const Icon(
                                         Icons.message_rounded,
                                         color: ColorResource.colorffffff,
@@ -197,7 +209,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -215,6 +227,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight)
                       ],
                     ),
                   ),
@@ -228,9 +241,9 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
+    final List<Widget> widgets = <Widget>[];
 
-    for (var element in list) {
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.phoneSelectedUnreadableClip = element.clipTitle;
@@ -247,8 +260,6 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

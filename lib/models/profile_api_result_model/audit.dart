@@ -1,9 +1,4 @@
 class Audit {
-  String? crBy;
-  String? crAt;
-  String? upBy;
-  String? upAt;
-
   Audit({this.crBy, this.crAt, this.upBy, this.upAt});
 
   factory Audit.fromJson(Map<String, dynamic> json) => Audit(
@@ -12,8 +7,12 @@ class Audit {
         upBy: json['upBy'] as String?,
         upAt: json['upAt'] as String?,
       );
+  String? crBy;
+  String? crAt;
+  String? upBy;
+  String? upAt;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'crBy': crBy,
         'crAt': crAt,
         'upBy': upBy,

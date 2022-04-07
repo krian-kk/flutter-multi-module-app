@@ -4,8 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferenceHelper {
   // static const storage = FlutterSecureStorage();
 
-  static setPreference(String keyPair, value) async {
-    final prefs = await SharedPreferences.getInstance();
+  static setPreference(String keyPair, dynamic value) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     if (value is bool) {
       await prefs.setBool(keyPair, value);
     }

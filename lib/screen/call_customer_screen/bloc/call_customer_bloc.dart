@@ -12,27 +12,21 @@ part 'call_customer_event.dart';
 part 'call_customer_state.dart';
 
 class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
-  List<String> serviceProviderListDropdownList = [''];
-  String serviceProviderListValue = '';
-  List<String> callersIDDropdownList = [''];
-  String callersIDDropdownValue = '';
-  bool isSubmit = true;
-
-  AgencyDetailsModel voiceAgencyDetails = AgencyDetailsModel();
   CallCustomerBloc() : super(CallCustomerInitial()) {
-    on<CallCustomerEvent>((event, emit) async {
+    on<CallCustomerEvent>(
+        (CallCustomerEvent event, Emitter<CallCustomerState> emit) async {
       if (event is CallCustomerInitialEvent) {
         emit.call(CallCustomerLoadedState());
         if (ConnectivityResult.none ==
             await Connectivity().checkConnectivity()) {
           emit.call(NoInternetState());
         } else {
-          Map<String, dynamic> getAgencyDetailsData =
+          final Map<String, dynamic> getAgencyDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
 
           if (getAgencyDetailsData[Constants.success]) {
-            Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
+            final Map<String, dynamic> jsonData = getAgencyDetailsData['data'];
             voiceAgencyDetails = AgencyDetailsModel.fromJson(jsonData);
             serviceProviderListDropdownList.add(
                 (voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId) ??
@@ -76,4 +70,11 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
       }
     });
   }
+  List<String> serviceProviderListDropdownList = <String>[''];
+  String serviceProviderListValue = '';
+  List<String> callersIDDropdownList = <String>[''];
+  String callersIDDropdownValue = '';
+  bool isSubmit = true;
+
+  AgencyDetailsModel voiceAgencyDetails = AgencyDetailsModel();
 }

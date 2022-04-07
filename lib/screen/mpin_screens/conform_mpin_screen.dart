@@ -7,15 +7,10 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:origa/widgets/pin_code_text_field_widget.dart';
+// import 'package:pin_code_fields/pin_code_fields.dart';
 
 class ConformMpinScreen extends StatefulWidget {
-  final GestureTapCallback successFunction;
-  final GestureTapCallback forgotPinFunction;
-  final GestureTapCallback? popFunction;
-  final String mPin;
-  final bool canPopWidget;
-
   const ConformMpinScreen(
       {Key? key,
       required this.successFunction,
@@ -24,6 +19,11 @@ class ConformMpinScreen extends StatefulWidget {
       this.popFunction,
       this.canPopWidget = false})
       : super(key: key);
+  final GestureTapCallback successFunction;
+  final GestureTapCallback forgotPinFunction;
+  final GestureTapCallback? popFunction;
+  final String mPin;
+  final bool canPopWidget;
 
   @override
   State<ConformMpinScreen> createState() => _ConformMpinScreenState();
@@ -45,17 +45,16 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
       width: 400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Row(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+              children: <Widget>[
                 Expanded(
                   child: CustomText(
                     Languages.of(context)!.enterYourSecureFourdDigitPin,
                     fontSize: FontSize.eighteen,
-                    fontStyle: FontStyle.normal,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -73,17 +72,16 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: PinCodeTextField(
+            child: PinCodeTextFieldWidget(
               appContext: context,
               controller: contoller,
               length: 4,
               mainAxisAlignment: MainAxisAlignment.center,
-              obscureText: false,
               animationType: AnimationType.scale,
-              onChanged: (value) {
+              onChanged: (String value) {
                 setState(() => isError = false);
               },
-              onCompleted: (value) {
+              onCompleted: (String value) {
                 if (contoller.text == widget.mPin) {
                   Navigator.pop(context);
                   widget.successFunction();
@@ -96,7 +94,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                 color: ColorResource.color23375A,
               ),
               keyboardType: TextInputType.number,
-              inputFormatters: [
+              inputFormatters: <TextInputFormatter>[
                 FilteringTextInputFormatter.deny(Constants.rEGEXEMOJI),
                 FilteringTextInputFormatter.deny(' '),
                 FilteringTextInputFormatter.digitsOnly,
@@ -128,7 +126,6 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                 Languages.of(context)!.forgotPin,
                 color: ColorResource.color23375A,
                 fontSize: FontSize.sixteen,
-                fontStyle: FontStyle.normal,
                 fontWeight: FontWeight.w600,
               ),
             ),

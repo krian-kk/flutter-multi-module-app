@@ -26,7 +26,7 @@ class LanguageBottomSheetScreen extends StatefulWidget {
 }
 
 class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
-  List<LanguageModel> languageList = [];
+  List<LanguageModel> languageList = <LanguageModel>[];
   String? setLanguageCode;
   int? ratioIndex;
   //  int? selectedLanguagesIndex;
@@ -37,7 +37,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     getLanguageCode();
   }
 
-  void getLanguageCode() async {
+  getLanguageCode() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       ratioIndex = prefs.getInt('mainLanguage') ?? 0;
@@ -47,7 +47,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    languageList = [
+    languageList = <LanguageModel>[
       LanguageModel(StringResource.english, true,
           Languages.of(context)!.defaultLanguage, 'en'),
       LanguageModel(StringResource.hindi, true,
@@ -65,15 +65,14 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
         height: MediaQuery.of(context).size.height * 0.87,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: Languages.of(context)!.languages.toUpperCase(),
                       color: ColorResource.color23375A,
@@ -84,17 +83,15 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: languageList.length,
-                        itemBuilder: (context, i) {
+                        itemBuilder: (BuildContext context, int i) {
                           return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: <Widget>[
                               languageList[i].isTitle
                                   ? CustomText(
                                       languageList[i].title.toUpperCase(),
                                       fontWeight: FontWeight.w700,
                                       fontSize: FontSize.twelve,
-                                      fontStyle: FontStyle.normal,
                                       color: ColorResource.color23375A,
                                     )
                                   : const SizedBox(),
@@ -107,14 +104,11 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                                     color: ColorResource.colorF8F9FB,
                                     borderRadius: BorderRadius.all(
                                         Radius.circular(10.0))),
-                                child: RadioListTile(
+                                child: RadioListTile<int>(
                                   activeColor: ColorResource.color23375A,
                                   title: CustomText(
                                     languageList[i].language,
                                     lineHeight: 1,
-                                    fontSize: FontSize.fourteen,
-                                    fontStyle: FontStyle.normal,
-                                    fontWeight: FontWeight.w400,
                                     color: ColorResource.color484848,
                                   ),
                                   groupValue: ratioIndex,
@@ -139,7 +133,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: ColorResource.colorFFFFFF,
-                boxShadow: [
+                boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: ColorResource.color000000.withOpacity(0.2),
                     blurRadius: 2.0,
@@ -151,7 +145,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 11.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     SizedBox(
                       width: 190,
                       child: CustomButton(

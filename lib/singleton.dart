@@ -3,6 +3,11 @@ import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
 
 class Singleton {
+  factory Singleton() {
+    return instance;
+  }
+
+  Singleton.internal();
   //development = 1, uat = 2, production = 3
   int? serverPointingType = 3;
   String baseUrl = '';
@@ -40,10 +45,4 @@ class Singleton {
   String? customerContactNo;
 
   static final Singleton instance = Singleton.internal();
-
-  factory Singleton() {
-    return instance;
-  }
-
-  Singleton.internal();
 }

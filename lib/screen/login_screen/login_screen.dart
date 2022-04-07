@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,10 +34,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
-  final AuthenticationBloc authBloc;
-  final dynamic notificationData;
   const LoginScreen(this.authBloc, {Key? key, this.notificationData})
       : super(key: key);
+  final AuthenticationBloc authBloc;
+  final dynamic notificationData;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -58,8 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
-    userId.text = 'CDE_46';
-    password.text = 'Origa123';
+    if (kDebugMode) {
+      userId.text = 'CDE_46';
+      password.text = 'Origa123';
+    }
+    // userId.text = 'CDE_46';
+    // password.text = 'Origa123';
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
@@ -75,11 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<bool> requestOTP(String aRef) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
       requestBodydata: {
-        "aRef": aRef,
+        'aRef': aRef,
       },
     );
     if (await postResult[Constants.success]) {
@@ -92,11 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<bool> verifyOTP(String? aRef, String? otp) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.post, HttpUrl.verifyOTP(),
         requestBodydata: {
-          "aRef": aRef,
-          "otp": otp,
+          'aRef': aRef,
+          'otp': otp,
         });
     if (postResult[Constants.success]) {
       setState(() => returnValue = true);
@@ -135,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<bool> createMpin(String? mPin) async {
     bool returnValue = false;
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.put, HttpUrl.createMpin,
         requestBodydata: {
           'mPin': mPin,
@@ -162,9 +167,9 @@ class _LoginScreenState extends State<LoginScreen> {
             content: CreateMpinScreen(
               saveFunction: (mPin) async {
                 // Create Secure Mpin APi
-                SharedPreferences _prefs =
+                final SharedPreferences _prefs =
                     await SharedPreferences.getInstance();
-                _prefs.setString(Constants.accessToken, mPin!);
+                await _prefs.setString(Constants.accessToken, mPin!);
                 Navigator.pop(context);
                 bloc.add(TriggeredHomeTabEvent(userId.text));
               },
@@ -195,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               forgotPinFunction: () async {
                 if (await requestOTP(userName)) {
-                  showForgorSecurePinDialogBox(userName);
+                  await showForgorSecurePinDialogBox(userName);
                 }
               },
               popFunction: () {},
@@ -218,10 +223,10 @@ class _LoginScreenState extends State<LoginScreen> {
             contentPadding: const EdgeInsets.all(20),
             content: ForgotMpinScreen(
               submitOtpFunction: (otp, isError, function) async {
-                bool result = await verifyOTP(userName, otp);
+                final bool result = await verifyOTP(userName, otp);
                 if (result) {
                   Navigator.pop(context);
-                  showAccountPasswordMpinDialogBox(userName);
+                  await showAccountPasswordMpinDialogBox(userName);
                 } else {
                   function;
                 }
@@ -272,7 +277,7 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFuction: (mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
-                  SharedPreferences _prefs =
+                  final SharedPreferences _prefs =
                       await SharedPreferences.getInstance();
                   await _prefs.setString(Constants.mPin, mPin!);
                   Navigator.pop(context);
@@ -309,16 +314,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           bloc.isLoaded = false;
                         });
                         if (state.securePin == null) {
-                          showCreateMPinDialogBox();
+                          await showCreateMPinDialogBox();
                         } else {
-                          showComformSecurePinDialogBox(
+                          await showComformSecurePinDialogBox(
                             state.securePin.toString(),
                             state.userName.toString(),
                           );
                         }
                       }
                       if (state is HomeTabState) {
-                        Navigator.pushReplacementNamed(
+                        await Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen,
                             arguments: widget.notificationData);
                       }
@@ -361,10 +366,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   child: Form(
                                     key: _formKey,
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 40),
                                         Padding(
@@ -530,29 +531,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ColorResource.color23375A,
                                             cardShape: 90,
                                             fontSize: FontSize.sixteen,
-                                            fontWeight: FontWeight.w600,
                                             textColor:
                                                 ColorResource.color23375A,
                                             buttonBackgroundColor:
                                                 ColorResource.colorffffff,
                                           ),
                                         const SizedBox(height: 10),
-                                        CustomButton(
-                                          Languages.of(context)!.help,
-                                          onTap: () => webViewScreen(
-                                            context,
-                                            urlAddress:
-                                                'https://www.google.com/?client=safari',
-                                          ),
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w600,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                        // CustomButton(
+                                        //   Languages.of(context)!.help,
+                                        //   onTap: () => webViewScreen(
+                                        //     context,
+                                        //     urlAddress:
+                                        //         'https://www.google.com/?client=safari',
+                                        //   ),
+                                        //   borderColor:
+                                        //       ColorResource.color23375A,
+                                        //   cardShape: 90,
+                                        //   fontSize: FontSize.sixteen,
+                                        //   fontWeight: FontWeight.w600,
+                                        //   textColor: ColorResource.color23375A,
+                                        //   buttonBackgroundColor:
+                                        //       ColorResource.colorffffff,
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -601,7 +601,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         bloc.add(NoInternetConnectionEvent());
       } else {
-        var params = {
+        final params = {
           'userName': userId.text,
           'agentRef': userId.text,
           'password': password.text,
@@ -697,12 +697,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  void _loadUserNamePassword() async {
+  _loadUserNamePassword() async {
     try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      var _username = _prefs.getString(Constants.rememberUserId) ?? "";
-      var _password = _prefs.getString(Constants.rememberPassword) ?? "";
-      var _remeberMe = _prefs.getBool(Constants.rememberMe) ?? false;
+      final SharedPreferences _prefs = await SharedPreferences.getInstance();
+      final _username = _prefs.getString(Constants.rememberUserId) ?? '';
+      final _password = _prefs.getString(Constants.rememberPassword) ?? '';
+      final _remeberMe = _prefs.getBool(Constants.rememberMe) ?? false;
 
       if (_remeberMe) {
         setState(() {

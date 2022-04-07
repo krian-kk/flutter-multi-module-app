@@ -1,20 +1,6 @@
 import 'address.dart';
 
 class SearchResultModel {
-  String? id;
-  int? due;
-  String? cust;
-  String? accNo;
-  String? dpdStr;
-  String? collSubStatus;
-  String? repoStatus;
-  String? followUpDate;
-  String? customerId;
-  String? pincode;
-  String? caseId;
-  List<Address>? address;
-  bool? starredCase;
-
   SearchResultModel({
     this.id,
     this.due,
@@ -45,12 +31,25 @@ class SearchResultModel {
         pincode: json['pincode'] as String?,
         caseId: json['caseId'] as String?,
         address: (json['address'] as List<dynamic>?)
-            ?.map((e) => Address.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) => Address.fromJson(e as Map<String, dynamic>))
             .toList(),
         starredCase: json['starredCase'] as bool?,
       );
+  String? id;
+  int? due;
+  String? cust;
+  String? accNo;
+  String? dpdStr;
+  String? collSubStatus;
+  String? repoStatus;
+  String? followUpDate;
+  String? customerId;
+  String? pincode;
+  String? caseId;
+  List<Address>? address;
+  bool? starredCase;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'cust': cust,
@@ -62,7 +61,7 @@ class SearchResultModel {
         'customerId': customerId,
         'pincode': pincode,
         'caseId': caseId,
-        'address': address?.map((e) => e.toJson()).toList(),
+        'address': address?.map((Address e) => e.toJson()).toList(),
         'starredCase': starredCase,
       };
 }

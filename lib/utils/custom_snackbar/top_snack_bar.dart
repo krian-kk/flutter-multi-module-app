@@ -24,7 +24,7 @@ OverlayEntry? _previousEntry;
 /// The [overlayState] argument is used to add specific overlay state.
 /// If you will not pass it, it will try to get the current overlay state from
 /// passed [BuildContext]
-void showTopSnackBar(
+showTopSnackBar(
   BuildContext context,
   Widget child, {
   Duration showOutAnimationDuration = const Duration(milliseconds: 1000),
@@ -64,16 +64,6 @@ void showTopSnackBar(
 
 /// Widget that controls all animations
 class TopSnackBar extends StatefulWidget {
-  final Widget child;
-  final VoidCallback onDismissed;
-  final dynamic showOutAnimationDuration;
-  final dynamic hideOutAnimationDuration;
-  final dynamic displayDuration;
-  final dynamic additionalTopPadding;
-  final VoidCallback? onTap;
-  final double leftPadding;
-  final double rightPadding;
-
   const TopSnackBar({
     Key? key,
     required this.child,
@@ -86,6 +76,15 @@ class TopSnackBar extends StatefulWidget {
     this.leftPadding = 16,
     this.rightPadding = 16,
   }) : super(key: key);
+  final Widget child;
+  final VoidCallback onDismissed;
+  final dynamic showOutAnimationDuration;
+  final dynamic hideOutAnimationDuration;
+  final dynamic displayDuration;
+  final dynamic additionalTopPadding;
+  final VoidCallback? onTap;
+  final double leftPadding;
+  final double rightPadding;
 
   @override
   _TopSnackBarState createState() => _TopSnackBarState();
@@ -110,14 +109,14 @@ class _TopSnackBarState extends State<TopSnackBar>
     super.dispose();
   }
 
-  void _setupAndStartAnimation() async {
+  _setupAndStartAnimation() async {
     animationController = AnimationController(
       vsync: this,
       duration: widget.showOutAnimationDuration,
       reverseDuration: widget.hideOutAnimationDuration,
     );
 
-    Tween<Offset> offsetTween = Tween<Offset>(
+    final Tween<Offset> offsetTween = Tween<Offset>(
       begin: const Offset(0.0, -1.0),
       end: const Offset(0.0, 0.0),
     );
@@ -132,7 +131,7 @@ class _TopSnackBarState extends State<TopSnackBar>
         if (status == AnimationStatus.completed) {
           await Future.delayed(widget.displayDuration);
           if (mounted) {
-            animationController.reverse();
+            await animationController.reverse();
             setState(() {
               topPosition = 0;
             });
@@ -145,7 +144,7 @@ class _TopSnackBarState extends State<TopSnackBar>
       });
 
     if (mounted) {
-      animationController.forward();
+      await animationController.forward();
     }
   }
 

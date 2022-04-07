@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/self_release_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -17,14 +18,13 @@ import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:intl/intl.dart';
 
 class SelfReleaseTab extends StatefulWidget {
+  const SelfReleaseTab(this.bloc, {Key? key, this.caseId, this.custname})
+      : super(key: key);
   final DashboardBloc bloc;
   final String? caseId;
   final String? custname;
-  const SelfReleaseTab(this.bloc, {Key? key, this.caseId, this.custname})
-      : super(key: key);
 
   @override
   _SelfReleaseTabState createState() => _SelfReleaseTabState();
@@ -54,8 +54,8 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -100,7 +100,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                           Languages.of(context)!.cancel.toUpperCase(),
                           fontSize: FontSize.sixteen,
                           textColor: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           buttonBackgroundColor: ColorResource.colorffffff,
                           borderColor: ColorResource.colorffffff,
@@ -121,7 +120,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           onTap: isSubmit
                               ? () async {
@@ -132,16 +130,17 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                     //     gravity: ToastGravity.CENTER,
                                     //   );
                                     // } else {
-                                    var requestBodyData = SelfReleasePostModel(
-                                        caseId: widget.caseId.toString(),
-                                        contractor:
-                                            Singleton.instance.contractor!,
-                                        repo: Repo(
-                                          date: dateController.text,
-                                          time: timeController.text,
-                                          remarks: remarksController.text,
-                                          imageLocation: [''],
-                                        ));
+                                    final requestBodyData =
+                                        SelfReleasePostModel(
+                                            caseId: widget.caseId.toString(),
+                                            contractor:
+                                                Singleton.instance.contractor!,
+                                            repo: Repo(
+                                              date: dateController.text,
+                                              time: timeController.text,
+                                              remarks: remarksController.text,
+                                              imageLocation: [''],
+                                            ));
                                     widget.bloc.add(PostSelfreleaseDataEvent(
                                       postData: requestBodyData,
                                       fileData: uploadFileLists,
@@ -192,7 +191,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                   timeController,
                                   validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
                                   onTapped: () => PickDateAndTimeUtils.pickTime(
                                       context, (newTime) {
                                     if (newTime != null) {
@@ -210,7 +208,6 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                                   remarksController,
                                   // validationRules: const ['required'],
                                   isLabel: true,
-                                  isEnable: true,
                                 ),
                               ),
                               const SizedBox(height: 7),

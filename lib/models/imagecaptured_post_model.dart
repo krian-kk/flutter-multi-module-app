@@ -1,21 +1,4 @@
 class PostImageCapturedModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late String createdBy;
-  late String eventModule;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-  late String agentName;
-  late String contractor;
-  late String agrRef;
-  // List<dynamic>? files;
-
   PostImageCapturedModel({
     required this.eventId,
     required this.eventType,
@@ -55,6 +38,22 @@ class PostImageCapturedModel {
     agrRef = json['agrRef'];
     // files = json['files'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late String createdBy;
+  late String eventModule;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
+  late String agentName;
+  late String contractor;
+  late String agrRef;
+  // List<dynamic>? files;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -79,20 +78,6 @@ class PostImageCapturedModel {
 }
 
 class EventAttr {
-  late String remarks;
-  late List<String> imageLocation;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late AgentLocation? agentLocation;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.remarks,
     required this.imageLocation,
@@ -126,6 +111,19 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String remarks;
+  late List<String> imageLocation;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late AgentLocation? agentLocation;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -152,20 +150,19 @@ class EventAttr {
 }
 
 class AgentLocation {
-  int? latitude;
-  int? longitude;
-  String? missingAgentLocation;
-
   AgentLocation(
       {this.latitude = 0,
       this.longitude = 0,
-      this.missingAgentLocation = "true"});
+      this.missingAgentLocation = 'true'});
 
   AgentLocation.fromJson(Map<String, dynamic> json) {
     latitude = json['latitude'];
     longitude = json['longitude'];
     missingAgentLocation = json['missingAgentLocation'];
   }
+  int? latitude;
+  int? longitude;
+  String? missingAgentLocation;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

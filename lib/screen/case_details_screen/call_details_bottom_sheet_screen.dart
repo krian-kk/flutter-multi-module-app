@@ -9,7 +9,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
@@ -34,13 +33,13 @@ class _CallDetailsBottomSheetScreenState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is AddedNewCallContactListState) {
           widget.bloc.listOfCallDetails;
         }
 
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -68,13 +67,13 @@ class _CallDetailsBottomSheetScreenState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           widget.bloc.listOfCallDetails;
 
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Column(
-              children: [
+              children: <Widget>[
                 BottomSheetAppbar(
                   title: Languages.of(context)!.callDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
@@ -103,7 +102,7 @@ class _CallDetailsBottomSheetScreenState
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: [
+                        children: <Widget>[
                           ListView.builder(
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
@@ -118,27 +117,25 @@ class _CallDetailsBottomSheetScreenState
                             //             'residence contact no.')
                             //     .toList()
                             //     .length,
-                            itemBuilder: (context, i) {
+                            itemBuilder: (BuildContext context, int i) {
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "mobile" ||
+                                          'mobile' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "resNo" ||
+                                          'resNo' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "office contact no." ||
+                                          'office contact no.' ||
                                       widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
-                                          "residence contact no."
+                                          'residence contact no.'
                                   ? SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
+                                        children: <Widget>[
                                           CustomText(
                                             widget
                                                     .bloc
@@ -147,9 +144,7 @@ class _CallDetailsBottomSheetScreenState
                                                     .toString()
                                                     .toUpperCase() ??
                                                 '_',
-                                            fontSize: FontSize.fourteen,
                                             fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
                                             color: ColorResource.color23375A,
                                           ),
                                           const SizedBox(height: 7),
@@ -168,7 +163,7 @@ class _CallDetailsBottomSheetScreenState
                                                             .result
                                                             ?.callDetails![i]
                                                         ['contactId_0'] ??
-                                                    "";
+                                                    '';
                                                 Singleton.instance
                                                         .customerContactNo =
                                                     widget
@@ -201,7 +196,7 @@ class _CallDetailsBottomSheetScreenState
                                                 child: Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     Row(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -209,22 +204,14 @@ class _CallDetailsBottomSheetScreenState
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: [
+                                                      children: <Widget>[
                                                         Flexible(
                                                           child: Row(
-                                                            children: [
+                                                            children: <Widget>[
                                                               CustomText(
                                                                 widget.bloc
                                                                         .listOfCallDetails?[
                                                                     i]['value'],
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
                                                                 color: ColorResource
                                                                     .color484848,
                                                               ),
@@ -253,7 +240,7 @@ class _CallDetailsBottomSheetScreenState
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
                                                               .spaceBetween,
-                                                      children: [
+                                                      children: <Widget>[
                                                         SizedBox(
                                                             child: InkWell(
                                                           onTap: () async {
@@ -295,7 +282,8 @@ class _CallDetailsBottomSheetScreenState
                                                                           Radius.circular(
                                                                               75.0))),
                                                               child: Row(
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CircleAvatar(
                                                                     backgroundColor:
                                                                         ColorResource
@@ -321,12 +309,6 @@ class _CallDetailsBottomSheetScreenState
                                                                         .color23375A,
                                                                     lineHeight:
                                                                         1,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
@@ -344,17 +326,12 @@ class _CallDetailsBottomSheetScreenState
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
                                                                   .spaceBetween,
-                                                          children: [
+                                                          children: <Widget>[
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!
                                                                   .disposition,
                                                               lineHeight: 1,
-                                                              fontSize: FontSize
-                                                                  .fourteen,
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,

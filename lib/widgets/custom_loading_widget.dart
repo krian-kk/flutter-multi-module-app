@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class CustomLoadingWidget extends StatefulWidget {
-  final double radius;
-  final List<Color> gradientColors;
-  final double strokeWidth;
   const CustomLoadingWidget({
     Key? key,
     this.radius = 20,
-    this.gradientColors = const [
+    this.gradientColors = const <Color>[
       ColorResource.colorFFC23B,
       ColorResource.colorEA8A38,
     ],
     this.strokeWidth = 5.0,
   }) : super(key: key);
+  final double radius;
+  final List<Color> gradientColors;
+  final double strokeWidth;
 
   @override
   State<CustomLoadingWidget> createState() => _CustomLoadingWidgetState();
@@ -44,7 +44,8 @@ class _CustomLoadingWidgetState extends State<CustomLoadingWidget>
   Widget build(BuildContext context) {
     return Center(
       child: RotationTransition(
-        turns: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+        turns:
+            Tween<double>(begin: 0.0, end: 1.0).animate(_animationController),
         child: CustomPaint(
           size: Size.fromRadius(widget.radius),
           painter: GradientCircularProgressPainter(
@@ -71,15 +72,13 @@ class GradientCircularProgressPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     size = Size.fromRadius(radius);
-    double offset = strokeWidth / 2;
-    Rect rect = Offset(offset, offset) &
+    final double offset = strokeWidth / 2;
+    final Rect rect = Offset(offset, offset) &
         Size(size.width - strokeWidth, size.height - strokeWidth);
-    var paint = Paint()
+    final Paint paint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = strokeWidth;
-    paint.shader =
-        SweepGradient(colors: gradientColors, startAngle: 0.0, endAngle: 2 * pi)
-            .createShader(rect);
+    paint.shader = SweepGradient(colors: gradientColors).createShader(rect);
     canvas.drawArc(rect, 0.0, 2 * pi, false, paint);
   }
 

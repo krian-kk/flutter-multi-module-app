@@ -1,27 +1,4 @@
 class AndoridDeviceInfoModel {
-  late String platform;
-  late String board;
-  late String bootloader;
-  late String brand;
-  late String device;
-  late String dislay;
-  late String fingerprint;
-  late String hardware;
-  late String host;
-  late String id;
-  late String manufacturer;
-  late String model;
-  late String product;
-  late List<String> supported32BitAbis;
-  late List<String> supported64BitAbis;
-  late List<String> supportedAbis;
-  late String tags;
-  late String type;
-  late bool isPhysicalDevice;
-  late String androidId;
-  late List<String> systemFeatures;
-  late Version version;
-
   AndoridDeviceInfoModel(
       {this.platform = 'ANDROID',
       required this.board,
@@ -70,6 +47,28 @@ class AndoridDeviceInfoModel {
     systemFeatures = json['systemFeatures'].cast<String>();
     version = Version.fromJson(json['version']);
   }
+  late String platform;
+  late String board;
+  late String bootloader;
+  late String brand;
+  late String device;
+  late String dislay;
+  late String fingerprint;
+  late String hardware;
+  late String host;
+  late String id;
+  late String manufacturer;
+  late String model;
+  late String product;
+  late List<String> supported32BitAbis;
+  late List<String> supported64BitAbis;
+  late List<String> supportedAbis;
+  late String tags;
+  late String type;
+  late bool isPhysicalDevice;
+  late String androidId;
+  late List<String> systemFeatures;
+  late Version version;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -100,14 +99,6 @@ class AndoridDeviceInfoModel {
 }
 
 class Version {
-  late String securityPatch;
-  late String sdkInt;
-  late String previewSdkInt;
-  late String codename;
-  late String release;
-  late String incremental;
-  late String baseOs;
-
   Version(
       {required this.securityPatch,
       required this.sdkInt,
@@ -126,6 +117,13 @@ class Version {
     incremental = json['incremental'];
     baseOs = json['baseOs'];
   }
+  late String securityPatch;
+  late String sdkInt;
+  late String previewSdkInt;
+  late String codename;
+  late String release;
+  late String incremental;
+  late String baseOs;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

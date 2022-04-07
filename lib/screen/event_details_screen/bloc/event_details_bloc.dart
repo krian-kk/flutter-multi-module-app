@@ -18,23 +18,20 @@ part 'event_details_event.dart';
 part 'event_details_state.dart';
 
 class EventDetailsPlayAudioModel {
-  bool isPlaying;
-  bool isPaused;
-  bool loadingAudio;
   EventDetailsPlayAudioModel({
     this.isPlaying = false,
     this.isPaused = false,
     this.loadingAudio = false,
   });
+  bool isPlaying;
+  bool isPaused;
+  bool loadingAudio;
 }
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
-  // EventDetailsApiModel eventDetailsAPIValue = EventDetailsApiModel();
-  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
-  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel = [];
-
   EventDetailsBloc() : super(EventDetailsInitial()) {
-    on<EventDetailsEvent>((event, emit) async {
+    on<EventDetailsEvent>(
+        (EventDetailsEvent event, Emitter<EventDetailsState> emit) async {
       if (event is EventDetailsInitialEvent) {
         emit.call(EventDetailsLoadingState());
         if (ConnectivityResult.none ==
@@ -55,9 +52,11 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               .then((QuerySnapshot<Map<String, dynamic>> value) {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
-              // List<EventDetailsResultModel>? result = [];
-              List<EvnetDetailsResultsModel>? results = [];
-              for (var element in value.docs) {
+              // ignore: prefer_final_locals
+              List<EvnetDetailsResultsModel>? results =
+                  <EvnetDetailsResultsModel>[];
+              for (QueryDocumentSnapshot<Map<String, dynamic>> element
+                  in value.docs) {
                 try {
                   results
                       .add(EvnetDetailsResultsModel.fromJson(element.data()));
@@ -67,19 +66,18 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               }
               eventDetailsAPIValues.result = results;
             } else {
-              eventDetailsAPIValues.result = [];
+              eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
             }
           });
         } else {
-          Map<String, dynamic> getEventDetailsData =
+          final Map<String, dynamic> getEventDetailsData =
               await APIRepository.apiRequest(
                   APIRequestType.get,
                   HttpUrl.eventDetailsUrl(
                       caseId: event.caseId, userType: event.userType));
 
           if (getEventDetailsData[Constants.success] == true) {
-            Map<String, dynamic> jsonData = getEventDetailsData['data'];
-            // eventDetailsAPIValue = EventDetailsApiModel.fromJson(jsonData);
+            final Map<String, dynamic> jsonData = getEventDetailsData['data'];
             eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
             log('Event Details Value ===== > ${jsonEncode(jsonData)}');
           } else {
@@ -106,11 +104,15 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         //     AppUtils.showToast(getEventDetailsData['data']['message']);
         //   }
         // }
-        eventDetailsAPIValues.result?.forEach((element) {
+        eventDetailsAPIValues.result
+            ?.forEach((EvnetDetailsResultsModel element) {
           eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
         });
         emit.call(EventDetailsLoadedState());
       }
     });
   }
+  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
+  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
+      <EventDetailsPlayAudioModel>[];
 }

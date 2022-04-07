@@ -1,14 +1,4 @@
 class OtherLoanDetail {
-  String? id;
-  dynamic due;
-  dynamic originalDue;
-  dynamic odVal;
-  String? cust;
-  String? accNo;
-  String? caseId;
-  String? bankName;
-  String? agrRef;
-
   OtherLoanDetail(
       {this.id,
       this.due,
@@ -27,14 +17,23 @@ class OtherLoanDetail {
       originalDue: json['original_due'],
       odVal: json['odVal'],
       cust: json['cust'] as String?,
-      accNo: json['accNo'] as String?,
+      accNo: json['accNo'] != null ? json['accNo'] as String? : ' ',
       caseId: json['caseId'] as String?,
-      bankName: json['bankName'] as String?,
+      bankName: json['bankName'] != null ? json['bankName'] as String? : ' ',
       agrRef: json['agrRef'] as String?,
     );
   }
+  String? id;
+  dynamic due;
+  dynamic originalDue;
+  dynamic odVal;
+  String? cust;
+  String? accNo;
+  String? caseId;
+  String? bankName;
+  String? agrRef;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'original_due': originalDue,

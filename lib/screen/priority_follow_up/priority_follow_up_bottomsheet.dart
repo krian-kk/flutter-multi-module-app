@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/search_screen/search_list.dart';
-import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:origa/widgets/case_list_widget.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
 class PriorityFollowUpBottomSheet extends StatefulWidget {
-  final DashboardBloc bloc;
   const PriorityFollowUpBottomSheet(this.bloc, {Key? key}) : super(key: key);
+  final DashboardBloc bloc;
 
   @override
   _PriorityFollowUpBottomSheetState createState() =>
@@ -29,7 +29,7 @@ class _PriorityFollowUpBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
       bloc: widget.bloc,
-      listener: (context, state) async {
+      listener: (BuildContext context, DashboardState state) async {
         if (state is SelectedTimeperiodDataLoadingState) {
           widget.bloc.selectedFilterDataLoading = true;
         }
@@ -65,7 +65,7 @@ class _PriorityFollowUpBottomSheetState
                   },
                 ),
                 body: Column(
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: Languages.of(context)!.priorityFollowUp,
                     ),
@@ -74,7 +74,7 @@ class _PriorityFollowUpBottomSheetState
                             ? Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 0.0),
+                                      horizontal: 20.0),
                                   child: SearchCaseList.buildListView(
                                     widget.bloc,
                                     resultData: widget.bloc.searchResultList,
@@ -83,7 +83,7 @@ class _PriorityFollowUpBottomSheetState
                               )
                             : Expanded(
                                 child: Column(
-                                  children: [
+                                  children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 50, right: 20, left: 20),

@@ -308,6 +308,9 @@ class LanguageEn extends Languages {
   String get ptp => 'PTP';
 
   @override
+  String get ptpType => 'PTP Type';
+
+  @override
   String get rtp => 'RTP (DENIAL)';
 
   @override
@@ -434,13 +437,13 @@ class LanguageEn extends Languages {
   String get nextActionTime => 'Next Action Time*';
 
   @override
-  String get remarks => 'REMARKS*';
+  String get remarks => 'Remarks*';
 
   @override
   String get ptpDate => 'PTP Date*';
 
   @override
-  String get ptpTime => 'PTP TIME*';
+  String get ptpTime => 'PTP Time*';
 
   @override
   String get ptpAmount => 'PTP Amount*';
@@ -473,19 +476,19 @@ class LanguageEn extends Languages {
   String get otsPaymentTime => 'OTS Payment Time';
 
   @override
-  String get rtpDenialReason => 'RTP/Denial Reason';
+  String get rtpDenialReason => 'RTP/Denial Reason*';
 
   @override
-  String get disputeReason => 'Dispute Reason';
+  String get disputeReason => 'Dispute Reason*';
 
   @override
-  String get modelMake => 'MODEL MAKE*';
+  String get modelMake => 'Model Make*';
 
   @override
-  String get registrationNo => 'Registration No';
+  String get registrationNo => 'Registration No*';
 
   @override
-  String get chassisNo => 'CHASSIS NO*';
+  String get chassisNo => 'Chassis No*';
 
   @override
   String get customUpload => 'CUSTOM UPLOAD';
@@ -922,4 +925,85 @@ class LanguageEn extends Languages {
 
   @override
   String get selectSpeechToTextLanguage => 'Select Speech to text language';
+
+  @override
+  String get agent => 'Agent';
+
+  @override
+  String get dateOfLoanDisbursement => 'Date of loan disbursement';
+
+  @override
+  String get tos => 'TOS';
+
+  @override
+  String get emiAmount => 'EMI Amount';
+
+  @override
+  String get noOfPendingEMI => 'No Of Pending EMI';
+
+  @override
+  String get penaltyAmount => 'Penalty Amount';
+
+  @override
+  String get odInterest => 'OD interest';
+
+  @override
+  String get assetDetails => 'Asset details';
+
+  @override
+  String get coLender => 'CO-Lender ';
+
+  @override
+  String get employerBusinessEntity => 'Employer Business Entity';
+
+  @override
+  String get lastPaymentDate => 'Last payment date';
+
+  @override
+  String get sourcingRmName => 'Sourcing RM Name';
+
+  @override
+  String get lastPaidAmount => 'Last paid amount';
+
+  @override
+  String get riskRanking => 'Risk Ranking';
+
+  @override
+  String get reviewFlag => 'Review flag';
+
+  @override
+  String get location => 'Location';
+
+  @override
+  String get agency => 'Agency';
+
+  @override
+  String get minDueAmount => 'Min due amount';
+
+  @override
+  String get cardOutstanding => 'Card outstanding';
+
+  @override
+  String get statementDate => 'Statement date';
+
+  @override
+  String get dueDate => 'Due date';
+
+  @override
+  String get cardStatus => 'Card status';
+
+  @override
+  String get lastBilledAmount => 'Last billed amount';
+
+  @override
+  String get chassisNumber => 'Chassis Number';
+
+  @override
+  String get riskBucket => 'Risk bucket';
+
+  @override
+  String get ref1 => 'Ref 1';
+
+  @override
+  String get ref2 => 'Ref 2';
 }

@@ -1,8 +1,4 @@
 class DashboardUntouchedResultModel {
-  int? count;
-  int? totalAmt;
-  List<dynamic>? cases;
-
   DashboardUntouchedResultModel({this.count, this.totalAmt, this.cases});
 
   factory DashboardUntouchedResultModel.fromJson(Map<String, dynamic> json) =>
@@ -11,8 +7,11 @@ class DashboardUntouchedResultModel {
         totalAmt: json['totalAmt'] as int?,
         cases: json['cases'] as List<dynamic>?,
       );
+  int? count;
+  int? totalAmt;
+  List<dynamic>? cases;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'count': count,
         'totalAmt': totalAmt,
         'cases': cases,

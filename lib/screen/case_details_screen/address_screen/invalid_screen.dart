@@ -29,6 +29,7 @@ class AddressInvalidScreen extends StatefulWidget {
 
 class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   String selectedOptionBottomSheetButton = '';
+  double bottomHeight = 0.0;
 
   @override
   void initState() {
@@ -38,13 +39,14 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.wrongAddress),
       SelectedClipModel(Languages.of(context)!.shifted),
       SelectedClipModel(Languages.of(context)!.addressNotFound),
     ];
 
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
@@ -55,16 +57,15 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
         key: widget.bloc.addressInvalidFormKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             Flexible(
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       Wrap(
                         runSpacing: 10,
                         spacing: 10,
@@ -75,16 +76,24 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           child: CustomReadOnlyTextField(
                         Languages.of(context)!.remarks,
                         widget.bloc.addressInvalidRemarksController,
-                        validationRules: const ['required'],
+                        validationRules: const <String>['required'],
                         isLabel: true,
                         isVoiceRecordWidget: true,
-                        returnS2Tresponse: (val) {
+                        returnS2Tresponse: (dynamic val) {
                           if (val is Speech2TextModel) {
                             setState(() =>
                                 widget.bloc.returnS2TAddressInvalid = val);
                           }
                         },
-                        checkRecord: (isRecord, text, returnS2T) {
+                        editStringCallBack: ((dynamic values) {
+                          setState(() {
+                            bottomHeight = (values == '')
+                                ? 0.0
+                                : MediaQuery.of(context).size.height * 0.1;
+                          });
+                        }),
+                        checkRecord: (String? isRecord, String? text,
+                            Speech2TextModel returnS2T) {
                           setState(() {
                             widget.bloc.returnS2TAddressInvalid = returnS2T;
                             widget.bloc.isRecordAddressInvaild = isRecord;
@@ -123,7 +132,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                             .buildOptionBottomSheetOpenButton(
                           optionBottomSheetButtonList,
                           context,
-                          (element) {
+                          (OptionBottomSheetButtonModel element) {
                             setState(() {
                               selectedOptionBottomSheetButton = element.title;
                             });
@@ -137,6 +146,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                           selectedOptionBottomSheetButton,
                         ),
                       ),
+                      SizedBox(height: bottomHeight),
                     ],
                   ),
                 ),
@@ -149,8 +159,8 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.addressSelectedInvalidClip = element.clipTitle;
@@ -167,8 +177,6 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

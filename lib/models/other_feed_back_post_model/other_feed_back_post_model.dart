@@ -1,21 +1,4 @@
 class OtherFeedBackPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late OtherFeedBackContact contact;
-  late String createdBy;
-  late String eventModule;
-  late String agentName;
-  late String contractor;
-  late String agrRef;
-  late String callID;
-  late String callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-
   OtherFeedBackPostModel({
     required this.eventId,
     required this.eventType,
@@ -53,6 +36,22 @@ class OtherFeedBackPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late OtherFeedBackContact contact;
+  late String createdBy;
+  late String eventModule;
+  late String agentName;
+  late String contractor;
+  late String agrRef;
+  late String callID;
+  late String callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,25 +76,6 @@ class OtherFeedBackPostModel {
 }
 
 class EventAttr {
-  late bool vehicleavailable;
-  late String collectorfeedback;
-  late String actionproposed;
-  late String actionDate;
-  late String remarks;
-  late List<String> imageLocation;
-  late String followUpPriority;
-  late double altitude;
-  late double accuracy;
-  late double altitudeAccuracy;
-  late double heading;
-  late double speed;
-  late double latitude;
-  late double longitude;
-  late List? contact;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.vehicleavailable,
     required this.actionDate,
@@ -132,13 +112,31 @@ class EventAttr {
     speed = json['speed'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
-    contact = json['contact'].forEach((v) {
+    contact = json['contact'].forEach((dynamic v) {
       contact?.add(v);
     });
     reginalText = json['reginal_text'];
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late bool vehicleavailable;
+  late String collectorfeedback;
+  late String actionproposed;
+  late String actionDate;
+  late String remarks;
+  late List<String> imageLocation;
+  late String followUpPriority;
+  late double altitude;
+  late double accuracy;
+  late double altitudeAccuracy;
+  late double heading;
+  late double speed;
+  late double latitude;
+  late double longitude;
+  late List<dynamic>? contact;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -156,7 +154,7 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
-    data['contact'] = contact?.map((v) => v.toJson()).toList();
+    data['contact'] = contact?.map((dynamic v) => v.toJson()).toList();
     if (reginalText != null && translatedText != null && audioS3Path != null) {
       data['reginal_text'] = reginalText;
       data['translated_text'] = translatedText;
@@ -166,38 +164,32 @@ class EventAttr {
   }
 }
 
-class AgentLocation {
-  late double latitude;
-  late double longitude;
-  late String missingAgentLocation;
+// class AgentLocation {
+//   late double latitude;
+//   late double longitude;
+//   late String missingAgentLocation;
 
-  AgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
+//   AgentLocation(
+//       {this.latitude = 0,
+//       this.longitude = 0,
+//       this.missingAgentLocation = 'true'});
 
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
+//   AgentLocation.fromJson(Map<String, dynamic> json) {
+//     latitude = json['latitude'];
+//     longitude = json['longitude'];
+//     missingAgentLocation = json['missingAgentLocation'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['latitude'] = latitude;
+//     data['longitude'] = longitude;
+//     data['missingAgentLocation'] = missingAgentLocation;
+//     return data;
+//   }
+// }
 
 class OtherFeedBackContact {
-  late String cType;
-  late String? health;
-  late String value;
-  late String resAddressId0;
-  late String contactId0;
-
   OtherFeedBackContact({
     required this.cType,
     this.health,
@@ -213,6 +205,11 @@ class OtherFeedBackContact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String? health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

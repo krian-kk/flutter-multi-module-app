@@ -7,7 +7,6 @@ import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/select_payment_mode_button_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -31,16 +30,18 @@ class PhonenInvalidScreen extends StatefulWidget {
 }
 
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
+  double bottomHeight = 0.0;
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    List<SelectedClipModel> selectedClipList = [
+    final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
       SelectedClipModel(Languages.of(context)!.doesNotExist.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.incorrectNumber.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.numberNotWorking.toUpperCase()),
       SelectedClipModel(Languages.of(context)!.notOperational.toUpperCase()),
     ];
-    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [
+    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
+        <OptionBottomSheetButtonModel>[
       OptionBottomSheetButtonModel(
           Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
@@ -53,36 +54,46 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           key: widget.bloc.phoneInvalidFormKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
+            children: <Widget>[
               Flexible(
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.all(18.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 18),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Wrap(
-                          runSpacing: 10,
-                          spacing: 10,
-                          children: _buildSelectedClip(selectedClipList),
+                      children: <Widget>[
+                        SizedBox(
+                          child: Wrap(
+                            runSpacing: 10,
+                            spacing: 10,
+                            children: _buildSelectedClip(selectedClipList),
+                          ),
                         ),
                         const SizedBox(height: 15),
                         Flexible(
                             child: CustomReadOnlyTextField(
                           Languages.of(context)!.remarks,
                           widget.bloc.phoneInvalidRemarksController,
-                          validationRules: const ['required'],
+                          validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
-                          returnS2Tresponse: (val) {
+                          returnS2Tresponse: (dynamic val) {
                             if (val is Speech2TextModel) {
                               setState(() =>
                                   widget.bloc.returnS2TPhoneInvalid = val);
                             }
                           },
-                          checkRecord: (isRecord, text, returnS2Tdata) {
+                          editStringCallBack: ((dynamic values) {
+                            setState(() {
+                              bottomHeight = (values == '')
+                                  ? 0.0
+                                  : MediaQuery.of(context).size.height * 0.1;
+                            });
+                          }),
+                          checkRecord: (String? isRecord, String? text,
+                              Speech2TextModel returnS2Tdata) {
                             setState(() {
                               widget.bloc.returnS2TPhoneInvalid = returnS2Tdata;
                               widget.bloc.isRecordPhoneInvalid = isRecord;
@@ -101,7 +112,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                               .buildOptionBottomSheetOpenButton(
                             optionBottomSheetButtonList,
                             context,
-                            (element) {
+                            (OptionBottomSheetButtonModel element) {
                               setState(() {
                                 selectedOptionBottomSheetButton = element.title;
                               });
@@ -119,6 +130,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                             selectedOptionBottomSheetButton,
                           ),
                         ),
+                        SizedBox(height: bottomHeight),
                       ],
                     ),
                   ),
@@ -132,8 +144,8 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   }
 
   List<Widget> _buildSelectedClip(List<SelectedClipModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (SelectedClipModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           widget.bloc.phoneSelectedInvalidClip = element.clipTitle;
@@ -150,8 +162,6 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
           child: CustomText(
             element.clipTitle,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontStyle: FontStyle.normal,
             fontWeight: FontWeight.w700,
           ),
         ),

@@ -86,8 +86,8 @@ class _CustomCollectionsBottomSheetState
   late TextEditingController remarksControlller;
   String selectedPaymentModeButton = '';
 
-  final _formKey = GlobalKey<FormState>();
-  List<File> uploadFileLists = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<File> uploadFileLists = <File>[];
 
   bool isSubmit = true;
 
@@ -103,10 +103,11 @@ class _CustomCollectionsBottomSheetState
   bool isTranslate = true;
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
-      uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      uploadFileLists =
+          result.paths.map((String? path) => File(path!)).toList();
     } else {
       AppUtils.showToast(
         Languages.of(context)!.canceled,
@@ -145,16 +146,17 @@ class _CustomCollectionsBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList =
+        <PaymentModeButtonModel>[
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -182,7 +184,7 @@ class _CustomCollectionsBottomSheetState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -192,7 +194,7 @@ class _CustomCollectionsBottomSheetState
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: widget.cardTitle,
                       padding: const EdgeInsets.symmetric(
@@ -203,7 +205,7 @@ class _CustomCollectionsBottomSheetState
                       child: KeyboardActions(
                         config: KeyboardActionsConfig(
                           keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                          actions: [
+                          actions: <KeyboardActionsItem>[
                             KeyboardActionsItem(
                               focusNode: amountCollectedFocusNode,
                               displayArrows: false,
@@ -221,58 +223,60 @@ class _CustomCollectionsBottomSheetState
                                 const SizedBox(height: 11),
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
+                                  children: <Widget>[
                                     Flexible(
                                         child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!
-                                              .amountCollected,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
-                                        ),
+                                      children: <Widget>[
+                                        // CustomText(
+                                        //   ,
+                                        //   fontSize: FontSize.twelve,
+                                        //   fontWeight: FontWeight.w400,
+                                        //   color: ColorResource.color666666,
+                                        //   fontStyle: FontStyle.normal,
+                                        // ),
                                         SizedBox(
                                           width: (MediaQuery.of(context)
                                                   .size
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
-                                            '',
+                                            Languages.of(context)!
+                                                .amountCollected,
                                             amountCollectedControlller,
-                                            // contentPadding:
-                                            //     const EdgeInsets.fromLTRB(
-                                            //         1, 23, 5, 10),
                                             onChanged: () {
                                               if (_formKey.currentState!
                                                   .validate()) {
                                                 _formKey.currentState!.save();
                                               }
                                             },
+                                            isLabel: true,
                                             validatorCallBack: () {},
                                             keyBoardType: TextInputType.number,
                                             focusNode: amountCollectedFocusNode,
-                                            validationRules: const ['required'],
+                                            validationRules: const <String>[
+                                              'required'
+                                            ],
                                             suffixWidget: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
                                               mainAxisSize: MainAxisSize.min,
-                                              children: [
+                                              children: <Widget>[
                                                 GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      amountCollectedControlller
-                                                          .text = (int.parse(
-                                                                  amountCollectedControlller
-                                                                      .text) +
-                                                              1)
-                                                          .toString();
+                                                      if (amountCollectedControlller
+                                                              .text !=
+                                                          '') {
+                                                        amountCollectedControlller
+                                                            .text = (int.parse(
+                                                                    amountCollectedControlller
+                                                                        .text) +
+                                                                1)
+                                                            .toString();
+                                                      }
                                                     });
                                                   },
                                                   child: SvgPicture.asset(
@@ -284,12 +288,16 @@ class _CustomCollectionsBottomSheetState
                                                 GestureDetector(
                                                   onTap: () {
                                                     setState(() {
-                                                      amountCollectedControlller
-                                                          .text = (int.parse(
-                                                                  amountCollectedControlller
-                                                                      .text) -
-                                                              1)
-                                                          .toString();
+                                                      if (amountCollectedControlller
+                                                              .text !=
+                                                          '') {
+                                                        amountCollectedControlller
+                                                            .text = (int.parse(
+                                                                    amountCollectedControlller
+                                                                        .text) +
+                                                                1)
+                                                            .toString();
+                                                      }
                                                     });
                                                   },
                                                   child: SvgPicture.asset(
@@ -308,28 +316,29 @@ class _CustomCollectionsBottomSheetState
                                     Flexible(
                                         child: SizedBox(
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CustomText(
-                                            Languages.of(context)!.date,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorResource.color666666,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                        children: <Widget>[
+                                          // CustomText(
+                                          //   Languages.of(context)!.date,
+                                          //   fontSize: FontSize.twelve,
+                                          //   fontWeight: FontWeight.w400,
+                                          //   color: ColorResource.color666666,
+                                          //   fontStyle: FontStyle.normal,
+                                          // ),
                                           CustomReadOnlyTextField(
-                                            '',
+                                            Languages.of(context)!.date,
                                             dateControlller,
-                                            validationRules: const ['required'],
+                                            isLabel: true,
+                                            validationRules: const <String>[
+                                              'required'
+                                            ],
                                             isReadOnly: true,
                                             onTapped: () =>
                                                 PickDateAndTimeUtils.pickDate(
-                                                    context,
-                                                    (newDate, followUpDate) {
+                                                    context, (String? newDate,
+                                                        String? followUpDate) {
                                               if (newDate != null &&
                                                   followUpDate != null) {
                                                 setState(() {
@@ -356,9 +365,7 @@ class _CustomCollectionsBottomSheetState
                                 const SizedBox(height: 15),
                                 CustomText(
                                   Languages.of(context)!.paymentMode,
-                                  fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color101010,
                                 ),
                                 const SizedBox(height: 8),
@@ -383,11 +390,12 @@ class _CustomCollectionsBottomSheetState
                                   Languages.of(context)!.remarks,
                                   remarksControlller,
                                   focusNode: remarksFocusNode,
-                                  validationRules: const ['required'],
+                                  validationRules: const <String>['required'],
                                   isLabel: true,
                                   onEditing: () => remarksFocusNode.unfocus(),
                                   isVoiceRecordWidget: true,
-                                  checkRecord: (isRecord, text, returnS2Tdata) {
+                                  checkRecord: (String? isRecord, String? text,
+                                      Speech2TextModel returnS2Tdata) {
                                     setState(() {
                                       this.isRecord = isRecord;
                                       this.returnS2Tdata = returnS2Tdata;
@@ -396,7 +404,7 @@ class _CustomCollectionsBottomSheetState
                                     });
                                   },
                                   isSubmit: isTranslate,
-                                  returnS2Tresponse: (val) {
+                                  returnS2Tresponse: (dynamic val) {
                                     if (val is Speech2TextModel) {
                                       setState(() {
                                         returnS2Tdata = val;
@@ -435,7 +443,7 @@ class _CustomCollectionsBottomSheetState
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -449,7 +457,7 @@ class _CustomCollectionsBottomSheetState
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Singleton.instance.startCalling ?? false
                           ? const SizedBox()
                           : Expanded(
@@ -476,7 +484,7 @@ class _CustomCollectionsBottomSheetState
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
-                                  gradientColors: [
+                                  gradientColors: <Color>[
                                     ColorResource.colorFFFFFF,
                                     ColorResource.colorFFFFFF.withOpacity(0.7),
                                   ],
@@ -500,7 +508,7 @@ class _CustomCollectionsBottomSheetState
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
-                            gradientColors: [
+                            gradientColors: <Color>[
                               ColorResource.colorFFFFFF,
                               ColorResource.colorFFFFFF.withOpacity(0.7),
                             ],
@@ -546,12 +554,12 @@ class _CustomCollectionsBottomSheetState
                   ? widget.callId
                   : widget.paramValue['callId'],
               context: context,
-            ).then((value) {
+            ).then((bool value) {
               isNotAutoCalling = value;
             });
           }
           if (isNotAutoCalling) {
-            if (selectedPaymentModeButton == "DIGITAL" ||
+            if (selectedPaymentModeButton == 'DIGITAL' ||
                 Singleton.instance.usertype == Constants.telecaller) {
               setState(() => isSubmit = false);
 
@@ -567,13 +575,12 @@ class _CustomCollectionsBottomSheetState
               );
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
-                Position res = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best);
+                final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
                   position = res;
                 });
               }
-              var requestBodyData = CollectionPostModel(
+              final CollectionPostModel requestBodyData = CollectionPostModel(
                   eventId: ConstantEventValues.collectionEventId,
                   eventCode: ConstantEventValues.collectionEvenCode,
                   eventType: (widget.userType == Constants.telecaller ||
@@ -597,14 +604,14 @@ class _CustomCollectionsBottomSheetState
                         selectedPaymentModeButton, context),
                     customerName: widget.custName!,
                     followUpPriority: 'REVIEW',
-                    imageLocation: [''],
+                    imageLocation: <String>[''],
                     longitude: position.longitude,
                     latitude: position.latitude,
                     accuracy: position.accuracy,
                     altitude: position.altitude,
                     heading: position.heading,
                     speed: position.speed,
-                    deposition: CollectionsDeposition(status: "pending"),
+                    deposition: CollectionsDeposition(),
                     reginalText: returnS2Tdata.result?.reginalText,
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
@@ -623,16 +630,17 @@ class _CustomCollectionsBottomSheetState
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
-              List<dynamic> value = [];
-              for (var element in uploadFileLists) {
+              final List<dynamic> value = <dynamic>[];
+              for (File element in uploadFileLists) {
                 value
                     .add(await MultipartFile.fromFile(element.path.toString()));
               }
-              postdata.addAll({
+              postdata.addAll(<String, dynamic>{
                 'files': value,
               });
 
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.upload,
                 HttpUrl.collectionPostUrl('collection', widget.userType),
                 formDatas: FormData.fromMap(postdata),
@@ -653,18 +661,18 @@ class _CustomCollectionsBottomSheetState
                   if (Singleton
                           .instance.contractorInformations!.result!.sendSms! &&
                       Singleton.instance.usertype == Constants.fieldagent) {
-                    var requestBodyData = ReceiptSendSMS(
+                    final ReceiptSendSMS requestBodyData = ReceiptSendSMS(
                       agrRef: Singleton.instance.agrRef,
                       agentRef: Singleton.instance.agentRef,
                       borrowerMobile:
-                          Singleton.instance.customerContactNo ?? "0",
+                          Singleton.instance.customerContactNo ?? '0',
                       type: Constants.receiptAcknowledgementType,
                       receiptAmount: int.parse(amountCollectedControlller.text),
                       receiptDate: dateControlller.text,
                       paymentMode: selectedPaymentModeButton,
                       messageBody: 'message',
                     );
-                    Map<String, dynamic> postResult =
+                    final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
                       APIRequestType.post,
                       HttpUrl.sendSMSurl,
@@ -696,13 +704,12 @@ class _CustomCollectionsBottomSheetState
               );
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
-                Position res = await Geolocator.getCurrentPosition(
-                    desiredAccuracy: LocationAccuracy.best);
+                final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
                   position = res;
                 });
               }
-              var requestBodyData = CollectionPostModel(
+              final CollectionPostModel requestBodyData = CollectionPostModel(
                   eventId: ConstantEventValues.collectionEventId,
                   eventCode: ConstantEventValues.collectionEvenCode,
                   eventType: (widget.userType == Constants.telecaller ||
@@ -726,14 +733,14 @@ class _CustomCollectionsBottomSheetState
                         selectedPaymentModeButton, context),
                     customerName: widget.custName!,
                     followUpPriority: 'REVIEW',
-                    imageLocation: [''],
+                    imageLocation: <String>[''],
                     longitude: position.longitude,
                     latitude: position.latitude,
                     accuracy: position.accuracy,
                     altitude: position.altitude,
                     heading: position.heading,
                     speed: position.speed,
-                    deposition: CollectionsDeposition(status: "pending"),
+                    deposition: CollectionsDeposition(),
                     reginalText: returnS2Tdata.result?.reginalText,
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
@@ -752,26 +759,26 @@ class _CustomCollectionsBottomSheetState
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
-              List<dynamic> value = [];
-              for (var element in uploadFileLists) {
+              final List<dynamic> value = <dynamic>[];
+              for (File element in uploadFileLists) {
                 value
                     .add(await MultipartFile.fromFile(element.path.toString()));
               }
-              postdata.addAll({
+              postdata.addAll(<String, dynamic>{
                 'files': value,
               });
               setState(() => isSubmit = true);
-              DialogUtils.showDialog(
+              await DialogUtils.showDialog(
                 buildContext: context,
                 title: Languages.of(context)!.reciptsAlertMesg,
                 description: '',
                 okBtnText: Languages.of(context)!.submit.toUpperCase(),
                 cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                okBtnFunction: (val) async {
+                okBtnFunction: (String val) async {
                   // pop or remove the AlertDialouge Box
                   Navigator.pop(context);
                   setState(() => isSubmit = false);
-                  Map<String, dynamic> firebaseObject =
+                  final Map<String, dynamic> firebaseObject =
                       jsonDecode(jsonEncode(requestBodyData.toJson()));
                   try {
                     firebaseObject.addAll(
@@ -785,12 +792,13 @@ class _CustomCollectionsBottomSheetState
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
                       selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.collections,bloc: widget.bloc);
+                      selectedClipValue: Constants.collections,
+                      bloc: widget.bloc);
                   if (ConnectivityResult.none ==
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
                   } else {
-                    Map<String, dynamic> postResult =
+                    final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(
                       APIRequestType.upload,
                       HttpUrl.collectionPostUrl('collection', widget.userType),
@@ -839,11 +847,12 @@ class _CustomCollectionsBottomSheetState
                                   false) &&
                               Singleton.instance.usertype ==
                                   Constants.fieldagent) {
-                            var requestBodyData = ReceiptSendSMS(
+                            final ReceiptSendSMS requestBodyData =
+                                ReceiptSendSMS(
                               agrRef: Singleton.instance.agrRef,
                               agentRef: Singleton.instance.agentRef,
                               borrowerMobile:
-                                  Singleton.instance.customerContactNo ?? "0",
+                                  Singleton.instance.customerContactNo ?? '0',
                               type: Constants.receiptAcknowledgementType,
                               receiptAmount:
                                   int.parse(amountCollectedControlller.text),
@@ -855,11 +864,12 @@ class _CustomCollectionsBottomSheetState
                                 eventsDetails: requestBodyData.toJson(),
                                 caseId: widget.caseId,
                                 selectedFollowUpDate: dateControlller.text,
-                                selectedClipValue: Constants.collections,bloc: widget.bloc);
+                                selectedClipValue: Constants.collections,
+                                bloc: widget.bloc);
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {
-                              Map<String, dynamic> postResult =
+                              final Map<String, dynamic> postResult =
                                   await APIRepository.apiRequest(
                                 APIRequestType.post,
                                 HttpUrl.sendSMSurl,
@@ -894,8 +904,8 @@ class _CustomCollectionsBottomSheetState
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (PaymentModeButtonModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           setState(() {
@@ -909,7 +919,7 @@ class _CustomCollectionsBottomSheetState
               color: element.title == selectedPaymentModeButton
                   ? ColorResource.color23375A
                   : ColorResource.colorBEC4CF,
-              boxShadow: [
+              boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
@@ -920,7 +930,7 @@ class _CustomCollectionsBottomSheetState
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
-              children: [
+              children: <Widget>[
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: ColorResource.colorFFFFFF,
@@ -936,7 +946,6 @@ class _CustomCollectionsBottomSheetState
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

@@ -15,9 +15,8 @@ class NoCaseAvailble {
         width: double.infinity,
         height: 210,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
+          children: <Widget>[
             Image.asset(ImageResource.noCaseAvailable),
             CustomText(
               messageContent,

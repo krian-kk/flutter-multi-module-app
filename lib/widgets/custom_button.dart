@@ -3,32 +3,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 
 class CustomButton extends StatefulWidget {
-  final String? text;
-  final double cardElevation;
-  final double cardShape;
-  final Color buttonBackgroundColor;
-  final Color borderColor;
-  final TextAlign textAlign;
-  final GestureTapCallback? onTap;
-  final bool isUnderLine;
-  final bool isSingleLine;
-  final bool isLeading;
-  final bool isTrailing;
-  final int? maxLines;
-  final Widget leadingWidget;
-  final Widget trailingWidget;
-  final FontWeight? fontWeight;
-  final Color textColor;
-  final IconData? trailingIconData;
-  final Axis axis;
-  final MainAxisAlignment alignment;
-  final double fontSize;
-  final Font font;
-  final bool isEnabled;
-  final double padding;
-  final bool isRemoveExtraPadding;
-  final double? width;
-
   const CustomButton(
     this.text, {
     Key? key,
@@ -61,6 +35,31 @@ class CustomButton extends StatefulWidget {
     this.isRemoveExtraPadding = false,
     this.width,
   }) : super(key: key);
+  final String? text;
+  final double cardElevation;
+  final double cardShape;
+  final Color buttonBackgroundColor;
+  final Color borderColor;
+  final TextAlign textAlign;
+  final GestureTapCallback? onTap;
+  final bool isUnderLine;
+  final bool isSingleLine;
+  final bool isLeading;
+  final bool isTrailing;
+  final int? maxLines;
+  final Widget leadingWidget;
+  final Widget trailingWidget;
+  final FontWeight? fontWeight;
+  final Color textColor;
+  final IconData? trailingIconData;
+  final Axis axis;
+  final MainAxisAlignment alignment;
+  final double fontSize;
+  final Font font;
+  final bool isEnabled;
+  final double padding;
+  final bool isRemoveExtraPadding;
+  final double? width;
 
   @override
   _CustomButtonState createState() => _CustomButtonState();
@@ -99,7 +98,7 @@ class _CustomButtonState extends State<CustomButton> {
               child: Flex(
                 direction: widget.axis,
                 mainAxisAlignment: widget.alignment,
-                children: [
+                children: <Widget>[
                   if (widget.isLeading) widget.trailingWidget,
                   if (widget.text != null)
                     Padding(

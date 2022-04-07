@@ -5,14 +5,6 @@ import 'receipt_event.dart';
 import 'rejected.dart';
 
 class Result {
-  int? totalCount;
-  int? totalAmt;
-  List<ReceiptEvent>? receiptEvent;
-  List<ReceiptWeeklyCase>? cases;
-  Approved? approved;
-  Rejected? rejected;
-  New? new_;
-
   Result({
     this.totalCount,
     this.totalAmt,
@@ -27,10 +19,12 @@ class Result {
         totalCount: json['totalCount'] as int?,
         totalAmt: json['totalAmt'] as int?,
         receiptEvent: (json['receiptEvent'] as List<dynamic>?)
-            ?.map((e) => ReceiptEvent.fromJson(e as Map<String, dynamic>))
+            ?.map(
+                (dynamic e) => ReceiptEvent.fromJson(e as Map<String, dynamic>))
             .toList(),
         cases: (json['cases'] as List<dynamic>?)
-            ?.map((e) => ReceiptWeeklyCase.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) =>
+                ReceiptWeeklyCase.fromJson(e as Map<String, dynamic>))
             .toList(),
         approved: json['approved'] == null
             ? null
@@ -42,12 +36,20 @@ class Result {
             ? null
             : New.fromJson(json['new'] as Map<String, dynamic>),
       );
+  int? totalCount;
+  int? totalAmt;
+  List<ReceiptEvent>? receiptEvent;
+  List<ReceiptWeeklyCase>? cases;
+  Approved? approved;
+  Rejected? rejected;
+  New? new_;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'totalCount': totalCount,
         'totalAmt': totalAmt,
-        'receiptEvent': receiptEvent?.map((e) => e.toJson()).toList(),
-        'cases': cases?.map((e) => e.toJson()).toList(),
+        'receiptEvent':
+            receiptEvent?.map((ReceiptEvent e) => e.toJson()).toList(),
+        'cases': cases?.map((ReceiptWeeklyCase e) => e.toJson()).toList(),
         'approved': approved?.toJson(),
         'rejected': rejected?.toJson(),
         'new': new_?.toJson(),

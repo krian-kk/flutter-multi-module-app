@@ -154,7 +154,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                 .myRecentActivity,
                                             color: ColorResource.color000000,
                                             fontSize: FontSize.sixteen,
-                                            fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w600,
                                           )
                                         ],
@@ -178,7 +177,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   .showOnlyStar,
                                               color: ColorResource.color000000,
                                               fontSize: FontSize.sixteen,
-                                              fontStyle: FontStyle.normal,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           )
@@ -209,7 +207,6 @@ class _SearchScreenState extends State<SearchScreen> {
           child: CustomButton(
             Languages.of(context)!.search.toUpperCase(),
             fontSize: FontSize.sixteen,
-            fontWeight: FontWeight.w600,
             cardShape: 5,
             onTap: () {
               if (accountNoController.text.isNotEmpty ||

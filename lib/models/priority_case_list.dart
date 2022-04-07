@@ -2,10 +2,6 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
 
 class PriorityCaseListModel {
-  int? status;
-  String? message;
-  List<Result>? result;
-
   PriorityCaseListModel({this.status, this.message, this.result});
 
   PriorityCaseListModel.fromJson(Map<String, dynamic> json) {
@@ -13,47 +9,27 @@ class PriorityCaseListModel {
     message = json['message'];
     if (json['result'] != null) {
       result = <Result>[];
-      json['result'].forEach((v) {
+      json['result'].forEach((dynamic v) {
         result?.add(Result.fromJson(v));
       });
     }
   }
+  int? status;
+  String? message;
+  List<Result>? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['status'] = status;
     data['message'] = message;
     if (result != null) {
-      data['result'] = result?.map((v) => v.toJson()).toList();
+      data['result'] = result?.map((Result v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class Result {
-  String? sId;
-  dynamic due;
-  late bool starredCase;
-  String? cust;
-  String? collSubStatus;
-  String? telSubStatus;
-  String? followUpPriority;
-  String? customerId;
-  String? pincode;
-  String? caseId;
-  String? agrRef;
-  String? bankName;
-  String? fieldfollowUpDate;
-  dynamic sortId;
-  String? followUpDate;
-  String? locationType;
-  dynamic distanceMeters;
-  String? repoStatus;
-  String? accNo;
-  List<Address>? address;
-  Location? location;
-  bool? isCompletedSuccess = false;
-
   Result({
     this.sId,
     this.due,
@@ -126,16 +102,16 @@ class Result {
     accNo = json['accNo'];
     if (json['contact'] != null) {
       address = <Address>[];
-      json['contact'].forEach((v) {
+      json['contact'].forEach((dynamic v) {
         address?.add(Address.fromJson(v));
       });
       if (address!.isNotEmpty) {
-        address
-            ?.sort((a, b) => (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
+        address?.sort((Address a, Address b) =>
+            (b.health ?? '1.5').compareTo(a.health ?? '1.5'));
       }
     } else {
       address = <Address>[];
-      json['address'].forEach((v) {
+      json['address'].forEach((dynamic v) {
         address?.add(Address.fromJson(v));
       });
     }
@@ -143,6 +119,28 @@ class Result {
       location = Location.fromJson(json['location']);
     }
   }
+  String? sId;
+  dynamic due;
+  late bool starredCase;
+  String? cust;
+  String? collSubStatus;
+  String? telSubStatus;
+  String? followUpPriority;
+  String? customerId;
+  String? pincode;
+  String? caseId;
+  String? agrRef;
+  String? bankName;
+  String? fieldfollowUpDate;
+  dynamic sortId;
+  String? followUpDate;
+  String? locationType;
+  dynamic distanceMeters;
+  String? repoStatus;
+  String? accNo;
+  List<Address>? address;
+  Location? location;
+  bool? isCompletedSuccess = false;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -161,7 +159,7 @@ class Result {
     data['fieldfollowUpDate'] = fieldfollowUpDate;
     data['sortId'] = sortId;
     if (address != null) {
-      data['address'] = address?.map((v) => v.toJson()).toList();
+      data['address'] = address?.map((Address v) => v.toJson()).toList();
     }
     if (location != null) {
       data['location'] = location!.toJson();
@@ -171,10 +169,6 @@ class Result {
 }
 
 class Address {
-  String? cType;
-  String? value;
-  String? health;
-
   Address({this.cType, this.value, this.health});
 
   Address.fromJson(Map<String, dynamic> json) {
@@ -182,6 +176,9 @@ class Address {
     value = json['value'];
     health = json['health'] ?? '1.5';
   }
+  String? cType;
+  String? value;
+  String? health;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -193,15 +190,14 @@ class Address {
 }
 
 class Location {
-  double? lat;
-  double? lng;
-
   Location({this.lat, this.lng});
 
   Location.fromJson(Map<String, dynamic> json) {
     lat = json['lat'];
     lng = json['lng'];
   }
+  double? lat;
+  double? lng;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

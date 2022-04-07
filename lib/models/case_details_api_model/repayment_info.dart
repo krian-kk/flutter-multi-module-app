@@ -1,13 +1,4 @@
 class RepaymentInfo {
-  String? reference2;
-  String? officeMobile;
-  String? repaymentIfscCode;
-  String? benefeciaryAccNo;
-  String? benefeciaryAccName;
-  String? repayBankName;
-  String? refUrl;
-  String? refLender;
-
   RepaymentInfo({
     this.reference2,
     this.officeMobile,
@@ -41,8 +32,16 @@ class RepaymentInfo {
         refLender:
             json['refLender'] != null ? json['refLender'] as String? : null,
       );
+  String? reference2;
+  String? officeMobile;
+  String? repaymentIfscCode;
+  String? benefeciaryAccNo;
+  String? benefeciaryAccName;
+  String? repayBankName;
+  String? refUrl;
+  String? refLender;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'reference2': reference2,
         'officeMobile': officeMobile,
         'repaymentIfscCode': repaymentIfscCode,

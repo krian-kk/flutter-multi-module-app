@@ -1,21 +1,6 @@
 import 'contact.dart';
 
 class ReceiptWeeklyCase {
-  String? id;
-  int? due;
-  int? originalDue;
-  int? odVal;
-  String? cust;
-  String? agrRef;
-  String? collSubStatus;
-  String? telSubStatus;
-  dynamic followUpDate;
-  dynamic fieldfollowUpDate;
-  String? bankName;
-  String? customerId;
-  List<Contact>? contact;
-  String? caseId;
-
   ReceiptWeeklyCase({
     this.id,
     this.due,
@@ -48,12 +33,26 @@ class ReceiptWeeklyCase {
         bankName: json['bankName'] as String?,
         customerId: json['customerId'] as String?,
         contact: (json['contact'] as List<dynamic>?)
-            ?.map((e) => Contact.fromJson(e as Map<String, dynamic>))
+            ?.map((dynamic e) => Contact.fromJson(e as Map<String, dynamic>))
             .toList(),
         caseId: json['caseId'] as String?,
       );
+  String? id;
+  int? due;
+  int? originalDue;
+  int? odVal;
+  String? cust;
+  String? agrRef;
+  String? collSubStatus;
+  String? telSubStatus;
+  dynamic followUpDate;
+  dynamic fieldfollowUpDate;
+  String? bankName;
+  String? customerId;
+  List<Contact>? contact;
+  String? caseId;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'due': due,
         'original_due': originalDue,
@@ -66,7 +65,7 @@ class ReceiptWeeklyCase {
         'fieldfollowUpDate': fieldfollowUpDate,
         'bankName': bankName,
         'customerId': customerId,
-        'contact': contact?.map((e) => e.toJson()).toList(),
+        'contact': contact?.map((Contact e) => e.toJson()).toList(),
         'caseId': caseId,
       };
 }

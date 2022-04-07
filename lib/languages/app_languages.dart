@@ -203,6 +203,8 @@ abstract class Languages {
 
   String get ptp;
 
+  String get ptpType;
+
   String get rtp;
 
   String get dispute;
@@ -611,4 +613,58 @@ abstract class Languages {
   String get visit;
 
   String get selectSpeechToTextLanguage;
+
+  String get agent;
+
+  String get dateOfLoanDisbursement;
+
+  String get tos;
+
+  String get emiAmount;
+
+  String get noOfPendingEMI;
+
+  String get penaltyAmount;
+
+  String get odInterest;
+
+  String get assetDetails;
+
+  String get coLender;
+
+  String get employerBusinessEntity;
+
+  String get lastPaymentDate;
+
+  String get sourcingRmName;
+
+  String get lastPaidAmount;
+
+  String get riskRanking;
+
+  String get reviewFlag;
+
+  String get location;
+
+  String get agency;
+
+  String get minDueAmount;
+
+  String get cardOutstanding;
+
+  String get statementDate;
+
+  String get dueDate;
+
+  String get cardStatus;
+
+  String get lastBilledAmount;
+
+  String get chassisNumber;
+
+  String get riskBucket;
+
+  String get ref1;
+
+  String get ref2;
 }

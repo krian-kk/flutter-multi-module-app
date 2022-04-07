@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:objectid/objectid.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/company_branch_post_model.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -19,13 +18,9 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
+import 'package:origa/widgets/object_id_widget.dart';
 
 class CompanyBranch extends StatefulWidget {
-  final DashboardBloc bloc;
-  final List<String>? selectedCaseIds;
-  final String? mode;
-  final String? custname;
-  final double? receiptAmt;
   const CompanyBranch(this.bloc,
       {Key? key,
       this.selectedCaseIds,
@@ -33,6 +28,11 @@ class CompanyBranch extends StatefulWidget {
       this.custname,
       this.receiptAmt})
       : super(key: key);
+  final DashboardBloc bloc;
+  final List<String>? selectedCaseIds;
+  final String? mode;
+  final String? custname;
+  final double? receiptAmt;
 
   @override
   _CompanyBranchState createState() => _CompanyBranchState();
@@ -65,8 +65,8 @@ class _CompanyBranchState extends State<CompanyBranch> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
     } else {
@@ -111,7 +111,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                           Languages.of(context)!.cancel.toUpperCase(),
                           fontSize: FontSize.sixteen,
                           textColor: ColorResource.colorEA6D48,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           buttonBackgroundColor: ColorResource.colorffffff,
                           borderColor: ColorResource.colorffffff,
@@ -132,7 +131,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           cardShape: 5,
                           onTap: isSubmited
                               ? () async {
@@ -143,15 +141,15 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                     //     gravity: ToastGravity.CENTER,
                                     //   );
                                     // } else {
-                                    final id = ObjectId();
-                                    var requestBodyData =
+                                    final id = ObjectIdWidget();
+                                    final requestBodyData =
                                         CompanyBranchDepositPostModel(
                                       caseIds: widget.selectedCaseIds!.length ==
                                               1
                                           ? [...widget.selectedCaseIds!, '$id']
                                           : widget.selectedCaseIds!,
                                       contractor:
-                                          Singleton.instance.contractor ?? "",
+                                          Singleton.instance.contractor ?? '',
                                       deposition: Deposition(
                                         companyBranchName:
                                             branchNameController.text,
@@ -176,7 +174,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         context: context,
                                       ));
                                     } else {
-                                      DialogUtils.showDialog(
+                                      await DialogUtils.showDialog(
                                           buildContext: context,
                                           title: Constants
                                               .bankReceiptAmountDoesntMatch,
@@ -256,7 +254,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      flex: 1,
                                       child: CustomReadOnlyTextField(
                                         Languages.of(context)!.receiptAmount,
                                         receiptController,
@@ -273,7 +270,6 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                       width: 7,
                                     ),
                                     Expanded(
-                                      flex: 1,
                                       child: CustomReadOnlyTextField(
                                         Languages.of(context)!.depositAmount,
                                         depositController,

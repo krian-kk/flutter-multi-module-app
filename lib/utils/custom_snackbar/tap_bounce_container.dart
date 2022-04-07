@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 
 /// Widget for nice tap effect. It decrease widget scale while tapping
 class TapBounceContainer extends StatefulWidget {
-  final Widget child;
-  final VoidCallback? onTap;
-
   const TapBounceContainer({
     Key? key,
     required this.child,
     this.onTap,
   }) : super(key: key);
+  final Widget child;
+  final VoidCallback? onTap;
 
   @override
   _TapBounceContainerState createState() => _TapBounceContainerState();
@@ -27,7 +26,6 @@ class _TapBounceContainerState extends State<TapBounceContainer>
     _controller = AnimationController(
       vsync: this,
       duration: animationDuration,
-      lowerBound: 0.0,
       upperBound: 0.04,
     )..addListener(() {
         setState(() {});
@@ -62,17 +60,17 @@ class _TapBounceContainerState extends State<TapBounceContainer>
     }
   }
 
-  void _onTapUp(TapUpDetails details) async {
+  _onTapUp(TapUpDetails details) async {
     await _closeSnackBar();
   }
 
-  void _onPanEnd(DragEndDetails details) async {
+  _onPanEnd(DragEndDetails details) async {
     await _closeSnackBar();
   }
 
   Future _closeSnackBar() async {
     if (mounted) {
-      _controller.reverse();
+      await _controller.reverse();
       await Future.delayed(animationDuration);
       widget.onTap?.call();
     }

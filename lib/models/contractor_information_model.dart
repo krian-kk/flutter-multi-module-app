@@ -1,8 +1,4 @@
 class ContractorAllInformationModel {
-  int? status;
-  String? message;
-  ContractorResult? result;
-
   ContractorAllInformationModel({this.status, this.message, this.result});
 
   ContractorAllInformationModel.fromJson(Map<String, dynamic> json) {
@@ -12,6 +8,9 @@ class ContractorAllInformationModel {
         ? ContractorResult.fromJson(json['result'])
         : null;
   }
+  int? status;
+  String? message;
+  ContractorResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,46 +24,6 @@ class ContractorAllInformationModel {
 }
 
 class ContractorResult {
-  String? sId;
-  String? usernamePrefix;
-  String? contractor;
-  String? contractorName;
-  String? contactorAttr;
-  bool? geoLocCompulsaryApp;
-  double? nodeVersion;
-  int? oldVersionCompatibility;
-  int? perDayReceiptLimit;
-  bool? autoApprovalReceipt;
-  String? receiptAckSmsTemplate;
-  bool? sendSms;
-  bool? autoApprovalReceiptTelecalling;
-  bool? attachBankToAgrRef;
-  bool? bankExistCheck;
-  String? reportEndDate;
-  String? reportStartDate;
-  bool? cloudTelephony;
-  bool? contactMasking;
-  bool? hideSendRepaymentInfo;
-  String? repaymentSmsTemplate;
-  String? callTriedSmsTemplate;
-  bool? hideCallTriedSmsButton;
-  bool? ptpSms;
-  String? ptpSmsTemplate;
-  bool? disabledTcRecommendFieldCollect;
-  String? reportTime;
-  String? roleLevel;
-  bool? tokenVerified;
-  String? version;
-  MyCasesQueue? myCasesQueue;
-  Reports? reports;
-  bool? disabledTcSurrender;
-  bool? agentLocationMandatory;
-  bool? attributeExistCheck;
-  bool? caseStatusDownload;
-  List<UserAdminList>? userAdminList;
-  List<FeedbackTemplate>? feedbackTemplate;
-  bool? otsEnable;
-
   ContractorResult(
       {this.sId,
       this.usernamePrefix,
@@ -160,6 +119,45 @@ class ContractorResult {
     }
     otsEnable = json['otsEnable'];
   }
+  String? sId;
+  String? usernamePrefix;
+  String? contractor;
+  String? contractorName;
+  String? contactorAttr;
+  bool? geoLocCompulsaryApp;
+  double? nodeVersion;
+  int? oldVersionCompatibility;
+  int? perDayReceiptLimit;
+  bool? autoApprovalReceipt;
+  String? receiptAckSmsTemplate;
+  bool? sendSms;
+  bool? autoApprovalReceiptTelecalling;
+  bool? attachBankToAgrRef;
+  bool? bankExistCheck;
+  String? reportEndDate;
+  String? reportStartDate;
+  bool? cloudTelephony;
+  bool? contactMasking;
+  bool? hideSendRepaymentInfo;
+  String? repaymentSmsTemplate;
+  String? callTriedSmsTemplate;
+  bool? hideCallTriedSmsButton;
+  bool? ptpSms;
+  String? ptpSmsTemplate;
+  bool? disabledTcRecommendFieldCollect;
+  String? reportTime;
+  String? roleLevel;
+  bool? tokenVerified;
+  String? version;
+  MyCasesQueue? myCasesQueue;
+  Reports? reports;
+  bool? disabledTcSurrender;
+  bool? agentLocationMandatory;
+  bool? attributeExistCheck;
+  bool? caseStatusDownload;
+  List<UserAdminList>? userAdminList;
+  List<FeedbackTemplate>? feedbackTemplate;
+  bool? otsEnable;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -216,12 +214,6 @@ class ContractorResult {
 }
 
 class MyCasesQueue {
-  SortOrderMyCasesUsingTelSubStatus? sortOrderMyCasesUsingTelSubStatus;
-  List<Last3DayEventOrder>? last3DayEventOrder;
-  int? myCasesQueueLength;
-  String? sortingOn;
-  String? orderByCol;
-
   MyCasesQueue(
       {this.sortOrderMyCasesUsingTelSubStatus,
       this.last3DayEventOrder,
@@ -245,6 +237,11 @@ class MyCasesQueue {
     sortingOn = json['sortingOn'];
     orderByCol = json['orderByCol'];
   }
+  SortOrderMyCasesUsingTelSubStatus? sortOrderMyCasesUsingTelSubStatus;
+  List<Last3DayEventOrder>? last3DayEventOrder;
+  int? myCasesQueueLength;
+  String? sortingOn;
+  String? orderByCol;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -264,24 +261,6 @@ class MyCasesQueue {
 }
 
 class SortOrderMyCasesUsingTelSubStatus {
-  int? new_;
-  int? ptp;
-  int? reminder;
-  int? feedback;
-  int? denial;
-  int? dispute;
-  int? receipt;
-  int? surrender;
-  int? rnr;
-  int? linebusy;
-  int? switchoff;
-  int? outofnetwork;
-  int? disconnecting;
-  int? doesnotexist;
-  int? incorrectnumber;
-  int? numbernotworking;
-  int? notoperational;
-
   SortOrderMyCasesUsingTelSubStatus(
       {this.new_,
       this.ptp,
@@ -320,6 +299,23 @@ class SortOrderMyCasesUsingTelSubStatus {
     numbernotworking = json['numbernotworking'];
     notoperational = json['notoperational'];
   }
+  int? new_;
+  int? ptp;
+  int? reminder;
+  int? feedback;
+  int? denial;
+  int? dispute;
+  int? receipt;
+  int? surrender;
+  int? rnr;
+  int? linebusy;
+  int? switchoff;
+  int? outofnetwork;
+  int? disconnecting;
+  int? doesnotexist;
+  int? incorrectnumber;
+  int? numbernotworking;
+  int? notoperational;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -345,15 +341,14 @@ class SortOrderMyCasesUsingTelSubStatus {
 }
 
 class Last3DayEventOrder {
-  String? telSubStatus;
-  int? days;
-
   Last3DayEventOrder({this.telSubStatus, this.days});
 
   Last3DayEventOrder.fromJson(Map<String, dynamic> json) {
     telSubStatus = json['telSubStatus'];
     days = json['days'];
   }
+  String? telSubStatus;
+  int? days;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -364,13 +359,6 @@ class Last3DayEventOrder {
 }
 
 class Reports {
-  Feedback? feedback;
-  Feedback? resolution;
-  Feedback? callLogReport;
-  Feedback? agentPerformance;
-  Feedback? caseStatus;
-  Feedback? agentGeoAnalysis;
-
   Reports(
       {this.feedback,
       this.resolution,
@@ -398,6 +386,12 @@ class Reports {
         ? Feedback.fromJson(json['agentGeoAnalysis'])
         : null;
   }
+  Feedback? feedback;
+  Feedback? resolution;
+  Feedback? callLogReport;
+  Feedback? agentPerformance;
+  Feedback? caseStatus;
+  Feedback? agentGeoAnalysis;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -424,11 +418,6 @@ class Reports {
 }
 
 class Feedback {
-  String? s3Bucket;
-  String? s3FolderName;
-  String? s3FilePath;
-  List<Fields>? fields;
-
   Feedback({this.s3Bucket, this.s3FolderName, this.s3FilePath, this.fields});
 
   Feedback.fromJson(Map<String, dynamic> json) {
@@ -442,6 +431,10 @@ class Feedback {
       });
     }
   }
+  String? s3Bucket;
+  String? s3FolderName;
+  String? s3FilePath;
+  List<Fields>? fields;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -456,15 +449,14 @@ class Feedback {
 }
 
 class Fields {
-  String? label;
-  String? value;
-
   Fields({this.label, this.value});
 
   Fields.fromJson(Map<String, dynamic> json) {
     label = json['label'];
     value = json['value'];
   }
+  String? label;
+  String? value;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -475,11 +467,6 @@ class Fields {
 }
 
 class UserAdminList {
-  String? aRef;
-  String? name;
-  bool? userAdmin;
-  String? type;
-
   UserAdminList({this.aRef, this.name, this.userAdmin, this.type});
 
   UserAdminList.fromJson(Map<String, dynamic> json) {
@@ -488,6 +475,10 @@ class UserAdminList {
     userAdmin = json['userAdmin'];
     type = json['type'];
   }
+  String? aRef;
+  String? name;
+  bool? userAdmin;
+  String? type;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -500,14 +491,6 @@ class UserAdminList {
 }
 
 class FeedbackTemplate {
-  String? name;
-  String? type;
-  bool? hide;
-  bool? expanded;
-  String? label;
-  bool? reportColumnMerged;
-  List<Data>? data;
-
   FeedbackTemplate(
       {this.name,
       this.type,
@@ -531,6 +514,13 @@ class FeedbackTemplate {
       });
     }
   }
+  String? name;
+  String? type;
+  bool? hide;
+  bool? expanded;
+  String? label;
+  bool? reportColumnMerged;
+  List<Data>? data;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -548,15 +538,6 @@ class FeedbackTemplate {
 }
 
 class Data {
-  String? name;
-  String? type;
-  bool? hide;
-  bool? value;
-  String? label;
-  bool? required;
-  bool? disabled;
-  List<Options>? options;
-
   Data(
       {this.name,
       this.type,
@@ -582,6 +563,14 @@ class Data {
       });
     }
   }
+  String? name;
+  String? type;
+  bool? hide;
+  bool? value;
+  String? label;
+  bool? required;
+  bool? disabled;
+  List<Options>? options;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -600,15 +589,14 @@ class Data {
 }
 
 class Options {
-  String? value;
-  String? viewValue;
-
   Options({this.value, this.viewValue});
 
   Options.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     viewValue = json['viewValue'];
   }
+  String? value;
+  String? viewValue;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

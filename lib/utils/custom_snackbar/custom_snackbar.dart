@@ -4,18 +4,6 @@ import 'package:flutter/material.dart';
 
 /// Popup widget that you can use by default to show some information
 class CustomSnackBar extends StatefulWidget {
-  final String message;
-  final Widget icon;
-  final Color backgroundColor;
-  final TextStyle textStyle;
-  final int iconRotationAngle;
-  final List<BoxShadow> boxShadow;
-  final BorderRadius borderRadius;
-  final double iconPositionTop;
-  final double iconPositionLeft;
-  final EdgeInsetsGeometry messagePadding;
-  final double textScaleFactor;
-
   const CustomSnackBar.success({
     Key? key,
     required this.message,
@@ -84,6 +72,17 @@ class CustomSnackBar extends StatefulWidget {
     this.borderRadius = kDefaultBorderRadius,
     this.textScaleFactor = 1.0,
   }) : super(key: key);
+  final String message;
+  final Widget icon;
+  final Color backgroundColor;
+  final TextStyle textStyle;
+  final int iconRotationAngle;
+  final List<BoxShadow> boxShadow;
+  final BorderRadius borderRadius;
+  final double iconPositionTop;
+  final double iconPositionLeft;
+  final EdgeInsetsGeometry messagePadding;
+  final double textScaleFactor;
 
   @override
   _CustomSnackBarState createState() => _CustomSnackBarState();
@@ -92,7 +91,7 @@ class CustomSnackBar extends StatefulWidget {
 class _CustomSnackBarState extends State<CustomSnackBar> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     return Container(
       clipBehavior: Clip.hardEdge,
       height: 65,
@@ -103,7 +102,7 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
       ),
       width: double.infinity,
       child: Stack(
-        children: [
+        children: <Widget>[
           Positioned(
             top: widget.iconPositionTop,
             left: widget.iconPositionLeft,
@@ -136,7 +135,7 @@ class _CustomSnackBarState extends State<CustomSnackBar> {
   }
 }
 
-const kDefaultBoxShadow = [
+const List<BoxShadow> kDefaultBoxShadow = <BoxShadow>[
   BoxShadow(
     color: Colors.black26,
     offset: Offset(0.0, 8.0),
@@ -145,4 +144,4 @@ const kDefaultBoxShadow = [
   ),
 ];
 
-const kDefaultBorderRadius = BorderRadius.all(Radius.circular(12));
+const BorderRadius kDefaultBorderRadius = BorderRadius.all(Radius.circular(12));

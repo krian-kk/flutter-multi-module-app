@@ -1,25 +1,20 @@
-class Messages {
-  final String? messageIds;
-  final String? deliveredOn;
-  final String? seenOn;
-  final bool? delivered;
-  final bool? seen;
+// class Messages {
+//   final String? messageIds;
+//   final String? deliveredOn;
+//   final String? seenOn;
+//   final bool? delivered;
+//   final bool? seen;
 
-  Messages({
-    this.messageIds,
-    this.deliveredOn,
-    this.seenOn,
-    this.delivered,
-    this.seen,
-  });
-}
+//   Messages({
+//     this.messageIds,
+//     this.deliveredOn,
+//     this.seenOn,
+//     this.delivered,
+//     this.seen,
+//   });
+// }
 
 class ChatHistory {
-  String? name;
-  dynamic data;
-  DateTime? dateTime;
-  String? fromID;
-  String? toID;
   ChatHistory({
     this.name,
     this.data,
@@ -27,15 +22,14 @@ class ChatHistory {
     this.fromID,
     this.toID,
   });
+  String? name;
+  dynamic data;
+  DateTime? dateTime;
+  String? fromID;
+  String? toID;
 }
 
 class ReceivingData {
-  String? dateSent;
-  String? message;
-  String? toId;
-  dynamic type;
-  String? fromId;
-
   ReceivingData(
       {this.dateSent, this.message, this.toId, this.type, this.fromId});
 
@@ -46,6 +40,11 @@ class ReceivingData {
     type = json['type'];
     fromId = json['fromId'];
   }
+  String? dateSent;
+  String? message;
+  String? toId;
+  dynamic type;
+  String? fromId;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

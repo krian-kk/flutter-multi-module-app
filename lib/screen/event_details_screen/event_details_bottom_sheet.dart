@@ -23,13 +23,13 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
-  final CaseDetailsBloc bloc;
   const CustomEventDetailsBottomSheet(
     this.cardTitle,
     this.bloc, {
     Key? key,
     required this.customeLoanUserWidget,
   }) : super(key: key);
+  final CaseDetailsBloc bloc;
   final String cardTitle;
   final Widget customeLoanUserWidget;
   @override
@@ -43,7 +43,7 @@ class _CustomEventDetailsBottomSheetState
   AudioConvertModel audioConvertyData = AudioConvertModel();
   late EventDetailsBloc bloc;
 
-  static const platform = MethodChannel('recordAudioChannel');
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _CustomEventDetailsBottomSheetState
   }
 
   getFileDirectory() async {
-    String dir = ((await getApplicationDocumentsDirectory()).path) +
+    final String dir = ((await getApplicationDocumentsDirectory()).path) +
         '/TemporaryAudioFile.wav';
     setState(() {
       filePath = dir;
@@ -68,20 +68,21 @@ class _CustomEventDetailsBottomSheetState
     setState(() {
       bloc.eventDetailsPlayAudioModel[index].loadingAudio = true;
     });
-    Map<String, dynamic> postResult = await APIRepository.apiRequest(
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.getAudioFile,
-      requestBodydata: {"pathOfFile": audioPath},
+      requestBodydata: <String, dynamic>{'pathOfFile': audioPath},
     );
     if (postResult[Constants.success]) {
-      var audioConvertyData = AudioConvertModel.fromJson(postResult['data']);
-      var base64 = const Base64Encoder()
+      final AudioConvertModel audioConvertyData =
+          AudioConvertModel.fromJson(postResult['data']);
+      final String base64 = const Base64Encoder()
           .convert(List<int>.from(audioConvertyData.result!.body!.data!));
 
-      Uint8List audioBytes = const Base64Codec().decode(base64);
+      final Uint8List audioBytes = const Base64Codec().decode(base64);
       await File(filePath).writeAsBytes(audioBytes);
-      await platform.invokeMethod(
-          'playRecordAudio', {'filePath': filePath}).then((value) {
+      await platform.invokeMethod('playRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
         if (value) {
           setState(
               () => bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
@@ -89,8 +90,8 @@ class _CustomEventDetailsBottomSheetState
               bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
         }
       });
-      await platform.invokeMethod(
-          'completeRecordAudio', {'filePath': filePath}).then((value) {
+      await platform.invokeMethod('completeRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
         if (value != null) {
           setState(() {
             bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -105,8 +106,8 @@ class _CustomEventDetailsBottomSheetState
   }
 
   stopAudio(int index) async {
-    await platform
-        .invokeMethod('stopPlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('stopPlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -117,8 +118,8 @@ class _CustomEventDetailsBottomSheetState
   }
 
   pauseAudio(int index) async {
-    await platform.invokeMethod(
-        'pausePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('pausePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPaused = true;
@@ -128,16 +129,16 @@ class _CustomEventDetailsBottomSheetState
   }
 
   resumeAudio(int index) async {
-    await platform.invokeMethod(
-        'resumePlayingAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('resumePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPaused = false;
         });
       }
     });
-    await platform.invokeMethod(
-        'completeRecordAudio', {'filePath': filePath}).then((value) {
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
       if (value != null) {
         setState(() {
           bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
@@ -156,7 +157,7 @@ class _CustomEventDetailsBottomSheetState
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisSize: MainAxisSize.min,
-          children: [
+          children: <Widget>[
             BottomSheetAppbar(
               title: widget.cardTitle,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
@@ -169,10 +170,10 @@ class _CustomEventDetailsBottomSheetState
             const SizedBox(height: 10),
             BlocListener<EventDetailsBloc, EventDetailsState>(
               bloc: bloc,
-              listener: (context, state) {},
+              listener: (BuildContext context, EventDetailsState state) {},
               child: BlocBuilder<EventDetailsBloc, EventDetailsState>(
                 bloc: bloc,
-                builder: (context, state) {
+                builder: (BuildContext context, EventDetailsState state) {
                   if (state is EventDetailsLoadingState) {
                     return const Expanded(
                       child: Center(
@@ -184,8 +185,8 @@ class _CustomEventDetailsBottomSheetState
                         child: ListView.builder(
                             itemCount:
                                 bloc.eventDetailsAPIValues.result?.length ?? 0,
-                            itemBuilder: (context, int index) {
-                              dynamic listVal = bloc
+                            itemBuilder: (BuildContext context, int index) {
+                              final dynamic listVal = bloc
                                   .eventDetailsAPIValues.result!.reversed
                                   .toList();
                               return expandList(listVal, index);
@@ -200,7 +201,7 @@ class _CustomEventDetailsBottomSheetState
           height: MediaQuery.of(context).size.height * 0.1,
           decoration: BoxDecoration(
             color: ColorResource.colorFFFFFF,
-            boxShadow: [
+            boxShadow: <BoxShadow>[
               BoxShadow(
                 color: ColorResource.color000000.withOpacity(.25),
                 blurRadius: 2.0,
@@ -213,14 +214,13 @@ class _CustomEventDetailsBottomSheetState
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 SizedBox(
                   width: 190,
                   child: CustomButton(
                     Languages.of(context)!.okay.toUpperCase(),
                     onTap: () => Navigator.pop(context),
                     fontSize: FontSize.sixteen,
-                    fontWeight: FontWeight.w600,
                     cardShape: 5,
                   ),
                 ),
@@ -235,7 +235,7 @@ class _CustomEventDetailsBottomSheetState
   expandList(List<EvnetDetailsResultsModel> expandedList, int index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const SizedBox(
           height: 10,
         ),
@@ -255,18 +255,17 @@ class _CustomEventDetailsBottomSheetState
                 expandedAlignment: Alignment.centerLeft,
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (expandedList[index].eventAttr?.date != null)
+                  children: <Widget>[
+                    if (expandedList[index].createdAt != null)
                       CustomText(
                         DateFormateUtils.followUpDateFormate(
-                            expandedList[index].eventAttr!.date.toString()),
+                            expandedList[index].createdAt.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
                         color: ColorResource.color000000,
                       ),
                     CustomText(
                       expandedList[index].eventType.toString().toUpperCase(),
-                      fontSize: FontSize.fourteen,
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -274,118 +273,190 @@ class _CustomEventDetailsBottomSheetState
                 ),
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
-                children: [
-                  expandedList[index].eventType == 'OTS'
-                      ? (expandedList[index].eventAttr?.amntOts != null)
-                          ? CustomText(
-                              'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
-                              fontSize: FontSize.fourteen,
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color000000,
-                            )
-                          : const SizedBox()
-                      : const SizedBox(),
-                  if (expandedList[index].eventType == 'RECEIPT')
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expandedList[index].eventAttr?.customerName != null)
-                          CustomText(
-                            expandedList[index].eventAttr?.customerName ?? '-',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.amountCollected !=
-                            null)
-                          CustomText(
-                            'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        (expandedList[index].eventAttr?.chequeRefNo != null)
-                            ? CustomText(
-                                'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
-                                fontSize: FontSize.fourteen,
-                                fontWeight: FontWeight.w700,
-                                color: ColorResource.color000000,
-                              )
-                            : const SizedBox(),
-                      ],
-                    ),
-                  if (expandedList[index].eventAttr?.mode != null)
+                children: <Widget>[
+                  if (expandedList[index].createdBy != null)
                     CustomText(
-                      expandedList[index]
-                          .eventAttr!
-                          .mode
-                          .toString()
-                          .toUpperCase(),
-                      fontSize: FontSize.fourteen,
+                      '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  const SizedBox(height: 8),
-                  if (expandedList[index].eventType == 'REPO')
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expandedList[index].eventAttr?.customerName != null)
-                          CustomText(
-                            expandedList[index]
-                                .eventAttr!
-                                .customerName
-                                .toString(),
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.modelMake != null)
-                          CustomText(
-                            'Model Make: ${expandedList[index].eventAttr!.modelMake}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.registrationNo !=
-                            null)
-                          CustomText(
-                            'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.chassisNo != null)
-                          CustomText(
-                            'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
-                            fontSize: FontSize.fourteen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                      ],
+                  if (expandedList[index].eventType?.toLowerCase() ==
+                          Constants.receipt.toLowerCase() &&
+                      expandedList[index].eventAttr?.amountCollected != null)
+                    CustomText(
+                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
                     ),
-                  CustomText(
-                    Languages.of(context)!
-                        .remarks
-                        .replaceAll('*', '')
-                        .toUpperCase(),
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
-                  CustomText(
-                    (expandedList[index].eventAttr?.remarks != null)
-                        ? expandedList[index].eventAttr!.remarks.toString()
-                        : (expandedList[index].eventAttr?.remarkOts != null)
-                            ? expandedList[index]
-                                .eventAttr!
-                                .remarkOts
-                                .toString()
-                            : '_',
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w700,
-                    color: ColorResource.color000000,
-                  ),
+                  if (expandedList[index].eventType?.toLowerCase() ==
+                          Constants.ptp.toLowerCase() &&
+                      expandedList[index].eventAttr?.ptpAmount != null)
+                    CustomText(
+                      '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.date != null)
+                    CustomText(
+                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.time != null)
+                    CustomText(
+                      '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.mode != null)
+                    CustomText(
+                      '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  // if (expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.ptp.toLowerCase() ||
+                  //     expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.tcPtp.toLowerCase())
+                  //   CustomText(
+                  //     '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.ptpType.toString()}',
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  if (expandedList[index].eventAttr?.remarks != null)
+                    CustomText(
+                      '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  // expandedList[index].eventType == 'OTS'
+                  //     ? (expandedList[index].eventAttr?.amntOts != null)
+                  //         ? CustomText(
+                  //             'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
+                  //             fontSize: FontSize.fourteen,
+                  //             fontWeight: FontWeight.w700,
+                  //             color: ColorResource.color000000,
+                  //           )
+                  //         : const SizedBox()
+                  //     : const SizedBox(),
+                  // if (expandedList[index].eventType == 'RECEIPT')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       if (expandedList[index].eventAttr?.customerName != null)
+                  //         CustomText(
+                  //           expandedList[index].eventAttr?.customerName ?? '-',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.amountCollected !=
+                  //           null)
+                  //         CustomText(
+                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       (expandedList[index].eventAttr?.chequeRefNo != null)
+                  //           ? CustomText(
+                  //               'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
+                  //               fontSize: FontSize.fourteen,
+                  //               fontWeight: FontWeight.w700,
+                  //               color: ColorResource.color000000,
+                  //             )
+                  //           : const SizedBox(),
+                  //     ],
+                  //   ),
+                  // if (expandedList[index].eventType == 'PTP')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+
+                  //       if (expandedList[index].eventAttr?.amountCollected !=
+                  //           null)
+                  //         CustomText(
+                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+
+                  //     ],
+                  //   ),
+                  // if (expandedList[index].eventAttr?.mode != null)
+                  //   CustomText(
+                  //     expandedList[index]
+                  //         .eventAttr!
+                  //         .mode
+                  //         .toString()
+                  //         .toUpperCase(),
+                  //     fontSize: FontSize.fourteen,
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // const SizedBox(height: 8),
+                  // if (expandedList[index].eventType == 'REPO')
+                  //   Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       if (expandedList[index].eventAttr?.customerName != null)
+                  //         CustomText(
+                  //           expandedList[index]
+                  //               .eventAttr!
+                  //               .customerName
+                  //               .toString(),
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.modelMake != null)
+                  //         CustomText(
+                  //           'Model Make: ${expandedList[index].eventAttr!.modelMake}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.registrationNo !=
+                  //           null)
+                  //         CustomText(
+                  //           'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //       if (expandedList[index].eventAttr?.chassisNo != null)
+                  //         CustomText(
+                  //           'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
+                  //           fontSize: FontSize.fourteen,
+                  //           fontWeight: FontWeight.w700,
+                  //           color: ColorResource.color000000,
+                  //         ),
+                  //     ],
+                  //   ),
+                  // CustomText(
+                  //   Languages.of(context)!
+                  //       .remarks
+                  //       .replaceAll('*', '')
+                  //       .toUpperCase(),
+                  //   fontSize: FontSize.fourteen,
+                  //   fontWeight: FontWeight.w700,
+                  //   color: ColorResource.color000000,
+                  // ),
+                  // CustomText(
+                  //   (expandedList[index].eventAttr?.remarks != null)
+                  //       ? expandedList[index].eventAttr!.remarks.toString()
+                  //       : (expandedList[index].eventAttr?.remarkOts != null)
+                  //           ? expandedList[index]
+                  //               .eventAttr!
+                  //               .remarkOts
+                  //               .toString()
+                  //           : '_',
+                  //   fontSize: FontSize.fourteen,
+                  //   fontWeight: FontWeight.w700,
+                  //   color: ColorResource.color000000,
+                  // ),
                   if (expandedList[index].eventAttr?.reginalText != null &&
                       expandedList[index].eventAttr?.translatedText != null &&
                       expandedList[index].eventAttr?.audioS3Path != null)
@@ -413,10 +484,10 @@ class _CustomEventDetailsBottomSheetState
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+      children: <Widget>[
         const SizedBox(height: 9),
         Row(
-          children: [
+          children: <Widget>[
             Container(
               decoration: const BoxDecoration(
                   color: ColorResource.color23375A,
@@ -430,8 +501,6 @@ class _CustomEventDetailsBottomSheetState
                   ),
                   child: CustomText(
                     Languages.of(context)!.remarksRecording,
-                    fontSize: FontSize.fourteen,
-                    fontWeight: FontWeight.w400,
                     color: ColorResource.colorFFFFFF,
                     lineHeight: 1,
                   ),
@@ -453,7 +522,7 @@ class _CustomEventDetailsBottomSheetState
                       ? CustomLoadingWidget(
                           radius: 11,
                           strokeWidth: 3.0,
-                          gradientColors: [
+                          gradientColors: <Color>[
                             ColorResource.colorFFFFFF,
                             ColorResource.colorFFFFFF.withOpacity(0.7),
                           ],
@@ -493,7 +562,6 @@ class _CustomEventDetailsBottomSheetState
         const SizedBox(height: 12),
         const CustomText(
           Constants.reginalText,
-          fontSize: FontSize.fourteen,
           fontWeight: FontWeight.w700,
           color: ColorResource.color000000,
         ),
@@ -507,15 +575,12 @@ class _CustomEventDetailsBottomSheetState
           child: CustomText(
             reginalText!,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontWeight: FontWeight.w400,
             lineHeight: 1,
           ),
         ),
         const SizedBox(height: 12),
         const CustomText(
           Constants.translatedText,
-          fontSize: FontSize.fourteen,
           fontWeight: FontWeight.w700,
           color: ColorResource.color000000,
         ),
@@ -529,8 +594,6 @@ class _CustomEventDetailsBottomSheetState
           child: CustomText(
             translatedText!,
             color: ColorResource.color000000,
-            fontSize: FontSize.fourteen,
-            fontWeight: FontWeight.w400,
             lineHeight: 1,
           ),
         ),

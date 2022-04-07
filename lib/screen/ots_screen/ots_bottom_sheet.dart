@@ -82,10 +82,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   late FocusNode otsProposedAmountFocusNode;
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool isSubmit = true;
-  List<File> uploadFileLists = [];
+  List<File> uploadFileLists = <File>[];
 
   String? isRecord;
   String translateText = '';
@@ -113,8 +113,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
@@ -122,7 +122,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           gravity: ToastGravity.CENTER,
         );
       } else {
-        uploadFileLists = result.paths.map((path) => File(path!)).toList();
+        uploadFileLists =
+            result.paths.map((String? path) => File(path!)).toList();
       }
     } else {
       AppUtils.showToast(
@@ -134,16 +135,17 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList =
+        <PaymentModeButtonModel>[
       PaymentModeButtonModel(Languages.of(context)!.cheque),
       PaymentModeButtonModel(Languages.of(context)!.cash),
       PaymentModeButtonModel(Languages.of(context)!.digital),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -170,7 +172,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SizedBox(
@@ -182,7 +184,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
+                    children: <Widget>[
                       BottomSheetAppbar(
                         title: widget.cardTitle,
                         padding: const EdgeInsets.symmetric(
@@ -194,7 +196,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                           config: KeyboardActionsConfig(
                             keyboardActionsPlatform:
                                 KeyboardActionsPlatform.IOS,
-                            actions: [
+                            actions: <KeyboardActionsItem>[
                               KeyboardActionsItem(
                                 focusNode: otsProposedAmountFocusNode,
                                 displayArrows: false,
@@ -216,7 +218,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       child: CustomReadOnlyTextField(
                                     Languages.of(context)!.otsProposedAmount,
                                     otsProposedAmountControlller,
-                                    validationRules: const ['required'],
+                                    validationRules: const <String>['required'],
                                     isLabel: true,
                                     focusNode: otsProposedAmountFocusNode,
                                     keyBoardType: TextInputType.number,
@@ -224,39 +226,40 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   )),
                                   const SizedBox(height: 17),
                                   Row(
-                                    children: [
+                                    children: <Widget>[
                                       Flexible(
                                           child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          CustomText(
-                                            Languages.of(context)!
-                                                .otsPaymentDate,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w400,
-                                            color: ColorResource.color666666,
-                                            fontStyle: FontStyle.normal,
-                                          ),
+                                        children: <Widget>[
+                                          // CustomText(
+                                          //   Languages.of(context)!
+                                          //       .otsPaymentDate,
+                                          //   fontSize: FontSize.twelve,
+                                          //   fontWeight: FontWeight.w400,
+                                          //   color: ColorResource.color666666,
+                                          //   fontStyle: FontStyle.normal,
+                                          // ),
                                           SizedBox(
                                             width: (MediaQuery.of(context)
                                                     .size
                                                     .width) /
                                                 2,
                                             child: CustomReadOnlyTextField(
-                                              '',
+                                              Languages.of(context)!
+                                                  .otsPaymentDate,
                                               otsPaymentDateControlller,
-                                              validationRules: const [
+                                              validationRules: const <String>[
                                                 'required'
                                               ],
                                               isReadOnly: true,
+                                              isLabel: true,
                                               onTapped: () =>
                                                   PickDateAndTimeUtils.pickDate(
-                                                      context,
-                                                      (newDate, followUpDate) {
+                                                      context, (String? newDate,
+                                                          String?
+                                                              followUpDate) {
                                                 if (newDate != null &&
                                                     followUpDate != null) {
                                                   setState(() {
@@ -284,11 +287,12 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       child: CustomReadOnlyTextField(
                                     Languages.of(context)!.remarks,
                                     remarksControlller,
-                                    validationRules: const ['required'],
+                                    validationRules: const <String>['required'],
                                     isLabel: true,
                                     isVoiceRecordWidget: true,
-                                    checkRecord:
-                                        (isRecord, text, returnS2Tdata) {
+                                    checkRecord: (String? isRecord,
+                                        String? text,
+                                        Speech2TextModel returnS2Tdata) {
                                       setState(() {
                                         this.returnS2Tdata = returnS2Tdata;
                                         this.isRecord = isRecord;
@@ -297,7 +301,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       });
                                     },
                                     isSubmit: isTranslate,
-                                    returnS2Tresponse: (val) {
+                                    returnS2Tresponse: (dynamic val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
                                           returnS2Tdata = val;
@@ -310,9 +314,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 15),
                                   CustomText(
                                     Languages.of(context)!.paymentMode,
-                                    fontSize: FontSize.fourteen,
                                     fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
                                     color: ColorResource.color101010,
                                   ),
                                   const SizedBox(height: 8),
@@ -341,11 +343,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(
-                                              children: [
+                                              children: <Widget>[
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.center,
-                                                  children: [
+                                                  children: <Widget>[
                                                     SvgPicture.asset(
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
@@ -356,8 +358,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                           .colorFFFFFF,
                                                       fontSize:
                                                           FontSize.sixteen,
-                                                      fontStyle:
-                                                          FontStyle.normal,
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       lineHeight: 1,
@@ -371,7 +371,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   color:
                                                       ColorResource.colorFFFFFF,
                                                   fontSize: FontSize.twelve,
-                                                  fontStyle: FontStyle.normal,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                                 const SizedBox(height: 5),
@@ -393,7 +392,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   height: MediaQuery.of(context).size.height * 0.1,
                   decoration: BoxDecoration(
                     color: ColorResource.colorFFFFFF,
-                    boxShadow: [
+                    boxShadow: <BoxShadow>[
                       BoxShadow(
                         color: ColorResource.color000000.withOpacity(.25),
                         blurRadius: 2.0,
@@ -407,7 +406,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                         horizontal: 20, vertical: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
+                      children: <Widget>[
                         Singleton.instance.startCalling ?? false
                             ? const SizedBox()
                             : Expanded(
@@ -434,14 +433,13 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                       : null,
                                   isLeading: !isSubmit,
                                   trailingWidget: CustomLoadingWidget(
-                                    gradientColors: [
+                                    gradientColors: <Color>[
                                       ColorResource.colorFFFFFF,
                                       ColorResource.colorFFFFFF
                                           .withOpacity(0.7),
                                     ],
                                   ),
                                   fontSize: FontSize.sixteen,
-                                  fontWeight: FontWeight.w600,
                                   onTap: isSubmit
                                       ? () => submitOTSEvent(true)
                                       : () {},
@@ -459,13 +457,12 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                 : null,
                             isLeading: !isSubmit,
                             trailingWidget: CustomLoadingWidget(
-                              gradientColors: [
+                              gradientColors: <Color>[
                                 ColorResource.colorFFFFFF,
                                 ColorResource.colorFFFFFF.withOpacity(0.7),
                               ],
                             ),
                             fontSize: FontSize.sixteen,
-                            fontWeight: FontWeight.w600,
                             onTap:
                                 isSubmit ? () => submitOTSEvent(false) : () {},
                             cardShape: 5,
@@ -506,7 +503,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                         ? widget.callId
                         : widget.paramValue['callId'],
                     context: context)
-                .then((value) {
+                .then((bool value) {
               isNotAutoCalling = value;
             });
           }
@@ -523,20 +520,19 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             );
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
-              Position res = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best);
+              final Position res = await Geolocator.getCurrentPosition();
               setState(() {
                 position = res;
               });
             }
-            var requestBodyData = OtsPostModel(
+            final OtsPostModel requestBodyData = OtsPostModel(
               eventId: ConstantEventValues.otsEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)
                       ? 'TC : OTS'
                       : 'OTS',
               caseId: widget.caseId,
-              imageLocation: [''],
+              imageLocation: <String>[''],
               eventAttr: OTSEventAttr(
                 date: otsPaymentDateControlller.text,
                 remarkOts: remarksControlller.text,
@@ -574,14 +570,15 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
-            List<dynamic> value = [];
-            for (var element in uploadFileLists) {
+            final List<dynamic> value = <dynamic>[];
+            for (File element in uploadFileLists) {
               value.add(await MultipartFile.fromFile(element.path.toString()));
             }
-            postdata.addAll({
+            postdata.addAll(<String, dynamic>{
               'files': value,
             });
-            Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+            final Map<String, dynamic> firebaseObject =
+                requestBodyData.toJson();
             try {
               firebaseObject.addAll(
                   FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
@@ -592,11 +589,13 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots,bloc: widget.bloc);
+                selectedClipValue: Constants.ots,
+                bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.upload,
                 HttpUrl.otsPostUrl,
                 formDatas: FormData.fromMap(postdata),
@@ -648,8 +647,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (PaymentModeButtonModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           setState(() {
@@ -663,7 +662,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               color: element.title == selectedPaymentModeButton
                   ? ColorResource.color23375A
                   : ColorResource.colorBEC4CF,
-              boxShadow: [
+              boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
@@ -674,7 +673,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
-              children: [
+              children: <Widget>[
                 CircleAvatar(
                   radius: 19,
                   backgroundColor: ColorResource.colorFFFFFF,
@@ -690,7 +689,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

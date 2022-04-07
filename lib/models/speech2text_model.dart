@@ -1,8 +1,4 @@
 class Speech2TextModel {
-  int? status;
-  String? message;
-  Result? result;
-
   Speech2TextModel({this.status, this.message, this.result});
 
   Speech2TextModel.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,9 @@ class Speech2TextModel {
     message = json['message'];
     result = json['result'] != null ? Result.fromJson(json['result']) : null;
   }
+  int? status;
+  String? message;
+  Result? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -23,10 +22,6 @@ class Speech2TextModel {
 }
 
 class Result {
-  String? reginalText;
-  String? translatedText;
-  String? audioS3Path;
-
   Result({
     this.reginalText,
     this.translatedText,
@@ -38,6 +33,9 @@ class Result {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  String? reginalText;
+  String? translatedText;
+  String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

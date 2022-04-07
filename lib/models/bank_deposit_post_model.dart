@@ -1,9 +1,4 @@
 class BankDepositPostModel {
-  late List<String> caseIds;
-  late Deposition deposition;
-  late String contractor;
-  // late CaseIds caseIDs;
-
   BankDepositPostModel({
     required this.caseIds,
     required this.deposition,
@@ -12,13 +7,18 @@ class BankDepositPostModel {
   });
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
-    caseIds = json['caseIds'].forEach((v) {
+    caseIds = json['caseIds'].forEach((dynamic v) {
       caseIds.add(v);
     });
     deposition = json['deposition'];
     contractor = json['contractor'];
     // caseIDs = json['caseIDs'];
   }
+
+  late List<String> caseIds;
+  late Deposition deposition;
+  late String contractor;
+  // late CaseIds caseIDs;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -31,18 +31,6 @@ class BankDepositPostModel {
 }
 
 class Deposition {
-  late String bankName;
-  late String bankBranch;
-  late String ifscCode;
-  late String accNumber;
-  late String recptAmount;
-  late String deptAmount;
-  late String reference;
-  List<String>? imageLocation;
-  late String mode;
-  late String depositDate;
-  late String status;
-
   Deposition({
     required this.bankName,
     required this.bankBranch,
@@ -70,6 +58,18 @@ class Deposition {
     depositDate = json['depositDate'];
     status = json['status'];
   }
+
+  late String bankName;
+  late String bankBranch;
+  late String ifscCode;
+  late String accNumber;
+  late String recptAmount;
+  late String deptAmount;
+  late String reference;
+  List<String>? imageLocation;
+  late String mode;
+  late String depositDate;
+  late String status;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

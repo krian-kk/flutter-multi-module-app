@@ -1,21 +1,4 @@
 class DenialPostModel {
-  late int eventId;
-  late String eventType;
-  late String caseId;
-  late String eventCode;
-  late EventAttr eventAttr;
-  late Contact contact;
-  late String createdBy;
-  late String agentName;
-  late String contractor;
-  late String eventModule;
-  late String agrRef;
-  late String? callID;
-  late String? callingID;
-  late String callerServiceID;
-  late String voiceCallEventCode;
-  late bool? invalidNumber;
-
   DenialPostModel({
     required this.eventId,
     required this.eventType,
@@ -53,6 +36,22 @@ class DenialPostModel {
     voiceCallEventCode = json['voiceCallEventCode'];
     invalidNumber = json['invalidNumber'];
   }
+  late int eventId;
+  late String eventType;
+  late String caseId;
+  late String eventCode;
+  late EventAttr eventAttr;
+  late Contact contact;
+  late String createdBy;
+  late String agentName;
+  late String contractor;
+  late String eventModule;
+  late String agrRef;
+  late String? callID;
+  late String? callingID;
+  late String callerServiceID;
+  late String voiceCallEventCode;
+  late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -77,17 +76,6 @@ class DenialPostModel {
 }
 
 class EventAttr {
-  late String actionDate;
-  late String? reasons;
-  late String remarks;
-  late String amountDenied;
-  late String followUpPriority;
-  late double latitude;
-  late double longitude;
-  late String? reginalText;
-  late String? translatedText;
-  late String? audioS3Path;
-
   EventAttr({
     required this.actionDate,
     this.reasons,
@@ -113,6 +101,16 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+  late String actionDate;
+  late String? reasons;
+  late String remarks;
+  late String amountDenied;
+  late String followUpPriority;
+  late double latitude;
+  late double longitude;
+  late String? reginalText;
+  late String? translatedText;
+  late String? audioS3Path;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -132,38 +130,32 @@ class EventAttr {
   }
 }
 
-class AgentLocation {
-  late double latitude;
-  late double longitude;
-  late String missingAgentLocation;
+// class AgentLocation {
+//   late double latitude;
+//   late double longitude;
+//   late String missingAgentLocation;
 
-  AgentLocation(
-      {this.latitude = 0,
-      this.longitude = 0,
-      this.missingAgentLocation = 'true'});
+//   AgentLocation(
+//       {this.latitude = 0,
+//       this.longitude = 0,
+//       this.missingAgentLocation = 'true'});
 
-  AgentLocation.fromJson(Map<String, dynamic> json) {
-    latitude = json['latitude'];
-    longitude = json['longitude'];
-    missingAgentLocation = json['missingAgentLocation'];
-  }
+//   AgentLocation.fromJson(Map<String, dynamic> json) {
+//     latitude = json['latitude'];
+//     longitude = json['longitude'];
+//     missingAgentLocation = json['missingAgentLocation'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['latitude'] = latitude;
-    data['longitude'] = longitude;
-    data['missingAgentLocation'] = missingAgentLocation;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['latitude'] = latitude;
+//     data['longitude'] = longitude;
+//     data['missingAgentLocation'] = missingAgentLocation;
+//     return data;
+//   }
+// }
 
 class Contact {
-  late String cType;
-  late String health;
-  late String value;
-  late String resAddressId0;
-  late String contactId0;
-
   Contact(
       {required this.cType,
       required this.health,
@@ -178,6 +170,11 @@ class Contact {
     resAddressId0 = json['resAddressId_0'];
     contactId0 = json['contactId_0'];
   }
+  late String cType;
+  late String health;
+  late String value;
+  late String resAddressId0;
+  late String contactId0;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

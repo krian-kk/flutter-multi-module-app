@@ -41,12 +41,11 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
-  final dynamic paramValues;
-  final AllocationBloc allocationBloc;
-
   const CaseDetailsScreen(
       {Key? key, this.paramValues, required this.allocationBloc})
       : super(key: key);
+  final dynamic paramValues;
+  final AllocationBloc allocationBloc;
 
   @override
   _CaseDetailsScreenState createState() => _CaseDetailsScreenState();
@@ -54,7 +53,7 @@ class CaseDetailsScreen extends StatefulWidget {
 
 class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   late CaseDetailsBloc bloc;
-  late StreamSubscription subscription;
+  late StreamSubscription<dynamic> subscription;
 
   @override
   void initState() {
@@ -70,7 +69,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       onWillPop: () {
         Navigator.pop(
           context,
-          {
+          <String, dynamic>{
             'isSubmit': bloc.isEventSubmited,
             'caseId': bloc.caseId!,
             'isSubmitForMyVisit': bloc.isSubmitedForMyVisits,
@@ -85,13 +84,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             'followUpDate': bloc.changeFollowUpDate,
           },
         );
-        return Future(() => false);
+        return Future<bool>(() => false);
       },
       child: Scaffold(
         backgroundColor: ColorResource.colorF7F8FA,
         body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
-          listener: (context, state) {
+          listener: (BuildContext context, CaseDetailsState state) {
             if (state is PostDataApiSuccessState) {
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
@@ -157,25 +156,25 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           },
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
             bloc: bloc,
-            builder: (context, state) {
+            builder: (BuildContext context, CaseDetailsState state) {
               if (state is CaseDetailsLoadingState) {
                 return const CustomLoadingWidget();
               } else {
                 return Scaffold(
                   backgroundColor: ColorResource.colorF7F8FA,
                   body: Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: CustomAppbar(
                           titleString: Languages.of(context)!.caseDetials,
                           titleSpacing: 10,
                           iconEnumValues: IconEnum.back,
-                          onItemSelected: (value) {
+                          onItemSelected: (dynamic value) {
                             if (value == 'IconEnum.back') {
                               Navigator.pop(
                                 context,
-                                {
+                                <String, dynamic>{
                                   'isSubmit': bloc.isEventSubmited,
                                   'caseId': bloc.caseId!,
                                   'isSubmitForMyVisit':
@@ -204,7 +203,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               child: Center(
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: <Widget>[
                                     CustomText(
                                         bloc.noInternetAndServerErrorMsg!),
                                     const SizedBox(
@@ -228,13 +227,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           20.0, 0, 20, 20),
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: [
+                                        children: <Widget>[
                                           Stack(
-                                            children: [
+                                            children: <Widget>[
                                               Align(
                                                 alignment:
                                                     Alignment.bottomCenter,
@@ -341,7 +338,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ),
                                           const SizedBox(height: 16),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               Flexible(
                                                 child: SizedBox(
                                                   child:
@@ -370,7 +367,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           ),
                                           const SizedBox(height: 16),
                                           Row(
-                                            children: [
+                                            children: <Widget>[
                                               Flexible(
                                                 child: CustomReadOnlyTextField(
                                                   Languages.of(context)!
@@ -392,34 +389,183 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ),
                                             ],
                                           ),
-                                          const SizedBox(height: 15),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
-                                            Languages.of(context)!.bankName,
+                                            Languages.of(context)!
+                                                .bankName
+                                                .replaceAll('*', ''),
                                             bloc.bankNameController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.product,
                                             bloc.productController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
-                                          const SizedBox(height: 17),
+                                          const SizedBox(height: 16),
                                           CustomReadOnlyTextField(
                                             Languages.of(context)!.batchNo,
                                             bloc.batchNoController,
                                             isLabel: true,
                                             isEnable: false,
                                           ),
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+
+                                          // ), // Extra text field
+                                          const SizedBox(
+                                            height: 50,
+                                          ),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .dateOfLoanDisbursement,
+                                              controller: bloc
+                                                  .dateOfLoanDisbursementController),
+                                          extraTextField(
+                                              title: Languages.of(context)!.tos,
+                                              controller: bloc.tosController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .emiAmount,
+                                              controller:
+                                                  bloc.emiAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .noOfPendingEMI,
+                                              controller: bloc
+                                                  .noOfPendingEmiController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .penaltyAmount,
+                                              controller:
+                                                  bloc.penaltyAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .odInterest,
+                                              controller:
+                                                  bloc.odInterestController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .assetDetails,
+                                              controller:
+                                                  bloc.assetDetailsController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .coLender,
+                                              controller:
+                                                  bloc.coLenderController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .employerBusinessEntity,
+                                              controller: bloc
+                                                  .employerBussinessEntityController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastPaymentDate,
+                                              controller: bloc
+                                                  .lastPaymentDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .sourcingRmName,
+                                              controller: bloc
+                                                  .sourcingRmnameController),
+
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastPaidAmount,
+                                              controller: bloc
+                                                  .lastPaidAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .riskRanking,
+                                              controller:
+                                                  bloc.riskRankingController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .reviewFlag,
+                                              controller:
+                                                  bloc.reviewFlagController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .location,
+                                              controller:
+                                                  bloc.locationController),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.agency,
+                                              controller:
+                                                  bloc.agencyController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .customerID,
+                                              controller:
+                                                  bloc.customerIdController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .minDueAmount,
+                                              controller:
+                                                  bloc.minDueAmountController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .cardOutstanding,
+                                              controller: bloc
+                                                  .cardOutstandingController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .statementDate,
+                                              controller:
+                                                  bloc.statementDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .dueDate,
+                                              controller:
+                                                  bloc.dueDateController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .cardStatus,
+                                              controller:
+                                                  bloc.cardStatusController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .lastBilledAmount,
+                                              controller: bloc
+                                                  .lastBilledAmountController),
+
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .chassisNo,
+                                              controller:
+                                                  bloc.chassisNumberController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .modelMake,
+                                              controller:
+                                                  bloc.modelMakeController),
+                                          extraTextField(
+                                              title: Languages.of(context)!
+                                                  .riskBucket,
+                                              controller:
+                                                  bloc.riskBucketController),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.ref1,
+                                              controller:
+                                                  bloc.reference1Controller),
+                                          extraTextField(
+                                              title:
+                                                  Languages.of(context)!.ref2,
+                                              controller:
+                                                  bloc.reference2Controller),
                                           const SizedBox(height: 23),
                                           CustomText(
                                             Languages.of(context)!
                                                 .repaymentInfo,
                                             fontSize: FontSize.sixteen,
                                             fontWeight: FontWeight.w700,
-                                            fontStyle: FontStyle.normal,
                                           ),
                                           const SizedBox(height: 5),
                                           Container(
@@ -438,7 +584,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
-                                              children: [
+                                              children: <Widget>[
                                                 Container(
                                                   margin:
                                                       const EdgeInsets.all(6.0),
@@ -462,16 +608,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       crossAxisAlignment:
                                                           CrossAxisAlignment
                                                               .start,
-                                                      children: [
+                                                      children: <Widget>[
                                                         CustomText(
                                                           Languages.of(context)!
                                                               .beneficiaryDetails,
-                                                          fontWeight:
-                                                              FontWeight.w400,
                                                           fontSize:
                                                               FontSize.twelve,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                           color: ColorResource
                                                               .color666666,
                                                         ),
@@ -489,10 +631,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               FontWeight.w700,
                                                           color: ColorResource
                                                               .color333333,
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                         ),
                                                         const SizedBox(
                                                             height: 7),
@@ -508,10 +646,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                               FontWeight.w700,
                                                           color: ColorResource
                                                               .color333333,
-                                                          fontSize:
-                                                              FontSize.fourteen,
-                                                          fontStyle:
-                                                              FontStyle.normal,
                                                         ),
                                                       ],
                                                     ),
@@ -528,16 +662,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
                                                             .start,
-                                                    children: [
+                                                    children: <Widget>[
                                                       CustomText(
                                                         Languages.of(context)!
                                                             .repaymentBankName,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -550,10 +680,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.repayBankName ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -566,10 +692,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             .referenceLender,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -582,10 +704,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.refLender ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -598,10 +716,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             .referenceUrl,
                                                         fontSize:
                                                             FontSize.twelve,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color666666,
                                                       ),
@@ -614,10 +728,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 ?.repaymentInfo
                                                                 ?.refUrl ??
                                                             '-',
-                                                        fontSize:
-                                                            FontSize.fourteen,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: ColorResource
@@ -629,7 +739,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
-                                                        children: [
+                                                        children: <Widget>[
                                                           Singleton
                                                                       .instance
                                                                       .contractorInformations
@@ -668,28 +778,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                               context,
                                                                               type: Constants.repaymentInfoType));
                                                                         }
-                                                                        // DialogUtils.showDialog(
-                                                                        //     buildContext: context,
-                                                                        //     title: Languages.of(context)!.reciptsAlertMesg,
-                                                                        //     description: '',
-                                                                        //     okBtnText: Languages.of(context)!.submit.toUpperCase(),
-                                                                        //     cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                                                                        //     okBtnFunction: (val) async {
-                                                                        //       //  bloc
-                                                                        //       //     .isSendSMSloading
-                                                                        //       // ? const CustomLoadingWidget(
-                                                                        //       //     radius:
-                                                                        //       //         12,
-                                                                        //       //     strokeWidth:
-                                                                        //       //         2,
-                                                                        //       //   )
-                                                                        //       // :
-                                                                        //       if (!bloc
-                                                                        //           .isSendSMSloading) {
-                                                                        //         bloc.add(SendSMSEvent(context,
-                                                                        //             type: Constants.repaymentInfoType));
-                                                                        //       }
-                                                                        //     });
                                                                       },
                                                                       child:
                                                                           Container(
@@ -704,15 +792,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                               ColorResource.color23375A,
                                                                           borderRadius:
                                                                               BorderRadius.circular(8),
-                                                                          border: Border.all(
-                                                                              color: ColorResource.colorECECEC,
-                                                                              width: 1.0),
+                                                                          border:
+                                                                              Border.all(color: ColorResource.colorECECEC),
                                                                         ),
                                                                         child:
                                                                             Row(
                                                                           mainAxisSize:
                                                                               MainAxisSize.min,
-                                                                          children: [
+                                                                          children: <
+                                                                              Widget>[
                                                                             SvgPicture.asset(ImageResource.sms),
                                                                             const SizedBox(width: 7),
                                                                             CustomText(Languages.of(context)!.sendSMS,
@@ -774,7 +862,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                             borderRadius:
                                                                                 BorderRadius.circular(8),
                                                                             border:
-                                                                                Border.all(color: ColorResource.colorECECEC, width: 1.0),
+                                                                                Border.all(color: ColorResource.colorECECEC),
                                                                           ),
                                                                           child: CustomText(
                                                                               Languages.of(context)!.generatePaymentLink,
@@ -799,7 +887,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             Languages.of(context)!.otherLoanOf,
                                             color: ColorResource.color101010,
                                             fontSize: FontSize.sixteen,
-                                            fontStyle: FontStyle.normal,
                                             fontWeight: FontWeight.w700,
                                           ),
                                           ListView.builder(
@@ -819,12 +906,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 return Column(
                                                   mainAxisSize:
                                                       MainAxisSize.min,
-                                                  children: [
+                                                  children: <Widget>[
                                                     const SizedBox(height: 10),
                                                     GestureDetector(
                                                       onTap: () => bloc.add(
                                                           ClickPushAndPOPCaseDetailsEvent(
-                                                              paramValues: {
+                                                              paramValues: <
+                                                                  String,
+                                                                  dynamic>{
                                                             'caseID': bloc
                                                                 .caseDetailsAPIValue
                                                                 .result
@@ -836,7 +925,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       child: Container(
                                                         width: double.infinity,
                                                         decoration: BoxDecoration(
-                                                            boxShadow: [
+                                                            boxShadow: <
+                                                                BoxShadow>[
                                                               BoxShadow(
                                                                 color: ColorResource
                                                                     .color000000
@@ -874,22 +964,43 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                             crossAxisAlignment:
                                                                 CrossAxisAlignment
                                                                     .start,
-                                                            children: [
+                                                            children: <Widget>[
                                                               CustomText(
                                                                 Languages.of(
-                                                                        context)!
-                                                                    .accountNo,
+                                                                            context)!
+                                                                        .bankName
+                                                                        .replaceAll(
+                                                                            '*',
+                                                                            '') +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .bankName!,
                                                                 color: ColorResource
                                                                     .color666666,
                                                                 fontSize:
                                                                     FontSize
                                                                         .twelve,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                              ),
+                                                              CustomText(
+                                                                Languages.of(
+                                                                            context)!
+                                                                        .accountNo +
+                                                                    ': ' +
+                                                                    bloc
+                                                                        .caseDetailsAPIValue
+                                                                        .result!
+                                                                        .otherLoanDetails![
+                                                                            index]
+                                                                        .accNo!,
+                                                                color: ColorResource
+                                                                    .color666666,
+                                                                fontSize:
+                                                                    FontSize
+                                                                        .twelve,
                                                               ),
                                                               const SizedBox(
                                                                   height: 5),
@@ -911,11 +1022,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                     : '_',
                                                                 color: ColorResource
                                                                     .color333333,
-                                                                fontSize: FontSize
-                                                                    .fourteen,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w700,
@@ -931,12 +1037,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 fontSize:
                                                                     FontSize
                                                                         .twelve,
-                                                                fontStyle:
-                                                                    FontStyle
-                                                                        .normal,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
                                                               ),
                                                               const SizedBox(
                                                                   height: 5),
@@ -944,7 +1044,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                 mainAxisAlignment:
                                                                     MainAxisAlignment
                                                                         .spaceBetween,
-                                                                children: [
+                                                                children: <
+                                                                    Widget>[
                                                                   CustomText(
                                                                     bloc
                                                                             .caseDetailsAPIValue
@@ -955,27 +1056,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                                         '_',
                                                                     color: ColorResource
                                                                         .color333333,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .fourteen,
-                                                                    fontStyle:
-                                                                        FontStyle
-                                                                            .normal,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w700,
                                                                   ),
                                                                   Row(
-                                                                    children: [
+                                                                    children: <
+                                                                        Widget>[
                                                                       CustomText(
                                                                         Languages.of(context)!
                                                                             .view,
                                                                         color: ColorResource
                                                                             .color23375A,
-                                                                        fontSize:
-                                                                            FontSize.fourteen,
-                                                                        fontStyle:
-                                                                            FontStyle.normal,
                                                                         fontWeight:
                                                                             FontWeight.w700,
                                                                       ),
@@ -1008,7 +1100,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       : Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Container(
                               width: double.infinity,
                               decoration: const BoxDecoration(
@@ -1019,16 +1111,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(21.0),
                                 child: Align(
-                                  alignment: Alignment.center,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
+                                    children: <Widget>[
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
                                               onTap: () => bloc.add(
                                                   EventDetailsEvent(
                                                       Constants.addressDetails,
-                                                      const [],
+                                                      const <dynamic>[],
                                                       false)),
                                               child: Container(
                                                 height: 50,
@@ -1052,7 +1143,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       horizontal: 10.0,
                                                       vertical: 5.0),
                                                   child: Row(
-                                                    children: [
+                                                    children: <Widget>[
                                                       CircleAvatar(
                                                         backgroundColor:
                                                             ColorResource
@@ -1078,8 +1169,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                         lineHeight: 1,
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontStyle:
-                                                            FontStyle.normal,
                                                         color: ColorResource
                                                             .color23375A,
                                                       ))
@@ -1096,7 +1185,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       GestureDetector(
                                         onTap: () => bloc.add(EventDetailsEvent(
                                             Constants.callDetails,
-                                            const [],
+                                            const <dynamic>[],
                                             true)),
                                         child: Container(
                                           height: 50,
@@ -1118,7 +1207,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 horizontal: 10.0,
                                                 vertical: 5.0),
                                             child: Row(
-                                              children: [
+                                              children: <Widget>[
                                                 CircleAvatar(
                                                   backgroundColor:
                                                       ColorResource.color23375A,
@@ -1138,7 +1227,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   fontSize: FontSize.twelve,
                                                   fontWeight: FontWeight.w700,
                                                   lineHeight: 1,
-                                                  fontStyle: FontStyle.normal,
                                                   color:
                                                       ColorResource.color23375A,
                                                 ))
@@ -1161,6 +1249,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         ),
       ),
     );
+  }
+
+  Widget extraTextField(
+      {required String title, required TextEditingController controller}) {
+    return controller.text != '-'
+        ? Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: CustomReadOnlyTextField(
+              title,
+              controller,
+              isLabel: true,
+              isEnable: false,
+            ),
+          )
+        : const SizedBox();
   }
 
   void phoneBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc, int i,
@@ -1193,8 +1296,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         });
   }
 
-  openBottomSheet(
-      BuildContext buildContext, String cardTitle, List list, bool? isCall,
+  openBottomSheet(BuildContext buildContext, String cardTitle,
+      List<dynamic> list, bool? isCall,
       {String? health,
       String? selectedContact,
       required bool isCallFromCallDetails,
@@ -1406,8 +1509,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           case Constants.callDetails:
             return CallDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callCustomer:
-            List<String> s1 = [];
-            bloc.caseDetailsAPIValue.result?.callDetails?.forEach((element) {
+            final List<String> s1 = <String>[];
+            bloc.caseDetailsAPIValue.result?.callDetails
+                ?.forEach((dynamic element) {
               if (element['cType'].contains('mobile')) {
                 if (!(s1.contains(element['value']))) {
                   s1.add(element['value']);
@@ -1431,7 +1535,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   ? bloc.caseId!
                   : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
               custName:
-                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? "",
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: selectedContact,
               isCallFromCallDetails: isCallFromCallDetails,
@@ -1454,7 +1558,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 height: MediaQuery.of(context).size.height * 0.89,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: const <Widget>[
                     BottomSheetAppbar(
                         title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
                     Expanded(child: CustomLoadingWidget()),

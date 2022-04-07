@@ -88,7 +88,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
   String selectedPaymentModeButton = '';
 
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -123,16 +123,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    List<PaymentModeButtonModel> paymentModeButtonList = [
+    final List<PaymentModeButtonModel> paymentModeButtonList =
+        <PaymentModeButtonModel>[
       PaymentModeButtonModel(Languages.of(context)!.pickUp),
       PaymentModeButtonModel(Languages.of(context)!.selfPay),
     ];
 
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
           setState(() {
             switch (data.tabIndex) {
@@ -159,7 +160,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -167,7 +168,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               backgroundColor: Colors.transparent,
               body: Column(
                 mainAxisSize: MainAxisSize.min,
-                children: [
+                children: <Widget>[
                   BottomSheetAppbar(
                     title: widget.cardTitle,
                     padding:
@@ -178,7 +179,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     child: KeyboardActions(
                       config: KeyboardActionsConfig(
                         keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                        actions: [
+                        actions: <KeyboardActionsItem>[
                           KeyboardActionsItem(
                             focusNode: ptpAmountFocusNode,
                             displayArrows: false,
@@ -196,105 +197,165 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               children: <Widget>[
                                 widget.customerLoanUserWidget,
                                 const SizedBox(height: 11),
+                                // Row(
+                                //   children: [
+                                //     Flexible(
+                                //         child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.start,
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       mainAxisSize: MainAxisSize.min,
+                                //       children: [
+                                //         // CustomText(
+                                //         //   Languages.of(context)!.ptpDate,
+                                //         //   fontSize: FontSize.twelve,
+                                //         //   fontWeight: FontWeight.w400,
+                                //         //   color: ColorResource.color666666,
+                                //         //   fontStyle: FontStyle.normal,
+                                //         // ),
+                                //         SizedBox(
+                                //           width: (MediaQuery.of(context)
+                                //                   .size
+                                //                   .width) /
+                                //               2,
+                                //           child: CustomReadOnlyTextField(
+                                //             // Languages.of(context)!.ptpDate,
+                                //             Languages.of(context)!.ptpDate,
+                                //             ptpDateControlller,
+                                //             // isLabel: true,
+                                //             isReadOnly: true,
+                                //             validationRules: const ['required'],
+                                //             onTapped: () =>
+                                //                 PickDateAndTimeUtils.pickDate(
+                                //                     context,
+                                //                     (newDate, followUpDate) {
+                                //               if (newDate != null &&
+                                //                   followUpDate != null) {
+                                //                 setState(() {
+                                //                   ptpDateControlller.text =
+                                //                       newDate;
+                                //                 });
+                                //                 widget.bloc.add(
+                                //                     ChangeFollowUpDateEvent(
+                                //                         followUpDate:
+                                //                             followUpDate));
+                                //               }
+                                //             }),
+                                //             suffixWidget: SvgPicture.asset(
+                                //               ImageResource.calendar,
+                                //               fit: BoxFit.scaleDown,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     )),
+                                //     const SizedBox(width: 7),
+                                //     Flexible(
+                                //         child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.start,
+                                //       crossAxisAlignment:
+                                //           CrossAxisAlignment.start,
+                                //       mainAxisSize: MainAxisSize.min,
+                                //       children: [
+                                //         // CustomText(
+                                //         //   Languages.of(context)!.ptpTime,
+                                //         //   fontSize: FontSize.twelve,
+                                //         //   fontWeight: FontWeight.w400,
+                                //         //   color: ColorResource.color666666,
+                                //         //   fontStyle: FontStyle.normal,
+                                //         // ),
+                                //         SizedBox(
+                                //           width: (MediaQuery.of(context)
+                                //                   .size
+                                //                   .width) /
+                                //               2,
+                                //           child: CustomReadOnlyTextField(
+                                //             // Languages.of(context)!.ptpTime,
+                                //             Languages.of(context)!.ptpTime,
+                                //             ptpTimeControlller,
+                                //             // isLabel: true,
+                                //             validatorCallBack: () {},
+                                //             isReadOnly: true,
+                                //             isLabel: true,
+                                //             validationRules: const ['required'],
+                                //             onTapped: () =>
+                                //                 PickDateAndTimeUtils.pickTime(
+                                //                     context, (newTime) {
+                                //               if (newTime != null) {
+                                //                 setState(() {
+                                //                   ptpTimeControlller.text =
+                                //                       newTime;
+                                //                 });
+                                //               }
+                                //             }),
+                                //             suffixWidget: SvgPicture.asset(
+                                //               ImageResource.clock,
+                                //               fit: BoxFit.scaleDown,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     )),
+                                //   ],
+                                // ),
                                 Row(
-                                  children: [
+                                  children: <Widget>[
                                     Flexible(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!.ptpDate,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
+                                      child: CustomReadOnlyTextField(
+                                        Languages.of(context)!.ptpDate,
+                                        ptpDateControlller,
+                                        isLabel: true,
+                                        isReadOnly: true,
+                                        validationRules: const <String>[
+                                          'required'
+                                        ],
+                                        onTapped: () =>
+                                            PickDateAndTimeUtils.pickDate(
+                                                context, (String? newDate,
+                                                    String? followUpDate) {
+                                          if (newDate != null &&
+                                              followUpDate != null) {
+                                            setState(() {
+                                              ptpDateControlller.text = newDate;
+                                            });
+                                            widget.bloc.add(
+                                                ChangeFollowUpDateEvent(
+                                                    followUpDate:
+                                                        followUpDate));
+                                          }
+                                        }),
+                                        suffixWidget: SvgPicture.asset(
+                                          ImageResource.calendar,
+                                          fit: BoxFit.scaleDown,
                                         ),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) /
-                                              2,
-                                          child: CustomReadOnlyTextField(
-                                            // Languages.of(context)!.ptpDate,
-                                            '',
-                                            ptpDateControlller,
-                                            // isLabel: true,
-                                            isReadOnly: true,
-                                            validationRules: const ['required'],
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickDate(
-                                                    context,
-                                                    (newDate, followUpDate) {
-                                              if (newDate != null &&
-                                                  followUpDate != null) {
-                                                setState(() {
-                                                  ptpDateControlller.text =
-                                                      newDate;
-                                                });
-                                                widget.bloc.add(
-                                                    ChangeFollowUpDateEvent(
-                                                        followUpDate:
-                                                            followUpDate));
-                                              }
-                                            }),
-                                            suffixWidget: SvgPicture.asset(
-                                              ImageResource.calendar,
-                                              fit: BoxFit.scaleDown,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
+                                      ),
+                                    ),
                                     const SizedBox(width: 7),
                                     Flexible(
-                                        child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        CustomText(
-                                          Languages.of(context)!.ptpTime,
-                                          fontSize: FontSize.twelve,
-                                          fontWeight: FontWeight.w400,
-                                          color: ColorResource.color666666,
-                                          fontStyle: FontStyle.normal,
-                                        ),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context)
-                                                  .size
-                                                  .width) /
-                                              2,
-                                          child: CustomReadOnlyTextField(
-                                            // Languages.of(context)!.ptpTime,
-                                            '',
-                                            ptpTimeControlller,
-                                            // isLabel: true,
-                                            validatorCallBack: () {},
-                                            isReadOnly: true,
-                                            validationRules: const ['required'],
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickTime(
-                                                    context, (newTime) {
-                                              if (newTime != null) {
-                                                setState(() {
-                                                  ptpTimeControlller.text =
-                                                      newTime;
-                                                });
-                                              }
-                                            }),
-                                            suffixWidget: SvgPicture.asset(
-                                              ImageResource.clock,
-                                              fit: BoxFit.scaleDown,
-                                            ),
-                                          ),
-                                        ),
+                                        child: CustomReadOnlyTextField(
+                                      Languages.of(context)!.ptpTime,
+                                      ptpTimeControlller,
+                                      validatorCallBack: () {},
+                                      isReadOnly: true,
+                                      isLabel: true,
+                                      validationRules: const <String>[
+                                        'required'
                                       ],
+                                      onTapped: () =>
+                                          PickDateAndTimeUtils.pickTime(context,
+                                              (String? newTime) {
+                                        if (newTime != null) {
+                                          setState(() {
+                                            ptpTimeControlller.text = newTime;
+                                          });
+                                        }
+                                      }),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.clock,
+                                        fit: BoxFit.scaleDown,
+                                      ),
                                     )),
                                   ],
                                 ),
@@ -306,7 +367,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   focusNode: ptpAmountFocusNode,
                                   validatorCallBack: () {},
                                   keyBoardType: TextInputType.number,
-                                  validationRules: const ['required'],
+                                  validationRules: const <String>['required'],
                                   lableStyle: const TextStyle(
                                       color: ColorResource.color666666,
                                       fontFamily: 'Lato',
@@ -323,9 +384,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 const SizedBox(height: 15),
                                 CustomText(
                                   Languages.of(context)!.paymentMode,
-                                  fontSize: FontSize.fourteen,
                                   fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color101010,
                                 ),
                                 const SizedBox(height: 8),
@@ -355,11 +414,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     Languages.of(context)!.remarks,
                                     remarksControlller,
                                     focusNode: ptpRemarksFocusNode,
-                                    validationRules: const ['required'],
+                                    validationRules: const <String>['required'],
                                     isLabel: true,
                                     isVoiceRecordWidget: true,
-                                    checkRecord:
-                                        (isRecord, text, returnS2Tdata) {
+                                    checkRecord: (String? isRecord,
+                                        String? text,
+                                        Speech2TextModel returnS2Tdata) {
                                       setState(() {
                                         this.returnS2Tdata = returnS2Tdata;
                                         this.isRecord = isRecord;
@@ -368,7 +428,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                       });
                                     },
                                     isSubmit: isTranslate,
-                                    returnS2Tresponse: (val) {
+                                    returnS2Tresponse: (dynamic val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
                                           returnS2Tdata = val;
@@ -395,7 +455,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -409,7 +469,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Singleton.instance.startCalling ?? false
                           ? const SizedBox()
                           : Expanded(
@@ -436,13 +496,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
-                                  gradientColors: [
+                                  gradientColors: <Color>[
                                     ColorResource.colorFFFFFF,
                                     ColorResource.colorFFFFFF.withOpacity(0.7),
                                   ],
                                 ),
                                 fontSize: FontSize.sixteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: isSubmit
                                     ? () => submitPTPEvent(true)
                                     : () {},
@@ -460,13 +519,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
-                            gradientColors: [
+                            gradientColors: <Color>[
                               ColorResource.colorFFFFFF,
                               ColorResource.colorFFFFFF.withOpacity(0.7),
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit ? () => submitPTPEvent(false) : () {},
                           cardShape: 5,
                         ),
@@ -503,7 +561,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ? widget.callId
                   : widget.paramValue['callId'],
               context: context,
-            ).then((value) {
+            ).then((bool value) {
               isNotAutoCalling = value;
             });
           }
@@ -520,14 +578,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             );
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
-              Position res = await Geolocator.getCurrentPosition(
-                  desiredAccuracy: LocationAccuracy.best);
+              final Position res = await Geolocator.getCurrentPosition();
 
               setState(() {
                 position = res;
               });
             }
-            var requestBodyData = PTPPostModel(
+            final PTPPostModel requestBodyData = PTPPostModel(
               eventId: ConstantEventValues.ptpEventId,
               eventType:
                   (widget.userType == Constants.telecaller || widget.isCall!)
@@ -555,9 +612,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 translatedText: returnS2Tdata.result?.translatedText,
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
-              callID: Singleton.instance.callID ?? " ",
-              callingID: Singleton.instance.callingID ?? " ",
-              callerServiceID: Singleton.instance.callerServiceID ?? " ",
+              callID: Singleton.instance.callID ?? ' ',
+              callingID: Singleton.instance.callingID ?? ' ',
+              callerServiceID: Singleton.instance.callerServiceID ?? ' ',
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',
@@ -579,11 +636,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 eventsDetails: requestBodyData.toJson(),
                 caseId: widget.caseId,
                 selectedFollowUpDate: ptpDateControlller.text,
-                selectedClipValue: Constants.ptp,bloc: widget.bloc);
+                selectedClipValue: Constants.ptp,
+                bloc: widget.bloc);
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {
-              Map<String, dynamic> postResult = await APIRepository.apiRequest(
+              final Map<String, dynamic> postResult =
+                  await APIRepository.apiRequest(
                 APIRequestType.post,
                 HttpUrl.ptpPostUrl(
                   'ptp',
@@ -643,8 +702,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   }
 
   List<Widget> _buildPaymentButton(List<PaymentModeButtonModel> list) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (PaymentModeButtonModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           setState(() {
@@ -658,7 +717,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               color: element.title == selectedPaymentModeButton
                   ? ColorResource.color23375A
                   : ColorResource.colorBEC4CF,
-              boxShadow: [
+              boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: ColorResource.color000000.withOpacity(0.2),
                   blurRadius: 2.0,
@@ -669,7 +728,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           child: Padding(
             padding: const EdgeInsets.all(5.0),
             child: Row(
-              children: [
+              children: <Widget>[
                 CircleAvatar(
                   radius: 19,
                   backgroundColor: ColorResource.colorFFFFFF,
@@ -685,7 +744,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                     fontWeight: FontWeight.w700,
                     lineHeight: 1,
                     fontSize: FontSize.sixteen,
-                    fontStyle: FontStyle.normal,
                   ),
                 )
               ],

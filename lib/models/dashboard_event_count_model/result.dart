@@ -1,11 +1,4 @@
 class DashboardEventCountResult {
-  String? id;
-  String? eventType;
-  String? eventCode;
-  String? createdAt;
-  String? createdBy;
-  int? v;
-
   DashboardEventCountResult({
     this.id,
     this.eventType,
@@ -24,8 +17,14 @@ class DashboardEventCountResult {
         createdBy: json['createdBy'] as String?,
         v: json['__v'] as int?,
       );
+  String? id;
+  String? eventType;
+  String? eventCode;
+  String? createdAt;
+  String? createdBy;
+  int? v;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'eventType': eventType,
         'eventCode': eventCode,

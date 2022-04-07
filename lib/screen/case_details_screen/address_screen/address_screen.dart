@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/models/update_health_model.dart';
@@ -19,22 +16,19 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/map_utils.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class AddressScreen extends StatefulWidget {
-  final CaseDetailsBloc bloc;
-  final int index;
-  final dynamic addressModel;
-
   const AddressScreen(
       {Key? key, required this.bloc, required this.index, this.addressModel})
       : super(key: key);
+  final CaseDetailsBloc bloc;
+  final int index;
+  final dynamic addressModel;
 
   @override
   _AddressScreenState createState() => _AddressScreenState();
@@ -72,7 +66,7 @@ class _AddressScreenState extends State<AddressScreen>
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is DisableCustomerNotMetBtnState) {
           setState(() => isSubmitFirst = false);
         }
@@ -86,7 +80,7 @@ class _AddressScreenState extends State<AddressScreen>
           setState(() => isSubmitSecond = true);
         }
         if (state is UpdateHealthStatusState) {
-          UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+          final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
               Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
 
           setState(() {
@@ -117,7 +111,7 @@ class _AddressScreenState extends State<AddressScreen>
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return MediaQuery.removePadding(
             context: context,
             removeBottom: true,
@@ -130,7 +124,7 @@ class _AddressScreenState extends State<AddressScreen>
                 child: Container(
                   decoration: BoxDecoration(
                       color: ColorResource.colorFFFFFF,
-                      boxShadow: [
+                      boxShadow: <BoxShadow>[
                         BoxShadow(
                           color: ColorResource.colorCACACA.withOpacity(.25),
                           blurRadius: 20.0,
@@ -141,17 +135,16 @@ class _AddressScreenState extends State<AddressScreen>
                           top: Radius.circular(30))),
                   width: double.infinity,
                   child: Column(
-                    children: [
+                    children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.fromLTRB(22, 26, 22, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
-                          children: [
+                          children: <Widget>[
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                              children: <Widget>[
                                 CustomText(
                                   widget
                                           .bloc
@@ -163,13 +156,11 @@ class _AddressScreenState extends State<AddressScreen>
                                           .toUpperCase() ??
                                       '_',
                                   fontWeight: FontWeight.w700,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color23375A,
                                 ),
                                 Wrap(
                                   spacing: 27,
-                                  children: [
+                                  children: <Widget>[
                                     ShowHealthStatus.healthStatus(widget
                                             .bloc
                                             .caseDetailsAPIValue
@@ -199,9 +190,6 @@ class _AddressScreenState extends State<AddressScreen>
                                               ['value']
                                           .toString() ??
                                       '_',
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: FontSize.fourteen,
-                                  fontStyle: FontStyle.normal,
                                   color: ColorResource.color23375A,
                                 ),
                               ),
@@ -210,18 +198,18 @@ class _AddressScreenState extends State<AddressScreen>
                               height: 10,
                             ),
                             Row(
-                              children: [
+                              children: <Widget>[
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () async {
                                       Position? currentLocation;
                                       await MapUtils.getCurrentLocation(context)
-                                          .then((value) {
+                                          .then((Position value) {
                                         setState(() {
                                           currentLocation = value;
                                         });
                                       });
-                                      Northeast? destinationLocation =
+                                      final Northeast? destinationLocation =
                                           await MapUtils.convertAddressToLarlng(
                                         address: widget
                                                 .bloc
@@ -232,7 +220,7 @@ class _AddressScreenState extends State<AddressScreen>
                                         context: context,
                                       );
                                       if (destinationLocation != null) {
-                                        MapUtils.openMap(
+                                        await MapUtils.openMap(
                                             startLatitude:
                                                 currentLocation!.latitude,
                                             startLongitude:
@@ -251,9 +239,7 @@ class _AddressScreenState extends State<AddressScreen>
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(75.0))),
                                         child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
+                                          children: <Widget>[
                                             CircleAvatar(
                                               backgroundColor:
                                                   ColorResource.color23375A,
@@ -270,7 +256,6 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .viewMap
                                                   .toUpperCase(),
                                               lineHeight: 1,
-                                              fontSize: FontSize.fourteen,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResource.color23375A,
                                             )
@@ -329,7 +314,6 @@ class _AddressScreenState extends State<AddressScreen>
                                       color: ColorResource.color23375A,
                                       lineHeight: 1,
                                       fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
                                     ),
                                     onTap: () => widget.bloc.add(
                                         EventDetailsEvent(
@@ -366,7 +350,7 @@ class _AddressScreenState extends State<AddressScreen>
                           indicatorWeight: 5.0,
                           labelColor: ColorResource.color23375A,
                           unselectedLabelColor: ColorResource.colorC4C4C4,
-                          onTap: (index) {
+                          onTap: (int index) {
                             // change address health status based on selected tab customer met / customer not met / invalid
                             widget.bloc.add(UpdateHealthStatusEvent(context,
                                 selectedHealthIndex: widget.index,
@@ -385,7 +369,7 @@ class _AddressScreenState extends State<AddressScreen>
                             widget.bloc.addressInvalidRemarksFocusNode
                                 .unfocus();
                           },
-                          tabs: [
+                          tabs: <Widget>[
                             Tab(text: Languages.of(context)!.customerMet),
                             Tab(text: Languages.of(context)!.customerNotMet),
                             Tab(text: Languages.of(context)!.invalid)
@@ -395,15 +379,15 @@ class _AddressScreenState extends State<AddressScreen>
                       Expanded(
                           child: SingleChildScrollView(
                         child: Column(
-                          children: [
-                            Column(children: [
+                          children: <Widget>[
+                            Column(children: <Widget>[
                               SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height * 0.65,
                                 child: TabBarView(
                                   controller: _controller,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  children: [
+                                  children: <Widget>[
                                     CustomerMetScreen(
                                         bloc: widget.bloc, context: context),
                                     CustomerNotMetScreen(
@@ -426,7 +410,7 @@ class _AddressScreenState extends State<AddressScreen>
                       height: 75,
                       decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: ColorResource.color000000.withOpacity(.25),
                             blurRadius: 2.0,
@@ -440,13 +424,11 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 85, vertical: 11.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             SizedBox(
                               width: 190,
                               child: CustomButton(
                                 Languages.of(context)!.done.toUpperCase(),
-                                fontSize: FontSize.eighteen,
-                                fontWeight: FontWeight.w600,
                                 onTap: () => Navigator.pop(context),
                                 cardShape: 5,
                               ),
@@ -459,7 +441,7 @@ class _AddressScreenState extends State<AddressScreen>
                       height: 75,
                       decoration: BoxDecoration(
                         color: ColorResource.colorFFFFFF,
-                        boxShadow: [
+                        boxShadow: <BoxShadow>[
                           BoxShadow(
                             color: ColorResource.color000000.withOpacity(.25),
                             blurRadius: 2.0,
@@ -473,8 +455,7 @@ class _AddressScreenState extends State<AddressScreen>
                             horizontal: 20, vertical: 5.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
+                          children: <Widget>[
                             Expanded(
                               child: CustomCancelButton.cancelButton(context),
                             ),
@@ -489,14 +470,12 @@ class _AddressScreenState extends State<AddressScreen>
                                           : null,
                                       isLeading: !isSubmitFirst,
                                       trailingWidget: CustomLoadingWidget(
-                                        gradientColors: [
+                                        gradientColors: <Color>[
                                           ColorResource.colorFFFFFF,
                                           ColorResource.colorFFFFFF
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: isSubmitFirst
                                           ? () {
                                               if (widget.bloc
@@ -554,14 +533,12 @@ class _AddressScreenState extends State<AddressScreen>
                                           : null,
                                       isLeading: !isSubmitSecond,
                                       trailingWidget: CustomLoadingWidget(
-                                        gradientColors: [
+                                        gradientColors: <Color>[
                                           ColorResource.colorFFFFFF,
                                           ColorResource.colorFFFFFF
                                               .withOpacity(0.7),
                                         ],
                                       ),
-                                      fontSize: FontSize.eighteen,
-                                      fontWeight: FontWeight.w600,
                                       onTap: isSubmitSecond
                                           ? () {
                                               if (widget.bloc
@@ -609,123 +586,123 @@ class _AddressScreenState extends State<AddressScreen>
   }
 }
 
-class CustomMapViewBottomSheet extends StatefulWidget {
-  const CustomMapViewBottomSheet({Key? key}) : super(key: key);
+// class CustomMapViewBottomSheet extends StatefulWidget {
+//   const CustomMapViewBottomSheet({Key? key}) : super(key: key);
 
-  @override
-  _CustomMapViewBottomSheetState createState() =>
-      _CustomMapViewBottomSheetState();
-}
+//   @override
+//   _CustomMapViewBottomSheetState createState() =>
+//       _CustomMapViewBottomSheetState();
+// }
 
-class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
-  late BitmapDescriptor customIcon;
-  late Position position;
-  final Completer<GoogleMapController> _controller = Completer();
-  static const LatLng _center = LatLng(28.644800, 77.216721);
-  final Set<Marker> _markers = {};
-  late String addressLine;
+// class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
+//   late BitmapDescriptor customIcon;
+//   late Position position;
+//   final Completer<GoogleMapController> _controller = Completer();
+//   static const LatLng _center = LatLng(28.644800, 77.216721);
+//   final Set<Marker> _markers = {};
+//   late String addressLine;
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+//   @override
+//   void dispose() {
+//     super.dispose();
+//   }
 
-  @override
-  void initState() {
-    BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
-        .then((d) {
-      customIcon = d;
-    });
-    getCurrentLocation();
-    super.initState();
-  }
+//   @override
+//   void initState() {
+//     BitmapDescriptor.fromAssetImage(
+//             const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
+//         .then((d) {
+//       customIcon = d;
+//     });
+//     getCurrentLocation();
+//     super.initState();
+//   }
 
-  Future getCurrentLocation() async {
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission.toString() == PermissionStatus.granted.toString()) {
-      LocationPermission permission = await Geolocator.requestPermission();
-      if (permission.toString() != PermissionStatus.granted.toString()) {
-        getLocation();
-      }
-      return;
-    }
-    getLocation();
-  }
+//   Future getCurrentLocation() async {
+//     LocationPermission permission = await Geolocator.checkPermission();
+//     if (permission.toString() == PermissionStatus.granted.toString()) {
+//       LocationPermission permission = await Geolocator.requestPermission();
+//       if (permission.toString() != PermissionStatus.granted.toString()) {
+//         getLocation();
+//       }
+//       return;
+//     }
+//     getLocation();
+//   }
 
-  void getLocation() async {
-    Position res = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
-    setState(() {
-      position = res;
-    });
+//   void getLocation() async {
+//     Position res = await Geolocator.getCurrentPosition(
+//         desiredAccuracy: LocationAccuracy.best);
+//     setState(() {
+//       position = res;
+//     });
 
-    _onAddMarkerButtonPressed();
-  }
+//     _onAddMarkerButtonPressed();
+//   }
 
-  _onMapCreated(GoogleMapController controller) {
-    _controller.complete(controller);
-  }
+//   _onMapCreated(GoogleMapController controller) {
+//     _controller.complete(controller);
+//   }
 
-  void _onAddMarkerButtonPressed() async {
-    final CameraPosition _position1 = CameraPosition(
-      bearing: 192.833,
-      target: LatLng(position.latitude, position.longitude),
-      tilt: 59.440,
-      zoom: 16.0,
-    );
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
-    setState(() {
-      _markers.add(
-        Marker(
-          markerId: const MarkerId('current location'),
-          position: LatLng(position.latitude, position.longitude),
-          infoWindow: const InfoWindow(
-            title: 'current location',
-          ),
-          icon: customIcon,
-        ),
-      );
-    });
-  }
+//   void _onAddMarkerButtonPressed() async {
+//     final CameraPosition _position1 = CameraPosition(
+//       bearing: 192.833,
+//       target: LatLng(position.latitude, position.longitude),
+//       tilt: 59.440,
+//       zoom: 16.0,
+//     );
+//     final GoogleMapController controller = await _controller.future;
+//     controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
+//     setState(() {
+//       _markers.add(
+//         Marker(
+//           markerId: const MarkerId('current location'),
+//           position: LatLng(position.latitude, position.longitude),
+//           infoWindow: const InfoWindow(
+//             title: 'current location',
+//           ),
+//           icon: customIcon,
+//         ),
+//       );
+//     });
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.82,
-        child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-                child: BottomSheetAppbar(
-                  title: Languages.of(context)!.mapView,
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-                ),
-              ),
-              Expanded(
-                child: GoogleMap(
-                  onMapCreated: _onMapCreated,
-                  initialCameraPosition: const CameraPosition(
-                    target: _center,
-                    zoom: 11.0,
-                  ),
-                  mapType: MapType.normal,
-                  markers: _markers,
-                  myLocationButtonEnabled: true,
-                  myLocationEnabled: true,
-                ),
-              ),
-            ],
-          );
-        }),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return SafeArea(
+//       bottom: false,
+//       child: SizedBox(
+//         height: MediaQuery.of(context).size.height * 0.82,
+//         child: StatefulBuilder(
+//             builder: (BuildContext context, StateSetter setState) {
+//           return Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Container(
+//                 padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
+//                 child: BottomSheetAppbar(
+//                   title: Languages.of(context)!.mapView,
+//                   padding:
+//                       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
+//                 ),
+//               ),
+//               Expanded(
+//                 child: GoogleMap(
+//                   onMapCreated: _onMapCreated,
+//                   initialCameraPosition: const CameraPosition(
+//                     target: _center,
+//                     zoom: 11.0,
+//                   ),
+//                   mapType: MapType.normal,
+//                   markers: _markers,
+//                   myLocationButtonEnabled: true,
+//                   myLocationEnabled: true,
+//                 ),
+//               ),
+//             ],
+//           );
+//         }),
+//       ),
+//     );
+//   }
+// }

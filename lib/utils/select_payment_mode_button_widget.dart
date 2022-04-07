@@ -12,8 +12,8 @@ class SelectPaymentModeButtonWidget {
     OnClickForPaymentMode function,
     String selectValue,
   ) {
-    List<Widget> widgets = [];
-    for (var element in list) {
+    final List<Widget> widgets = <Widget>[];
+    for (OptionBottomSheetButtonModel element in list) {
       widgets.add(InkWell(
         onTap: () {
           function(element);
@@ -35,7 +35,6 @@ class SelectPaymentModeButtonWidget {
                   : ColorResource.color23375A,
               fontWeight: FontWeight.w700,
               fontSize: FontSize.thirteen,
-              fontStyle: FontStyle.normal,
               lineHeight: 1.35,
             ),
           ),

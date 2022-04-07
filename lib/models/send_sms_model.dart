@@ -1,8 +1,4 @@
 class SendSMS {
-  String? agrRef;
-  String? agentRef;
-  String? type;
-
   SendSMS({this.agrRef, this.agentRef, this.type});
 
   SendSMS.fromJson(Map<String, dynamic> json) {
@@ -10,6 +6,9 @@ class SendSMS {
     agentRef = json['agentRef'];
     type = json['type'];
   }
+  String? agrRef;
+  String? agentRef;
+  String? type;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

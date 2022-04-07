@@ -1,8 +1,4 @@
 class DashboardCardCount {
-  int? status;
-  String? message;
-  DashCountResult? result;
-
   DashboardCardCount({this.status, this.message, this.result});
 
   DashboardCardCount.fromJson(Map<String, dynamic> json) {
@@ -12,6 +8,9 @@ class DashboardCardCount {
         ? DashCountResult.fromJson(json['result'])
         : null;
   }
+  int? status;
+  String? message;
+  DashCountResult? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -25,17 +24,6 @@ class DashboardCardCount {
 }
 
 class DashCountResult {
-  PriorityFollowUp? priorityFollowUp;
-  PriorityFollowUp? brokenPtp;
-  PriorityFollowUp? visits;
-  PriorityFollowUp? receipts;
-  PriorityFollowUp? untouched;
-  MtdCases? mtdCases;
-  MtdCases? mtdAmount;
-  PriorityFollowUp? met;
-  PriorityFollowUp? notMet;
-  PriorityFollowUp? invalid;
-
   DashCountResult(
       {this.priorityFollowUp,
       this.brokenPtp,
@@ -80,6 +68,16 @@ class DashCountResult {
         ? PriorityFollowUp.fromJson(json['invalid'])
         : null;
   }
+  PriorityFollowUp? priorityFollowUp;
+  PriorityFollowUp? brokenPtp;
+  PriorityFollowUp? visits;
+  PriorityFollowUp? receipts;
+  PriorityFollowUp? untouched;
+  MtdCases? mtdCases;
+  MtdCases? mtdAmount;
+  PriorityFollowUp? met;
+  PriorityFollowUp? notMet;
+  PriorityFollowUp? invalid;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -118,15 +116,14 @@ class DashCountResult {
 }
 
 class PriorityFollowUp {
-  int? count;
-  dynamic totalAmt;
-
   PriorityFollowUp({this.count, this.totalAmt});
 
   PriorityFollowUp.fromJson(Map<String, dynamic> json) {
     count = json['count'];
     totalAmt = json['totalAmt'];
   }
+  int? count;
+  dynamic totalAmt;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -156,15 +153,14 @@ class PriorityFollowUp {
 // }
 
 class MtdCases {
-  dynamic completed;
-  dynamic total;
-
   MtdCases({this.completed, this.total});
 
   MtdCases.fromJson(Map<String, dynamic> json) {
     completed = json['completed'];
     total = json['total'];
   }
+  dynamic completed;
+  dynamic total;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

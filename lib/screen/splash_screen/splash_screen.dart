@@ -20,7 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
     return Container(
       color: ColorResource.colorffffff,
       child: Column(
-        mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(

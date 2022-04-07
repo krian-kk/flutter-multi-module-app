@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/languages/language_hindi.dart';
-import 'language_tamil.dart';
+
 import 'language_english.dart';
+import 'language_tamil.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
   const AppLocalizationsDelegate();

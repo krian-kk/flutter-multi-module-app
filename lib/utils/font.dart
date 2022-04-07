@@ -1,12 +1,11 @@
 class Font {
-  static const Font latoBold = Font("Lato-Bold");
-  static const Font latoItalic = Font("Lato-Italic");
-  static const Font latoMedium = Font("Lato-Medium");
-  static const Font latoRegular = Font("Lato-Regular");
+  const Font(this._fontName);
+  static const Font latoBold = Font('Lato-Bold');
+  static const Font latoItalic = Font('Lato-Italic');
+  static const Font latoMedium = Font('Lato-Medium');
+  static const Font latoRegular = Font('Lato-Regular');
 
   final String _fontName;
-
-  const Font(this._fontName);
 
   String get value => _fontName;
 }

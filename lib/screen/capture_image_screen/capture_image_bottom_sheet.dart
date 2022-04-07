@@ -45,8 +45,8 @@ class _CustomCaptureImageBottomSheetState
     extends State<CustomCaptureImageBottomSheet> {
   late TextEditingController remarksControlller;
 
-  final _formKey = GlobalKey<FormState>();
-  List<File> uploadFileLists = [];
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<File> uploadFileLists = <File>[];
 
   bool isSubmit = true;
 
@@ -70,10 +70,11 @@ class _CustomCaptureImageBottomSheetState
   }
 
   getFiles() async {
-    FilePickerResult? result = await FilePicker.platform
-        .pickFiles(allowMultiple: true, type: FileType.any);
+    final FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
-      uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      uploadFileLists =
+          result.paths.map((String? path) => File(path!)).toList();
     } else {
       AppUtils.showToast(Languages.of(context)!.canceled,
           gravity: ToastGravity.CENTER);
@@ -84,7 +85,7 @@ class _CustomCaptureImageBottomSheetState
   Widget build(BuildContext context) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
-      listener: (context, state) {
+      listener: (BuildContext context, CaseDetailsState state) {
         if (state is EnableCaptureImageBtnState) {
           setState(() => isSubmit = true);
         }
@@ -94,7 +95,7 @@ class _CustomCaptureImageBottomSheetState
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
-        builder: (context, state) {
+        builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
             height: MediaQuery.of(context).size.height * 0.89,
             child: Scaffold(
@@ -104,7 +105,7 @@ class _CustomCaptureImageBottomSheetState
                 key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: <Widget>[
                     BottomSheetAppbar(
                       title: widget.cardTitle,
                       padding: const EdgeInsets.symmetric(
@@ -147,22 +148,23 @@ class _CustomCaptureImageBottomSheetState
                               // )),
                               Flexible(
                                   child: Stack(
-                                children: [
+                                children: <Widget>[
                                   CustomReadOnlyTextField(
                                     Languages.of(context)!.remarks,
                                     remarksControlller,
-                                    validationRules: const ['required'],
+                                    validationRules: const <String>['required'],
                                     isLabel: true,
                                     isVoiceRecordWidget: true,
-                                    returnS2Tresponse: (val) {
+                                    returnS2Tresponse: (dynamic val) {
                                       if (val is Speech2TextModel) {
                                         setState(() {
                                           returnS2Tdata = val;
                                         });
                                       }
                                     },
-                                    checkRecord:
-                                        (isRecord, text, returnS2Tdata) {
+                                    checkRecord: (String? isRecord,
+                                        String? text,
+                                        Speech2TextModel returnS2Tdata) {
                                       setState(() {
                                         this.isRecord = isRecord;
                                         this.returnS2Tdata = returnS2Tdata;
@@ -187,7 +189,7 @@ class _CustomCaptureImageBottomSheetState
                 height: MediaQuery.of(context).size.height * 0.1,
                 decoration: BoxDecoration(
                   color: ColorResource.colorFFFFFF,
-                  boxShadow: [
+                  boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: ColorResource.color000000.withOpacity(.25),
                       blurRadius: 2.0,
@@ -201,7 +203,7 @@ class _CustomCaptureImageBottomSheetState
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: CustomCancelButton.cancelButton(context),
                       ),
@@ -214,13 +216,12 @@ class _CustomCaptureImageBottomSheetState
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
-                            gradientColors: [
+                            gradientColors: <Color>[
                               ColorResource.colorFFFFFF,
                               ColorResource.colorFFFFFF.withOpacity(0.7),
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w600,
                           onTap: isSubmit
                               ? () async {
                                   if (isRecord == Constants.process) {
@@ -252,15 +253,13 @@ class _CustomCaptureImageBottomSheetState
                                                 .toString() !=
                                             PermissionStatus.granted
                                                 .toString()) {
-                                          Position res = await Geolocator
-                                              .getCurrentPosition(
-                                                  desiredAccuracy:
-                                                      LocationAccuracy.best);
+                                          final Position res = await Geolocator
+                                              .getCurrentPosition();
                                           setState(() {
                                             position = res;
                                           });
                                         }
-                                        var requestBodyData =
+                                        final PostImageCapturedModel requestBodyData =
                                             PostImageCapturedModel(
                                                 eventId: ConstantEventValues
                                                     .captureImageEventId,
@@ -302,7 +301,7 @@ class _CustomCaptureImageBottomSheetState
                                                 eventAttr: EventAttr(
                                                   remarks:
                                                       remarksControlller.text,
-                                                  imageLocation: [''],
+                                                  imageLocation: <String>[''],
                                                   longitude: position.longitude,
                                                   latitude: position.latitude,
                                                   accuracy: position.accuracy,

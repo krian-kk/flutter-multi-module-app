@@ -3,21 +3,6 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 
 class CustomText extends StatefulWidget {
-  final String text;
-  final double fontSize;
-  final Font font;
-  final Color color;
-  final double lineHeight;
-  final TextAlign textAlign;
-  final GestureTapCallback? onTap;
-  final bool isUnderLine;
-  final bool isSingleLine;
-  final int? maxLines;
-  final FontWeight? fontWeight;
-  final FontStyle fontStyle;
-  final double? letterSpacing;
-  final TextStyle? style;
-
   const CustomText(
     this.text, {
     Key? key,
@@ -35,6 +20,20 @@ class CustomText extends StatefulWidget {
     this.style,
     this.maxLines,
   }) : super(key: key);
+  final String text;
+  final double fontSize;
+  final Font font;
+  final Color color;
+  final double lineHeight;
+  final TextAlign textAlign;
+  final GestureTapCallback? onTap;
+  final bool isUnderLine;
+  final bool isSingleLine;
+  final int? maxLines;
+  final FontWeight? fontWeight;
+  final FontStyle fontStyle;
+  final double? letterSpacing;
+  final TextStyle? style;
 
   @override
   _CustomTextState createState() => _CustomTextState();

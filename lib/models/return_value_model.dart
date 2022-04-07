@@ -1,12 +1,4 @@
 class RetrunValueModel {
-  late bool isSubmit;
-  late String caseId;
-  late bool isSubmitForMyVisit;
-  late String eventType;
-  late dynamic returnCaseAmount;
-  late dynamic returnCollectionAmount;
-  late String selectedClipValue;
-  late String? followUpDate;
   RetrunValueModel(
     this.isSubmit,
     this.caseId,
@@ -27,6 +19,14 @@ class RetrunValueModel {
     selectedClipValue = json['selectedClipValue'];
     followUpDate = json['followUpDate'];
   }
+  late bool isSubmit;
+  late String caseId;
+  late bool isSubmitForMyVisit;
+  late String eventType;
+  late dynamic returnCaseAmount;
+  late dynamic returnCollectionAmount;
+  late String selectedClipValue;
+  late String? followUpDate;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

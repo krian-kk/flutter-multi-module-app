@@ -1,7 +1,4 @@
 class UpdateHealthStatusModel {
-  late final int? selectedHealthIndex;
-  late final int? tabIndex;
-  late final dynamic currentHealth;
   UpdateHealthStatusModel(
     this.selectedHealthIndex,
     this.tabIndex,
@@ -12,6 +9,9 @@ class UpdateHealthStatusModel {
     tabIndex = json['tabIndex'];
     currentHealth = json['currentHealth'];
   }
+  late final int? selectedHealthIndex;
+  late final int? tabIndex;
+  late final dynamic currentHealth;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

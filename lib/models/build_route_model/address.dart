@@ -1,7 +1,4 @@
 class Address {
-  String? cType;
-  String? value;
-
   Address({this.cType, this.value});
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
@@ -9,7 +6,10 @@ class Address {
         value: json['value'] as String?,
       );
 
-  Map<String, dynamic> toJson() => {
+  String? cType;
+  String? value;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'cType': cType,
         'value': value,
       };

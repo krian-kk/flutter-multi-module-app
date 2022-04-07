@@ -1,7 +1,4 @@
 class AudioRemarksPostModel {
-  String? langCode;
-  String? agrRef;
-
   AudioRemarksPostModel({this.langCode, this.agrRef});
 
   factory AudioRemarksPostModel.fromJson(Map<String, dynamic> json) {
@@ -11,7 +8,10 @@ class AudioRemarksPostModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  String? langCode;
+  String? agrRef;
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'lang_code': langCode,
         'agrRef': agrRef,
       };

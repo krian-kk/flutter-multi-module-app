@@ -1,10 +1,6 @@
 import 'result.dart';
 
 class DashboardAllModels {
-  int? status;
-  String? message;
-  Result? result;
-
   DashboardAllModels({this.status, this.message, this.result});
 
   factory DashboardAllModels.fromJson(Map<String, dynamic> json) {
@@ -16,8 +12,11 @@ class DashboardAllModels {
           : Result.fromJson(json['result'] as Map<String, dynamic>),
     );
   }
+  int? status;
+  String? message;
+  Result? result;
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'status': status,
         'message': message,
         'result': result?.toJson(),
