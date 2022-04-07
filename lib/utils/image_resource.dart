@@ -4,7 +4,6 @@ class ImageResource {
   static const String close = 'assets/svg/close.svg';
   static const String checkOn = 'assets/svg/check_on.svg';
   static const String checkOff = 'assets/svg/check_off.svg';
-  // static const caseNotAvailable = 'assets/caseNotAvailable.png';
   // static const back1 = 'assets/svg/back.svg';
   // static const viewShape1 = 'assets/svg/shape.svg';
   static const String ptp = 'assets/svg/ptp.svg';
