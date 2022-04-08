@@ -1009,4 +1009,22 @@ class LanguageHi extends Languages {
 
   @override
   String get ref2 => 'रेफरी 2';
+
+  @override
+  String get loanDetails => 'ऋण विवरण';
+
+  @override
+  String get agentDetails => 'एजेंट विवरण';
+
+  @override
+  String get repaymentInformation => 'चुकौती जानकारी';
+
+  @override
+  String get attributeDetails => 'गुण विवरण';
+
+  @override
+  String get contactDetails => 'सम्पर्क करने का विवरण';
+
+  @override
+  String get auditDetails => 'लेखापरीक्षा विवरण';
 }

@@ -1013,4 +1013,22 @@ class LanguageTa extends Languages {
 
   @override
   String get ref2 => 'குறிப்பு 2';
+
+  @override
+  String get loanDetails => 'கடன் விவரங்கள்';
+
+  @override
+  String get agentDetails => 'முகவர் விவரங்கள்';
+
+  @override
+  String get repaymentInformation => 'திருப்பிச் செலுத்தும் தகவல்';
+
+  @override
+  String get attributeDetails => 'பண்புக்கூறுகள் விவரங்கள்';
+
+  @override
+  String get contactDetails => 'தொடர்பு விபரங்கள்';
+
+  @override
+  String get auditDetails => 'தணிக்கை விவரங்கள்';
 }

@@ -1002,8 +1002,26 @@ class LanguageEn extends Languages {
   String get riskBucket => 'Risk bucket';
 
   @override
-  String get ref1 => 'Ref 1';
+  String get ref1 => 'Reference 1';
 
   @override
-  String get ref2 => 'Ref 2';
+  String get ref2 => 'Reference 2';
+
+  @override
+  String get loanDetails => 'Loan Details';
+
+  @override
+  String get agentDetails => 'Agent Details';
+
+  @override
+  String get repaymentInformation => 'Repayment Information';
+
+  @override
+  String get attributeDetails => 'Attributes Details';
+
+  @override
+  String get contactDetails => 'Contact Details';
+
+  @override
+  String get auditDetails => 'Audit Details';
 }

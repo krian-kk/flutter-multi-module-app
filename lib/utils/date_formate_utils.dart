@@ -25,9 +25,12 @@ class DateFormateUtils2 {
 // DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(date));
   static String followUpDateFormate2(String date) {
     // String? convertedDate = DateFormat.yMMMEd().format(DateTime.parse(date));
-    final utcFormate = DateTime.parse(date).toUtc();
-    final String? convertedDate = DateFormat('dd-MM-yyyy')
-        .format(DateTime.parse(utcFormate.toLocal().toString()));
+    String? convertedDate;
+    if (date != '') {
+      final utcFormate = DateTime.parse(date).toUtc();
+      convertedDate = DateFormat('dd-MM-yyyy')
+          .format(DateTime.parse(utcFormate.toLocal().toString()));
+    }
 
     return convertedDate ?? 'null';
   }
