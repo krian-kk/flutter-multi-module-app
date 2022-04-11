@@ -40,6 +40,8 @@ import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
+import '../../widgets/case_detail_expand_list_wiget.dart';
+
 class CaseDetailsScreen extends StatefulWidget {
   const CaseDetailsScreen(
       {Key? key, this.paramValues, required this.allocationBloc})
@@ -167,6 +169,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       Padding(
                         padding: const EdgeInsets.only(left: 8),
                         child: CustomAppbar(
+                          backgroundColor: ColorResource.colorF7F8FA,
                           titleString: Languages.of(context)!.caseDetials,
                           titleSpacing: 10,
                           iconEnumValues: IconEnum.back,
@@ -329,559 +332,51 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       ),
                                             ],
                                           ),
-                                          const SizedBox(height: 16),
-                                          CustomReadOnlyTextField(
-                                            Languages.of(context)!.loanAmount,
-                                            bloc.loanAmountController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                          const SizedBox(height: 16),
-                                          Row(
-                                            children: <Widget>[
-                                              Flexible(
-                                                child: SizedBox(
-                                                  child:
-                                                      CustomReadOnlyTextField(
-                                                    Languages.of(context)!
-                                                        .loanDuration,
-                                                    bloc.loanDurationController,
-                                                    isLabel: true,
-                                                    isEnable: false,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(width: 22),
-                                              Flexible(
-                                                child: SizedBox(
-                                                  child:
-                                                      CustomReadOnlyTextField(
-                                                    Languages.of(context)!.pos,
-                                                    bloc.posController,
-                                                    isLabel: true,
-                                                    isEnable: false,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 16),
-                                          Row(
-                                            children: <Widget>[
-                                              Flexible(
-                                                child: CustomReadOnlyTextField(
-                                                  Languages.of(context)!
-                                                      .schemeCode,
-                                                  bloc.schemeCodeController,
-                                                  isLabel: true,
-                                                  isEnable: false,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 22),
-                                              Flexible(
-                                                child: CustomReadOnlyTextField(
-                                                  Languages.of(context)!
-                                                      .emiStartDate,
-                                                  bloc.emiStartDateController,
-                                                  isLabel: true,
-                                                  isEnable: false,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 16),
-                                          CustomReadOnlyTextField(
-                                            Languages.of(context)!
-                                                .bankName
-                                                .replaceAll('*', ''),
-                                            bloc.bankNameController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                          const SizedBox(height: 16),
-                                          CustomReadOnlyTextField(
-                                            Languages.of(context)!.product,
-                                            bloc.productController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                          const SizedBox(height: 16),
-                                          CustomReadOnlyTextField(
-                                            Languages.of(context)!.batchNo,
-                                            bloc.batchNoController,
-                                            isLabel: true,
-                                            isEnable: false,
-                                          ),
-                                          const SizedBox(
-                                            height: 50,
-                                          ),
-
-                                          // ), // Extra text field
-                                          const SizedBox(
-                                            height: 50,
-                                          ),
-                                          extraTextField(
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isLoanDetails: true,
+                                              isInitialExpand: true,
                                               title: Languages.of(context)!
-                                                  .dateOfLoanDisbursement,
-                                              controller: bloc
-                                                  .dateOfLoanDisbursementController),
-                                          extraTextField(
-                                              title: Languages.of(context)!.tos,
-                                              controller: bloc.tosController),
-                                          extraTextField(
+                                                  .loanDetails),
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isCustomerDetails: true,
                                               title: Languages.of(context)!
-                                                  .emiAmount,
-                                              controller:
-                                                  bloc.emiAmountController),
-                                          extraTextField(
+                                                  .agentDetails),
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isRepaymentDetails: true,
+                                              repaymentDetailsWidget:
+                                                  repaymentInfo(),
                                               title: Languages.of(context)!
-                                                  .noOfPendingEMI,
-                                              controller: bloc
-                                                  .noOfPendingEmiController),
-                                          extraTextField(
+                                                  .repaymentInformation),
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isAttributeDetails: true,
                                               title: Languages.of(context)!
-                                                  .penaltyAmount,
-                                              controller:
-                                                  bloc.penaltyAmountController),
-                                          extraTextField(
+                                                  .attributeDetails),
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isCustomerContactDetails: true,
                                               title: Languages.of(context)!
-                                                  .odInterest,
-                                              controller:
-                                                  bloc.odInterestController),
-                                          extraTextField(
+                                                  .contactDetails),
+                                          const SizedBox(height: 20),
+                                          ListOfCaseDetails.listOfDetails(
+                                              context,
+                                              bloc: bloc,
+                                              isAuditDetails: true,
                                               title: Languages.of(context)!
-                                                  .assetDetails,
-                                              controller:
-                                                  bloc.assetDetailsController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .coLender,
-                                              controller:
-                                                  bloc.coLenderController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .employerBusinessEntity,
-                                              controller: bloc
-                                                  .employerBussinessEntityController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .lastPaymentDate,
-                                              controller: bloc
-                                                  .lastPaymentDateController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .sourcingRmName,
-                                              controller: bloc
-                                                  .sourcingRmnameController),
-
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .lastPaidAmount,
-                                              controller: bloc
-                                                  .lastPaidAmountController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .riskRanking,
-                                              controller:
-                                                  bloc.riskRankingController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .reviewFlag,
-                                              controller:
-                                                  bloc.reviewFlagController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .location,
-                                              controller:
-                                                  bloc.locationController),
-                                          extraTextField(
-                                              title:
-                                                  Languages.of(context)!.agency,
-                                              controller:
-                                                  bloc.agencyController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .customerID,
-                                              controller:
-                                                  bloc.customerIdController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .minDueAmount,
-                                              controller:
-                                                  bloc.minDueAmountController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .cardOutstanding,
-                                              controller: bloc
-                                                  .cardOutstandingController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .statementDate,
-                                              controller:
-                                                  bloc.statementDateController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .dueDate,
-                                              controller:
-                                                  bloc.dueDateController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .cardStatus,
-                                              controller:
-                                                  bloc.cardStatusController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .lastBilledAmount,
-                                              controller: bloc
-                                                  .lastBilledAmountController),
-
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .chassisNo,
-                                              controller:
-                                                  bloc.chassisNumberController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .modelMake,
-                                              controller:
-                                                  bloc.modelMakeController),
-                                          extraTextField(
-                                              title: Languages.of(context)!
-                                                  .riskBucket,
-                                              controller:
-                                                  bloc.riskBucketController),
-                                          extraTextField(
-                                              title:
-                                                  Languages.of(context)!.ref1,
-                                              controller:
-                                                  bloc.reference1Controller),
-                                          extraTextField(
-                                              title:
-                                                  Languages.of(context)!.ref2,
-                                              controller:
-                                                  bloc.reference2Controller),
-                                          const SizedBox(height: 23),
-                                          CustomText(
-                                            Languages.of(context)!
-                                                .repaymentInfo,
-                                            fontSize: FontSize.sixteen,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Container(
-                                            width: double.infinity,
-                                            decoration: BoxDecoration(
-                                                color:
-                                                    ColorResource.colorFFFFFF,
-                                                border: Border.all(
-                                                    color: ColorResource
-                                                        .colorDADADA,
-                                                    width: 0.5),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10.0))),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Container(
-                                                  margin:
-                                                      const EdgeInsets.all(6.0),
-                                                  width: double.infinity,
-                                                  height: 97,
-                                                  decoration: const BoxDecoration(
-                                                      color: ColorResource
-                                                          .colorF7F8FA,
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10.0))),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 15.0),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: <Widget>[
-                                                        CustomText(
-                                                          Languages.of(context)!
-                                                              .beneficiaryDetails,
-                                                          fontSize:
-                                                              FontSize.twelve,
-                                                          color: ColorResource
-                                                              .color666666,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 9),
-                                                        CustomText(
-                                                          bloc
-                                                                  .caseDetailsAPIValue
-                                                                  .result
-                                                                  ?.caseDetails
-                                                                  ?.repaymentInfo
-                                                                  ?.benefeciaryAccName ??
-                                                              '-',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: ColorResource
-                                                              .color333333,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 7),
-                                                        CustomText(
-                                                          bloc
-                                                                  .caseDetailsAPIValue
-                                                                  .result
-                                                                  ?.caseDetails
-                                                                  ?.repaymentInfo
-                                                                  ?.repaymentIfscCode ??
-                                                              '-',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          color: ColorResource
-                                                              .color333333,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 20.0,
-                                                      vertical: 12.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .repaymentBankName,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        color: ColorResource
-                                                            .color666666,
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      CustomText(
-                                                        bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.caseDetails
-                                                                ?.repaymentInfo
-                                                                ?.repayBankName ??
-                                                            '-',
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color333333,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .referenceLender,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        color: ColorResource
-                                                            .color666666,
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      CustomText(
-                                                        bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.caseDetails
-                                                                ?.repaymentInfo
-                                                                ?.refLender ??
-                                                            '-',
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color333333,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 10),
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .referenceUrl,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        color: ColorResource
-                                                            .color666666,
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      CustomText(
-                                                        bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.caseDetails
-                                                                ?.repaymentInfo
-                                                                ?.refUrl ??
-                                                            '-',
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color333333,
-                                                      ),
-                                                      const SizedBox(
-                                                          height: 15),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: <Widget>[
-                                                          Singleton
-                                                                      .instance
-                                                                      .contractorInformations
-                                                                      ?.result
-                                                                      ?.hideSendRepaymentInfo ??
-                                                                  false
-                                                              ? const SizedBox()
-                                                              : bloc.isSendSMSloading
-                                                                  ? Container(
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          left:
-                                                                              50),
-                                                                      height:
-                                                                          37,
-                                                                      width: 37,
-                                                                      decoration: BoxDecoration(
-                                                                          color: ColorResource
-                                                                              .color23375A,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(25)),
-                                                                      child:
-                                                                          const CustomLoadingWidget(
-                                                                        radius:
-                                                                            11,
-                                                                        strokeWidth:
-                                                                            2,
-                                                                      ),
-                                                                    )
-                                                                  : GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        if (!bloc
-                                                                            .isSendSMSloading) {
-                                                                          bloc.add(SendSMSEvent(
-                                                                              context,
-                                                                              type: Constants.repaymentInfoType));
-                                                                        }
-                                                                      },
-                                                                      child:
-                                                                          Container(
-                                                                        padding: const EdgeInsets.symmetric(
-                                                                            horizontal:
-                                                                                15,
-                                                                            vertical:
-                                                                                11.2),
-                                                                        decoration:
-                                                                            BoxDecoration(
-                                                                          color:
-                                                                              ColorResource.color23375A,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(8),
-                                                                          border:
-                                                                              Border.all(color: ColorResource.colorECECEC),
-                                                                        ),
-                                                                        child:
-                                                                            Row(
-                                                                          mainAxisSize:
-                                                                              MainAxisSize.min,
-                                                                          children: <
-                                                                              Widget>[
-                                                                            SvgPicture.asset(ImageResource.sms),
-                                                                            const SizedBox(width: 7),
-                                                                            CustomText(Languages.of(context)!.sendSMS,
-                                                                                fontSize: FontSize.twelve,
-                                                                                fontWeight: FontWeight.w700,
-                                                                                lineHeight: 1.0,
-                                                                                color: ColorResource.colorffffff),
-                                                                          ],
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                          const SizedBox(
-                                                              width: 10),
-                                                          bloc.isGeneratePaymentLink
-                                                              ? bloc.isGeneratePaymentLinkLoading
-                                                                  ? Container(
-                                                                      margin: const EdgeInsets
-                                                                              .only(
-                                                                          right:
-                                                                              50),
-                                                                      height:
-                                                                          37,
-                                                                      width: 37,
-                                                                      decoration: BoxDecoration(
-                                                                          color: ColorResource
-                                                                              .color23375A,
-                                                                          borderRadius:
-                                                                              BorderRadius.circular(25)),
-                                                                      child:
-                                                                          const CustomLoadingWidget(
-                                                                        radius:
-                                                                            11,
-                                                                        strokeWidth:
-                                                                            2,
-                                                                      ),
-                                                                    )
-                                                                  : Flexible(
-                                                                      child:
-                                                                          GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
-                                                                              () {
-                                                                            bloc.isGeneratePaymentLinkLoading =
-                                                                                true;
-                                                                          });
-                                                                          bloc.add(
-                                                                              GeneratePaymenLinktEvent(caseID: bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!));
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          padding: const EdgeInsets.symmetric(
-                                                                              horizontal: 15,
-                                                                              vertical: 13),
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                ColorResource.color23375A,
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(8),
-                                                                            border:
-                                                                                Border.all(color: ColorResource.colorECECEC),
-                                                                          ),
-                                                                          child: CustomText(
-                                                                              Languages.of(context)!.generatePaymentLink,
-                                                                              fontSize: FontSize.twelve,
-                                                                              fontWeight: FontWeight.w700,
-                                                                              lineHeight: 1.0,
-                                                                              color: ColorResource.colorffffff),
-                                                                        ),
-                                                                      ),
-                                                                    )
-                                                              : const SizedBox(),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
+                                                  .auditDetails),
                                           const SizedBox(height: 27),
                                           CustomText(
                                             Languages.of(context)!.otherLoanOf,
@@ -1589,5 +1084,227 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             ),
           )
         : const SizedBox();
+  }
+
+  Widget repaymentInfo() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(
+          height: 10,
+        ),
+        CustomText(
+          Languages.of(context)!.repaymentInfo,
+          fontSize: FontSize.sixteen,
+          fontWeight: FontWeight.w700,
+        ),
+        const SizedBox(height: 5),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+              color: ColorResource.colorFFFFFF,
+              border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.all(6.0),
+                width: double.infinity,
+                height: 97,
+                decoration: const BoxDecoration(
+                    color: ColorResource.colorF7F8FA,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      CustomText(
+                        Languages.of(context)!.beneficiaryDetails,
+                        fontSize: FontSize.twelve,
+                        color: ColorResource.color666666,
+                      ),
+                      const SizedBox(height: 9),
+                      CustomText(
+                        bloc.caseDetailsAPIValue.result?.caseDetails
+                                ?.repaymentInfo?.benefeciaryAccName ??
+                            '-',
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color333333,
+                      ),
+                      const SizedBox(height: 7),
+                      CustomText(
+                        bloc.caseDetailsAPIValue.result?.caseDetails
+                                ?.repaymentInfo?.repaymentIfscCode ??
+                            '-',
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color333333,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 12.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CustomText(
+                      Languages.of(context)!.repaymentBankName,
+                      fontSize: FontSize.twelve,
+                      color: ColorResource.color666666,
+                    ),
+                    const SizedBox(height: 4),
+                    CustomText(
+                      bloc.caseDetailsAPIValue.result?.caseDetails
+                              ?.repaymentInfo?.repayBankName ??
+                          '-',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color333333,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomText(
+                      Languages.of(context)!.referenceLender,
+                      fontSize: FontSize.twelve,
+                      color: ColorResource.color666666,
+                    ),
+                    const SizedBox(height: 4),
+                    CustomText(
+                      bloc.caseDetailsAPIValue.result?.caseDetails
+                              ?.repaymentInfo?.refLender ??
+                          '-',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color333333,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomText(
+                      Languages.of(context)!.referenceUrl,
+                      fontSize: FontSize.twelve,
+                      color: ColorResource.color666666,
+                    ),
+                    const SizedBox(height: 4),
+                    CustomText(
+                      bloc.caseDetailsAPIValue.result?.caseDetails
+                              ?.repaymentInfo?.refUrl ??
+                          '-',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color333333,
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Singleton.instance.contractorInformations?.result
+                                    ?.hideSendRepaymentInfo ??
+                                false
+                            ? const SizedBox()
+                            : bloc.isSendSMSloading
+                                ? Container(
+                                    margin: const EdgeInsets.only(left: 50),
+                                    height: 37,
+                                    width: 37,
+                                    decoration: BoxDecoration(
+                                        color: ColorResource.color23375A,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: const CustomLoadingWidget(
+                                      radius: 11,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      if (!bloc.isSendSMSloading) {
+                                        bloc.add(SendSMSEvent(context,
+                                            type: Constants.repaymentInfoType));
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 11.2),
+                                      decoration: BoxDecoration(
+                                        color: ColorResource.color23375A,
+                                        borderRadius: BorderRadius.circular(8),
+                                        border: Border.all(
+                                            color: ColorResource.colorECECEC),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: <Widget>[
+                                          SvgPicture.asset(ImageResource.sms),
+                                          const SizedBox(width: 7),
+                                          CustomText(
+                                              Languages.of(context)!.sendSMS,
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              lineHeight: 1.0,
+                                              color: ColorResource.colorffffff),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                        const SizedBox(width: 10),
+                        bloc.isGeneratePaymentLink
+                            ? bloc.isGeneratePaymentLinkLoading
+                                ? Container(
+                                    margin: const EdgeInsets.only(right: 50),
+                                    height: 37,
+                                    width: 37,
+                                    decoration: BoxDecoration(
+                                        color: ColorResource.color23375A,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: const CustomLoadingWidget(
+                                      radius: 11,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Flexible(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          bloc.isGeneratePaymentLinkLoading =
+                                              true;
+                                        });
+                                        bloc.add(GeneratePaymenLinktEvent(
+                                            caseID: bloc.caseDetailsAPIValue
+                                                .result!.caseDetails!.caseId!));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 13),
+                                        decoration: BoxDecoration(
+                                          color: ColorResource.color23375A,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: ColorResource.colorECECEC),
+                                        ),
+                                        child: CustomText(
+                                            Languages.of(context)!
+                                                .generatePaymentLink,
+                                            fontSize: FontSize.twelve,
+                                            fontWeight: FontWeight.w700,
+                                            lineHeight: 1.0,
+                                            color: ColorResource.colorffffff),
+                                      ),
+                                    ),
+                                  )
+                            : const SizedBox(),
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

@@ -667,4 +667,16 @@ abstract class Languages {
   String get ref1;
 
   String get ref2;
+
+  String get loanDetails;
+
+  String get agentDetails;
+
+  String get repaymentInformation;
+
+  String get attributeDetails;
+
+  String get contactDetails;
+
+  String get auditDetails;
 }
