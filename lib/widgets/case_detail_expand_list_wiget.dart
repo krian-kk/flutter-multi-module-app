@@ -295,20 +295,20 @@ class ListOfCaseDetails {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListOfCaseDetails.textFieldView(
-            title: "Primary User",
+            title: 'Primary User',
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.agentRef
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Secondary User",
+            title: 'Secondary User',
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.agent?.secondaryAgent
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Agent Name",
+            title: 'Agent Name',
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.name
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Agent Type",
+            title: 'Agent Type',
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.type
                 .toString()),
       ],
