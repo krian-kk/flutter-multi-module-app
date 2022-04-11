@@ -954,7 +954,7 @@ class LanguageHi extends Languages {
   String get assetDetails => 'संपत्ति विवरण';
 
   @override
-  String get coLender => 'सह ऋणदाता ';
+  String get coLender => 'सह ऋणदाता';
 
   @override
   String get employerBusinessEntity => 'नियोक्ता व्यवसाय इकाई';
@@ -1027,4 +1027,49 @@ class LanguageHi extends Languages {
 
   @override
   String get auditDetails => 'लेखापरीक्षा विवरण';
+
+  @override
+  String get primaryUser => 'प्राथमिक उपयोगकर्ता';
+
+  @override
+  String get secondaryUser => 'माध्यमिक उपयोगकर्ता';
+
+  @override
+  String get agentName => 'एजेंट का नाम';
+
+  @override
+  String get agentType => 'एजेंट प्रकार';
+
+  @override
+  String get state => 'राज्य';
+
+  @override
+  String get city => 'शहर';
+
+  @override
+  String get createdBy => 'के द्वारा बनाई गई';
+
+  @override
+  String get createdAt => 'निर्माण की तारीख';
+
+  @override
+  String get updatedBy => 'अद्यतन';
+
+  @override
+  String get updatedAt => 'नवीनीकरण की तिथि';
+
+  @override
+  String get allocatedBy => 'आवंटित';
+
+  @override
+  String get allocatedAt => 'आवंटित तिथि';
+
+  @override
+  String get residenceAddress => 'निवास का पता';
+
+  @override
+  String get mobile => 'फ़ोन नंबर';
+
+  @override
+  String get officeaddress => 'कार्यालय का पता';
 }

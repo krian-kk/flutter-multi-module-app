@@ -295,20 +295,20 @@ class ListOfCaseDetails {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListOfCaseDetails.textFieldView(
-            title: "Primary User",
+            title: Languages.of(context)!.primaryUser,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.agentRef
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Secondary User",
+            title: Languages.of(context)!.secondaryUser,
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.agent?.secondaryAgent
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Agent Name",
+            title: Languages.of(context)!.agentName,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.name
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: "Agent Type",
+            title: Languages.of(context)!.agentType,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.agent?.type
                 .toString()),
       ],
@@ -320,17 +320,17 @@ class ListOfCaseDetails {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListOfCaseDetails.textFieldView(
-            title: 'State',
+            title: Languages.of(context)!.state,
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.attr?.first.state
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: 'City',
+            title: Languages.of(context)!.city,
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.attr?.first.city
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: 'Pincode',
+            title: Languages.of(context)!.pincode,
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.attr?.first.pincode
                 .toString()),
@@ -344,13 +344,37 @@ class ListOfCaseDetails {
       children: List.generate(
           bloc.caseDetailsAPIValue.result?.caseDetails?.contact?.length ?? 0,
           (index) {
-        return ListOfCaseDetails.textFieldView(
-            title: bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
-                    .cType ??
-                '',
+        String ctype;
+        if (bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
+                .toLowerCase() ==
+            'residence address') {
+          ctype = Languages.of(context)!.residenceAddress;
+        } else if (bloc
+                .caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
+                .toLowerCase() ==
+            'office address') {
+          ctype = Languages.of(context)!.officeaddress;
+        } else if (bloc
+                .caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
+                .toLowerCase() ==
+            'mobile') {
+          ctype = Languages.of(context)!.mobile;
+        } else if (bloc
+                .caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
+                .toLowerCase() ==
+            'email') {
+          ctype = Languages.of(context)!.email;
+        } else {
+          ctype = bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
+                  .cType ??
+              '';
+        }
+        final Widget widget = ListOfCaseDetails.textFieldView(
+            title: ctype,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
                     .value ??
                 '');
+        return widget;
       }),
     );
   }
@@ -360,32 +384,32 @@ class ListOfCaseDetails {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListOfCaseDetails.textFieldView(
-            title: 'Created By',
+            title: Languages.of(context)!.createdBy,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.audit?.crBy
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: 'Created At',
+            title: Languages.of(context)!.createdAt,
             value: DateFormateUtils2.followUpDateFormate2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.crAt
                     .toString() ??
                 '')),
         ListOfCaseDetails.textFieldView(
-            title: 'Updated By',
+            title: Languages.of(context)!.updatedBy,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.audit?.upBy
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: 'Updated At',
+            title: Languages.of(context)!.updatedAt,
             value: DateFormateUtils2.followUpDateFormate2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.upAt
                     .toString() ??
                 '')),
         ListOfCaseDetails.textFieldView(
-            title: 'Allocated By',
+            title: Languages.of(context)!.allocatedBy,
             value: bloc
                 .caseDetailsAPIValue.result?.caseDetails?.audit?.allocatedBy
                 .toString()),
         ListOfCaseDetails.textFieldView(
-            title: 'Allocated At',
+            title: Languages.of(context)!.allocatedAt,
             value: DateFormateUtils2.followUpDateFormate2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.allocatedAt
                     .toString() ??

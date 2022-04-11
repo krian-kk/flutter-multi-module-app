@@ -1031,4 +1031,49 @@ class LanguageTa extends Languages {
 
   @override
   String get auditDetails => 'தணிக்கை விவரங்கள்';
+
+  @override
+  String get primaryUser => 'முதன்மை பயனர்';
+
+  @override
+  String get secondaryUser => 'இரண்டாம் நிலை பயனர்';
+
+  @override
+  String get agentName => 'முகவர் பெயர்';
+
+  @override
+  String get agentType => 'முகவர் வகை';
+
+  @override
+  String get state => 'மாநிலம்';
+
+  @override
+  String get city => 'நகரம்';
+
+  @override
+  String get createdBy => 'உருவாக்கியது';
+
+  @override
+  String get createdAt => 'உருவாக்கப்பட்ட தேதி';
+
+  @override
+  String get updatedBy => 'புதுப்பிக்கப்பட்டது';
+
+  @override
+  String get updatedAt => 'புதுப்பிக்கப்பட்ட தேதி';
+
+  @override
+  String get allocatedBy => 'ஒதுக்கப்பட்டது';
+
+  @override
+  String get allocatedAt => 'ஒதுக்கப்பட்ட தேதி';
+
+  @override
+  String get residenceAddress => 'வீட்டு விலாசம்';
+
+  @override
+  String get mobile => 'தொலைபேசி எண்';
+
+  @override
+  String get officeaddress => 'அலுவலக முகவரி';
 }
