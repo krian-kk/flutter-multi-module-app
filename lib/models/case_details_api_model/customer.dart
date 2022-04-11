@@ -1,8 +1,4 @@
 class Customer {
-  String? customerId;
-  String? name;
-  String? accNo;
-
   Customer({this.customerId, this.name, this.accNo});
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
@@ -10,6 +6,9 @@ class Customer {
         name: json['name'] as String?,
         accNo: json['accNo'] as String?,
       );
+  String? customerId;
+  String? name;
+  String? accNo;
 
   Map<String, dynamic> toJson() => {
         'customerId': customerId,

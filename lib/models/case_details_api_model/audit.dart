@@ -1,12 +1,4 @@
 class Audit {
-  String? crBy;
-  String? crAt;
-  String? sourcingFlag;
-  String? upBy;
-  String? upAt;
-  String? allocatedAt;
-  String? allocatedBy;
-
   Audit({
     this.crBy,
     this.crAt,
@@ -26,6 +18,13 @@ class Audit {
         allocatedAt: json['allocatedAt'] as String?,
         allocatedBy: json['allocatedBy'] as String?,
       );
+  String? crBy;
+  String? crAt;
+  String? sourcingFlag;
+  String? upBy;
+  String? upAt;
+  String? allocatedAt;
+  String? allocatedBy;
 
   Map<String, dynamic> toJson() => {
         'crBy': crBy,

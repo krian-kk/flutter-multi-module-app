@@ -333,8 +333,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 }
 
-
-
 // import 'dart:async';
 // import 'dart:convert';
 // import 'dart:io';
