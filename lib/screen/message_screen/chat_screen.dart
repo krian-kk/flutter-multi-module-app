@@ -42,6 +42,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late ably.RealtimeChannel chatChannel;
   late ably.RealtimeChannel receiptChannel;
   var messageController = TextEditingController();
+  // late ScrollController scrollController;
 
   // var myRandomClientId = '';
   // List<Messages> messages = [];
@@ -58,6 +59,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     bloc = ChatScreenBloc()..add(ChatInitialEvent(toAref: widget.toARefId));
+    // scrollController = ScrollController();
     messageController.text = '';
     clientIDFromARef = widget.fromARefId ?? Singleton.instance.agentRef;
     toARef = widget.toARefId ?? bloc.toId;
@@ -65,11 +67,23 @@ class _ChatScreenState extends State<ChatScreen> {
         'FromID--> ${widget.fromARefId} and ToID --> ${widget.toARefId}');
     createAblyRealtimeInstance();
     super.initState();
+    // scrollToBottom();
+
     // bloc = ChatScreenBloc()..add(ChatInitialEvent());
   }
 
+  // void scrollToBottom() {
+  //   final bottomOffset = scrollController.position.maxScrollExtent;
+  //   scrollController.animateTo(
+  //     bottomOffset,
+  //     duration: const Duration(milliseconds: 1000),
+  //     curve: Curves.easeInOut,
+  //   );
+  // }
+
   @override
   void dispose() {
+    // scrollController.dispose();
     messageController.dispose();
     leaveChannelPresence();
     super.dispose();
@@ -186,12 +200,17 @@ class _ChatScreenState extends State<ChatScreen> {
                           child: bloc.messageHistory.isNotEmpty
                               ? ListView.builder(
                                   reverse: true,
+                                  // controller: scrollController,
+                                  // physics:
+                                  //     const NeverScrollableScrollPhysics(),
+                                  // shrinkWrap: true,
                                   padding: const EdgeInsets.only(top: 15.0),
                                   itemCount: bloc.messageHistory.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    final ChatHistory message =
-                                        bloc.messageHistory[index];
+                                    final ChatHistory message = bloc
+                                        .messageHistory.reversed
+                                        .toList()[index];
                                     // final bool isMe = message.sender!.id == currentUser.id;
                                     // message.name == clientIDFromARef;
                                     return _buildMessage(
@@ -286,13 +305,17 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           final ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(event.data)));
-          bloc.messageHistory.insert(
-            0,
-            ChatHistory(
-                data: receivedData.message,
-                name: event.name,
-                dateTime: event.timestamp),
-          );
+          bloc.messageHistory.add(ChatHistory(
+              data: receivedData.message,
+              name: event.name,
+              dateTime: event.timestamp));
+          // bloc.messageHistory.insert(
+          //   0,
+          //   ChatHistory(
+          //       data: receivedData.message,
+          //       name: event.name,
+          //       dateTime: event.timestamp),
+          // );
         });
       }).onData((data) {
         debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
@@ -300,48 +323,53 @@ class _ChatScreenState extends State<ChatScreen> {
         setState(() {
           final ReceivingData receivedData =
               ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
-          bloc.messageHistory.insert(
-            0,
-            ChatHistory(
-                data: receivedData.message,
-                name: data.name,
-                dateTime: data.timestamp),
-          );
+
+          bloc.messageHistory.add(ChatHistory(
+              data: receivedData.message,
+              name: data.name,
+              dateTime: data.timestamp));
+          // bloc.messageHistory.insert(
+          //   0,
+          //   ChatHistory(
+          //       data: receivedData.message,
+          //       name: data.name,
+          //       dateTime: data.timestamp),
+          // );
         });
       });
 
       // getHistory();
 
-      //to getting the history of data
-      final result = await chatChannel.history(ably.RealtimeHistoryParams(
-          direction: 'forwards',
-          start: DateTime(DateTime.now().year - 1),
-          end: DateTime.now()));
-      debugPrint('The data of history--> ${result.items}');
+      //to getting the history of data from ably
+      // final result = await chatChannel.history(ably.RealtimeHistoryParams(
+      //     direction: 'forwards',
+      //     start: DateTime(DateTime.now().year - 1),
+      //     end: DateTime.now()));
+      // debugPrint('The data of history--> ${result.items}');
 
-      setState(() {
-        for (var element in result.items) {
-          if (element.data is String) {
-            bloc.messageHistory.insert(
-              0,
-              ChatHistory(
-                  data: element.data,
-                  name: element.name,
-                  dateTime: element.timestamp),
-            );
-          } else {
-            final ReceivingData receivedData =
-                ReceivingData.fromJson(jsonDecode(jsonEncode(element.data)));
-            bloc.messageHistory.insert(
-              0,
-              ChatHistory(
-                  data: receivedData.message,
-                  name: element.name,
-                  dateTime: element.timestamp),
-            );
-          }
-        }
-      });
+      // setState(() {
+      //   for (var element in result.items) {
+      //     if (element.data is String) {
+      //       bloc.messageHistory.insert(
+      //         0,
+      //         ChatHistory(
+      //             data: element.data,
+      //             name: element.name,
+      //             dateTime: element.timestamp),
+      //       );
+      //     } else {
+      //       final ReceivingData receivedData =
+      //           ReceivingData.fromJson(jsonDecode(jsonEncode(element.data)));
+      //       bloc.messageHistory.insert(
+      //         0,
+      //         ChatHistory(
+      //             data: receivedData.message,
+      //             name: element.name,
+      //             dateTime: element.timestamp),
+      //       );
+      //     }
+      //   }
+      // });
     } catch (error) {
       debugPrint(error.toString());
       rethrow;
@@ -419,9 +447,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                   CustomText(
                     // DateFormat('yyyy-MM-dd').format(message.dateTime!),
-                    DateFormat.MMMd().format(message.dateTime!) +
+                    DateFormat.MMMd().format(DateTime.parse(
+                            message.dateTime!.toUtc().toLocal().toString())) +
                         ' / ' +
-                        DateFormat.jm().format(message.dateTime!),
+                        DateFormat.jm().format(DateTime.parse(
+                            message.dateTime!.toUtc().toLocal().toString())),
                     fontSize: FontSize.eight,
                     color: ColorResource.color484848,
                   ),
@@ -491,13 +521,17 @@ class _ChatScreenState extends State<ChatScreen> {
                                 data: messageController.text.trim()),
                           ]).then((value) {
                             setState(() {
-                              bloc.messageHistory.insert(
-                                0,
-                                ChatHistory(
-                                    data: messageController.text.trim(),
-                                    name: toARef,
-                                    dateTime: DateTime.now()),
-                              );
+                              bloc.messageHistory.add(ChatHistory(
+                                  data: messageController.text.trim(),
+                                  name: toARef,
+                                  dateTime: DateTime.now()));
+                              // bloc.messageHistory.insert(
+                              //   0,
+                              //   ChatHistory(
+                              //       data: messageController.text.trim(),
+                              //       name: toARef,
+                              //       dateTime: DateTime.now()),
+                              // );
                             });
                             messageController.clear();
                           }).catchError((error) {
