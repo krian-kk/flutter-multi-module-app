@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -349,6 +351,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return Scaffold(
                           backgroundColor: ColorResource.colorF8F9FB,
                           body: KeyboardActions(
+                            enable: (Platform.isIOS),
                             config: KeyboardActionsConfig(
                               keyboardActionsPlatform:
                                   KeyboardActionsPlatform.IOS,

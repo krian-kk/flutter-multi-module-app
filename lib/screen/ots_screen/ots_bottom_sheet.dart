@@ -193,6 +193,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ),
                       Expanded(
                         child: KeyboardActions(
+                          enable: (Platform.isIOS),
                           config: KeyboardActionsConfig(
                             keyboardActionsPlatform:
                                 KeyboardActionsPlatform.IOS,

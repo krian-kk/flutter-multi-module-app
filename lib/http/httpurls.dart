@@ -24,7 +24,7 @@ class HttpUrl {
       '$url/node/field-allocation/agents/info/$agentName';
 
   static String sendSMSurl = '$url/node/api/v2/notification/sendNotification';
-
+  static final String chatHistory2 = '$url/node/api/getChatHistory/';
   //Get API
   // For AutoCalling API
   static final String autoCallingURL =

@@ -27,7 +27,6 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
-import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -61,7 +60,6 @@ class _AllocationScreenState extends State<AllocationScreen> {
   String? currentAddress;
   bool isCaseDetailLoading = false;
   bool isOffline = false;
-  late MapBloc mapBloc;
   Position position = Position(
     longitude: 0,
     latitude: 0,

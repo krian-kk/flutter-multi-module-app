@@ -133,6 +133,13 @@ class AppUtils {
     );
   }
 
+  static showDivider2() {
+    return const Divider(
+      color: ColorResource.colorE5EAF6,
+      thickness: 1.2,
+    );
+  }
+
   static String getLanguageCode(context) {
     final Locale myLocale = Localizations.localeOf(context);
     return myLocale.languageCode;

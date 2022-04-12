@@ -210,6 +210,7 @@ class _CustomOtherFeedBackBottomSheetState
                     ),
                     Expanded(
                       child: KeyboardActions(
+                        enable: (Platform.isIOS),
                         config: const KeyboardActionsConfig(
                           keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                         ),

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart'; // Stores the Google Maps API Key
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+// import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'dart:math' show cos, sqrt, asin;
@@ -47,7 +47,7 @@ class _MapNavigationState extends State<MapNavigation> {
   MapMarkerModel mapResult = MapMarkerModel();
   PolylineId? id;
 
-  late PolylinePoints polylinePoints;
+  // late PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
   late BitmapDescriptor customIcon;

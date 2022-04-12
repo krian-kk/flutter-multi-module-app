@@ -203,6 +203,7 @@ class _CustomCollectionsBottomSheetState
                     ),
                     Expanded(
                       child: KeyboardActions(
+                        enable: (Platform.isIOS),
                         config: KeyboardActionsConfig(
                           keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                           actions: <KeyboardActionsItem>[

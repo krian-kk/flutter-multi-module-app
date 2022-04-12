@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -177,6 +178,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                   ),
                   Expanded(
                     child: KeyboardActions(
+                      enable: (Platform.isIOS),
                       config: KeyboardActionsConfig(
                         keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
                         actions: <KeyboardActionsItem>[
