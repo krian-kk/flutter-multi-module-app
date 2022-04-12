@@ -164,6 +164,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             offlinePriorityResponseModel =
                 OfflinePriorityResponseModel.fromJson(priorityListData['data']);
           } catch (e) {
+            yield AllocationLoadedState(successResponse: '');
             debugPrint(e.toString());
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {

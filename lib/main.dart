@@ -11,18 +11,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/authentication/authentication_event.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
-import 'package:origa/utils/constants.dart';
-import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
@@ -297,22 +292,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           },
           onGenerateRoute: getRoute,
           debugShowCheckedModeBanner: false,
-          home: FutureBuilder(
-              future: setupRemoteConfig(),
-              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-                if (snapshot.hasError || HttpUrl.url.isEmpty) {
-                  return Container(
-                    color: Colors.white,
-                    child: const CustomLoadingWidget(),
-                    alignment: Alignment.center,
-                  );
-                } else {
-                  return addAuthBloc(
-                    context,
-                    const SplashScreen(),
-                  );
-                }
-              }),
+          home: addAuthBloc(
+            context,
+            const SplashScreen(),
+          ),
         );
       },
     );
