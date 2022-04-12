@@ -33,6 +33,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   // AllocationBloc() : super(AllocationInitial());
 
+  bool isOfflineTriggered = false;
   int selectedOption = 0;
 
   int customerCount = 0;
@@ -149,16 +150,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> priorityListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                // event.isOfflineAPI == true
-                //     ? HttpUrl.priorityCaseListV2
-                //     :
-                HttpUrl.priorityCaseListV1 +
-                    'pageNo=${Constants.pageNo}' +
-                    '&limit=${Constants.limit}');
+                event.isOfflineAPI == true
+                    ? HttpUrl.priorityCaseListV2
+                    : HttpUrl.priorityCaseListV1 +
+                        'pageNo=${Constants.pageNo}' +
+                        '&limit=${Constants.limit}');
 
         resultList.clear();
         starCount = 0;
-
         if (priorityListData['success']) {
           dynamic offlinePriorityResponseModel;
           try {
@@ -168,8 +167,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             debugPrint(e.toString());
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-            // Singleton.instance.isOfflineStorageFeatureEnabled = true;
-            // hasNextPage = false;
+            hasNextPage = false;
+            isOfflineTriggered = true;
+
             await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
             await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
@@ -177,12 +177,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(Singleton.instance.agentRef)
                 .collection(Constants.firebaseCase)
-                .snapshots()
-                .forEach((element) {});
+                .snapshots();
             AppUtils.showToast('App synced with local');
-            //yield AllocationOfflineState(successResponse: "synced");
+
+            // yield AllocationOfflineState(successResponse: 'synced');
           } else {
-            Singleton.instance.isOfflineStorageFeatureEnabled = false;
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
@@ -206,7 +205,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               // check and store cloudTelephony true or false
               Singleton.instance.cloudTelephony =
                   jsonData['result']['cloudTelephony'] ?? false;
-
               Singleton.instance.feedbackTemplate =
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
@@ -217,21 +215,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             }
             yield AllocationLoadedState(successResponse: resultList);
-            debugPrint('List length data--> ${resultList.length}');
-            // if (!Singleton.instance.isOfflineStorageFeatureEnabled!) {
-            //   //Storing offline data
-            //   bool? isOfflineSynced = false;
-            //   try {
-            //     isOfflineSynced =
-            //         _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-            //   } catch (e) {
-            //     debugPrint(e.toString());
-            //   }
-            //   if (isOfflineSynced == false) {
-            //     print("------------------NK-------------");
-            //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
-            //   }
-            // }
+            if (!isOfflineTriggered) {
+              final bool isOfflineExisitingInThisDevice =
+                  _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+              if (!isOfflineExisitingInThisDevice) {
+                add(AllocationInitialEvent(event.context, isOfflineAPI: true));
+              }
+            }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

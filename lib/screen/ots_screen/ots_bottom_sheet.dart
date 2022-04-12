@@ -585,14 +585,18 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             } catch (e) {
               debugPrint('Exception while converting base64 ${e.toString()}');
             }
-            await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: widget.caseId,
-                selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots,
-                bloc: widget.bloc);
+
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: otsPaymentDateControlller.text,
+                      selectedClipValue: Constants.ots,
+                      bloc: widget.bloc)
+                  .whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(

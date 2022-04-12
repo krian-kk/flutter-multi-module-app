@@ -159,6 +159,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   late TextEditingController schemeCodeController = TextEditingController();
   late TextEditingController productController = TextEditingController();
   late TextEditingController batchNoController = TextEditingController();
+
   // Extra fields in Case Detail Screen
   late TextEditingController dateOfLoanDisbursementController =
       TextEditingController();
@@ -173,12 +174,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       TextEditingController();
   late TextEditingController lastPaymentDateController =
       TextEditingController();
+
   // late TextEditingController lastPaymemtModeController =
   //     TextEditingController();
   late TextEditingController sourcingRmnameController = TextEditingController();
   late TextEditingController lastPaidAmountController = TextEditingController();
   late TextEditingController riskRankingController = TextEditingController();
   late TextEditingController reviewFlagController = TextEditingController();
+
   // late TextEditingController emailController = TextEditingController();
   late TextEditingController locationController = TextEditingController();
   late TextEditingController agencyController = TextEditingController();
@@ -217,6 +220,32 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
   @override
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
+    if (event is FirebaseStream) {
+      yield CaseDetailsLoadingState();
+      final Stream streamingDocument = FirebaseFirestore.instance
+          .collection(Singleton.instance.firebaseDatabaseName)
+          .doc(Singleton.instance.agentRef)
+          .collection(Constants.firebaseCase)
+          .doc(caseId)
+          .snapshots();
+
+      await streamingDocument.first.then((value) {
+        final Map<String, dynamic>? jsonData = value.data();
+        final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+        caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
+        caseDetailsAPIValue.result?.caseDetails = caseDetails;
+        caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+            .result?.callDetails
+            ?.where((dynamic element) => (element['cType'] == 'mobile'))
+            .toList();
+        caseDetailsAPIValue.result?.callDetails?.sort((dynamic a, dynamic b) =>
+            (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+        Singleton.instance.caseCustomerName =
+            caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      });
+      yield CaseDetailsLoadedState();
+    }
+
     if (event is CaseDetailsInitialEvent) {
       yield CaseDetailsLoadingState();
       caseDetailsContext = event.context;
@@ -229,13 +258,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       agentName = _pref.getString(Constants.agentName);
       // check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-        await FirebaseFirestore.instance
+        final Stream streamingDocument = FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
             .doc('${event.paramValues['caseID']}')
-            .get(const GetOptions(source: Source.cache))
-            .then((DocumentSnapshot<Map<String, dynamic>> value) {
+            .snapshots();
+
+        await streamingDocument.first.then((value) {
           final Map<String, dynamic>? jsonData = value.data();
           final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
           caseDetailsAPIValue.result =
@@ -703,9 +733,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
       } else {
-        // For local storage purpose storing while online
-        await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         final Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
           HttpUrl.imageCaptured + 'userType=$userType',

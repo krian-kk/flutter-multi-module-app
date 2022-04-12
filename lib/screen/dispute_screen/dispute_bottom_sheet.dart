@@ -433,7 +433,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   caseId: widget.caseId,
                   selectedFollowUpDate: nextActionDateControlller.text,
                   selectedClipValue: Constants.dispute,
-                  bloc: widget.bloc);
+                  bloc: widget.bloc).whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
               } else {

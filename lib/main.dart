@@ -5,6 +5,7 @@ import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,9 +17,12 @@ import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
@@ -233,29 +237,28 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     await Firebase.initializeApp();
     final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    // remoteConfig.fetchAndActivate();
+    // await remoteConfig.fetchAndActivate();
     await remoteConfig.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(seconds: 5),
     ));
-    //development = 1, uat = 2, production = 3
     // try {
-    //   HttpUrl.url = Singleton.instance.serverPointingType == 1
-    //       ? HttpUrl.url =
-    //           remoteConfig.getString('v1_development_mobile_app_baseUrl')
-    //       : Singleton.instance.serverPointingType == 2
-    //           ? HttpUrl.url =
-    //               remoteConfig.getString('v1_uat_mobile_app_baseUrl')
-    //           : HttpUrl.url =
-    //               remoteConfig.getString('v1_production_mobile_app_baseUrl');
-    //   // debugPrint('URL -> ${HttpUrl.url}');
-    //   // var userID = md5.convert(utf8.encode("CDE_26")).toString();
-    //   // debugPrint('user ID--> $userID');
-    //   SharedPreferences _prefs = await SharedPreferences.getInstance();
-    //   Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
+    //   // final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    //   // if (kDebugMode) {
+    //   //   HttpUrl.url = remoteConfig.getString('uatMobileAppBaseUrl');
+    //   // } else {
+    //   //   HttpUrl.url = remoteConfig.getString('productionMobileAppBaseUrl');
+    //   // }
+    //   // if (kDebugMode) {
+    //   //   Singleton.instance.isOfflineStorageFeatureEnabled = true;
+    //   // } else {
+    //   //   Singleton.instance.isOfflineStorageFeatureEnabled =
+    //   //       _prefs.getBool('isOfflineFeature') ?? false;
+    //   // }
+    //   // Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
     // } catch (e) {
     //   debugPrint('Catch-> $e');
-    //   setupRemoteConfig();
+    //   await setupRemoteConfig();
     // }
     return remoteConfig;
   }

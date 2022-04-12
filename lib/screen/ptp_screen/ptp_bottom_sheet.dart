@@ -633,11 +633,14 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             );
 
             await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: widget.caseId,
-                selectedFollowUpDate: ptpDateControlller.text,
-                selectedClipValue: Constants.ptp,
-                bloc: widget.bloc);
+                    eventsDetails: requestBodyData.toJson(),
+                    caseId: widget.caseId,
+                    selectedFollowUpDate: ptpDateControlller.text,
+                    selectedClipValue: Constants.ptp,
+                    bloc: widget.bloc)
+                .whenComplete(() {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            });
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
             } else {

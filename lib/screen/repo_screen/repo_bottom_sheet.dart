@@ -483,16 +483,22 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     debugPrint(
                                         'Exception while converting base64 ${e.toString()}');
                                   }
-                                  await FirebaseUtils.storeEvents(
-                                      eventsDetails: requestBodyData.toJson(),
-                                      caseId: widget.caseId,
-                                      selectedFollowUpDate:
-                                          dateControlller.text,
-                                      selectedClipValue: Constants.repo,
-                                      bloc: widget.bloc);
+
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {
+                                    await FirebaseUtils.storeEvents(
+                                            eventsDetails:
+                                                requestBodyData.toJson(),
+                                            caseId: widget.caseId,
+                                            selectedFollowUpDate:
+                                                dateControlller.text,
+                                            selectedClipValue: Constants.repo,
+                                            bloc: widget.bloc)
+                                        .whenComplete(() {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                    });
                                   } else {
                                     final Map<String, dynamic> postResult =
                                         await APIRepository.apiRequest(

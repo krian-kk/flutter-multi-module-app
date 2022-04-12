@@ -44,8 +44,8 @@ class HttpUrl {
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
 
-  // static final String priorityCaseListV2 =
-  //     '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+  static final String priorityCaseListV2 =
+      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
 
   static final String priorityCaseListV1 =
       '$url/$apiType' 'v1/' + fieldAgent + 'case-details/priority?';

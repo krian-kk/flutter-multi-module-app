@@ -1116,11 +1116,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     children: <Widget>[
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
-                                              onTap: () => bloc.add(
+                                              onTap: () {
+                                                bloc.add(
                                                   EventDetailsEvent(
                                                       Constants.addressDetails,
                                                       const <dynamic>[],
-                                                      false)),
+                                                      false),
+                                                );
+                                              },
                                               child: Container(
                                                 height: 50,
                                                 width: (MediaQuery.of(context)

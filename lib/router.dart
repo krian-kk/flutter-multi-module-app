@@ -244,7 +244,9 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           final String mPin = value.getString(Constants.mPin).toString();
           final String agentRef =
               value.getString(Constants.agentRef).toString();
-          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+          // showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+          Navigator.pushReplacementNamed(
+              context, AppRoutes.homeTabScreen);
         });
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }

@@ -788,15 +788,15 @@ class _CustomCollectionsBottomSheetState
                     debugPrint(
                         'Exception while converting base64 ${e.toString()}');
                   }
-                  await FirebaseUtils.storeEvents(
-                      eventsDetails: requestBodyData.toJson(),
-                      caseId: widget.caseId,
-                      selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.collections,
-                      bloc: widget.bloc);
                   if (ConnectivityResult.none ==
                       await Connectivity().checkConnectivity()) {
                     setState(() => isSubmit = true);
+                    await FirebaseUtils.storeEvents(
+                        eventsDetails: requestBodyData.toJson(),
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: dateControlller.text,
+                        selectedClipValue: Constants.collections,
+                        bloc: widget.bloc);
                   } else {
                     final Map<String, dynamic> postResult =
                         await APIRepository.apiRequest(

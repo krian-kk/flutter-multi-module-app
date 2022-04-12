@@ -8,6 +8,7 @@ class Singleton {
   }
 
   Singleton.internal();
+
   //development = 1, uat = 2, production = 3
   int? serverPointingType = 3;
   String baseUrl = '';
@@ -33,7 +34,7 @@ class Singleton {
   String? resAddressId_0;
   String? contactId_0;
   bool? startCalling;
-  bool? isOfflineStorageFeatureEnabled = false;
+  bool isOfflineStorageFeatureEnabled = false;
   String firebaseDatabaseName = 'origaOfflineStorage';
 
 // Contractor All Information

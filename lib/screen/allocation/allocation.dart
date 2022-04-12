@@ -90,7 +90,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+    bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
     getCurrentLocation();
@@ -672,14 +672,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
         if (state is UpdateStaredCaseState) {
           if (state.isStared) {
-            setState(() {
-              bloc.starCount++;
-            });
             final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
-            await FirebaseUtils.updateStarred(
-                isStarred: true, caseId: state.caseId);
-
             if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
@@ -691,16 +685,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
               bloc.resultList.removeAt(state.selectedIndex);
               setState(() {
                 bloc.resultList.insert(0, removedItem);
+                bloc.starCount++;
+              });
+            } else {
+              await FirebaseUtils.updateStarred(
+                  isStarred: true, caseId: state.caseId);
+              setState(() {
+                bloc.starCount++;
               });
             }
           } else {
-            setState(() {
-              bloc.starCount--;
-            });
             final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
-            await FirebaseUtils.updateStarred(
-                isStarred: false, caseId: state.caseId);
             if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
@@ -708,15 +704,22 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
+              final removedItem = bloc.resultList[state.selectedIndex];
+              bloc.resultList.removeAt(state.selectedIndex);
+              // To pick and add next starred false case
+              final firstWhereIndex =
+                  bloc.resultList.indexWhere((note) => !note.starredCase);
+              setState(() {
+                bloc.resultList.insert(firstWhereIndex, removedItem);
+                bloc.starCount--;
+              });
+            } else {
+              await FirebaseUtils.updateStarred(
+                  isStarred: false, caseId: state.caseId);
+              setState(() {
+                bloc.starCount--;
+              });
             }
-            final removedItem = bloc.resultList[state.selectedIndex];
-            bloc.resultList.removeAt(state.selectedIndex);
-            // To pick and add next starred false case
-            final firstWhereIndex =
-                bloc.resultList.indexWhere((note) => !note.starredCase);
-            setState(() {
-              bloc.resultList.insert(firstWhereIndex, removedItem);
-            });
           }
         }
 
@@ -1139,7 +1142,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 bloc.isAutoCalling
                     ? Expanded(
                         child: AutoCalling.buildAutoCalling(context, bloc))
-                    : isOffline
+                    : isOffline /*&& Singleton.instance.isOfflineStorageFeatureEnabled*/
                         ? StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection(
