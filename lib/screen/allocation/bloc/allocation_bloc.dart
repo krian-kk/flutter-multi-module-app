@@ -178,9 +178,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(Singleton.instance.agentRef)
                 .collection(Constants.firebaseCase)
-                .snapshots();
-            AppUtils.showToast('App synced with local');
-
+                .get()
+                .then((value) {
+              debugPrint('Offline state in bloc ${value.docs.length}');
+              AppUtils.showToast('App synced with local');
+            });
             // yield AllocationOfflineState(successResponse: 'synced');
           } else {
             for (var element in priorityListData['data']['result']) {

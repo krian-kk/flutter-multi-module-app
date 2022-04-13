@@ -36,6 +36,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -54,7 +55,8 @@ class AllocationScreen extends StatefulWidget {
   _AllocationScreenState createState() => _AllocationScreenState();
 }
 
-class _AllocationScreenState extends State<AllocationScreen> {
+class _AllocationScreenState extends State<AllocationScreen>
+    with WidgetsBindingObserver {
   late AllocationBloc bloc;
   bool isSubmitRUOffice = false;
   String? currentAddress;
@@ -86,8 +88,16 @@ class _AllocationScreenState extends State<AllocationScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      internetChecking();
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+    debugPrint('init state');
     bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
@@ -95,12 +105,16 @@ class _AllocationScreenState extends State<AllocationScreen> {
   }
 
   Future<void> internetChecking() async {
+    debugPrint('internetChecking');
     await Connectivity().checkConnectivity().then((value) {
       setState(() {
         internetAvailability = value.name;
+        debugPrint('internetChecking ${value.name}');
       });
     });
     Connectivity().onConnectivityChanged.listen((event) {
+      debugPrint('internetChecking listen');
+
       setState(() {
         internetAvailability = event.name;
         if (event.name == 'none') {
@@ -812,7 +826,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
           if (state is AllocationLoadingState) {
-            return const CustomLoadingWidget();
+            return const SkeletonLoading();
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
@@ -1214,7 +1228,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           )
                         : Expanded(
                             child: isCaseDetailLoading
-                                ? const CustomLoadingWidget()
+                                ? const SkeletonLoading()
                                 : resultList.isEmpty
                                     ? Column(
                                         children: [
