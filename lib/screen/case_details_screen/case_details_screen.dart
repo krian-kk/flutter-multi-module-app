@@ -162,6 +162,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             builder: (BuildContext context, CaseDetailsState state) {
               if (state is CaseDetailsLoadingState) {
                 return const SkeletonLoading();
+                // ignore: dead_code
                 return const CustomLoadingWidget();
               } else {
                 return Scaffold(

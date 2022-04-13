@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:origa/widgets/shimmer_widget.dart';
 
 class SkeletonLoading extends StatefulWidget {
   const SkeletonLoading({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _SkeletonLoadingState extends State<SkeletonLoading> {
           physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext ctx, index) {
             const int timer = 1000;
-            return Shimmer.fromColors(
+            return ShimmerWidget.fromColors(
               baseColor: Colors.grey.shade300,
               highlightColor: Colors.white,
               period: const Duration(milliseconds: timer),
