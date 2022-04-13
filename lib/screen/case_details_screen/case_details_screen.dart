@@ -32,6 +32,7 @@ import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_appbar.dart';
@@ -160,6 +161,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             bloc: bloc,
             builder: (BuildContext context, CaseDetailsState state) {
               if (state is CaseDetailsLoadingState) {
+                return const SkeletonLoading();
                 return const CustomLoadingWidget();
               } else {
                 return Scaffold(

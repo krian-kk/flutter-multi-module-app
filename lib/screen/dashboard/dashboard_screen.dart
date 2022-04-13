@@ -19,6 +19,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/percent_indicatior_widget.dart';
@@ -249,7 +250,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             bloc: bloc,
             builder: (BuildContext context, DashboardState state) {
               if (state is DashboardLoadingState) {
-                return const CustomLoadingWidget();
+                // return const CustomLoadingWidget();
+                return const SkeletonLoading();
               }
               return bloc.isNoInternetAndServerError
                   ? Center(

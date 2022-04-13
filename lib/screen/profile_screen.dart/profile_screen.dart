@@ -30,6 +30,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -275,7 +276,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         bloc: bloc,
         builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoadingState) {
-            return const CustomLoadingWidget();
+            // return const CustomLoadingWidget();
+            return const SkeletonLoading();
           } else {
             if (bloc.profileAPIValue.result?.first.profileImgUrl != null) {
               profileImage = base64
