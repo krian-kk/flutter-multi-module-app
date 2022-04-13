@@ -97,7 +97,7 @@ class _AllocationScreenState extends State<AllocationScreen>
   @override
   void initState() {
     super.initState();
-    debugPrint('init state');
+    debugPrint('Allocation screen');
     bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
@@ -109,12 +109,20 @@ class _AllocationScreenState extends State<AllocationScreen>
     await Connectivity().checkConnectivity().then((value) {
       setState(() {
         internetAvailability = value.name;
-        debugPrint('internetChecking ${value.name}');
       });
+      if (value.name == 'none') {
+        resultList.clear();
+        isOffline = true;
+        bloc.hasNextPage = false;
+      } else {
+        isOffline = false;
+        resultList.clear();
+        bloc.hasNextPage = true;
+        bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+      }
     });
     Connectivity().onConnectivityChanged.listen((event) {
       debugPrint('internetChecking listen');
-
       setState(() {
         internetAvailability = event.name;
         if (event.name == 'none') {
