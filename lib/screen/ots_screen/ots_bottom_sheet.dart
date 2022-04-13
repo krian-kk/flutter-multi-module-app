@@ -582,7 +582,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 requestBodyData.toJson();
             try {
               firebaseObject.addAll(
-                  FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+                  await FirebaseUtils.toPrepareFileStoringModel(
+                      uploadFileLists));
             } catch (e) {
               debugPrint('Exception while converting base64 ${e.toString()}');
             }

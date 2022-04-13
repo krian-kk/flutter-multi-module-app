@@ -616,7 +616,7 @@ class _CustomOtherFeedBackBottomSheetState
           final Map<String, dynamic> firebaseObject = requestBodyData.toJson();
           try {
             firebaseObject.addAll(
-                FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+                await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
           } catch (e) {
             debugPrint('Exception while converting base64 ${e.toString()}');
           }

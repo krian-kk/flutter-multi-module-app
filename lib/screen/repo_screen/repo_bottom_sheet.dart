@@ -476,8 +476,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   final Map<String, dynamic> firebaseObject =
                                       requestBodyData.toJson();
                                   try {
-                                    firebaseObject.addAll(
-                                        FirebaseUtils.toPrepareFileStoringModel(
+                                    firebaseObject.addAll(await FirebaseUtils
+                                        .toPrepareFileStoringModel(
                                             uploadFileLists));
                                   } catch (e) {
                                     debugPrint(
