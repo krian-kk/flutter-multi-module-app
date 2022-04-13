@@ -723,8 +723,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       //do do do do
       final Map<String, dynamic> firebaseObject = event.postData!.toJson();
       try {
-        firebaseObject
-            .addAll(FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+        firebaseObject.addAll(
+            await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
       } catch (e) {
         debugPrint('Exception while converting base64 ${e.toString()}');
       }

@@ -783,7 +783,7 @@ class _CustomCollectionsBottomSheetState
                       jsonDecode(jsonEncode(requestBodyData.toJson()));
                   try {
                     firebaseObject.addAll(
-                        FirebaseUtils.toPrepareFileStoringModel(
+                        await FirebaseUtils.toPrepareFileStoringModel(
                             uploadFileLists));
                   } catch (e) {
                     debugPrint(

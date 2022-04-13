@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -22,10 +20,10 @@ class FirebaseUtils {
       String? selectedFollowUpDate,
       required CaseDetailsBloc bloc}) async {
     bool returnValues = false;
-    var eventMap = eventsDetails as Map<String, dynamic>;
+    final eventMap = eventsDetails as Map<String, dynamic>;
     eventMap['dateTime'] = DateTime.now();
     if (Singleton.instance.usertype == Constants.fieldagent) {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseEvent)
@@ -35,8 +33,8 @@ class FirebaseUtils {
           selectedClipValue != Constants.collections) {
         var indexNumber = 0;
 
-        List<Map> toUpdateValues = [];
-        UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
+        final List<Map> toUpdateValues = [];
+        final UpdateHealthStatusModel data = UpdateHealthStatusModel.fromJson(
             Map<String, dynamic>.from(Singleton.instance.updateHealthStatus));
         var status = 0;
         switch (data.tabIndex) {
@@ -56,7 +54,7 @@ class FirebaseUtils {
         bloc.selectedAddressModel['health'] = status.toString();
         toUpdateValues.add(bloc.selectedAddressModel);
 
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -65,9 +63,9 @@ class FirebaseUtils {
             .forEach((element) {
           element.data()!.forEach((key, value) {
             if (key == 'addressDetails') {
-              Map selectedAddress = bloc.selectedAddressModel;
+              final Map selectedAddress = bloc.selectedAddressModel;
               value.asMap().forEach((index, values) {
-                Map addressModel = Map.from(values);
+                final Map addressModel = Map.from(values);
                 if (selectedAddress['value'] == addressModel['value']) {
                   indexNumber = index;
                   debugPrint(indexNumber.toString());
@@ -78,7 +76,7 @@ class FirebaseUtils {
             }
           });
         });
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -104,7 +102,8 @@ class FirebaseUtils {
             .then((value) {
           final mapValues = value.data() as Map<String, dynamic>;
           // debugPrint('After update values--> ${mapValues['addressDetails']}');
-          debugPrint('collSubStatus update values--> ${mapValues['collSubStatus']}');
+          debugPrint(
+              'collSubStatus update values--> ${mapValues['collSubStatus']}');
           debugPrint('selectedClipValue--> $selectedClipValue');
         });
       }
@@ -143,9 +142,10 @@ class FirebaseUtils {
   }
 
   //For offline purpose -> it'll storing inside of all event submission if files added
-  static Map<String, dynamic> toPrepareFileStoringModel(List<File> files) {
+  static Future<Map<String, dynamic>> toPrepareFileStoringModel(
+      List<File> files) async {
     final List<Map<String, dynamic>> returnResult = [];
-    if (ConnectivityResult.none != Connectivity().checkConnectivity()) {
+    if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
       for (var element in files) {
         returnResult.add({
           'fileName': element.path.split('/').last,

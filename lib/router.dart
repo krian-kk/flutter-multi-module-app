@@ -21,6 +21,7 @@ import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -206,25 +207,26 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         debugPrint(
             'Router AuthenticationAuthenticated @notification tyep ${state.notificationData}');
 
-        await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
-            arguments: state.notificationData);
-        // String? mPin = await PreferenceHelper.getPreference(Constants.mPin);
-        // String? agentRef =
-        //     await PreferenceHelper.getPreference(Constants.agentRef);
-        // // await SharedPreferences.getInstance().then((value) {
-        // //   String? mPin = value.getString(Constants.mPin);
-        // //   String? agentRef = value.getString(Constants.agentRef);
-        // //   print('Mpin ======= > ${mPin}');
-        // if (mPin != null) {
-        //   showMPinDialog(
-        //       mPin: mPin,
-        //       buildContext: context,
-        //       userName: agentRef,
-        //       notificationData: state.notificationData);
-        // } else {
-        //   Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-        //       arguments: state.notificationData);
-        // }
+        final String? mPin =
+            await PreferenceHelper.getPreference(Constants.mPin);
+        final String? agentRef =
+            await PreferenceHelper.getPreference(Constants.agentRef);
+        // await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
+        //     arguments: state.notificationData);
+        // await SharedPreferences.getInstance().then((value) {
+        //   String? mPin = value.getString(Constants.mPin);
+        //   String? agentRef = value.getString(Constants.agentRef);
+        //   print('Mpin ======= > ${mPin}');
+        if (mPin != null) {
+          await showMPinDialog(
+              mPin: mPin,
+              buildContext: context,
+              userName: agentRef,
+              notificationData: state.notificationData);
+        } else {
+          await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+              arguments: state.notificationData);
+        }
         // // });
       }
 
@@ -244,9 +246,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           final String mPin = value.getString(Constants.mPin).toString();
           final String agentRef =
               value.getString(Constants.agentRef).toString();
-          // showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
-          Navigator.pushReplacementNamed(
-              context, AppRoutes.homeTabScreen);
+          showMPinDialog(mPin: mPin, buildContext: context, userName: agentRef);
+          Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
         });
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
