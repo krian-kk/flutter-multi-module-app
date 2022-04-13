@@ -169,11 +169,15 @@ class _LoginScreenState extends State<LoginScreen> {
             content: CreateMpinScreen(
               saveFunction: (mPin) async {
                 // Create Secure Mpin APi
-                final SharedPreferences _prefs =
-                    await SharedPreferences.getInstance();
-                await _prefs.setString(Constants.accessToken, mPin!);
-                Navigator.pop(context);
-                bloc.add(TriggeredHomeTabEvent(userId.text));
+                if (await createMpin(mPin)) {
+                  final SharedPreferences _prefs =
+                      await SharedPreferences.getInstance();
+                  await _prefs.setString(Constants.accessToken, mPin!);
+                  Navigator.pop(context);
+                  bloc.add(TriggeredHomeTabEvent(userId.text));
+                } else {
+                  AppUtils.showToast('Change mPin has some Issue');
+                }
               },
             ),
           );
