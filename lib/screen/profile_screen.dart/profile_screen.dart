@@ -221,13 +221,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      // ProfileNavigation(
-      //   title: Languages.of(context)!.changeSecurePIN,
-      //   onTap: () {
-      //     bloc.add(ClickChangeSecurityPinEvent());
-      //   },
-      //   isEnable: true,
-      // )
+      ProfileNavigation(
+        title: Languages.of(context)!.changeSecurePIN,
+        onTap: () {
+          bloc.add(ClickChangeSecurityPinEvent());
+        },
+        isEnable: true,
+      )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
