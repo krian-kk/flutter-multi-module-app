@@ -14,7 +14,8 @@ class _SkeletonLoadingState extends State<SkeletonLoading> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: ListView.builder(
-          itemCount: 8,
+          itemCount: 20,
+          physics: const NeverScrollableScrollPhysics(),
           itemBuilder: (BuildContext ctx, index) {
             const int timer = 1000;
             return Shimmer.fromColors(
