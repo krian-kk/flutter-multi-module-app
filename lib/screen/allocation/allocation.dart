@@ -105,24 +105,24 @@ class _AllocationScreenState extends State<AllocationScreen>
   }
 
   Future<void> internetChecking() async {
-    debugPrint('internetChecking');
-    await Connectivity().checkConnectivity().then((value) {
-      setState(() {
-        internetAvailability = value.name;
+    if (!Singleton.instance.isFirstTime) {
+      await Connectivity().checkConnectivity().then((value) {
+        setState(() {
+          internetAvailability = value.name;
+        });
+        if (value.name == 'none') {
+          resultList.clear();
+          isOffline = true;
+          bloc.hasNextPage = false;
+        } else {
+          isOffline = false;
+          resultList.clear();
+          bloc.hasNextPage = true;
+          bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+        }
       });
-      if (value.name == 'none') {
-        resultList.clear();
-        isOffline = true;
-        bloc.hasNextPage = false;
-      } else {
-        isOffline = false;
-        resultList.clear();
-        bloc.hasNextPage = true;
-        bloc = AllocationBloc()..add(AllocationInitialEvent(context));
-      }
-    });
+    }
     Connectivity().onConnectivityChanged.listen((event) {
-      debugPrint('internetChecking listen');
       setState(() {
         internetAvailability = event.name;
         if (event.name == 'none') {
@@ -136,6 +136,7 @@ class _AllocationScreenState extends State<AllocationScreen>
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
+      Singleton.instance.isFirstTime = false;
     });
   }
 
