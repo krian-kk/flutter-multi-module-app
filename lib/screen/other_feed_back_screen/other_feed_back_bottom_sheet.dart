@@ -12,7 +12,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -39,6 +38,7 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/ios_keyboard_actions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
@@ -209,194 +209,171 @@ class _CustomOtherFeedBackBottomSheetState
                           .copyWith(bottom: 5),
                     ),
                     Expanded(
-                      child: KeyboardActions(
-                        enable: false,
-                        config: const KeyboardActionsConfig(
-                          keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
-                          actions: <KeyboardActionsItem>[
-                            // KeyboardActionsItem(
-                            //   focusNode: amountCollectedFocusNode,
-                            //   displayArrows: false,
-                            // ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 18.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                widget.customerLoanUserWidget,
-                                const SizedBox(height: 11),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    // CustomText(
-                                    //   Languages.of(context)!.nextActionDate,
-                                    //   fontSize: FontSize.twelve,
-                                    //   fontWeight: FontWeight.w400,
-                                    //   color: ColorResource.color666666,
-                                    //   fontStyle: FontStyle.normal,
-                                    // ),
-                                    SizedBox(
-                                      width:
-                                          (MediaQuery.of(context).size.width -
-                                                  44) /
-                                              2,
-                                      child: CustomReadOnlyTextField(
-                                        Languages.of(context)!.nextActionDate,
-                                        dateControlller,
-                                        validationRules: const <String>[
-                                          'required'
-                                        ],
-                                        isReadOnly: true,
-                                        isLabel: true,
-                                        onTapped: () =>
-                                            PickDateAndTimeUtils.pickDate(
-                                                context, (String? newDate,
-                                                    String? followUpDate) {
-                                          if (newDate != null &&
-                                              followUpDate != null) {
-                                            setState(() {
-                                              dateControlller.text = newDate;
-                                            });
-                                            widget.bloc.add(
-                                                ChangeFollowUpDateEvent(
-                                                    followUpDate:
-                                                        followUpDate));
-                                          }
-                                        }),
-                                        suffixWidget: SvgPicture.asset(
-                                          ImageResource.calendar,
-                                          fit: BoxFit.scaleDown,
-                                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              widget.customerLoanUserWidget,
+                              const SizedBox(height: 11),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  // CustomText(
+                                  //   Languages.of(context)!.nextActionDate,
+                                  //   fontSize: FontSize.twelve,
+                                  //   fontWeight: FontWeight.w400,
+                                  //   color: ColorResource.color666666,
+                                  //   fontStyle: FontStyle.normal,
+                                  // ),
+                                  SizedBox(
+                                    width: (MediaQuery.of(context).size.width -
+                                            44) /
+                                        2,
+                                    child: CustomReadOnlyTextField(
+                                      Languages.of(context)!.nextActionDate,
+                                      dateControlller,
+                                      validationRules: const <String>[
+                                        'required'
+                                      ],
+                                      isReadOnly: true,
+                                      isLabel: true,
+                                      onTapped: () =>
+                                          PickDateAndTimeUtils.pickDate(context,
+                                              (String? newDate,
+                                                  String? followUpDate) {
+                                        if (newDate != null &&
+                                            followUpDate != null) {
+                                          setState(() {
+                                            dateControlller.text = newDate;
+                                          });
+                                          widget.bloc.add(
+                                              ChangeFollowUpDateEvent(
+                                                  followUpDate: followUpDate));
+                                        }
+                                      }),
+                                      suffixWidget: SvgPicture.asset(
+                                        ImageResource.calendar,
+                                        fit: BoxFit.scaleDown,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                expandList(<FeedbackTemplate>[
-                                  FeedbackTemplate(
-                                      name:
-                                          Languages.of(context)!.addNewContact,
-                                      expanded: false,
-                                      data: <Data>[Data(name: 'addNewContact')])
-                                ], 0),
-                                ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: Singleton
-                                            .instance
-                                            .feedbackTemplate
-                                            ?.result
-                                            ?.feedbackTemplate
-                                            ?.length ??
-                                        0,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return expandList(
-                                          Singleton.instance.feedbackTemplate!
-                                              .result!.feedbackTemplate!,
-                                          index);
-                                    }),
-                                const SizedBox(height: 5),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 13),
-                                  child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.remark + '*',
-                                    remarksController,
-                                    validationRules: const <String>['required'],
-                                    isLabel: true,
-                                    isVoiceRecordWidget: true,
-                                    checkRecord: (String? isRecord,
-                                        String? text,
-                                        Speech2TextModel returnS2Tdata) {
-                                      setState(() {
-                                        this.returnS2Tdata = returnS2Tdata;
-                                        this.isRecord = isRecord;
-                                        translateText = text!;
-                                        isTranslate = true;
-                                      });
-                                    },
-                                    isSubmit: isTranslate,
-                                    returnS2Tresponse: (dynamic val) {
-                                      if (val is Speech2TextModel) {
-                                        setState(() {
-                                          returnS2Tdata = val;
-                                        });
-                                      }
-                                    },
                                   ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              expandList(<FeedbackTemplate>[
+                                FeedbackTemplate(
+                                    name: Languages.of(context)!.addNewContact,
+                                    expanded: false,
+                                    data: <Data>[Data(name: 'addNewContact')])
+                              ], 0),
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: Singleton.instance.feedbackTemplate
+                                          ?.result?.feedbackTemplate?.length ??
+                                      0,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return expandList(
+                                        Singleton.instance.feedbackTemplate!
+                                            .result!.feedbackTemplate!,
+                                        index);
+                                  }),
+                              const SizedBox(height: 5),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 13),
+                                child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.remark + '*',
+                                  remarksController,
+                                  validationRules: const <String>['required'],
+                                  isLabel: true,
+                                  isVoiceRecordWidget: true,
+                                  checkRecord: (String? isRecord, String? text,
+                                      Speech2TextModel returnS2Tdata) {
+                                    setState(() {
+                                      this.returnS2Tdata = returnS2Tdata;
+                                      this.isRecord = isRecord;
+                                      translateText = text!;
+                                      isTranslate = true;
+                                    });
+                                  },
+                                  isSubmit: isTranslate,
+                                  returnS2Tresponse: (dynamic val) {
+                                    if (val is Speech2TextModel) {
+                                      setState(() {
+                                        returnS2Tdata = val;
+                                      });
+                                    }
+                                  },
                                 ),
-                                const SizedBox(height: 25),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: Card(
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50),
-                                          side: const BorderSide(
-                                            width: 0.5,
-                                            color: ColorResource.colorDADADA,
+                              ),
+                              const SizedBox(height: 25),
+                              GestureDetector(
+                                onTap: () {},
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(50),
+                                        side: const BorderSide(
+                                          width: 0.5,
+                                          color: ColorResource.colorDADADA,
+                                        ),
+                                      ),
+                                      color: ColorResource.color23375A,
+                                      elevation: 2,
+                                      child: InkWell(
+                                        onTap: () => getFiles(),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              8, 10, 5, 15),
+                                          child: Column(
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: <Widget>[
+                                                  SvgPicture.asset(
+                                                      ImageResource.upload),
+                                                  const SizedBox(width: 7),
+                                                  Flexible(
+                                                    child: CustomText(
+                                                      Languages.of(context)!
+                                                          .uploadAudioFile,
+                                                      color: ColorResource
+                                                          .colorFFFFFF,
+                                                      fontSize:
+                                                          FontSize.sixteen,
+                                                      lineHeight: 1,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              const SizedBox(height: 3),
+                                              CustomText(
+                                                Languages.of(context)!.upto5mb,
+                                                lineHeight: 1,
+                                                color:
+                                                    ColorResource.colorFFFFFF,
+                                                fontSize: FontSize.twelve,
+                                                fontWeight: FontWeight.w700,
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        color: ColorResource.color23375A,
-                                        elevation: 2,
-                                        child: InkWell(
-                                          onTap: () => getFiles(),
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                8, 10, 5, 15),
-                                            child: Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                    SvgPicture.asset(
-                                                        ImageResource.upload),
-                                                    const SizedBox(width: 7),
-                                                    Flexible(
-                                                      child: CustomText(
-                                                        Languages.of(context)!
-                                                            .uploadAudioFile,
-                                                        color: ColorResource
-                                                            .colorFFFFFF,
-                                                        fontSize:
-                                                            FontSize.sixteen,
-                                                        lineHeight: 1,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 3),
-                                                CustomText(
-                                                  Languages.of(context)!
-                                                      .upto5mb,
-                                                  lineHeight: 1,
-                                                  color:
-                                                      ColorResource.colorFFFFFF,
-                                                  fontSize: FontSize.twelve,
-                                                  fontWeight: FontWeight.w700,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        )),
-                                  ),
+                                      )),
                                 ),
-                                const SizedBox(height: 15),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 15),
+                            ],
                           ),
                         ),
                       ),
@@ -852,77 +829,89 @@ class _CustomOtherFeedBackBottomSheetState
                                           );
                                         }
                                       },
-                                      child: CustomReadOnlyTextField(
-                                        (listOfContact[index].formValue == '')
-                                            ? Languages.of(context)!.contact
-                                            : (listOfContact[index].formValue ==
-                                                        'Mobile' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Office Contact No.' ||
-                                                    listOfContact[index]
-                                                            .formValue ==
-                                                        'Residence Contact No.')
-                                                ? Languages.of(context)!.contact
-                                                : (listOfContact[index]
-                                                            .formValue ==
-                                                        'Email Id')
-                                                    ? Languages.of(context)!
-                                                        .email
-                                                    : 'Address',
-                                        listOfContact[index].controller,
-                                        isLabel: true,
-                                        isEnable:
-                                            (listOfContact[index].formValue !=
-                                                ''),
-                                        borderColor: ColorResource.color000000,
-                                        keyBoardType: (listOfContact[index]
-                                                        .formValue ==
-                                                    'Mobile' ||
-                                                listOfContact[index]
-                                                        .formValue ==
-                                                    'Office Contact No.' ||
-                                                listOfContact[index]
-                                                        .formValue ==
-                                                    'Residence Contact No.')
-                                            ? TextInputType.number
-                                            : (listOfContact[index].formValue ==
-                                                    'Email Id')
-                                                ? TextInputType.emailAddress
-                                                : TextInputType.name,
-                                        inputformaters: (listOfContact[index]
-                                                        .formValue ==
-                                                    'Mobile' ||
-                                                listOfContact[index]
-                                                        .formValue ==
-                                                    'Office Contact No.' ||
-                                                listOfContact[index]
-                                                        .formValue ==
-                                                    'Residence Contact No.')
-                                            ? <TextInputFormatter>[
-                                                LengthLimitingTextInputFormatter(
-                                                    10),
-                                                FilteringTextInputFormatter
-                                                    .digitsOnly,
-                                                FilteringTextInputFormatter
-                                                    .deny(Constants.rEGEXEMOJI),
-                                                if (listOfContact[index]
-                                                    .controller
-                                                    .text
-                                                    .isEmpty)
+                                      child: IOSKeyboardActionWidget(
+                                        focusNode:
+                                            listOfContact[index].focusNode,
+                                        child: CustomReadOnlyTextField(
+                                          (listOfContact[index].formValue == '')
+                                              ? Languages.of(context)!.contact
+                                              : (listOfContact[index]
+                                                              .formValue ==
+                                                          'Mobile' ||
+                                                      listOfContact[index]
+                                                              .formValue ==
+                                                          'Office Contact No.' ||
+                                                      listOfContact[index]
+                                                              .formValue ==
+                                                          'Residence Contact No.')
+                                                  ? Languages.of(context)!
+                                                      .contact
+                                                  : (listOfContact[index]
+                                                              .formValue ==
+                                                          'Email Id')
+                                                      ? Languages.of(context)!
+                                                          .email
+                                                      : 'Address',
+                                          listOfContact[index].controller,
+                                          isLabel: true,
+                                          focusNode:
+                                              listOfContact[index].focusNode,
+                                          isEnable:
+                                              (listOfContact[index].formValue !=
+                                                  ''),
+                                          borderColor:
+                                              ColorResource.color000000,
+                                          keyBoardType: (listOfContact[index]
+                                                          .formValue ==
+                                                      'Mobile' ||
+                                                  listOfContact[index]
+                                                          .formValue ==
+                                                      'Office Contact No.' ||
+                                                  listOfContact[index]
+                                                          .formValue ==
+                                                      'Residence Contact No.')
+                                              ? TextInputType.number
+                                              : (listOfContact[index]
+                                                          .formValue ==
+                                                      'Email Id')
+                                                  ? TextInputType.emailAddress
+                                                  : TextInputType.name,
+                                          inputformaters: (listOfContact[index]
+                                                          .formValue ==
+                                                      'Mobile' ||
+                                                  listOfContact[index]
+                                                          .formValue ==
+                                                      'Office Contact No.' ||
+                                                  listOfContact[index]
+                                                          .formValue ==
+                                                      'Residence Contact No.')
+                                              ? <TextInputFormatter>[
+                                                  LengthLimitingTextInputFormatter(
+                                                      10),
                                                   FilteringTextInputFormatter
-                                                      .deny(' '),
-                                              ]
-                                            : <TextInputFormatter>[
-                                                FilteringTextInputFormatter
-                                                    .deny(Constants.rEGEXEMOJI),
-                                                if (listOfContact[index]
-                                                    .controller
-                                                    .text
-                                                    .isEmpty)
+                                                      .digitsOnly,
                                                   FilteringTextInputFormatter
-                                                      .deny(' ')
-                                              ],
+                                                      .deny(
+                                                          Constants.rEGEXEMOJI),
+                                                  if (listOfContact[index]
+                                                      .controller
+                                                      .text
+                                                      .isEmpty)
+                                                    FilteringTextInputFormatter
+                                                        .deny(' '),
+                                                ]
+                                              : <TextInputFormatter>[
+                                                  FilteringTextInputFormatter
+                                                      .deny(
+                                                          Constants.rEGEXEMOJI),
+                                                  if (listOfContact[index]
+                                                      .controller
+                                                      .text
+                                                      .isEmpty)
+                                                    FilteringTextInputFormatter
+                                                        .deny(' ')
+                                                ],
+                                        ),
                                       ),
                                     ),
                                   ],
