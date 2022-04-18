@@ -614,9 +614,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 translatedText: returnS2Tdata.result?.translatedText,
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
-              callID: Singleton.instance.callID ?? ' ',
-              callingID: Singleton.instance.callingID ?? ' ',
-              callerServiceID: Singleton.instance.callerServiceID ?? ' ',
+              callID: Singleton.instance.callID,
+              callingID: Singleton.instance.callingID,
+              callerServiceID: Singleton.instance.callerServiceID ?? '',
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',
@@ -636,15 +636,15 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
 
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
-                  await FirebaseUtils.storeEvents(
-                    eventsDetails: requestBodyData.toJson(),
-                    caseId: widget.caseId,
-                    selectedFollowUpDate: ptpDateControlller.text,
-                    selectedClipValue: Constants.ptp,
-                    bloc: widget.bloc)
-                .whenComplete(() {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            });
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: ptpDateControlller.text,
+                      selectedClipValue: Constants.ptp,
+                      bloc: widget.bloc)
+                  .whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(
