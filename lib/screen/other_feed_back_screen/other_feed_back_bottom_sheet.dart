@@ -210,9 +210,15 @@ class _CustomOtherFeedBackBottomSheetState
                     ),
                     Expanded(
                       child: KeyboardActions(
-                        enable: (Platform.isIOS),
+                        enable: false,
                         config: const KeyboardActionsConfig(
                           keyboardActionsPlatform: KeyboardActionsPlatform.IOS,
+                          actions: <KeyboardActionsItem>[
+                            // KeyboardActionsItem(
+                            //   focusNode: amountCollectedFocusNode,
+                            //   displayArrows: false,
+                            // ),
+                          ],
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18.0),

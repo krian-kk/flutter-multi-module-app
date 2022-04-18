@@ -3,10 +3,10 @@ class ConstantEventValues {
   static const String voiceCallEventCode = 'TELEVT011';
   // static const String dummyHealth = '1';
   //Health values and color showing based on health status
-// Cust met, connected -> health 2  -> green
-// Cust not met, unreachable -> health 1 -> orange
-// Invalid -> health 0 -> red
-// No health value or null -> grey or pink
+  // Cust met, connected -> health 2  -> green
+  // Cust not met, unreachable -> health 1 -> orange
+  // Invalid -> health 0 -> red
+  // No health value or null -> grey or pink
   static const String healthZero = '0';
   static const String healthOne = '1';
   static const String healthTwo = '2';

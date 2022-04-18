@@ -70,7 +70,6 @@ class ListOfCaseDetails {
   static Widget textFieldView(
       {required String title, required dynamic value, bool? isSingleLines}) {
     Widget widget;
-    // return widget;
     switch (value) {
       case 'null':
         widget = const SizedBox();

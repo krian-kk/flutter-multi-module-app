@@ -107,8 +107,6 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
       builder: (BuildContext context, Widget? widgetChild) {
         final BoxDecoration decoration = BoxDecoration(
           shape: widget.shape,
-          // If the user picks a curve that goes below 0 or above 1
-          // this opacity will have unexpected effects without clamping
           color: widget.glowColor.withOpacity(
             _alphaAnimation.value.clamp(
               0.0,
@@ -126,8 +124,6 @@ class _AvatarGlowState extends State<AvatarGlowWidget>
                   ? AnimatedBuilder(
                       animation: _bigDiscAnimation,
                       builder: (BuildContext context, Widget? widget) {
-                        // If the user picks a curve that goes below 0,
-                        // this will throw without clamping
                         final num size = _bigDiscAnimation.value.clamp(
                           0.0,
                           double.infinity,

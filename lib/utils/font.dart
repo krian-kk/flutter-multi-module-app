@@ -47,8 +47,3 @@ class FontSize {
   static const double thirtyFour = 34.0;
   static const double thirtyFive = 35.0;
 }
-
-// class FontWeights {
-//   static const bold = FontWeight.bold;
-//   static const normal = FontWeight.normal;
-// }

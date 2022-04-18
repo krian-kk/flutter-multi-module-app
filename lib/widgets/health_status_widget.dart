@@ -7,31 +7,15 @@ class ShowHealthStatus {
     switch (healthValue) {
       case '0':
         returnWidget = colorWidget(ColorResource.red);
-        // returnWidget = SvgPicture.asset(
-        //   ImageResource.activePerson,
-        //   color: ColorResource.red,
-        // );
         break;
       case '1':
         returnWidget = colorWidget(ColorResource.orange);
-        // returnWidget = SvgPicture.asset(
-        //   ImageResource.activePerson,
-        //   color: ColorResource.orange,
-        // );
         break;
       case '2':
         returnWidget = colorWidget(ColorResource.green);
-        // SvgPicture.asset(
-        //   ImageResource.activePerson,
-        //   color: ColorResource.green,
-        // );
         break;
       default:
         returnWidget = colorWidget(ColorResource.grey);
-        // returnWidget = SvgPicture.asset(
-        //   ImageResource.activePerson,
-        //   color: ColorResource.grey,
-        // );
         break;
     }
     return returnWidget;

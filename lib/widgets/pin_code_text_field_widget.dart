@@ -914,7 +914,6 @@ class DialogConfig {
       dialogContent: dialogContent ?? 'Do you want to paste this code ',
       dialogTitle: dialogTitle ?? 'Paste Code',
       negativeText: negativeText ?? 'Cancel',
-      // =========================
       platform: platform,
     );
   }

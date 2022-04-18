@@ -1,3 +1,5 @@
+// ignore_for_file: unawaited_futures
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -23,7 +25,7 @@ class FirebaseUtils {
     final eventMap = eventsDetails as Map<String, dynamic>;
     eventMap['dateTime'] = DateTime.now();
     if (Singleton.instance.usertype == Constants.fieldagent) {
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseEvent)
@@ -54,7 +56,7 @@ class FirebaseUtils {
         bloc.selectedAddressModel['health'] = status.toString();
         toUpdateValues.add(bloc.selectedAddressModel);
 
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -76,7 +78,7 @@ class FirebaseUtils {
             }
           });
         });
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -92,7 +94,7 @@ class FirebaseUtils {
                     'addressDetails': toUpdateValues,
                   });
 
-        await FirebaseFirestore.instance
+        FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)
             .collection(Constants.firebaseCase)
@@ -117,7 +119,7 @@ class FirebaseUtils {
   // to update the case detail starred cases or not
   static updateStarred({dynamic isStarred, dynamic caseId}) async {
     if (Singleton.instance.usertype == Constants.fieldagent) {
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseCase)
@@ -132,7 +134,7 @@ class FirebaseUtils {
           isStarred = true;
         }
       });
-      await FirebaseFirestore.instance
+      FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseCase)
