@@ -119,7 +119,7 @@ class FirebaseUtils {
   // to update the case detail starred cases or not
   static updateStarred({dynamic isStarred, dynamic caseId}) async {
     if (Singleton.instance.usertype == Constants.fieldagent) {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
           .collection(Constants.firebaseCase)
