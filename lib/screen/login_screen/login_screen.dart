@@ -62,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
-      userId.text = 'CDE_46';
+      userId.text = 'CDE_45';
       password.text = 'Origa123';
     }
     // userId.text = 'CDE_46';
