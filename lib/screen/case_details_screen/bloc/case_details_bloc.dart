@@ -1498,12 +1498,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       });
     } else {
       // For local storage purpose storing while online
-      await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(),
-          caseId: caseId,
-          selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context),
-          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1604,15 +1598,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         postResult = <String, dynamic>{'success': true};
       });
     } else {
-      await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(),
-          caseId: caseId,
-          selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
-              ? addressCustomerNotMetSelectedDate
-              : addressCustomerNotMetNextActionDateController.text,
-          selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context),
-          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1711,12 +1696,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       });
     } else {
       // For local storage purpose storing while online
-      await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(),
-          caseId: caseId,
-          selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context),
-          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,
@@ -1789,13 +1768,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         postResult = <String, dynamic>{'success': true};
       });
     } else {
-      // For local storage purpose storing while online
-      await FirebaseUtils.storeEvents(
-          eventsDetails: requestBodyData.toJson(),
-          caseId: caseId,
-          selectedClipValue: ConvertString.convertLanguageToConstant(
-              selectedClipValue, context),
-          bloc: this);
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
         urlString,

@@ -453,17 +453,18 @@ class _CustomRemainderBottomSheetState
             callID: Singleton.instance.callID,
             callingID: Singleton.instance.callingID,
           );
-          await FirebaseUtils.storeEvents(
-                  eventsDetails: requestBodyData.toJson(),
-                  caseId: widget.caseId,
-                  selectedFollowUpDate: nextActionDateControlller.text,
-                  selectedClipValue: Constants.remainder,
-                  bloc: widget.bloc)
-              .whenComplete(() {
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-          });
+
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
+            await FirebaseUtils.storeEvents(
+                    eventsDetails: requestBodyData.toJson(),
+                    caseId: widget.caseId,
+                    selectedFollowUpDate: nextActionDateControlller.text,
+                    selectedClipValue: Constants.remainder,
+                    bloc: widget.bloc)
+                .whenComplete(() {
+              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            });
           } else {
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(

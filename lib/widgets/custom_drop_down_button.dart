@@ -61,7 +61,6 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           color: ColorResource.color666666,
           fontSize: FontSize.twelve,
         ),
-        // const SizedBox(height: 4),
         MediaQuery.removePadding(
           removeBottom: true,
           // removeTop: true,

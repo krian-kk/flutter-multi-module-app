@@ -28,13 +28,7 @@ class BottomSheetAppbar extends StatelessWidget {
               color: color ?? ColorResource.color101010,
             ),
             InkWell(
-                onTap: onTap ??
-                    () {
-                      Navigator.pop(context);
-                    },
-                // () {
-                //   Navigator.pop(context);
-                // },
+                onTap: onTap ?? () => Navigator.pop(context),
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(4, 4, 4, 4),
                   child: SvgPicture.asset(

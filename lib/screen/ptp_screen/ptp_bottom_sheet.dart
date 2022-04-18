@@ -634,7 +634,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               ),
             );
 
-            await FirebaseUtils.storeEvents(
+            if (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity()) {
+                  await FirebaseUtils.storeEvents(
                     eventsDetails: requestBodyData.toJson(),
                     caseId: widget.caseId,
                     selectedFollowUpDate: ptpDateControlller.text,
@@ -643,8 +645,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 .whenComplete(() {
               AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             });
-            if (ConnectivityResult.none ==
-                await Connectivity().checkConnectivity()) {
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(

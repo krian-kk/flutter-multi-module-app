@@ -71,7 +71,6 @@ class PickDateAndTimeUtils {
       return;
     }
 
-    // final time = newTime.format(context).toString();
     final String hours = newTime.hour.toString().padLeft(2, '0');
     final String minites = newTime.minute.toString().padLeft(2, '0');
     function('$hours:$minites');
