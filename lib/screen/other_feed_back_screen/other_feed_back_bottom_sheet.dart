@@ -600,18 +600,18 @@ class _CustomOtherFeedBackBottomSheetState
             'files': value,
           });
 
-          final Map<String, dynamic> firebaseObject = requestBodyData.toJson();
-          try {
-            firebaseObject.addAll(
-                await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
-          } catch (e) {
-            debugPrint('Exception while converting base64 ${e.toString()}');
-          }
-
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
+            final Map<String, dynamic> firebaseObject = requestBodyData.toJson();
+            try {
+              firebaseObject.addAll(
+                  await FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
+            } catch (e) {
+              debugPrint('Exception while converting base64 ${e.toString()}');
+            }
+
             await FirebaseUtils.storeEvents(
-                    eventsDetails: requestBodyData.toJson(),
+                    eventsDetails: firebaseObject,
                     caseId: widget.caseId,
                     selectedFollowUpDate: dateControlller.text,
                     selectedClipValue: Constants.otherFeedback,

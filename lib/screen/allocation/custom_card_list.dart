@@ -30,6 +30,7 @@ class CustomCardList {
                 ? '${(resultData[index].distanceMeters / 1000).toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
+          debugPrint('Total list length--> ${resultData.length}');
           return (resultData.length >= index) ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -720,15 +720,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       postdata.addAll(<String, dynamic>{
         'files': value,
       });
-      //do do do do
-      final Map<String, dynamic> firebaseObject = event.postData!.toJson();
-      try {
-        firebaseObject.addAll(
-            await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
-      } catch (e) {
-        debugPrint('Exception while converting base64 ${e.toString()}');
-      }
+
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        //do do do do
+        final Map<String, dynamic> firebaseObject = event.postData!.toJson();
+        try {
+          firebaseObject.addAll(
+              await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+        } catch (e) {
+          debugPrint('Exception while converting base64 ${e.toString()}');
+        }
         await FirebaseUtils.storeEvents(
             eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
