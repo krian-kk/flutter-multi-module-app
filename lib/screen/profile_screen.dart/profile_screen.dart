@@ -231,7 +231,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
-      listener: (BuildContext context, ProfileState state) {
+      listener: (BuildContext context, ProfileState state) async {
         if (state is PostDataApiSuccessState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
@@ -263,13 +263,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           markAsHomeShowBottomSheet(context);
         }
         if (state is LoginState) {
-          Navigator.pushNamedAndRemoveUntil(
+          await Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (Route<dynamic> route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
-          showForgorSecurePinDialogBox(
-            bloc.profileAPIValue.result!.first.aRef.toString(),
-          );
+          if (await requestOTP(
+              bloc.profileAPIValue.result?.first.aRef.toString() ?? '')) {
+            await showForgorSecurePinDialogBox(
+                bloc.profileAPIValue.result!.first.aRef.toString());
+          }
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
