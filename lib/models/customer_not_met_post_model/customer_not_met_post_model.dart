@@ -6,6 +6,7 @@ class CustomerNotMetPostModel {
       required this.eventCode,
       required this.eventAttr,
       this.contact,
+      this.createdAt,
       required this.createdBy,
       required this.eventModule,
       required this.agentName,
@@ -24,6 +25,7 @@ class CustomerNotMetPostModel {
     eventCode = json['eventCode'];
     eventAttr = CustomerNotMetEventAttr.fromJson(json['eventAttr']);
     contact = json['contact'];
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -41,6 +43,7 @@ class CustomerNotMetPostModel {
   late String eventCode;
   late CustomerNotMetEventAttr eventAttr;
   late dynamic contact;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -62,6 +65,7 @@ class CustomerNotMetPostModel {
     if (contact != null) {
       data['contact'] = contact;
     }
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

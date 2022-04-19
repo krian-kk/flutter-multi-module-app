@@ -6,6 +6,7 @@ class PTPPostModel {
       required this.eventCode,
       required this.eventAttr,
       required this.createdBy,
+      this.createdAt,
       required this.agentName,
       required this.contractor,
       required this.eventModule,
@@ -24,6 +25,7 @@ class PTPPostModel {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     createdBy = json['createdBy'];
+    createdAt = json['createdAt'];
     agentName = json['agentName'];
     contractor = json['contractor'];
     eventModule = json['eventModule'];
@@ -41,6 +43,7 @@ class PTPPostModel {
   late String eventCode;
   late EventAttr eventAttr;
   late String createdBy;
+  late String? createdAt;
   late String agentName;
   late String contractor;
   late String eventModule;
@@ -60,6 +63,7 @@ class PTPPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
+    data['createdAt'] = createdAt;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
     data['eventModule'] = eventModule;

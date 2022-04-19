@@ -5,6 +5,7 @@ class CollectionPostModel {
     required this.caseId,
     required this.eventAttr,
     required this.eventCode,
+    this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.contractor,
@@ -24,6 +25,7 @@ class CollectionPostModel {
     caseId = json['caseId'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     eventCode = json['eventCode'];
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     contractor = json['contractor'];
@@ -41,6 +43,7 @@ class CollectionPostModel {
   late String caseId;
   late EventAttr eventAttr;
   late String eventCode;
+  late String? createdAt;
   late String createdBy;
   late String agentName;
   late String contractor;
@@ -60,6 +63,7 @@ class CollectionPostModel {
     data['caseId'] = caseId;
     data['eventAttr'] = eventAttr.toJson();
     data['eventCode'] = eventCode;
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
