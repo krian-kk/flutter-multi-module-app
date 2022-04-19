@@ -132,7 +132,16 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
     implementation group: 'com.google.guava', name: 'guava', version: '28.1-android'
+    implementation ('io.grpc:grpc-okhttp:1.44.1') {
+        exclude group: "com.squareup.okhttp"
+    }
+    implementation ('com.google.firebase:firebase-firestore:24.1.1') {
+        exclude group: "com.squareup.okhttp"
+    }
+    implementation "com.google.firebase:firebase-firestore-ktx:24.1.1"
+    implementation "com.google.firebase:firebase-database-ktx:20.0.4"
+    implementation "com.google.firebase:firebase-storage-ktx:20.0.1"
+    implementation "com.firebaseui:firebase-ui-storage:4.3.2"
 }
 apply plugin: 'com.google.gms.google-services'
-// This must appear at the bottom of the file
 apply plugin: 'com.google.firebase.crashlytics'

@@ -168,21 +168,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             debugPrint(e.toString());
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-            hasNextPage = false;
-            isOfflineTriggered = true;
-
-            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
-            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
-                DateTime.now().toString());
             await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(Singleton.instance.agentRef)
                 .collection(Constants.firebaseCase)
                 .get()
                 .then((value) {
-              debugPrint('Offline state in bloc ${value.docs.length}');
-              AppUtils.showToast('App synced with local');
+              AppUtils.showToast(
+                  'App synced with local...Total cases ${value.docs.length}');
             });
+            isOfflineTriggered = true;
+            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+                DateTime.now().toString());
             // yield AllocationOfflineState(successResponse: 'synced');
           } else {
             for (var element in priorityListData['data']['result']) {

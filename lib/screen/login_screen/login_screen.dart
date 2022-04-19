@@ -61,10 +61,10 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
-    if (kDebugMode) {
-      userId.text = 'CDE_45';
+    // if (kDebugMode) {
+      userId.text = 'CDE_46';
       password.text = 'Origa123';
-    }
+    // }
     // userId.text = 'CDE_46';
     // password.text = 'Origa123';
     username = FocusNode();
