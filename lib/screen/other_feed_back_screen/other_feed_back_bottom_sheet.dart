@@ -545,6 +545,10 @@ class _CustomOtherFeedBackBottomSheetState
                     ? 'TC : FEEDBACK'
                     : 'FEEDBACK',
             voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+            createdAt: (ConnectivityResult.none ==
+                    await Connectivity().checkConnectivity())
+                ? DateTime.now().toString()
+                : null,
             createdBy: Singleton.instance.agentRef ?? '',
             agentName: Singleton.instance.agentName ?? '',
             agrRef: Singleton.instance.agrRef ?? '',

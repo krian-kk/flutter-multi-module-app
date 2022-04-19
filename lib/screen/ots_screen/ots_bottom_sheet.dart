@@ -552,6 +552,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
               eventCode: ConstantEventValues.otsEvenCode,
+              createdAt: (ConnectivityResult.none ==
+                      await Connectivity().checkConnectivity())
+                  ? DateTime.now().toString()
+                  : null,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',
               eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',

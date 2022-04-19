@@ -5,6 +5,7 @@ class PostImageCapturedModel {
     required this.caseId,
     required this.eventCode,
     required this.eventAttr,
+    this.createdAt,
     required this.createdBy,
     required this.eventModule,
     this.callID,
@@ -26,6 +27,7 @@ class PostImageCapturedModel {
     eventAttr = (json['eventAttr'] != null
         ? EventAttr.fromJson(json['eventAttr'])
         : null)!;
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     callID = json['callID'];
@@ -43,6 +45,7 @@ class PostImageCapturedModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String? callID;
@@ -62,6 +65,7 @@ class PostImageCapturedModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['callID'] = callID;
