@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,24 +106,24 @@ class _AllocationScreenState extends State<AllocationScreen>
   }
 
   Future<void> internetChecking() async {
-    debugPrint('internetChecking');
-    await Connectivity().checkConnectivity().then((value) {
-      setState(() {
-        internetAvailability = value.name;
+    if ((!Singleton.instance.isFirstTime) || ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      await Connectivity().checkConnectivity().then((value) {
+        setState(() {
+          internetAvailability = value.name;
+        });
+        if (value.name == 'none') {
+          resultList.clear();
+          isOffline = true;
+          bloc.hasNextPage = false;
+        } else {
+          isOffline = false;
+          resultList.clear();
+          bloc.hasNextPage = true;
+          bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+        }
       });
-      if (value.name == 'none') {
-        resultList.clear();
-        isOffline = true;
-        bloc.hasNextPage = false;
-      } else {
-        isOffline = false;
-        resultList.clear();
-        bloc.hasNextPage = true;
-        bloc = AllocationBloc()..add(AllocationInitialEvent(context));
-      }
-    });
+    }
     Connectivity().onConnectivityChanged.listen((event) {
-      debugPrint('internetChecking listen');
       setState(() {
         internetAvailability = event.name;
         if (event.name == 'none') {
@@ -136,6 +137,7 @@ class _AllocationScreenState extends State<AllocationScreen>
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
+      Singleton.instance.isFirstTime = false;
     });
   }
 
