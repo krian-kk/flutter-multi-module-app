@@ -6,6 +6,7 @@ class ReminderPostAPI {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.contractor,
@@ -25,6 +26,7 @@ class ReminderPostAPI {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = Contact.fromJson(json['contact']);
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     contractor = json['contractor'];
@@ -42,6 +44,7 @@ class ReminderPostAPI {
   late String eventCode;
   late EventAttr eventAttr;
   late Contact contact;
+  late String? createdAt;
   late String createdBy;
   late String agentName;
   late String contractor;
@@ -61,6 +64,7 @@ class ReminderPostAPI {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;

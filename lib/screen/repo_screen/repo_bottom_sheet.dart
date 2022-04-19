@@ -390,18 +390,22 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   }
                                   final RepoPostModel requestBodyData =
                                       RepoPostModel(
-                                          eventId:
-                                              ConstantEventValues.repoEventId,
+                                          eventId: ConstantEventValues
+                                              .repoEventId,
                                           eventType: Constants.repo,
                                           caseId: widget.caseId,
-                                          eventCode:
-                                              ConstantEventValues.repoEvenCode,
+                                          eventCode: ConstantEventValues
+                                              .repoEvenCode,
                                           callerServiceID: Singleton
                                                   .instance.callerServiceID ??
                                               '',
-                                          voiceCallEventCode:
-                                              ConstantEventValues
-                                                  .voiceCallEventCode,
+                                          voiceCallEventCode: ConstantEventValues
+                                              .voiceCallEventCode,
+                                          createdAt: (ConnectivityResult.none ==
+                                                  await Connectivity()
+                                                      .checkConnectivity())
+                                              ? DateTime.now().toString()
+                                              : null,
                                           createdBy:
                                               Singleton.instance.agentRef ?? '',
                                           agentName:
