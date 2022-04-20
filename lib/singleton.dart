@@ -46,5 +46,7 @@ class Singleton {
 
   String? customerContactNo;
 
+  bool isMPin = false;
+
   static final Singleton instance = Singleton.internal();
 }
