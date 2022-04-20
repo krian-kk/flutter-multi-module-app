@@ -6,6 +6,7 @@ class AddressInvalidPostModel {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
@@ -26,6 +27,7 @@ class AddressInvalidPostModel {
     contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -48,6 +50,7 @@ class AddressInvalidPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] =
         contact.map((AddressInvalidContact v) => v.toJson()).toList();
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
@@ -68,6 +71,7 @@ class AddressInvalidPostModel {
   late String eventCode;
   late AddressInvalidEventAttr eventAttr;
   late List<AddressInvalidContact> contact;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String agentName;

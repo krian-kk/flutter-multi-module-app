@@ -6,6 +6,7 @@ class RepoPostModel {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.contractor,
@@ -27,6 +28,7 @@ class RepoPostModel {
     contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     contractor = json['contractor'];
@@ -44,6 +46,7 @@ class RepoPostModel {
   late String eventCode;
   late EventAttr eventAttr;
   late List<RepoContact> contact;
+  late String? createdAt;
   late String createdBy;
   late String agentName;
   late String contractor;
@@ -63,6 +66,7 @@ class RepoPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.map((RepoContact v) => v.toJson()).toList();
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;

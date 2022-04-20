@@ -6,6 +6,7 @@ class OtherFeedBackPostModel {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
@@ -25,6 +26,7 @@ class OtherFeedBackPostModel {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = OtherFeedBackContact.fromJson(json['contact']);
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -42,6 +44,7 @@ class OtherFeedBackPostModel {
   late String eventCode;
   late EventAttr eventAttr;
   late OtherFeedBackContact contact;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String agentName;
@@ -61,6 +64,7 @@ class OtherFeedBackPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
+    data['createdAt'] = createdAt;
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

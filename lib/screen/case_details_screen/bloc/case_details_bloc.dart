@@ -485,15 +485,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       postdata.addAll(<String, dynamic>{
         'files': value,
       });
-      //do do do do
-      final Map<String, dynamic> firebaseObject = event.postData!.toJson();
-      try {
-        firebaseObject.addAll(
-            await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
-      } catch (e) {
-        debugPrint('Exception while converting base64 ${e.toString()}');
-      }
+
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        //do do do do
+        final Map<String, dynamic> firebaseObject = event.postData!.toJson();
+        try {
+          firebaseObject.addAll(
+              await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+        } catch (e) {
+          debugPrint('Exception while converting base64 ${e.toString()}');
+        }
         await FirebaseUtils.storeEvents(
             eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
@@ -1268,6 +1269,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           audioS3Path: returnS2TUnReachable.result?.audioS3Path,
         ),
         eventModule: 'Telecalling',
+        createdAt: (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity())
+            ? DateTime.now().toString()
+            : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1361,6 +1366,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        createdAt: (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity())
+            ? DateTime.now().toString()
+            : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1452,6 +1461,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        createdAt: (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity())
+            ? DateTime.now().toString()
+            : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1529,6 +1542,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        createdAt: (ConnectivityResult.none ==
+                await Connectivity().checkConnectivity())
+            ? DateTime.now().toString()
+            : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',

@@ -390,18 +390,22 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   }
                                   final RepoPostModel requestBodyData =
                                       RepoPostModel(
-                                          eventId:
-                                              ConstantEventValues.repoEventId,
+                                          eventId: ConstantEventValues
+                                              .repoEventId,
                                           eventType: Constants.repo,
                                           caseId: widget.caseId,
-                                          eventCode:
-                                              ConstantEventValues.repoEvenCode,
+                                          eventCode: ConstantEventValues
+                                              .repoEvenCode,
                                           callerServiceID: Singleton
                                                   .instance.callerServiceID ??
                                               '',
-                                          voiceCallEventCode:
-                                              ConstantEventValues
-                                                  .voiceCallEventCode,
+                                          voiceCallEventCode: ConstantEventValues
+                                              .voiceCallEventCode,
+                                          createdAt: (ConnectivityResult.none ==
+                                                  await Connectivity()
+                                                      .checkConnectivity())
+                                              ? DateTime.now().toString()
+                                              : null,
                                           createdBy:
                                               Singleton.instance.agentRef ?? '',
                                           agentName:
@@ -473,23 +477,24 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     'files': value,
                                   });
 
-                                  final Map<String, dynamic> firebaseObject =
-                                      requestBodyData.toJson();
-                                  try {
-                                    firebaseObject.addAll(await FirebaseUtils
-                                        .toPrepareFileStoringModel(
-                                            uploadFileLists));
-                                  } catch (e) {
-                                    debugPrint(
-                                        'Exception while converting base64 ${e.toString()}');
-                                  }
+
 
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {
+                                    final Map<String, dynamic> firebaseObject =
+                                  requestBodyData.toJson();
+                                  try {
+                                    firebaseObject.addAll(await FirebaseUtils
+                                        .toPrepareFileStoringModel(
+                                        uploadFileLists));
+                                  } catch (e) {
+                                    debugPrint(
+                                        'Exception while converting base64 ${e.toString()}');
+                                  }
                                     await FirebaseUtils.storeEvents(
                                             eventsDetails:
-                                                requestBodyData.toJson(),
+                                            firebaseObject,
                                             caseId: widget.caseId,
                                             selectedFollowUpDate:
                                                 dateControlller.text,

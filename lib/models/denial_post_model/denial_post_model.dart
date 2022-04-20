@@ -7,6 +7,7 @@ class DenialPostModel {
     required this.eventAttr,
     required this.contact,
     required this.createdBy,
+    this.createdAt,
     required this.agentName,
     required this.contractor,
     required this.eventModule,
@@ -26,6 +27,7 @@ class DenialPostModel {
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = Contact.fromJson(json['contact']);
     createdBy = json['createdBy'];
+    createdAt = json['createdAt'];
     agentName = json['agentName'];
     contractor = json['contractor'];
     eventModule = json['eventModule'];
@@ -43,6 +45,7 @@ class DenialPostModel {
   late EventAttr eventAttr;
   late Contact contact;
   late String createdBy;
+  late String? createdAt;
   late String agentName;
   late String contractor;
   late String eventModule;
@@ -62,6 +65,7 @@ class DenialPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
     data['createdBy'] = createdBy;
+    data['createdAt'] = createdAt;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
     data['eventModule'] = eventModule;

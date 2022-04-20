@@ -416,6 +416,10 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
               eventCode: ConstantEventValues.rtpDenialEventCode,
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
+              createdAt: (ConnectivityResult.none ==
+                      await Connectivity().checkConnectivity())
+                  ? DateTime.now().toString()
+                  : null,
               agentName: Singleton.instance.agentName ?? '',
               contractor: Singleton.instance.contractor ?? '',
               agrRef: Singleton.instance.agrRef ?? '',

@@ -24,12 +24,13 @@ class CustomCardList {
         itemBuilder: (BuildContext context, int index) {
           final int listCount = index + 1;
           String? distanceValues;
-          if (resultData[index].distanceMeters != null) {
+          if (resultData.length >= index &&
+              resultData[index].distanceMeters != null) {
             distanceValues = resultData[index].distanceMeters < 1000
                 ? '${(resultData[index].distanceMeters / 1000).toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
           }
-          return Column(
+          return (resultData.length >= index) ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Visibility(
@@ -65,16 +66,24 @@ class CustomCardList {
                             const SizedBox(
                               width: 7,
                             ),
-                            CustomText(
-                              resultData[index].distanceMeters != null
-                                  ? Constants.approx + ' ' + distanceValues!
-                                  : '-',
-                              lineHeight: 1,
-                              color: ColorResource.color101010,
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
+                            if (resultData.length >= index &&
+                                resultData[index].distanceMeters != null)
+                              Column(
+                                children: [
+                                  CustomText(
+                                    resultData[index].distanceMeters != null
+                                        ? Constants.approx +
+                                            ' ' +
+                                            distanceValues!
+                                        : '-',
+                                    lineHeight: 1,
+                                    color: ColorResource.color101010,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              )
                           ],
                         )),
                   )),
@@ -373,7 +382,7 @@ class CustomCardList {
                 ],
               ),
             ],
-          );
+          ) : const SizedBox();
         });
   }
 }

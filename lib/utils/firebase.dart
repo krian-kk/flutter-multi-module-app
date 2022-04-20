@@ -128,10 +128,14 @@ class FirebaseUtils {
           .first
           .then((value) {
         final mapValues = value.data() as Map<String, dynamic>;
-        if (mapValues['starredCase']) {
-          isStarred = false;
+        if (mapValues['starredCase'] != null) {
+          if (mapValues['starredCase']) {
+            isStarred = false;
+          } else {
+            isStarred = true;
+          }
         } else {
-          isStarred = true;
+          mapValues['starredCase'] = true;
         }
       });
       FirebaseFirestore.instance
@@ -147,7 +151,7 @@ class FirebaseUtils {
   static Future<Map<String, dynamic>> toPrepareFileStoringModel(
       List<File> files) async {
     final List<Map<String, dynamic>> returnResult = [];
-    if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       for (var element in files) {
         returnResult.add({
           'fileName': element.path.split('/').last,

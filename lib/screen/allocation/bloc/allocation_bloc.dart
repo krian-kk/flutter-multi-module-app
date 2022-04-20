@@ -168,22 +168,28 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             debugPrint(e.toString());
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-            hasNextPage = false;
-            isOfflineTriggered = true;
-
-            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
-            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
-                DateTime.now().toString());
+            hasNextPage = true;
             await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
                 .doc(Singleton.instance.agentRef)
                 .collection(Constants.firebaseCase)
                 .get()
                 .then((value) {
-              debugPrint('Offline state in bloc ${value.docs.length}');
+              for (var element in value.docs) {
+                // try {
+                //   debugPrint(
+                //       'Result items--> ${Result.fromJson(jsonDecode(jsonEncode(element.data()))).caseId}');
+                // } catch (e) {
+                //   debugPrint('Catch items--> ${e.toString()}');
+                // }
+                // debugPrint('Allocation items--> ${value.docs.length + 1}');
+              }
               AppUtils.showToast('App synced with local');
             });
-            // yield AllocationOfflineState(successResponse: 'synced');
+            isOfflineTriggered = true;
+            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
+            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+                DateTime.now().toString());
           } else {
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
@@ -218,16 +224,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             }
             yield AllocationLoadedState(successResponse: resultList);
-            if (userType == Constants.fieldagent) {
-              if (!isOfflineTriggered) {
-                final bool isOfflineExisitingInThisDevice =
-                    _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-                if (!isOfflineExisitingInThisDevice) {
-                  add(AllocationInitialEvent(event.context,
-                      isOfflineAPI: true));
-                }
-              }
-            }
+            //if with offline release
+            // if (userType == Constants.fieldagent && !isOfflineTriggered) {
+            //   final bool isOfflineExisitingInThisDevice =
+            //       _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+            //   if (!isOfflineExisitingInThisDevice) {
+            //     await FirebaseFirestore.instance.terminate();
+            //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
+            //   }
+            // }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

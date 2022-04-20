@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -116,10 +115,14 @@ class _AllocationScreenState extends State<AllocationScreen>
           resultList.clear();
           isOffline = true;
           bloc.hasNextPage = false;
+          bloc.resultList = [];
+          resultList = [];
         } else {
           isOffline = false;
           resultList.clear();
           bloc.hasNextPage = true;
+          bloc.resultList = [];
+          resultList = [];
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
@@ -131,10 +134,14 @@ class _AllocationScreenState extends State<AllocationScreen>
           resultList.clear();
           isOffline = true;
           bloc.hasNextPage = false;
+          bloc.resultList = [];
+          resultList = [];
         } else {
           isOffline = false;
           resultList.clear();
           bloc.hasNextPage = true;
+          bloc.resultList = [];
+          resultList = [];
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
@@ -678,6 +685,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         }
 
         if (state is PriorityLoadMoreState) {
+          // debugPrint('Result length--> ${resultList.length}');
           if (state.successResponse is List<Result>) {
             if (bloc.hasNextPage) {
               resultList.addAll(state.successResponse);
