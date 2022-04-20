@@ -685,13 +685,10 @@ class _AllocationScreenState extends State<AllocationScreen>
         }
 
         if (state is PriorityLoadMoreState) {
+          // debugPrint('Result length--> ${resultList.length}');
           if (state.successResponse is List<Result>) {
             if (bloc.hasNextPage) {
-              final List<Result> tempValues = state.successResponse;
-              for (var element in tempValues) {
-                resultList.add(element);
-              }
-              // resultList.addAll(state.successResponse);
+              resultList.addAll(state.successResponse);
             }
           }
         }

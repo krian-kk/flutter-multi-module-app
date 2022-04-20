@@ -176,13 +176,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .get()
                 .then((value) {
               for (var element in value.docs) {
-                try {
-                  debugPrint(
-                      'Result items--> ${Result.fromJson(jsonDecode(jsonEncode(element.data()))).caseId}');
-                } catch (e) {
-                  debugPrint('Catch items--> ${e.toString()}');
-                }
-                debugPrint('Allocation items--> ${value.docs.length + 1}');
+                // try {
+                //   debugPrint(
+                //       'Result items--> ${Result.fromJson(jsonDecode(jsonEncode(element.data()))).caseId}');
+                // } catch (e) {
+                //   debugPrint('Catch items--> ${e.toString()}');
+                // }
+                // debugPrint('Allocation items--> ${value.docs.length + 1}');
               }
               AppUtils.showToast('App synced with local');
             });
@@ -190,7 +190,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
             await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
-            // yield AllocationOfflineState(successResponse: 'synced');
           } else {
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
@@ -225,14 +224,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             }
             yield AllocationLoadedState(successResponse: resultList);
-            if (userType == Constants.fieldagent && !isOfflineTriggered) {
-              final bool isOfflineExisitingInThisDevice =
-                  _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-              if (!isOfflineExisitingInThisDevice) {
-                await FirebaseFirestore.instance.terminate();
-                add(AllocationInitialEvent(event.context, isOfflineAPI: true));
-              }
-            }
+            //if with offline release
+            // if (userType == Constants.fieldagent && !isOfflineTriggered) {
+            //   final bool isOfflineExisitingInThisDevice =
+            //       _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+            //   if (!isOfflineExisitingInThisDevice) {
+            //     await FirebaseFirestore.instance.terminate();
+            //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
+            //   }
+            // }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
