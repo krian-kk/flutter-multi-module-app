@@ -248,4 +248,8 @@ class HttpUrl {
   // Generate Dyanamic Payment Link & QR
   static final String generateDyanamicPaymentLink =
       baseUrl + 'payment/generateDyanamicPaymentLink';
+
+//Send Whatsapp message from backend
+  static final String sendWhatsapp =
+      baseUrl + fieldAgent + 'case-details/notifyCustomer?';
 }

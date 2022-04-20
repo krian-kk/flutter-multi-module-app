@@ -170,6 +170,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                     onTap: () {
                                       if (!widget.bloc.isQRcodeBtnLoading) {
                                         widget.bloc.add(GenerateQRcodeEvent(
+                                            context,
                                             caseID: widget
                                                 .bloc
                                                 .caseDetailsAPIValue

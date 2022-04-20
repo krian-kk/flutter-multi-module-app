@@ -53,6 +53,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
+import '../../../models/send_whatsapp_model.dart';
 
 part 'case_details_event.dart';
 
@@ -74,6 +75,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   dynamic collectionAmount;
   bool isAutoCalling = false;
   String? changeFollowUpDate;
+  bool isSendWhatsappLoading = false;
 
   BuildContext? caseDetailsContext;
 
@@ -85,6 +87,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   bool isNoInternetAndServerError = false;
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
+  SendWhatsappModel sendwhatsappModel = SendWhatsappModel();
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -150,55 +153,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   FocusNode phoneUnreachableNextActionDateFocusNode = FocusNode();
   FocusNode phoneUnreachableRemarksFocusNode = FocusNode();
   FocusNode phoneInvalidRemarksFocusNode = FocusNode();
-
-  late TextEditingController loanAmountController = TextEditingController();
-  late TextEditingController bankNameController = TextEditingController();
-  late TextEditingController emiStartDateController = TextEditingController();
-  late TextEditingController loanDurationController = TextEditingController();
-  late TextEditingController posController = TextEditingController();
-  late TextEditingController schemeCodeController = TextEditingController();
-  late TextEditingController productController = TextEditingController();
-  late TextEditingController batchNoController = TextEditingController();
-
-  // Extra fields in Case Detail Screen
-  late TextEditingController dateOfLoanDisbursementController =
-      TextEditingController();
-  late TextEditingController tosController = TextEditingController();
-  late TextEditingController emiAmountController = TextEditingController();
-  late TextEditingController noOfPendingEmiController = TextEditingController();
-  late TextEditingController penaltyAmountController = TextEditingController();
-  late TextEditingController odInterestController = TextEditingController();
-  late TextEditingController assetDetailsController = TextEditingController();
-  late TextEditingController coLenderController = TextEditingController();
-  late TextEditingController employerBussinessEntityController =
-      TextEditingController();
-  late TextEditingController lastPaymentDateController =
-      TextEditingController();
-
-  // late TextEditingController lastPaymemtModeController =
-  //     TextEditingController();
-  late TextEditingController sourcingRmnameController = TextEditingController();
-  late TextEditingController lastPaidAmountController = TextEditingController();
-  late TextEditingController riskRankingController = TextEditingController();
-  late TextEditingController reviewFlagController = TextEditingController();
-
-  // late TextEditingController emailController = TextEditingController();
-  late TextEditingController locationController = TextEditingController();
-  late TextEditingController agencyController = TextEditingController();
-  late TextEditingController customerIdController = TextEditingController();
-  late TextEditingController minDueAmountController = TextEditingController();
-  late TextEditingController cardOutstandingController =
-      TextEditingController();
-  late TextEditingController statementDateController = TextEditingController();
-  late TextEditingController dueDateController = TextEditingController();
-  late TextEditingController cardStatusController = TextEditingController();
-  late TextEditingController lastBilledAmountController =
-      TextEditingController();
-  late TextEditingController reference1Controller = TextEditingController();
-  late TextEditingController reference2Controller = TextEditingController();
-  late TextEditingController chassisNumberController = TextEditingController();
-  late TextEditingController modelMakeController = TextEditingController();
-  late TextEditingController riskBucketController = TextEditingController();
 
 //store list off Address
   List<dynamic>? listOfAddressDetails = <dynamic>[];
@@ -310,195 +264,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseDetailsAPIValue.result?.caseDetails?.odVal.toString() ?? '';
       Singleton.instance.agrRef =
           caseDetailsAPIValue.result?.caseDetails?.agrRef ?? '';
-
-      // loanAmountController.text = caseDetailsAPIValue
-      //         .result?.caseDetails?.loanAmt
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '-';
-      // loanDurationController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.loanDuration
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // posController.text = caseDetailsAPIValue.result?.caseDetails!.pos
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // schemeCodeController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.schemeCode
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // emiStartDateController.text =
-      //     (caseDetailsAPIValue.result?.caseDetails!.emiStartDate.toString() ==
-      //             null)
-      //         ? '-'
-      //         : ((caseDetailsAPIValue
-      //                         .result?.caseDetails!.emiStartDate
-      //                         .toString()
-      //                         .length ??
-      //                     0) >
-      //                 11)
-      //             ? DateFormat('dd/MM/yyyy')
-      //                 .format(DateTime.parse(caseDetailsAPIValue
-      //                         .result?.caseDetails!.emiStartDate
-      //                         .toString() ??
-      //                     ''))
-      //                 .toString()
-      //                 .toUpperCase()
-      //             : caseDetailsAPIValue.result?.caseDetails!.emiStartDate
-      //                     .toString()
-      //                     .replaceAll('-', '/')
-      //                     .replaceAll('null', '-') ??
-      //                 '_';
-      // bankNameController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.bankName
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // productController.text = caseDetailsAPIValue.result?.caseDetails!.product
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // batchNoController.text = caseDetailsAPIValue.result?.caseDetails!.batchNo
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // // Extra fields in Case Detail Screen
-      // dateOfLoanDisbursementController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.loanDisbDate
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // tosController.text = caseDetailsAPIValue.result?.caseDetails!.tos
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // emiAmountController.text = caseDetailsAPIValue.result?.caseDetails!.emiAmt
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // noOfPendingEmiController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.pendingEmi
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // penaltyAmountController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.amtPenalty
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // odInterestController.text = caseDetailsAPIValue.result?.caseDetails!.odInt
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // assetDetailsController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.assetDetails
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // coLenderController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.coLender
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // employerBussinessEntityController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.empBusEntity
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // lastPaymentDateController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.lastPaymentDate
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // sourcingRmnameController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.sourcingRmName
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // lastPaidAmountController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.lastPaidAmount
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // riskRankingController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.riskRanking
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // reviewFlagController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.reviewFlag
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // locationController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.location
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // agencyController.text = caseDetailsAPIValue.result?.caseDetails!.agency
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // customerIdController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.customerId
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // minDueAmountController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.minDueAmt
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // cardOutstandingController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.cardOs
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // statementDateController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.statementDate
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // dueDateController.text = caseDetailsAPIValue.result?.caseDetails!.dueDate
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // cardStatusController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.cardStatus
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // lastBilledAmountController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.lastBilledAmt
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // reference1Controller.text = caseDetailsAPIValue.result?.caseDetails!.ref1
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // reference2Controller.text = caseDetailsAPIValue.result?.caseDetails!.ref2
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // chassisNumberController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.chassisNo
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // modelMakeController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.modelMake
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
-      // riskBucketController.text = caseDetailsAPIValue
-      //         .result?.caseDetails!.riskBucket
-      //         .toString()
-      //         .replaceAll('null', '-') ??
-      //     '_';
 
       // Clear the lists
       listOfAddressDetails?.clear();
@@ -1120,8 +885,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.showErrorToast(Languages.of(event.context)!.sendSMSerror);
         }
       } else {
-        AppUtils.showErrorToast(
-            Languages.of(event.context)!.noInternetConnection);
+        AppUtils.noInternetSnackbar(event.context);
       }
       yield SendSMSloadState();
     }
@@ -1143,50 +907,86 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     // }
 
     if (event is GeneratePaymenLinktEvent) {
-      isGeneratePaymentLinkLoading = true;
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        isGeneratePaymentLinkLoading = true;
 
-      GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
-        caseId: event.caseID,
-        dynamicLink: true,
-      );
-      // if dynamic_link is true means creating a Ref URL and false means creating QR code
-      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.post,
-        HttpUrl.generateDyanamicPaymentLink,
-        requestBodydata: jsonEncode(requestBodyData),
-      );
-      if (postResult[Constants.success]) {
-        generatePaymentLink =
-            GeneratePaymentLinkModel.fromJson(postResult['data']);
+        GeneratePaymentLinkModel generatePaymentLink =
+            GeneratePaymentLinkModel();
+        final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
+          caseId: event.caseID,
+          dynamicLink: true,
+        );
+        // if dynamic_link is true means creating a Ref URL and false means creating QR code
+        final Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.post,
+          HttpUrl.generateDyanamicPaymentLink,
+          requestBodydata: jsonEncode(requestBodyData),
+        );
+        if (postResult[Constants.success]) {
+          generatePaymentLink =
+              GeneratePaymentLinkModel.fromJson(postResult['data']);
 
-        yield UpdateRefUrlState(
-            refUrl: generatePaymentLink.data!.data!.paymentLink);
+          yield UpdateRefUrlState(
+              refUrl: generatePaymentLink.data!.data!.paymentLink);
+        } else {
+          AppUtils.showToast('Error while generating Payment Link');
+        }
       } else {
-        AppUtils.showToast('Error while generating Payment Link');
+        AppUtils.noInternetSnackbar(event.context);
       }
     }
+
     if (event is GenerateQRcodeEvent) {
-      GeneratePaymentLinkModel generatePaymentLink = GeneratePaymentLinkModel();
-      final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
-        caseId: event.caseID,
-        dynamicLink: false,
-      );
-      // if dynamic_link is true means creating a Ref URL and false means creating QR code
-      final Map<String, dynamic> postResult = await APIRepository.apiRequest(
-        APIRequestType.post,
-        HttpUrl.generateDyanamicPaymentLink,
-        requestBodydata: jsonEncode(requestBodyData),
-      );
-      if (postResult[Constants.success]) {
-        generatePaymentLink =
-            GeneratePaymentLinkModel.fromJson(postResult['data']);
-        yield GenerateQRcodeState(
-            qrUrl: generatePaymentLink.data!.data!.qrLink);
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        GeneratePaymentLinkModel generatePaymentLink =
+            GeneratePaymentLinkModel();
+        final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
+          caseId: event.caseID,
+          dynamicLink: false,
+        );
+        // if dynamic_link is true means creating a Ref URL and false means creating QR code
+        final Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.post,
+          HttpUrl.generateDyanamicPaymentLink,
+          requestBodydata: jsonEncode(requestBodyData),
+        );
+        if (postResult[Constants.success]) {
+          generatePaymentLink =
+              GeneratePaymentLinkModel.fromJson(postResult['data']);
+          yield GenerateQRcodeState(
+              qrUrl: generatePaymentLink.data!.data!.qrLink);
+        } else {
+          AppUtils.showToast('Error while generating QR coxde');
+        }
       } else {
-        AppUtils.showToast('Error while generating QR coxde');
+        AppUtils.noInternetSnackbar(event.context);
       }
     }
+
+    if (event is SendWhatsAppEvent) {
+      yield SendWhatsappLoadState();
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        final Map<String, dynamic> postResult = await APIRepository.apiRequest(
+          APIRequestType.post,
+          HttpUrl.sendWhatsapp +
+              'type=repaymentInfo&agrRef=' +
+              caseDetailsAPIValue.result!.caseDetails!.agrRef! +
+              '&channel=whatsapp',
+        );
+
+        if (postResult[Constants.success]) {
+          sendwhatsappModel = SendWhatsappModel.fromJson(postResult['data']);
+          AppUtils.showToast(
+              sendwhatsappModel.result!.message ?? 'Send Whatsapp Success');
+        } else {
+          AppUtils.showToast('Error while sending WhatsApp');
+        }
+      } else {
+        AppUtils.noInternetSnackbar(event.context);
+      }
+      yield SendWhatsappLoadState();
+    }
+
     if (event is UpdateHealthStatusEvent) {
       Singleton.instance.updateHealthStatus = <String, dynamic>{
         'selectedHealthIndex': event.selectedHealthIndex!,
