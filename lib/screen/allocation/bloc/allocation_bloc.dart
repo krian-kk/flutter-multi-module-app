@@ -225,14 +225,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             }
             yield AllocationLoadedState(successResponse: resultList);
             //if with offline release
-            // if (userType == Constants.fieldagent && !isOfflineTriggered) {
-            //   final bool isOfflineExisitingInThisDevice =
-            //       _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-            //   if (!isOfflineExisitingInThisDevice) {
-            //     await FirebaseFirestore.instance.terminate();
-            //     add(AllocationInitialEvent(event.context, isOfflineAPI: true));
-            //   }
-            // }
+            if (Singleton.instance.isMPin) {
+              if (userType == Constants.fieldagent && !isOfflineTriggered) {
+                final bool isOfflineExisitingInThisDevice =
+                    _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+                if (!isOfflineExisitingInThisDevice) {
+                  await FirebaseFirestore.instance.terminate();
+                  add(AllocationInitialEvent(event.context,
+                      isOfflineAPI: true));
+                }
+              }
+            }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
