@@ -503,10 +503,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               final Map<String, dynamic> jsonData = getProfileData['data'];
               final profileAPIValue = ProfileApiModel.fromJson(jsonData);
 
-              yield EnterSecurePinState(
-                securePin: profileAPIValue.result?.first.mPin,
-                userName: profileAPIValue.result?.first.aRef,
-              );
+              if (Singleton.instance.isMPin) {
+                yield EnterSecurePinState(
+                  securePin: profileAPIValue.result?.first.mPin,
+                  userName: profileAPIValue.result?.first.aRef,
+                );
+              } else {
+                yield HomeTabState();
+              }
             } else {}
           }
         } else {

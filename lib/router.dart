@@ -18,6 +18,7 @@ import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
 import 'package:origa/screen/search_screen/bloc/search_bloc.dart';
 import 'package:origa/screen/search_screen/search_screen.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -218,11 +219,19 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
         if (mPin != null) {
-          await showMPinDialog(
-              mPin: mPin,
-              buildContext: context,
-              userName: agentRef,
-              notificationData: state.notificationData);
+          if (Singleton.instance.isMPin) {
+            await showMPinDialog(
+                mPin: mPin,
+                buildContext: context,
+                userName: agentRef,
+                notificationData: state.notificationData);
+          } else {
+            await Navigator.pushReplacementNamed(
+              context,
+              AppRoutes.homeTabScreen,
+              arguments: state.notificationData,
+            );
+          }
         } else {
           await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
               arguments: state.notificationData);
@@ -246,9 +255,13 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           final String mPin = value.getString(Constants.mPin).toString();
           final String agentRef =
               value.getString(Constants.agentRef).toString();
-          await showMPinDialog(
-              mPin: mPin, buildContext: context, userName: agentRef);
-          // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+          if (Singleton.instance.isMPin) {
+            await showMPinDialog(
+                mPin: mPin, buildContext: context, userName: agentRef);
+          } else {
+            await Navigator.pushReplacementNamed(
+                context, AppRoutes.homeTabScreen);
+          }
         });
         // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
       }
