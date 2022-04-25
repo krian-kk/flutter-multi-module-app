@@ -32,7 +32,7 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
         bloc: widget.bloc,
         builder: (BuildContext context, CaseDetailsState state) {
           return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.97,
+            height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Column(
               children: <Widget>[

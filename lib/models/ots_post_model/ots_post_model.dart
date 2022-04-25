@@ -8,7 +8,7 @@ class OtsPostModel {
     required this.caseId,
     required this.eventAttr,
     required this.eventCode,
-    this.createdAt,
+    // this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.eventModule,
@@ -30,7 +30,7 @@ class OtsPostModel {
         eventAttr:
             OTSEventAttr.fromJson(json['eventAttr'] as Map<String, dynamic>),
         eventCode: json['eventCode'] as String,
-        createdAt: json['createdAt'] as String?,
+        // createdAt: json['createdAt'] as String?,
         createdBy: json['createdBy'] as String,
         agentName: json['agentName'] as String,
         eventModule: json['eventModule'] as String,
@@ -49,7 +49,7 @@ class OtsPostModel {
   String caseId;
   OTSEventAttr eventAttr;
   String eventCode;
-  String? createdAt;
+  // String? createdAt;
   String createdBy;
   String agentName;
   String eventModule;
@@ -69,7 +69,7 @@ class OtsPostModel {
         'caseId': caseId,
         'eventAttr': eventAttr.toJson(),
         'eventCode': eventCode,
-        'createdAt': createdAt,
+        // 'createdAt': createdAt,
         'createdBy': createdBy,
         'agentName': agentName,
         'eventModule': eventModule,

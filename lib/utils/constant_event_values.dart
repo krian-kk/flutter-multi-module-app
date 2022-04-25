@@ -24,7 +24,7 @@ class ConstantEventValues {
   static const String rtpDenialHealth = '2';
 
   // Dispute post event
-  static const int disputeEventId = 19;
+  static const int disputeEventId = 18;
   static const String disputeEventCode = 'TELEVT005';
   static const String disputeHealth = '2';
 
