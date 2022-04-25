@@ -709,4 +709,6 @@ abstract class Languages {
   String get mobile;
 
   String get officeaddress;
+
+  String get followUpPriority;
 }

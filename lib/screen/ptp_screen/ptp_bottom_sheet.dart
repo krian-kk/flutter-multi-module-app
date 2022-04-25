@@ -616,7 +616,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               ),
               callID: Singleton.instance.callID,
               callingID: Singleton.instance.callingID,
-              callerServiceID: Singleton.instance.callerServiceID ?? '',
+              callerServiceID: Singleton.instance.callerServiceID,
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',

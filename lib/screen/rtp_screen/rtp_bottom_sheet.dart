@@ -441,7 +441,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                 contactId0: Singleton.instance.contactId_0 ?? '',
               ),
               callID: Singleton.instance.callID,
-              callerServiceID: Singleton.instance.callerServiceID ?? '',
+              callerServiceID: Singleton.instance.callerServiceID,
               callingID: Singleton.instance.callingID,
             );
 

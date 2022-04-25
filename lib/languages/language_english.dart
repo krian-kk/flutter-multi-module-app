@@ -1069,4 +1069,7 @@ class LanguageEn extends Languages {
 
   @override
   String get officeaddress => 'Office Address';
+
+  @override
+  String get followUpPriority => 'Follow up priority';
 }

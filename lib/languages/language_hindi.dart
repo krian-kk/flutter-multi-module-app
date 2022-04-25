@@ -1072,4 +1072,7 @@ class LanguageHi extends Languages {
 
   @override
   String get officeaddress => 'कार्यालय का पता';
+
+  @override
+  String get followUpPriority => 'प्राथमिकता का पालन करें';
 }
