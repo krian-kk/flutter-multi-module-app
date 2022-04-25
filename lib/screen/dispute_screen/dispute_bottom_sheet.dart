@@ -406,7 +406,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 eventModule:
                     widget.isCall! ? 'Telecalling' : 'Field Allocation',
                 callID: Singleton.instance.callID,
-                callerServiceID: Singleton.instance.callerServiceID ?? '',
+                callerServiceID: Singleton.instance.callerServiceID,
                 callingID: Singleton.instance.callingID,
                 eventAttr: EventAttr(
                   actionDate: nextActionDateControlller.text,
