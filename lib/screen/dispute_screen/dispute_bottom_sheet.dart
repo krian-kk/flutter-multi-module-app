@@ -399,10 +399,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 caseId: widget.caseId,
                 eventCode: ConstantEventValues.disputeEventCode,
                 voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-                createdAt: (ConnectivityResult.none ==
-                        await Connectivity().checkConnectivity())
-                    ? DateTime.now().toString()
-                    : null,
                 createdBy: Singleton.instance.agentRef ?? '',
                 agentName: Singleton.instance.agentName ?? '',
                 contractor: Singleton.instance.contractor ?? '',

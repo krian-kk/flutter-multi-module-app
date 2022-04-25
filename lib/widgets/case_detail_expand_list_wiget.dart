@@ -126,7 +126,9 @@ class ListOfCaseDetails {
                         .toString()),
               ),
             ),
-            const SizedBox(width: 22),
+            bloc.caseDetailsAPIValue.result?.caseDetails?.loanDuration != null
+                ? const SizedBox(width: 22)
+                : const SizedBox(),
             Flexible(
               child: SizedBox(
                 child: ListOfCaseDetails.textFieldView(
@@ -146,7 +148,9 @@ class ListOfCaseDetails {
                       .caseDetailsAPIValue.result?.caseDetails?.schemeCode
                       .toString()),
             ),
-            const SizedBox(width: 22),
+            bloc.caseDetailsAPIValue.result?.caseDetails?.schemeCode != null
+                ? const SizedBox(width: 22)
+                : const SizedBox(),
             Flexible(
               child: ListOfCaseDetails.textFieldView(
                   title: Languages.of(context)!.emiStartDate,

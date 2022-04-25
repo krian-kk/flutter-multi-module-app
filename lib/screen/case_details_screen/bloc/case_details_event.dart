@@ -166,14 +166,21 @@ class ChangeFollowUpDateEvent extends CaseDetailsEvent {
 }
 
 class GeneratePaymenLinktEvent extends CaseDetailsEvent {
-  GeneratePaymenLinktEvent({required this.caseID});
+  GeneratePaymenLinktEvent(this.context, {required this.caseID});
 
+  final BuildContext context;
+  final String caseID;
+}
+
+class SendWhatsAppEvent extends CaseDetailsEvent {
+  SendWhatsAppEvent(this.context, {required this.caseID});
+  final BuildContext context;
   final String caseID;
 }
 
 class GenerateQRcodeEvent extends CaseDetailsEvent {
-  GenerateQRcodeEvent({required this.caseID});
-
+  GenerateQRcodeEvent(this.context, {required this.caseID});
+  final BuildContext context;
   final String caseID;
 }
 

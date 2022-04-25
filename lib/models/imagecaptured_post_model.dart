@@ -1,3 +1,5 @@
+import '../utils/app_utils.dart';
+
 class PostImageCapturedModel {
   PostImageCapturedModel({
     required this.eventId,
@@ -59,13 +61,19 @@ class PostImageCapturedModel {
   // List<dynamic>? files;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['callID'] = callID;

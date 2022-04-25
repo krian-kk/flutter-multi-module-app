@@ -95,6 +95,8 @@ class UpdateSuccessfullState extends CaseDetailsState {}
 
 class SendSMSloadState extends CaseDetailsState {}
 
+class SendWhatsappLoadState extends CaseDetailsState {}
+
 class GenerateQRcodeState extends CaseDetailsState {
   GenerateQRcodeState({this.qrUrl});
   final String? qrUrl;

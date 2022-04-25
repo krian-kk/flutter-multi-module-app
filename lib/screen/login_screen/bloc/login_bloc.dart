@@ -493,25 +493,26 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.agentRef = event.userId!;
           Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
           if (loginResponse.data!.accessToken != null) {
-            // profile details API
-            final Map<String, dynamic> getProfileData =
-                await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.profileUrl);
+            // Here check mpin flow show or not (offline or Online)
+            if (Singleton.instance.isMPin) {
+              // profile details API
+              final Map<String, dynamic> getProfileData =
+                  await APIRepository.apiRequest(
+                      APIRequestType.get, HttpUrl.profileUrl);
 
-            if (getProfileData['success']) {
-              yield SignInCompletedState();
-              final Map<String, dynamic> jsonData = getProfileData['data'];
-              final profileAPIValue = ProfileApiModel.fromJson(jsonData);
-
-              if (Singleton.instance.isMPin) {
+              if (getProfileData['success']) {
+                yield SignInCompletedState();
+                final Map<String, dynamic> jsonData = getProfileData['data'];
+                final profileAPIValue = ProfileApiModel.fromJson(jsonData);
+                // mPin flow
                 yield EnterSecurePinState(
                   securePin: profileAPIValue.result?.first.mPin,
                   userName: profileAPIValue.result?.first.aRef,
                 );
-              } else {
-                yield HomeTabState();
               }
-            } else {}
+            } else {
+              yield TriggerHomeTabState();
+            }
           }
         } else {
           loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
@@ -575,7 +576,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             await _prefs.setString(Constants.code, agentDetails.code!);
             await _prefs.setBool(
                 Constants.userAdmin, agentDetails.data!.first.userAdmin!);
-
             // Here call share device info api
             Map<String, dynamic> deviceData = <String, dynamic>{};
 

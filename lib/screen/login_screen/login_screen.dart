@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 if (await createMpin(mPin)) {
                   final SharedPreferences _prefs =
                       await SharedPreferences.getInstance();
-                  await _prefs.setString(Constants.accessToken, mPin!);
+                  await _prefs.setString(Constants.mPin, mPin!);
                   Navigator.pop(context);
                   bloc.add(TriggeredHomeTabEvent(userId.text));
                 } else {
@@ -349,6 +349,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (state is SignInCompletedState) {
                         bloc.isSubmit = false;
                         bloc.isLoaded = true;
+                      }
+
+                      if (state is TriggerHomeTabState) {
+                        bloc.add(TriggeredHomeTabEvent(userId.text));
                       }
                     },
                     child: BlocBuilder<LoginBloc, LoginState>(

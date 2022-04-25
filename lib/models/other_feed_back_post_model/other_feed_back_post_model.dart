@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class OtherFeedBackPostModel {
   OtherFeedBackPostModel({
     required this.eventId,
@@ -57,6 +59,10 @@ class OtherFeedBackPostModel {
   late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -64,7 +70,9 @@ class OtherFeedBackPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
-    data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

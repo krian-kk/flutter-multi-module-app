@@ -619,10 +619,6 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               callerServiceID: Singleton.instance.callerServiceID ?? '',
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               createdBy: Singleton.instance.agentRef ?? '',
-              createdAt: (ConnectivityResult.none ==
-                      await Connectivity().checkConnectivity())
-                  ? DateTime.now().toString()
-                  : null,
               agentName: Singleton.instance.agentName ?? '',
               contractor: Singleton.instance.contractor ?? '',
               eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -148,7 +149,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
             if (state is SendSMSloadState) {
               bloc.isSendSMSloading = !bloc.isSendSMSloading;
-              // Navigator.pop(context);
+            }
+
+            if (state is SendWhatsappLoadState) {
+              bloc.isSendWhatsappLoading = !bloc.isSendWhatsappLoading;
             }
 
             if (state is UpdateRefUrlState) {
@@ -1254,56 +1258,115 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       ),
                                     ),
                                   ),
-                        const SizedBox(width: 10),
-                        bloc.isGeneratePaymentLink
-                            ? bloc.isGeneratePaymentLinkLoading
-                                ? Container(
-                                    margin: const EdgeInsets.only(right: 50),
-                                    height: 37,
-                                    width: 37,
+                        const SizedBox(width: 30),
+                        bloc.isSendWhatsappLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    bloc.add(SendWhatsAppEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 11.2),
                                     decoration: BoxDecoration(
-                                        color: ColorResource.color23375A,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: const CustomLoadingWidget(
-                                      radius: 11,
-                                      strokeWidth: 2,
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
                                     ),
-                                  )
-                                : Flexible(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          bloc.isGeneratePaymentLinkLoading =
-                                              true;
-                                        });
-                                        bloc.add(GeneratePaymenLinktEvent(
-                                            caseID: bloc.caseDetailsAPIValue
-                                                .result!.caseDetails!.caseId!));
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 13),
-                                        decoration: BoxDecoration(
-                                          color: ColorResource.color23375A,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: ColorResource.colorECECEC),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SvgPicture.asset(
+                                          ImageResource.whatsApp,
+                                          height: 17,
                                         ),
-                                        child: CustomText(
-                                            Languages.of(context)!
-                                                .generatePaymentLink,
-                                            fontSize: FontSize.twelve,
-                                            fontWeight: FontWeight.w700,
-                                            lineHeight: 1.0,
-                                            color: ColorResource.colorffffff),
-                                      ),
+                                        const SizedBox(width: 7),
+                                        Expanded(
+                                          child: CustomText(
+                                              Languages.of(context)!
+                                                  .sendWhatsapp,
+                                              fontSize: FontSize.twelve,
+                                              fontWeight: FontWeight.w700,
+                                              lineHeight: 1.0,
+                                              color: ColorResource.colorffffff),
+                                        ),
+                                      ],
                                     ),
-                                  )
-                            : const SizedBox(),
+                                  ),
+                                ),
+                              ),
                       ],
-                    )
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    bloc.isGeneratePaymentLink
+                        ? bloc.isGeneratePaymentLinkLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (await Connectivity()
+                                            .checkConnectivity() !=
+                                        ConnectivityResult.none) {
+                                      setState(() {
+                                        bloc.isGeneratePaymentLinkLoading =
+                                            true;
+                                      });
+                                    } else {
+                                      AppUtils.noInternetSnackbar(context);
+                                    }
+                                    bloc.add(GeneratePaymenLinktEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 13),
+                                    decoration: BoxDecoration(
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
+                                    ),
+                                    child: CustomText(
+                                        Languages.of(context)!
+                                            .generatePaymentLink
+                                            .toUpperCase(),
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        lineHeight: 1.0,
+                                        color: ColorResource.colorffffff),
+                                  ),
+                                ),
+                              )
+                        : const SizedBox(),
                   ],
                 ),
               )
