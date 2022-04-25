@@ -6,15 +6,18 @@ class EventAttr {
     this.ptpAmount,
     this.mode,
     this.ptpType,
-    // this.followUpPriority,
-    // this.amntOts,
-    // this.customerName,
+    this.followUpPriority,
+    this.amntOts,
+    this.customerName,
     this.amountCollected,
-    // this.chequeRefNo,
-    // this.remarkOts,
-    // this.modelMake,
-    // this.registrationNo,
-    // this.chassisNo,
+    this.reminderDate,
+    this.chequeRefNo,
+    this.nextActionDate,
+    this.actionDate,
+    this.remarkOts,
+    this.modelMake,
+    this.registrationNo,
+    this.chassisNo,
     this.reginalText,
     this.translatedText,
     this.audioS3Path,
@@ -27,15 +30,18 @@ class EventAttr {
         ptpAmount: json['ptpAmount'],
         mode: json['mode'] as String?,
         ptpType: json['PTPType'] as String?,
-        // followUpPriority: json['followUpPriority'] as String?,
-        // amntOts: json['amntOts'] as String?,
-        // customerName: json['customerName'] as String?,
+        followUpPriority: json['followUpPriority'],
+        amntOts: json['amntOts'],
+        customerName: json['customerName'],
         amountCollected: json['amountCollected'],
-        // chequeRefNo: json['chequeRefNo'] as String?,
-        // remarkOts: json['remarkOts'] as String?,
-        // modelMake: json['modelMake'] as String?,
-        // registrationNo: json['registrationNo'] as String?,
-        // chassisNo: json['chassisNo'] as String?,
+        reminderDate: json['reminderDate'],
+        chequeRefNo: json['chequeRefNo'],
+        nextActionDate: json['nextActionDate'],
+        actionDate: json['actionDate'],
+        remarkOts: json['remarkOts'] as String?,
+        modelMake: json['modelMake'] as String?,
+        registrationNo: json['registrationNo'] as String?,
+        chassisNo: json['chassisNo'] as String?,
         reginalText: json['reginal_text'] as String?,
         translatedText: json['translated_text'] as String?,
         audioS3Path: json['audioS3Path'] as String?,
@@ -46,15 +52,18 @@ class EventAttr {
   dynamic ptpAmount;
   String? mode;
   String? ptpType;
-  // String? followUpPriority;
-  // String? amntOts;
-  // String? customerName;
+  String? followUpPriority;
+  String? amntOts;
+  dynamic customerName;
   dynamic amountCollected;
-  // String? chequeRefNo;
-  // String? remarkOts;
-  // String? modelMake;
-  // String? registrationNo;
-  // String? chassisNo;
+  String? reminderDate;
+  String? chequeRefNo;
+  String? nextActionDate;
+  String? actionDate;
+  String? remarkOts;
+  String? modelMake;
+  String? registrationNo;
+  String? chassisNo;
   String? reginalText;
   String? translatedText;
   String? audioS3Path;
@@ -66,15 +75,18 @@ class EventAttr {
         'ptpAmount': ptpAmount,
         'mode': mode,
         'PTPType': ptpType,
-        // 'followUpPriority': followUpPriority,
-        // 'amntOts': amntOts,
-        // 'customerName': customerName,
+        'followUpPriority': followUpPriority,
+        'amntOts': amntOts,
+        'customerName': customerName,
         'amountCollected': amountCollected,
-        // 'chequeRefNo': chequeRefNo,
-        // 'remarkOts': remarkOts,
-        // 'modelMake': modelMake,
-        // 'registrationNo': registrationNo,
-        // 'chassisNo': chassisNo,
+        'reminderDate': reminderDate,
+        'chequeRefNo': chequeRefNo,
+        'nextActionDate': nextActionDate,
+        'actionDate': actionDate,
+        'remarkOts': remarkOts,
+        'modelMake': modelMake,
+        'registrationNo': registrationNo,
+        'chassisNo': chassisNo,
         'reginal_text': reginalText,
         'translated_text': translatedText,
         'audioS3Path': audioS3Path,

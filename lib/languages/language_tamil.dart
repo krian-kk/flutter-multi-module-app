@@ -1076,4 +1076,7 @@ class LanguageTa extends Languages {
 
   @override
   String get officeaddress => 'அலுவலக முகவரி';
+
+  @override
+  String get followUpPriority => 'பின்தொடர்தல் முன்னுரிமை';
 }

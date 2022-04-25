@@ -288,9 +288,10 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  if (expandedList[index].eventType?.toLowerCase() ==
-                          Constants.ptp.toLowerCase() &&
-                      expandedList[index].eventAttr?.ptpAmount != null)
+                  if (
+                  // expandedList[index].eventType?.toLowerCase() ==
+                  //       Constants.ptp.toLowerCase() &&
+                  expandedList[index].eventAttr?.ptpAmount != null)
                     CustomText(
                       '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
                       fontWeight: FontWeight.w700,
@@ -330,6 +331,72 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
+                  if (expandedList[index].eventAttr?.followUpPriority != null)
+                    CustomText(
+                      '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.customerName != null)
+                    CustomText(
+                      '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.amountCollected != null)
+                    CustomText(
+                      '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.reminderDate != null)
+                    CustomText(
+                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.chequeRefNo != null)
+                    CustomText(
+                      '${Languages.of(context)!.refCheque.replaceAll('*', '')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.amntOts != null)
+                    CustomText(
+                      'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.nextActionDate != null)
+                    CustomText(
+                      '${Languages.of(context)!.nextActionDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.actionDate != null)
+                    CustomText(
+                      '${Languages.of(context)!.nextActionDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.remarkOts != null)
+                    CustomText(
+                      '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  // if (expandedList[index].createdAt != null)
+                  //   CustomText(
+                  //     'createdAt : ${expandedList[index].createdAt.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // if (expandedList[index].createdBy != null)
+                  //   CustomText(
+                  //     'createdBy : ${expandedList[index].createdBy.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   // expandedList[index].eventType == 'OTS'
                   //     ? (expandedList[index].eventAttr?.amntOts != null)
                   //         ? CustomText(
@@ -397,44 +464,40 @@ class _CustomEventDetailsBottomSheetState
                   //     color: ColorResource.color000000,
                   //   ),
                   // const SizedBox(height: 8),
-                  // if (expandedList[index].eventType == 'REPO')
-                  //   Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       if (expandedList[index].eventAttr?.customerName != null)
-                  //         CustomText(
-                  //           expandedList[index]
-                  //               .eventAttr!
-                  //               .customerName
-                  //               .toString(),
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //       if (expandedList[index].eventAttr?.modelMake != null)
-                  //         CustomText(
-                  //           'Model Make: ${expandedList[index].eventAttr!.modelMake}',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //       if (expandedList[index].eventAttr?.registrationNo !=
-                  //           null)
-                  //         CustomText(
-                  //           'Registration No: ${expandedList[index].eventAttr!.registrationNo}',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //       if (expandedList[index].eventAttr?.chassisNo != null)
-                  //         CustomText(
-                  //           'Chassis No: ${expandedList[index].eventAttr!.chassisNo}',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //     ],
-                  //   ),
+                  if (expandedList[index].eventType == Constants.repo)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (expandedList[index].eventAttr?.customerName != null)
+                          CustomText(
+                            expandedList[index]
+                                .eventAttr!
+                                .customerName
+                                .toString(),
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.modelMake != null)
+                          CustomText(
+                            '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.registrationNo !=
+                            null)
+                          CustomText(
+                            '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                        if (expandedList[index].eventAttr?.chassisNo != null)
+                          CustomText(
+                            '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                      ],
+                    ),
                   // CustomText(
                   //   Languages.of(context)!
                   //       .remarks
