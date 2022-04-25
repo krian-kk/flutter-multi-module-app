@@ -284,7 +284,7 @@ class _CustomEventDetailsBottomSheetState
                           Constants.receipt.toLowerCase() &&
                       expandedList[index].eventAttr?.amountCollected != null)
                     CustomText(
-                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected}',
+                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -292,7 +292,7 @@ class _CustomEventDetailsBottomSheetState
                           Constants.ptp.toLowerCase() &&
                       expandedList[index].eventAttr?.ptpAmount != null)
                     CustomText(
-                      '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount}',
+                      '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),

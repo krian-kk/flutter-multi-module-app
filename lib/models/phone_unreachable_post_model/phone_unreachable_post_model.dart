@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class PhoneUnreachablePostModel {
   PhoneUnreachablePostModel({
     required this.eventId,
@@ -57,6 +59,11 @@ class PhoneUnreachablePostModel {
   late String agrRef;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
+
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -65,7 +72,9 @@ class PhoneUnreachablePostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
-    data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['callID'] = callID;
     data['callingID'] = callingID;

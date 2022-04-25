@@ -552,10 +552,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 audioS3Path: returnS2Tdata.result?.audioS3Path,
               ),
               eventCode: ConstantEventValues.otsEvenCode,
-              createdAt: (ConnectivityResult.none ==
-                      await Connectivity().checkConnectivity())
-                  ? DateTime.now().toString()
-                  : null,
               createdBy: Singleton.instance.agentRef ?? '',
               agentName: Singleton.instance.agentName ?? '',
               eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
@@ -571,6 +567,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               agrRef: Singleton.instance.agrRef ?? '',
               contractor: Singleton.instance.contractor ?? '',
             );
+
+            // requestBodyData
+            //     .toJson()
+            //     .remove((key, value) => value == requestBodyData.createdAt);
+            //  remove(requestBodyData.createdAt);
+
+            // print(
+            //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
 
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))

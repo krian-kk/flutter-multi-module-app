@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class AddressInvalidPostModel {
   AddressInvalidPostModel({
     required this.eventId,
@@ -42,6 +44,10 @@ class AddressInvalidPostModel {
   }
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -50,7 +56,9 @@ class AddressInvalidPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] =
         contact.map((AddressInvalidContact v) => v.toJson()).toList();
-    data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

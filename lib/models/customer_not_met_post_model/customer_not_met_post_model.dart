@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class CustomerNotMetPostModel {
   CustomerNotMetPostModel(
       {required this.eventId,
@@ -56,6 +58,10 @@ class CustomerNotMetPostModel {
   late String agrRef;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -65,7 +71,9 @@ class CustomerNotMetPostModel {
     if (contact != null) {
       data['contact'] = contact;
     }
-    data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;

@@ -268,23 +268,21 @@ class _CustomCaptureImageBottomSheetState
                                                     .captureImageEvenCode,
                                                 caseId: widget.bloc.caseId
                                                     .toString(),
-                                                contractor: Singleton
-                                                        .instance.contractor ??
+                                                contractor: Singleton.instance.contractor ??
                                                     '',
-                                                voiceCallEventCode:
-                                                    ConstantEventValues
-                                                        .voiceCallEventCode,
-                                                createdAt: (ConnectivityResult.none ==
-                                                        await Connectivity()
-                                                            .checkConnectivity())
-                                                    ? DateTime.now().toString()
-                                                    : null,
+                                                voiceCallEventCode: ConstantEventValues
+                                                    .voiceCallEventCode,
+                                                // createdAt: (ConnectivityResult.none ==
+                                                //         await Connectivity()
+                                                //             .checkConnectivity())
+                                                //     ? DateTime.now().toString()
+                                                //     : null,
                                                 createdBy:
                                                     Singleton.instance.agentRef ??
                                                         '',
-                                                agentName:
-                                                    Singleton.instance.agentName ??
-                                                        '',
+                                                agentName: Singleton
+                                                        .instance.agentName ??
+                                                    '',
                                                 agrRef:
                                                     Singleton.instance.agrRef ??
                                                         '',
@@ -292,14 +290,17 @@ class _CustomCaptureImageBottomSheetState
                                                         .instance
                                                         .callerServiceID ??
                                                     '',
-                                                callID: Singleton.instance.callID ??
+                                                callID: Singleton
+                                                        .instance.callID ??
                                                     '0',
                                                 callingID:
-                                                    Singleton.instance.callingID ??
+                                                    Singleton.instance
+                                                            .callingID ??
                                                         ' 0',
                                                 invalidNumber: false,
                                                 eventType: 'IMAGE CAPTURED',
-                                                eventModule: (widget.bloc.userType ==
+                                                eventModule: (widget
+                                                            .bloc.userType ==
                                                         Constants.telecaller)
                                                     ? 'Telecalling'
                                                     : 'Field Allocation',

@@ -531,7 +531,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 .result?.addressDetails?[indexValue!]['value']
                 .toString(),
             'health': ConstantEventValues.addressCustomerNotMetHealth,
-            'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+            // 'resAddressId_0': Singleton.instance.resAddressId_0,
           },
           addressSelectedCustomerNotMetClip,
           event.context,
@@ -552,7 +552,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': ConstantEventValues.addressCustomerNotMetHealth,
-              'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
             }
           ],
           addressSelectedCustomerNotMetClip,
@@ -574,7 +574,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   .result?.addressDetails?[indexValue!]['value']
                   .toString(),
               'health': ConstantEventValues.addressCustomerNotMetHealth,
-              'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
             }
           ],
           addressSelectedCustomerNotMetClip,
@@ -1269,10 +1269,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           audioS3Path: returnS2TUnReachable.result?.audioS3Path,
         ),
         eventModule: 'Telecalling',
-        createdAt: (ConnectivityResult.none ==
-                await Connectivity().checkConnectivity())
-            ? DateTime.now().toString()
-            : null,
+        // createdAt: (ConnectivityResult.none ==
+        //         await Connectivity().checkConnectivity())
+        //     ? DateTime.now().toString()
+        //     : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1366,10 +1366,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-        createdAt: (ConnectivityResult.none ==
-                await Connectivity().checkConnectivity())
-            ? DateTime.now().toString()
-            : null,
+        // createdAt: (ConnectivityResult.none ==
+        //         await Connectivity().checkConnectivity())
+        //     ? DateTime.now().toString()
+        //     : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1461,10 +1461,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-        createdAt: (ConnectivityResult.none ==
-                await Connectivity().checkConnectivity())
-            ? DateTime.now().toString()
-            : null,
+        // createdAt: (ConnectivityResult.none ==
+        //         await Connectivity().checkConnectivity())
+        //     ? DateTime.now().toString()
+        //     : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
@@ -1542,10 +1542,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-        createdAt: (ConnectivityResult.none ==
-                await Connectivity().checkConnectivity())
-            ? DateTime.now().toString()
-            : null,
+        // createdAt: (ConnectivityResult.none ==
+        //         await Connectivity().checkConnectivity())
+        //     ? DateTime.now().toString()
+        //     : null,
         createdBy: Singleton.instance.agentRef ?? '',
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',

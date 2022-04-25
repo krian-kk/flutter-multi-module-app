@@ -621,10 +621,10 @@ class _CustomCollectionsBottomSheetState
                   callingID: Singleton.instance.callingID ?? '0',
                   callerServiceID: Singleton.instance.callerServiceID ?? '',
                   voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-                  createdAt: (ConnectivityResult.none ==
-                          await Connectivity().checkConnectivity())
-                      ? DateTime.now().toString()
-                      : null,
+                  // createdAt: (ConnectivityResult.none ==
+                  //         await Connectivity().checkConnectivity())
+                  //     ? DateTime.now().toString()
+                  //     : null,
                   createdBy: Singleton.instance.agentRef ?? '',
                   agentName: Singleton.instance.agentName ?? '',
                   agrRef: Singleton.instance.agrRef ?? '',

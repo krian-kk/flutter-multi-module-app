@@ -218,24 +218,25 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         //   String? mPin = value.getString(Constants.mPin);
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
-        if (mPin != null) {
-          if (Singleton.instance.isMPin) {
+        if (Singleton.instance.isMPin) {
+          if (mPin != null) {
             await showMPinDialog(
                 mPin: mPin,
                 buildContext: context,
                 userName: agentRef,
                 notificationData: state.notificationData);
           } else {
-            await Navigator.pushReplacementNamed(
-              context,
-              AppRoutes.homeTabScreen,
-              arguments: state.notificationData,
-            );
+            await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
+                arguments: state.notificationData);
           }
         } else {
-          await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen,
-              arguments: state.notificationData);
+          await Navigator.pushReplacementNamed(
+            context,
+            AppRoutes.homeTabScreen,
+            arguments: state.notificationData,
+          );
         }
+
         // // });
       }
 

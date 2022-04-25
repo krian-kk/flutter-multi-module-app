@@ -428,10 +428,6 @@ class _CustomRemainderBottomSheetState
             eventCode: ConstantEventValues.remainderEvenCode,
             voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
             callerServiceID: Singleton.instance.callerServiceID ?? '',
-            createdAt: (ConnectivityResult.none ==
-                    await Connectivity().checkConnectivity())
-                ? DateTime.now().toString()
-                : null,
             createdBy: Singleton.instance.agentRef ?? '',
             agentName: Singleton.instance.agentName ?? '',
             agrRef: Singleton.instance.agrRef ?? '',

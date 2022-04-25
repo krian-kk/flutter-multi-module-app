@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class RepoPostModel {
   RepoPostModel({
     required this.eventId,
@@ -59,6 +61,11 @@ class RepoPostModel {
   late String agrRef;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
+
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -66,7 +73,10 @@ class RepoPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.map((RepoContact v) => v.toJson()).toList();
-    data['createdAt'] = createdAt;
+    // data['createdAt'] = createdAt;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
