@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class AddressInvalidPostModel {
   AddressInvalidPostModel({
     required this.eventId,
@@ -6,6 +8,7 @@ class AddressInvalidPostModel {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.eventModule,
     required this.agentName,
@@ -26,6 +29,7 @@ class AddressInvalidPostModel {
     contact = json['contact'].forEach((dynamic v) {
       contact.add(v);
     });
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     agentName = json['agentName'];
@@ -40,6 +44,10 @@ class AddressInvalidPostModel {
   }
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -48,6 +56,9 @@ class AddressInvalidPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] =
         contact.map((AddressInvalidContact v) => v.toJson()).toList();
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['agentName'] = agentName;
@@ -68,6 +79,7 @@ class AddressInvalidPostModel {
   late String eventCode;
   late AddressInvalidEventAttr eventAttr;
   late List<AddressInvalidContact> contact;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String agentName;

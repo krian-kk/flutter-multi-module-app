@@ -83,6 +83,13 @@ class _AddressDetailsBottomSheetScreenState
                   title: Languages.of(context)!.addressDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
                   color: ColorResource.color23375A,
+                  onTap: () async {
+                    Navigator.pop(context);
+                    if (await Connectivity().checkConnectivity() ==
+                        ConnectivityResult.none) {
+                      widget.bloc.add(FirebaseStream());
+                    }
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(21, 0, 21, 12),

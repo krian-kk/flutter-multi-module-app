@@ -16,6 +16,7 @@ dependencies:
   dynamic_themes: ^1.1.0
   file_picker: ^4.1.4
   firebase_core: ^1.12.0
+  firebase_crashlytics: ^2.6.2
   firebase_database: ^9.0.5
   firebase_messaging: ^11.2.6
   firebase_remote_config: ^2.0.0
@@ -26,7 +27,6 @@ dependencies:
   flutter_local_notifications: ^9.4.0
   flutter_localizations:
     sdk: flutter
-  flutter_polyline_points: ^1.0.0
   flutter_sound: ^9.1.7
   flutter_staggered_grid_view: ^0.4.0
   flutter_svg: ^0.23.0+1
@@ -70,35 +70,6 @@ flutter:
   assets:
     - assets/
     - assets/translations/
-    - assets/marker.png
-    - assets/back.png
-    - assets/check_on.png
-    - assets/check_off.png
-    - assets/close.png
-    - assets/shape.png
-    - assets/ptp.png
-    - assets/rtp.png
-    - assets/dispute.png
-    - assets/remainder.png
-    - assets/collections.png
-    - assets/capture_img.png
-    - assets/whatsapp.png
-    - assets/capture_image.png
-    - assets/upload_photo.png
-    - assets/radio_on.png
-    - assets/radio_off.png
-    - assets/phone.png
-    - assets/direction.png
-    - assets/active_person.png
-    - assets/money.png
-    - assets/arrow_down.png
-    - assets/calendar.png
-    - assets/arrow_drop_down.png
-    - assets/upload.png
-    - assets/navigate_vector.png
-    - assets/Vector.png
-    - assets/down_shape.png
-    - assets/expanded_down_shape.png
     - assets/svg/
     - assets/svg/noCaseAvailable.svg
     - assets/app_logo/applogo.png

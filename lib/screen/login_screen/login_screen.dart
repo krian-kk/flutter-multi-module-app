@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -62,6 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
     if (kDebugMode) {
       userId.text = 'CDE_46';
       password.text = 'Origa123';
+      // userId.text = 'YES_fos';
+      // password.text = 'Agent1234';
     }
     // userId.text = 'CDE_46';
     // password.text = 'Origa123';
@@ -167,11 +171,15 @@ class _LoginScreenState extends State<LoginScreen> {
             content: CreateMpinScreen(
               saveFunction: (mPin) async {
                 // Create Secure Mpin APi
-                final SharedPreferences _prefs =
-                    await SharedPreferences.getInstance();
-                await _prefs.setString(Constants.accessToken, mPin!);
-                Navigator.pop(context);
-                bloc.add(TriggeredHomeTabEvent(userId.text));
+                if (await createMpin(mPin)) {
+                  final SharedPreferences _prefs =
+                      await SharedPreferences.getInstance();
+                  await _prefs.setString(Constants.mPin, mPin!);
+                  Navigator.pop(context);
+                  bloc.add(TriggeredHomeTabEvent(userId.text));
+                } else {
+                  AppUtils.showToast('Change mPin has some Issue');
+                }
               },
             ),
           );
@@ -342,6 +350,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         bloc.isSubmit = false;
                         bloc.isLoaded = true;
                       }
+
+                      if (state is TriggerHomeTabState) {
+                        bloc.add(TriggeredHomeTabEvent(userId.text));
+                      }
                     },
                     child: BlocBuilder<LoginBloc, LoginState>(
                       bloc: bloc,
@@ -349,6 +361,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         return Scaffold(
                           backgroundColor: ColorResource.colorF8F9FB,
                           body: KeyboardActions(
+                            enable: (Platform.isIOS),
                             config: KeyboardActionsConfig(
                               keyboardActionsPlatform:
                                   KeyboardActionsPlatform.IOS,

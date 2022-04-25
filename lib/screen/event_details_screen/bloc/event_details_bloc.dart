@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -15,6 +12,7 @@ import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 
 part 'event_details_event.dart';
+
 part 'event_details_state.dart';
 
 class EventDetailsPlayAudioModel {
@@ -23,6 +21,7 @@ class EventDetailsPlayAudioModel {
     this.isPaused = false,
     this.loadingAudio = false,
   });
+
   bool isPlaying;
   bool isPaused;
   bool loadingAudio;
@@ -43,6 +42,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
               .doc(Singleton.instance.agentRef)
               .collection(Constants
                   .firebaseEvent) // To get the events from event collection
+              .orderBy('dateTime', descending: true)
               .where(
                 Constants.caseId,
                 isEqualTo: event.caseId,
@@ -65,6 +65,8 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                 }
               }
               eventDetailsAPIValues.result = results;
+              eventDetailsAPIValues.result =
+                  eventDetailsAPIValues.result!.reversed.toList();
             } else {
               eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
             }
@@ -79,7 +81,6 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
           if (getEventDetailsData[Constants.success] == true) {
             final Map<String, dynamic> jsonData = getEventDetailsData['data'];
             eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
-            log('Event Details Value ===== > ${jsonEncode(jsonData)}');
           } else {
             AppUtils.showToast(getEventDetailsData['data']['message']);
           }
@@ -112,6 +113,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
       }
     });
   }
+
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];

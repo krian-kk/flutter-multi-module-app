@@ -43,7 +43,7 @@ class APIRepository {
     final SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     debugPrint(
-        'Initial -> urlString-->$urlString \n  requestBodydata-->$requestBodydata}');
+        'Before Request --> urlString-->$urlString \n  requestBodydata-->$requestBodydata //Completed');
 
     try {
       Response<dynamic>? response;
@@ -94,8 +94,9 @@ class APIRepository {
                 .post(urlString, data: requestBodydata);
           }
       }
-      debugPrint('urlString-->$urlString \n  requestBodydata-->$requestBodydata'
-          '\n  response-->${jsonDecode(response.toString())}');
+      debugPrint(
+          'After Request --> urlString-->$urlString \n  requestBodyData-->$requestBodydata'
+          '\n  response-->${jsonDecode(response.toString())} //Completed');
 
       if (response!.headers['access-token'] != null) {
         debugPrint('Access Token is => ${response.headers['access-token']}');

@@ -1,3 +1,5 @@
+import 'package:origa/utils/app_utils.dart';
+
 class PTPPostModel {
   PTPPostModel(
       {required this.eventId,
@@ -6,6 +8,7 @@ class PTPPostModel {
       required this.eventCode,
       required this.eventAttr,
       required this.createdBy,
+      this.createdAt,
       required this.agentName,
       required this.contractor,
       required this.eventModule,
@@ -24,6 +27,7 @@ class PTPPostModel {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     createdBy = json['createdBy'];
+    createdAt = json['createdAt'];
     agentName = json['agentName'];
     contractor = json['contractor'];
     eventModule = json['eventModule'];
@@ -41,6 +45,7 @@ class PTPPostModel {
   late String eventCode;
   late EventAttr eventAttr;
   late String createdBy;
+  late String? createdAt;
   late String agentName;
   late String contractor;
   late String eventModule;
@@ -53,6 +58,10 @@ class PTPPostModel {
   late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -60,6 +69,9 @@ class PTPPostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['createdBy'] = createdBy;
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['agentName'] = agentName;
     data['contractor'] = contractor;
     data['eventModule'] = eventModule;

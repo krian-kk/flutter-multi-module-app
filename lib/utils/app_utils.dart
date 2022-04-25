@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -133,8 +134,25 @@ class AppUtils {
     );
   }
 
+  static showDivider2() {
+    return const Divider(
+      color: ColorResource.colorE5EAF6,
+      thickness: 1.2,
+    );
+  }
+
   static String getLanguageCode(context) {
     final Locale myLocale = Localizations.localeOf(context);
     return myLocale.languageCode;
+  }
+
+  static Future<bool> checkNetworkConnection() async {
+    bool networkConection = true;
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      networkConection = false;
+    } else {
+      networkConection = true;
+    }
+    return networkConection;
   }
 }

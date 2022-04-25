@@ -24,13 +24,13 @@ class EventAttr {
         date: json['date'] as String?,
         time: json['time'] as dynamic,
         remarks: json['remarks'] as String?,
-        ptpAmount: json['ptpAmount'] as int?,
+        ptpAmount: json['ptpAmount'],
         mode: json['mode'] as String?,
         ptpType: json['PTPType'] as String?,
         // followUpPriority: json['followUpPriority'] as String?,
         // amntOts: json['amntOts'] as String?,
         // customerName: json['customerName'] as String?,
-        amountCollected: json['amountCollected'] as String?,
+        amountCollected: json['amountCollected'],
         // chequeRefNo: json['chequeRefNo'] as String?,
         // remarkOts: json['remarkOts'] as String?,
         // modelMake: json['modelMake'] as String?,
@@ -43,13 +43,13 @@ class EventAttr {
   String? date;
   dynamic time;
   String? remarks;
-  int? ptpAmount;
+  dynamic ptpAmount;
   String? mode;
   String? ptpType;
   // String? followUpPriority;
   // String? amntOts;
   // String? customerName;
-  String? amountCollected;
+  dynamic amountCollected;
   // String? chequeRefNo;
   // String? remarkOts;
   // String? modelMake;

@@ -402,6 +402,11 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           voiceCallEventCode:
                                               ConstantEventValues
                                                   .voiceCallEventCode,
+                                          // createdAt: (ConnectivityResult.none ==
+                                          //         await Connectivity()
+                                          //             .checkConnectivity())
+                                          //     ? DateTime.now().toString()
+                                          //     : null,
                                           createdBy:
                                               Singleton.instance.agentRef ?? '',
                                           agentName:
@@ -473,26 +478,30 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     'files': value,
                                   });
 
-                                  final Map<String, dynamic> firebaseObject =
-                                      requestBodyData.toJson();
-                                  try {
-                                    firebaseObject.addAll(
-                                        FirebaseUtils.toPrepareFileStoringModel(
-                                            uploadFileLists));
-                                  } catch (e) {
-                                    debugPrint(
-                                        'Exception while converting base64 ${e.toString()}');
-                                  }
-                                  await FirebaseUtils.storeEvents(
-                                      eventsDetails: requestBodyData.toJson(),
-                                      caseId: widget.caseId,
-                                      selectedFollowUpDate:
-                                          dateControlller.text,
-                                      selectedClipValue: Constants.repo,
-                                      bloc: widget.bloc);
                                   if (ConnectivityResult.none ==
                                       await Connectivity()
                                           .checkConnectivity()) {
+                                    final Map<String, dynamic> firebaseObject =
+                                        requestBodyData.toJson();
+                                    try {
+                                      firebaseObject.addAll(await FirebaseUtils
+                                          .toPrepareFileStoringModel(
+                                              uploadFileLists));
+                                    } catch (e) {
+                                      debugPrint(
+                                          'Exception while converting base64 ${e.toString()}');
+                                    }
+                                    await FirebaseUtils.storeEvents(
+                                            eventsDetails: firebaseObject,
+                                            caseId: widget.caseId,
+                                            selectedFollowUpDate:
+                                                dateControlller.text,
+                                            selectedClipValue: Constants.repo,
+                                            bloc: widget.bloc)
+                                        .whenComplete(() {
+                                      AppUtils.topSnackBar(context,
+                                          Constants.successfullySubmitted);
+                                    });
                                   } else {
                                     final Map<String, dynamic> postResult =
                                         await APIRepository.apiRequest(

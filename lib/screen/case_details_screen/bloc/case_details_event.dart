@@ -5,6 +5,7 @@ class CaseDetailsEvent extends BaseEquatable {}
 
 class CaseDetailsInitialEvent extends CaseDetailsEvent {
   CaseDetailsInitialEvent({this.paramValues, this.context});
+
   final dynamic paramValues;
   final BuildContext? context;
 }
@@ -15,6 +16,7 @@ class PhoneBottomSheetInitialEvent extends CaseDetailsEvent {
     required this.context,
     this.isCallFromCaseDetails = false,
   });
+
   final bool isCallFromCaseDetails;
   final String? callId;
   final BuildContext context;
@@ -22,6 +24,7 @@ class PhoneBottomSheetInitialEvent extends CaseDetailsEvent {
 
 class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
   ClickMainAddressBottomSheetEvent(this.index, {this.addressModel});
+
   final int index;
   final dynamic addressModel;
 }
@@ -29,6 +32,7 @@ class ClickMainAddressBottomSheetEvent extends CaseDetailsEvent {
 class ClickMainCallBottomSheetEvent extends CaseDetailsEvent {
   ClickMainCallBottomSheetEvent(this.index,
       {this.isCallFromCaseDetails = false, this.callId});
+
   final int index;
   final bool isCallFromCaseDetails;
   final String? callId;
@@ -38,11 +42,13 @@ class ClickViewMapEvent extends CaseDetailsEvent {}
 
 class ClickCustomerNotMetButtonEvent extends CaseDetailsEvent {
   ClickCustomerNotMetButtonEvent(this.context);
+
   final BuildContext context;
 }
 
 class ClickAddressInvalidButtonEvent extends CaseDetailsEvent {
   ClickAddressInvalidButtonEvent(this.context);
+
   final BuildContext context;
 }
 
@@ -53,6 +59,7 @@ class ClickPhoneInvalidButtonEvent extends CaseDetailsEvent {
     this.isCallFromCaseDetails = false,
     this.callId,
   });
+
   final BuildContext context;
   final bool autoCallingStopAndSubmit;
   final bool isCallFromCaseDetails;
@@ -66,6 +73,7 @@ class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
     this.isCallFromCaseDetails = false,
     this.callId,
   });
+
   final BuildContext context;
   final bool autoCallingStopAndSubmit;
   final bool isCallFromCaseDetails;
@@ -74,11 +82,13 @@ class ClickPhoneUnreachableSubmitedButtonEvent extends CaseDetailsEvent {
 
 class ClickCaseDetailsEvent extends CaseDetailsEvent {
   ClickCaseDetailsEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
 class ClickPushAndPOPCaseDetailsEvent extends CaseDetailsEvent {
   ClickPushAndPOPCaseDetailsEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
@@ -93,6 +103,7 @@ class EventDetailsEvent extends CaseDetailsEvent {
     this.isCallFromCallDetails = false,
     this.callId,
   });
+
   final String title;
   final List<dynamic>? list;
   final bool? isCall;
@@ -105,6 +116,7 @@ class EventDetailsEvent extends CaseDetailsEvent {
 
 class PostImageCapturedEvent extends CaseDetailsEvent {
   PostImageCapturedEvent({this.postData, this.fileData});
+
   final PostImageCapturedModel? postData;
   final List<File>? fileData;
 }
@@ -116,6 +128,7 @@ class AddedNewCallContactListEvent extends CaseDetailsEvent {}
 class ChangeIsSubmitEvent extends CaseDetailsEvent {
   ChangeIsSubmitEvent(
       {required this.selectedClipValue, this.chageFollowUpDate});
+
   final String selectedClipValue;
   final String? chageFollowUpDate;
 }
@@ -124,12 +137,14 @@ class ChangeHealthStatusEvent extends CaseDetailsEvent {}
 
 class ChangeIsSubmitForMyVisitEvent extends CaseDetailsEvent {
   ChangeIsSubmitForMyVisitEvent(this.eventType, {this.collectionAmount});
+
   final String eventType;
   final dynamic collectionAmount;
 }
 
 class SendSMSEvent extends CaseDetailsEvent {
   SendSMSEvent(this.context, {this.type});
+
   final BuildContext context;
   final String? type;
 }
@@ -137,6 +152,7 @@ class SendSMSEvent extends CaseDetailsEvent {
 class UpdateHealthStatusEvent extends CaseDetailsEvent {
   UpdateHealthStatusEvent(this.context,
       {this.selectedHealthIndex, this.tabIndex, this.currentHealth});
+
   final BuildContext context;
   final int? selectedHealthIndex;
   final int? tabIndex;
@@ -145,15 +161,29 @@ class UpdateHealthStatusEvent extends CaseDetailsEvent {
 
 class ChangeFollowUpDateEvent extends CaseDetailsEvent {
   ChangeFollowUpDateEvent({this.followUpDate});
+
   final String? followUpDate;
 }
 
 class GeneratePaymenLinktEvent extends CaseDetailsEvent {
-  GeneratePaymenLinktEvent({required this.caseID});
+  GeneratePaymenLinktEvent(this.context, {required this.caseID});
+
+  final BuildContext context;
+  final String caseID;
+}
+
+class SendWhatsAppEvent extends CaseDetailsEvent {
+  SendWhatsAppEvent(this.context, {required this.caseID});
+  final BuildContext context;
   final String caseID;
 }
 
 class GenerateQRcodeEvent extends CaseDetailsEvent {
-  GenerateQRcodeEvent({required this.caseID});
+  GenerateQRcodeEvent(this.context, {required this.caseID});
+  final BuildContext context;
   final String caseID;
+}
+
+class FirebaseStream extends CaseDetailsEvent {
+  FirebaseStream();
 }

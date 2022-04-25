@@ -1002,8 +1002,71 @@ class LanguageEn extends Languages {
   String get riskBucket => 'Risk bucket';
 
   @override
-  String get ref1 => 'Ref 1';
+  String get ref1 => 'Reference 1';
 
   @override
-  String get ref2 => 'Ref 2';
+  String get ref2 => 'Reference 2';
+
+  @override
+  String get loanDetails => 'Loan Details';
+
+  @override
+  String get agentDetails => 'Agent Details';
+
+  @override
+  String get repaymentInformation => 'Repayment Information';
+
+  @override
+  String get attributeDetails => 'Attributes Details';
+
+  @override
+  String get contactDetails => 'Contact Details';
+
+  @override
+  String get auditDetails => 'Audit Details';
+
+  @override
+  String get primaryUser => 'Primary User';
+
+  @override
+  String get secondaryUser => 'Secondary User';
+
+  @override
+  String get agentName => 'Agent Name';
+
+  @override
+  String get agentType => 'Agent Type';
+
+  @override
+  String get state => 'State';
+
+  @override
+  String get city => 'City';
+
+  @override
+  String get createdBy => 'Created By';
+
+  @override
+  String get createdAt => 'Created At';
+
+  @override
+  String get updatedBy => 'Updated By';
+
+  @override
+  String get updatedAt => 'Updated At';
+
+  @override
+  String get allocatedBy => 'Allocated By';
+
+  @override
+  String get allocatedAt => 'Allocated At';
+
+  @override
+  String get residenceAddress => 'Residence Address';
+
+  @override
+  String get mobile => 'Mobile';
+
+  @override
+  String get officeaddress => 'Office Address';
 }

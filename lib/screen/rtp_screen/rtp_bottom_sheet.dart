@@ -445,15 +445,17 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
               callingID: Singleton.instance.callingID,
             );
 
-            await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: widget.caseId,
-                selectedFollowUpDate: nextActionDateControlller.text,
-                selectedClipValue: Constants.rtp,
-                bloc: widget.bloc);
-
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: nextActionDateControlller.text,
+                      selectedClipValue: Constants.rtp,
+                      bloc: widget.bloc)
+                  .whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(APIRequestType.post,

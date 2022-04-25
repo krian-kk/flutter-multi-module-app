@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class PhoneInvalidPostModel {
   PhoneInvalidPostModel({
     required this.eventId,
@@ -7,6 +9,7 @@ class PhoneInvalidPostModel {
     required this.eventAttr,
     required this.eventModule,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     this.callID,
     this.callingID,
@@ -26,6 +29,7 @@ class PhoneInvalidPostModel {
     eventAttr = PhoneInvalidEventAttr.fromJson(json['eventAttr']);
     eventModule = json['eventModule'];
     contact = PhoneInvalidContact.fromJson(json['contact']);
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     callID = json['callID'];
     callingID = json['callingID'];
@@ -43,6 +47,7 @@ class PhoneInvalidPostModel {
   late PhoneInvalidEventAttr eventAttr;
   late String eventModule;
   late PhoneInvalidContact contact;
+  late String? createdAt;
   late String createdBy;
   late String? callID;
   late String? callingID;
@@ -54,6 +59,10 @@ class PhoneInvalidPostModel {
   late String agrRef;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -62,6 +71,9 @@ class PhoneInvalidPostModel {
     data['eventAttr'] = eventAttr.toJson();
     data['eventModule'] = eventModule;
     data['contact'] = contact.toJson();
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['callID'] = callID;
     data['callingID'] = callingID;

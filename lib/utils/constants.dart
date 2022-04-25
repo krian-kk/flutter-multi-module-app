@@ -21,14 +21,13 @@ class Constants {
   static const String monthly = 'MONTHLY';
 
   //Distance Filter
-//Distance Filter
-//All -> Build route
+  //All -> Build route
   static const String allDisMeters = '1000000';
 
-//Under 5-10KM -> Build route
+  //Under 5-10KM -> Build route
   static const String maxDisMeters = '10000';
 
-//Under 5KM -> Build route
+  //Under 5KM -> Build route
   static const String minDisMeters = '5000';
   static const String approx = 'Approx';
 

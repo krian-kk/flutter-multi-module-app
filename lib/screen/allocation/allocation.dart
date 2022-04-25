@@ -27,7 +27,6 @@ import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/auto_calling_screen.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
-import 'package:origa/screen/map_screen/bloc/map_bloc.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -37,6 +36,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -55,13 +55,13 @@ class AllocationScreen extends StatefulWidget {
   _AllocationScreenState createState() => _AllocationScreenState();
 }
 
-class _AllocationScreenState extends State<AllocationScreen> {
+class _AllocationScreenState extends State<AllocationScreen>
+    with WidgetsBindingObserver {
   late AllocationBloc bloc;
   bool isSubmitRUOffice = false;
   String? currentAddress;
   bool isCaseDetailLoading = false;
   bool isOffline = false;
-  late MapBloc mapBloc;
   Position position = Position(
     longitude: 0,
     latitude: 0,
@@ -88,20 +88,45 @@ class _AllocationScreenState extends State<AllocationScreen> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      internetChecking();
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
-    bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+    debugPrint('Allocation screen');
+    bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
     internetChecking();
     getCurrentLocation();
   }
 
   Future<void> internetChecking() async {
-    await Connectivity().checkConnectivity().then((value) {
-      setState(() {
-        internetAvailability = value.name;
+    if ((!Singleton.instance.isFirstTime) ||
+        ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      await Connectivity().checkConnectivity().then((value) {
+        setState(() {
+          internetAvailability = value.name;
+        });
+        if (value.name == 'none') {
+          resultList.clear();
+          isOffline = true;
+          bloc.hasNextPage = false;
+          bloc.resultList = [];
+          resultList = [];
+        } else {
+          isOffline = false;
+          resultList.clear();
+          bloc.hasNextPage = true;
+          bloc.resultList = [];
+          resultList = [];
+          bloc = AllocationBloc()..add(AllocationInitialEvent(context));
+        }
       });
-    });
+    }
     Connectivity().onConnectivityChanged.listen((event) {
       setState(() {
         internetAvailability = event.name;
@@ -109,13 +134,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
           resultList.clear();
           isOffline = true;
           bloc.hasNextPage = false;
+          bloc.resultList = [];
+          resultList = [];
         } else {
           isOffline = false;
           resultList.clear();
           bloc.hasNextPage = true;
+          bloc.resultList = [];
+          resultList = [];
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
+      Singleton.instance.isFirstTime = false;
     });
   }
 
@@ -655,6 +685,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         }
 
         if (state is PriorityLoadMoreState) {
+          // debugPrint('Result length--> ${resultList.length}');
           if (state.successResponse is List<Result>) {
             if (bloc.hasNextPage) {
               resultList.addAll(state.successResponse);
@@ -672,14 +703,8 @@ class _AllocationScreenState extends State<AllocationScreen> {
 
         if (state is UpdateStaredCaseState) {
           if (state.isStared) {
-            setState(() {
-              bloc.starCount++;
-            });
             final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: true);
-            await FirebaseUtils.updateStarred(
-                isStarred: true, caseId: state.caseId);
-
             if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
@@ -691,16 +716,18 @@ class _AllocationScreenState extends State<AllocationScreen> {
               bloc.resultList.removeAt(state.selectedIndex);
               setState(() {
                 bloc.resultList.insert(0, removedItem);
+                bloc.starCount++;
+              });
+            } else {
+              await FirebaseUtils.updateStarred(
+                  isStarred: true, caseId: state.caseId);
+              setState(() {
+                bloc.starCount++;
               });
             }
           } else {
-            setState(() {
-              bloc.starCount--;
-            });
             final postData =
                 UpdateStaredCase(caseId: state.caseId, starredCase: false);
-            await FirebaseUtils.updateStarred(
-                isStarred: false, caseId: state.caseId);
             if (ConnectivityResult.none !=
                 await Connectivity().checkConnectivity()) {
               await APIRepository.apiRequest(
@@ -708,15 +735,22 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
+              final removedItem = bloc.resultList[state.selectedIndex];
+              bloc.resultList.removeAt(state.selectedIndex);
+              // To pick and add next starred false case
+              final firstWhereIndex =
+                  bloc.resultList.indexWhere((note) => !note.starredCase);
+              setState(() {
+                bloc.resultList.insert(firstWhereIndex, removedItem);
+                bloc.starCount--;
+              });
+            } else {
+              await FirebaseUtils.updateStarred(
+                  isStarred: false, caseId: state.caseId);
+              setState(() {
+                bloc.starCount--;
+              });
             }
-            final removedItem = bloc.resultList[state.selectedIndex];
-            bloc.resultList.removeAt(state.selectedIndex);
-            // To pick and add next starred false case
-            final firstWhereIndex =
-                bloc.resultList.indexWhere((note) => !note.starredCase);
-            setState(() {
-              bloc.resultList.insert(firstWhereIndex, removedItem);
-            });
           }
         }
 
@@ -811,7 +845,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
           if (state is AllocationLoadingState) {
-            return const CustomLoadingWidget();
+            return const SkeletonLoading();
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
@@ -1139,7 +1173,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                 bloc.isAutoCalling
                     ? Expanded(
                         child: AutoCalling.buildAutoCalling(context, bloc))
-                    : isOffline
+                    : isOffline /*&& Singleton.instance.isOfflineStorageFeatureEnabled*/
                         ? StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection(
@@ -1213,7 +1247,7 @@ class _AllocationScreenState extends State<AllocationScreen> {
                           )
                         : Expanded(
                             child: isCaseDetailLoading
-                                ? const CustomLoadingWidget()
+                                ? const SkeletonLoading()
                                 : resultList.isEmpty
                                     ? Column(
                                         children: [

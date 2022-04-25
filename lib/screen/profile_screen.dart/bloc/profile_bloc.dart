@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
@@ -147,13 +148,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ChangeProfileImageState();
     }
     if (event is LoginEvent) {
+      yield ProfileLoadingState();
       final SharedPreferences _prefs = await SharedPreferences.getInstance();
-      await _prefs.setString(Constants.accessToken, '');
-      await _prefs.setString(Constants.userType, '');
-      await _prefs.setString('addressValue', '');
-      await _prefs.setBool('areyouatOffice', true);
-      await _prefs.setBool(Constants.appDataLoadedFromFirebase, false);
       Singleton.instance.isOfflineStorageFeatureEnabled = false;
+       await FirebaseFirestore.instance.terminate();
+      await _prefs.clear();
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

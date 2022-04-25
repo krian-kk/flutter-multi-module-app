@@ -428,14 +428,19 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   contactId0: Singleton.instance.contactId_0 ?? '',
                 ),
               );
-              await FirebaseUtils.storeEvents(
-                  eventsDetails: requestBodyData.toJson(),
-                  caseId: widget.caseId,
-                  selectedFollowUpDate: nextActionDateControlller.text,
-                  selectedClipValue: Constants.dispute,
-                  bloc: widget.bloc);
+
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
+                await FirebaseUtils.storeEvents(
+                        eventsDetails: requestBodyData.toJson(),
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: nextActionDateControlller.text,
+                        selectedClipValue: Constants.dispute,
+                        bloc: widget.bloc)
+                    .whenComplete(() {
+                  AppUtils.topSnackBar(
+                      context, Constants.successfullySubmitted);
+                });
               } else {
                 final Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(

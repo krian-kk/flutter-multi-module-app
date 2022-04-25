@@ -61,7 +61,6 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                         .toString());
                   },
                   onPageStarted: (String val) {
-                    // print("Page Started $val");
                     //_loadHTML(controller: controller);
                   },
                   onPageFinished: (String finish) {

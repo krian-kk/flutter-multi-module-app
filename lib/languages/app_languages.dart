@@ -667,4 +667,46 @@ abstract class Languages {
   String get ref1;
 
   String get ref2;
+
+  String get loanDetails;
+
+  String get agentDetails;
+
+  String get repaymentInformation;
+
+  String get attributeDetails;
+
+  String get contactDetails;
+
+  String get auditDetails;
+
+  String get primaryUser;
+
+  String get secondaryUser;
+
+  String get agentName;
+
+  String get agentType;
+
+  String get state;
+
+  String get city;
+
+  String get createdBy;
+
+  String get createdAt;
+
+  String get updatedBy;
+
+  String get updatedAt;
+
+  String get allocatedBy;
+
+  String get allocatedAt;
+
+  String get residenceAddress;
+
+  String get mobile;
+
+  String get officeaddress;
 }

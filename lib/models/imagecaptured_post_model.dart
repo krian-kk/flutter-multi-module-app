@@ -1,3 +1,5 @@
+import '../utils/app_utils.dart';
+
 class PostImageCapturedModel {
   PostImageCapturedModel({
     required this.eventId,
@@ -5,6 +7,7 @@ class PostImageCapturedModel {
     required this.caseId,
     required this.eventCode,
     required this.eventAttr,
+    this.createdAt,
     required this.createdBy,
     required this.eventModule,
     this.callID,
@@ -26,6 +29,7 @@ class PostImageCapturedModel {
     eventAttr = (json['eventAttr'] != null
         ? EventAttr.fromJson(json['eventAttr'])
         : null)!;
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
     callID = json['callID'];
@@ -43,6 +47,7 @@ class PostImageCapturedModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
+  late String? createdAt;
   late String createdBy;
   late String eventModule;
   late String? callID;
@@ -56,12 +61,19 @@ class PostImageCapturedModel {
   // List<dynamic>? files;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['eventModule'] = eventModule;
     data['callID'] = callID;

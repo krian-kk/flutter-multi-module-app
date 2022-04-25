@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class DisputePostModel {
   DisputePostModel({
     required this.eventId,
@@ -6,6 +8,7 @@ class DisputePostModel {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.contractor,
@@ -25,6 +28,7 @@ class DisputePostModel {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = Contact.fromJson(json['contact']);
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     contractor = json['contractor'];
@@ -42,6 +46,7 @@ class DisputePostModel {
   late String eventCode;
   late EventAttr eventAttr;
   late Contact contact;
+  late String? createdAt;
   late String createdBy;
   late String agentName;
   late String contractor;
@@ -54,6 +59,11 @@ class DisputePostModel {
   late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
+
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -61,6 +71,9 @@ class DisputePostModel {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;
@@ -125,31 +138,6 @@ class EventAttr {
     return data;
   }
 }
-
-// class AgentLocation {
-//   late double latitude;
-//   late double longitude;
-//   late String missingAgentLocation;
-
-//   AgentLocation(
-//       {this.latitude = 0,
-//       this.longitude = 0,
-//       this.missingAgentLocation = 'true'});
-
-//   AgentLocation.fromJson(Map<String, dynamic> json) {
-//     latitude = json['latitude'];
-//     longitude = json['longitude'];
-//     missingAgentLocation = json['missingAgentLocation'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = <String, dynamic>{};
-//     data['latitude'] = latitude;
-//     data['longitude'] = longitude;
-//     data['missingAgentLocation'] = missingAgentLocation;
-//     return data;
-//   }
-// }
 
 class Contact {
   Contact(

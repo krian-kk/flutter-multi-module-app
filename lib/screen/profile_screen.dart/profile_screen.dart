@@ -30,6 +30,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
+import 'package:origa/utils/skeleton.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -220,17 +221,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      // ProfileNavigation(
-      //   title: Languages.of(context)!.changeSecurePIN,
-      //   onTap: () {
-      //     bloc.add(ClickChangeSecurityPinEvent());
-      //   },
-      //   isEnable: true,
-      // )
+      if (Singleton.instance.isMPin)
+        ProfileNavigation(
+          title: Languages.of(context)!.changeSecurePIN,
+          onTap: () {
+            bloc.add(ClickChangeSecurityPinEvent());
+          },
+          isEnable: true,
+        )
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
-      listener: (BuildContext context, ProfileState state) {
+      listener: (BuildContext context, ProfileState state) async {
         if (state is PostDataApiSuccessState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
@@ -262,20 +264,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
           markAsHomeShowBottomSheet(context);
         }
         if (state is LoginState) {
-          Navigator.pushNamedAndRemoveUntil(
+          await Navigator.pushNamedAndRemoveUntil(
               context, AppRoutes.loginScreen, (Route<dynamic> route) => false);
         }
         if (state is ClickChangeSecurityPinState) {
-          showForgorSecurePinDialogBox(
-            bloc.profileAPIValue.result!.first.aRef.toString(),
-          );
+          if (await requestOTP(
+              bloc.profileAPIValue.result?.first.aRef.toString() ?? '')) {
+            await showForgorSecurePinDialogBox(
+                bloc.profileAPIValue.result!.first.aRef.toString());
+          }
         }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
         builder: (BuildContext context, ProfileState state) {
           if (state is ProfileLoadingState) {
-            return const CustomLoadingWidget();
+            // return const CustomLoadingWidget();
+            return const SkeletonLoading();
           } else {
             if (bloc.profileAPIValue.result?.first.profileImgUrl != null) {
               profileImage = base64
@@ -578,9 +583,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            // const SizedBox(height: 22),
-                            // ListOfCaseDetails.listOfDetails(context,
-                            //     bloc: bloc, title: 'Loan Detail 1'),
                             const SizedBox(height: 22),
                             GestureDetector(
                               onTap: () => bloc.add(LoginEvent()),

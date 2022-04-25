@@ -193,6 +193,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ),
                       Expanded(
                         child: KeyboardActions(
+                          enable: (Platform.isIOS),
                           config: KeyboardActionsConfig(
                             keyboardActionsPlatform:
                                 KeyboardActionsPlatform.IOS,
@@ -567,6 +568,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               contractor: Singleton.instance.contractor ?? '',
             );
 
+            // requestBodyData
+            //     .toJson()
+            //     .remove((key, value) => value == requestBodyData.createdAt);
+            //  remove(requestBodyData.createdAt);
+
+            // print(
+            //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
+
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -577,22 +586,27 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             postdata.addAll(<String, dynamic>{
               'files': value,
             });
-            final Map<String, dynamic> firebaseObject =
-                requestBodyData.toJson();
-            try {
-              firebaseObject.addAll(
-                  FirebaseUtils.toPrepareFileStoringModel(uploadFileLists));
-            } catch (e) {
-              debugPrint('Exception while converting base64 ${e.toString()}');
-            }
-            await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: widget.caseId,
-                selectedFollowUpDate: otsPaymentDateControlller.text,
-                selectedClipValue: Constants.ots,
-                bloc: widget.bloc);
+
             if (ConnectivityResult.none ==
                 await Connectivity().checkConnectivity()) {
+              final Map<String, dynamic> firebaseObject =
+                  requestBodyData.toJson();
+              try {
+                firebaseObject.addAll(
+                    await FirebaseUtils.toPrepareFileStoringModel(
+                        uploadFileLists));
+              } catch (e) {
+                debugPrint('Exception while converting base64 ${e.toString()}');
+              }
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: firebaseObject,
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: otsPaymentDateControlller.text,
+                      selectedClipValue: Constants.ots,
+                      bloc: widget.bloc)
+                  .whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(

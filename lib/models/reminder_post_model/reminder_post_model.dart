@@ -1,3 +1,5 @@
+import '../../utils/app_utils.dart';
+
 class ReminderPostAPI {
   ReminderPostAPI({
     required this.eventId,
@@ -6,6 +8,7 @@ class ReminderPostAPI {
     required this.eventCode,
     required this.eventAttr,
     required this.contact,
+    this.createdAt,
     required this.createdBy,
     required this.agentName,
     required this.contractor,
@@ -25,6 +28,7 @@ class ReminderPostAPI {
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = Contact.fromJson(json['contact']);
+    createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
     contractor = json['contractor'];
@@ -42,6 +46,7 @@ class ReminderPostAPI {
   late String eventCode;
   late EventAttr eventAttr;
   late Contact contact;
+  late String? createdAt;
   late String createdBy;
   late String agentName;
   late String contractor;
@@ -54,6 +59,11 @@ class ReminderPostAPI {
   late bool? invalidNumber;
 
   Map<String, dynamic> toJson() {
+    bool isOnline = true;
+    AppUtils.checkNetworkConnection().then((value) {
+      isOnline = value;
+    });
+
     final Map<String, dynamic> data = <String, dynamic>{};
     data['eventId'] = eventId;
     data['eventType'] = eventType;
@@ -61,6 +71,9 @@ class ReminderPostAPI {
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
+    if (isOnline == false) {
+      data['createdAt'] = DateTime.now().toString();
+    }
     data['createdBy'] = createdBy;
     data['agentName'] = agentName;
     data['contractor'] = contractor;

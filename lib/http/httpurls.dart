@@ -24,7 +24,7 @@ class HttpUrl {
       '$url/node/field-allocation/agents/info/$agentName';
 
   static String sendSMSurl = '$url/node/api/v2/notification/sendNotification';
-
+  static final String chatHistory2 = '$url/node/api/getChatHistory/';
   //Get API
   // For AutoCalling API
   static final String autoCallingURL =
@@ -44,8 +44,8 @@ class HttpUrl {
   static String eventDetailsUrl({String? caseId, String? userType}) =>
       baseUrl + fieldAgent + 'case-details-events/eventDetails?caseId=$caseId';
 
-  // static final String priorityCaseListV2 =
-  //     '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
+  static final String priorityCaseListV2 =
+      '$url/$apiType' 'v2/' + fieldAgent + 'case-details/priority?';
 
   static final String priorityCaseListV1 =
       '$url/$apiType' 'v1/' + fieldAgent + 'case-details/priority?';
@@ -248,4 +248,8 @@ class HttpUrl {
   // Generate Dyanamic Payment Link & QR
   static final String generateDyanamicPaymentLink =
       baseUrl + 'payment/generateDyanamicPaymentLink';
+
+//Send Whatsapp message from backend
+  static final String sendWhatsapp =
+      baseUrl + fieldAgent + 'case-details/notifyCustomer?';
 }

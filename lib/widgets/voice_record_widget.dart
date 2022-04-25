@@ -62,6 +62,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   List<File> uploadFileLists = <File>[];
 
   final Codec _codec = Codec.pcm16WAV;
+
   // final String _mPath = '/sdcard/Download/taNew.wav';
   // FlutterSoundPlayer? _mPlayer = FlutterSoundPlayer();
   FlutterSoundRecorder? _mRecorder = FlutterSoundRecorder();
@@ -200,6 +201,10 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     final List<dynamic> value = <dynamic>[];
     for (File element in uploadFileLists) {
       value.add(await MultipartFile.fromFile(element.path.toString()));
+      debugPrint('File values--> ${element.path.toString()}');
+      final int sizeInBytes = element.lengthSync();
+      final double sizeInMb = sizeInBytes / (1024 * 1024);
+      debugPrint('File Size--> $sizeInMb');
     }
     postdata.addAll(<String, dynamic>{
       'files': value,
@@ -263,14 +268,14 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
                   });
                 }
               } else {
-                int secondsRemaining = 60;
+                int secondsRemaining = 30;
                 if (mounted) {
                   setState(() {
                     isRecordOn = true;
                     glowingRadius = 22;
                     recordContainerWidth = 120;
                     recordContainerColor = ColorResource.colorF7F8FA;
-                    recordCountText = '60 Sec';
+                    recordCountText = '30 Sec';
                   });
                 }
                 await startRecord();
@@ -328,7 +333,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
                     decoration: BoxDecoration(
                         color: recordContainerColor,
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(60.0))),
+                            const BorderRadius.all(Radius.circular(30.0))),
                     child: Center(
                         child: Row(
                       mainAxisSize: MainAxisSize.min,

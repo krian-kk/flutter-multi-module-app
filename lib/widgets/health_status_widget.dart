@@ -1,39 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/image_resource.dart';
 
 class ShowHealthStatus {
   static Widget healthStatus(dynamic healthValue) {
     Widget? returnWidget;
     switch (healthValue) {
       case '0':
-        // returnWidget = colorWidget(ColorResource.red);
-        returnWidget = SvgPicture.asset(
-          ImageResource.activePerson,
-          color: ColorResource.red,
-        );
+        returnWidget = colorWidget(ColorResource.red);
         break;
       case '1':
-        // returnWidget = colorWidget(ColorResource.orange);
-        returnWidget = SvgPicture.asset(
-          ImageResource.activePerson,
-          color: ColorResource.orange,
-        );
+        returnWidget = colorWidget(ColorResource.orange);
         break;
       case '2':
-        // returnWidget = colorWidget(ColorResource.green);
-        returnWidget = SvgPicture.asset(
-          ImageResource.activePerson,
-          color: ColorResource.green,
-        );
+        returnWidget = colorWidget(ColorResource.green);
         break;
       default:
-        // returnWidget = colorWidget(ColorResource.grey);
-        returnWidget = SvgPicture.asset(
-          ImageResource.activePerson,
-          color: ColorResource.grey,
-        );
+        returnWidget = colorWidget(ColorResource.grey);
         break;
     }
     return returnWidget;

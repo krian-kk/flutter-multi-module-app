@@ -329,7 +329,6 @@ class CaseLists {
                                     thickness: 0.5,
                                   ),
                                 ),
-                                //  const SizedBox(height: 5,),
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(23, 5, 14, 13),

@@ -104,7 +104,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
           Future<dynamic>.delayed(
             Duration(milliseconds: nextLoginTime),
           ).asStream().listen((dynamic value) {
-            if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
+            if (Singleton.instance.isOfflineStorageFeatureEnabled) {
               _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
               Singleton.instance.isOfflineStorageFeatureEnabled = false;
               _pref.setBool(Constants.appDataLoadedFromFirebase, false);
@@ -112,7 +112,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
             }
           });
         } else {
-          if (Singleton.instance.isOfflineStorageFeatureEnabled!) {
+          if (Singleton.instance.isOfflineStorageFeatureEnabled) {
             _pref.setBool(Constants.appDataLoadedFromFirebase, false);
             Singleton.instance.isOfflineStorageFeatureEnabled = false;
             _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
