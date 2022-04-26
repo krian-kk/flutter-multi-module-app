@@ -88,6 +88,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<dynamic> multipleLatLong = <dynamic>[];
 
   int starCount = 0;
+  int totalCases = 0;
   List<Result> resultList = <Result>[];
   List<Result> autoCallingResultList = <Result>[];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
@@ -187,6 +188,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               AppUtils.showToast('App synced with local');
             });
             isOfflineTriggered = true;
+            totalCases = 0;
             await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
             await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
@@ -198,6 +200,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   true) {
                 starCount++;
               }
+            }
+            if (priorityListData['data']['totalCases'] != null) {
+              totalCases = priorityListData['data']['totalCases'] as int;
             }
             if (resultList.length >= 10) {
               hasNextPage = true;
