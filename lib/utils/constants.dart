@@ -160,6 +160,7 @@ class Constants {
   static const String disputeCaseStatus = 'Dispute';
   static const String receiptCaseStatus = 'Receipt';
   static const String cheque = 'CHEQUE';
+  static const String pickUp = 'PICK-UP';
   static const String selfPay = 'SELF PAY';
   static const String cash = 'CASH';
   static const String digital = 'DIGITAL';
@@ -188,6 +189,7 @@ class Constants {
   static const String panjabiLangCode = 'pa-Guru-IN';
 
   static const String teluguLangCode = 'te-IN';
+
   static const String mPin = 'mPin';
   static const String process = 'process';
   static const String stop = 'stop';

@@ -280,14 +280,14 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  if (expandedList[index].eventType?.toLowerCase() ==
-                          Constants.receipt.toLowerCase() &&
-                      expandedList[index].eventAttr?.amountCollected != null)
-                    CustomText(
-                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
+                  // if (expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.receipt.toLowerCase() &&
+                  //     expandedList[index].eventAttr?.amountCollected != null)
+                  //   CustomText(
+                  //     '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   if (
                   // expandedList[index].eventType?.toLowerCase() ==
                   //       Constants.ptp.toLowerCase() &&
@@ -357,7 +357,7 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.chequeRefNo != null)
                     CustomText(
-                      '${Languages.of(context)!.refCheque.replaceAll('*', '')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                      '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase()} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),

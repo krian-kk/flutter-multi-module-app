@@ -44,7 +44,7 @@ class ConvertString {
     } else if (text == Languages.of(context)!.digital) {
       constantValue = Constants.digital;
     } else if (text == Languages.of(context)!.pickUp) {
-      constantValue = Constants.cheque;
+      constantValue = Constants.pickUp;
     }
     return constantValue;
   }

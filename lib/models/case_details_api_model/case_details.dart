@@ -32,6 +32,10 @@ class CaseDetails {
     this.additionalInfo,
     this.module,
     this.fatherSpouseName,
+    this.lastPaymentMode,
+    this.zone,
+    this.dpd,
+    this.language,
     this.bankName,
     this.batchNo,
     this.product,
@@ -109,6 +113,10 @@ class CaseDetails {
         additionalInfo: json['additionalInfo'] as dynamic,
         module: json['module'] as String?,
         fatherSpouseName: json['fatherSpouseName'] as String?,
+        lastPaymentMode: json['lastPaymentMode'] as String?,
+        zone: json['zone'] as String?,
+        dpd: json['dpd'] as String?,
+        language: json['language'] as String?,
         bankName: json['bankName'] as String?,
         batchNo: json['batchNo'] as String?,
         product: json['product'] as String?,
@@ -188,6 +196,10 @@ class CaseDetails {
   dynamic additionalInfo;
   String? module;
   String? fatherSpouseName;
+  String? lastPaymentMode;
+  String? zone;
+  String? dpd;
+  String? language;
   String? bankName;
   String? batchNo;
   String? product;
@@ -273,6 +285,10 @@ class CaseDetails {
         'additionalInfo': additionalInfo,
         'module': module,
         'fatherSpouseName': fatherSpouseName,
+        'lastPaymentMode': lastPaymentMode,
+        'zone': zone,
+        'dpd': dpd,
+        'language': language,
         'bankName': bankName,
         'batchNo': batchNo,
         'product': product,
