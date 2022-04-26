@@ -15,6 +15,7 @@ import 'package:origa/widgets/custom_text.dart';
 import '../../widgets/case_status_widget.dart';
 
 class CustomCardList {
+
   static Widget buildListView(AllocationBloc bloc,
       {List<Result>? resultData,
       required ScrollController listViewController}) {
