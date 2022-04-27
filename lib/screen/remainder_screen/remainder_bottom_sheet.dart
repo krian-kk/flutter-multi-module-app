@@ -427,7 +427,7 @@ class _CustomRemainderBottomSheetState
             caseId: widget.caseId,
             eventCode: ConstantEventValues.remainderEvenCode,
             voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-            callerServiceID: Singleton.instance.callerServiceID ?? '',
+            callerServiceID: Singleton.instance.callerServiceID,
             createdBy: Singleton.instance.agentRef ?? '',
             agentName: Singleton.instance.agentName ?? '',
             agrRef: Singleton.instance.agrRef ?? '',

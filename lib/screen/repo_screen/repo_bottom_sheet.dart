@@ -397,8 +397,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           eventCode:
                                               ConstantEventValues.repoEvenCode,
                                           callerServiceID: Singleton
-                                                  .instance.callerServiceID ??
-                                              '',
+                                              .instance.callerServiceID,
                                           voiceCallEventCode:
                                               ConstantEventValues
                                                   .voiceCallEventCode,

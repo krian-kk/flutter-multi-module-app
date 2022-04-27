@@ -1079,4 +1079,22 @@ class LanguageTa extends Languages {
 
   @override
   String get followUpPriority => 'பின்தொடர்தல் முன்னுரிமை';
+
+  @override
+  String get fatherSpouseName => 'தந்தையின் மனைவி பெயர்';
+
+  @override
+  String get lastPaymentMode => 'கடைசி கட்டண முறை';
+
+  @override
+  String get dpd => 'DPD';
+
+  @override
+  String get zone => 'மண்டலம்';
+
+  @override
+  String get language => 'மொழி';
+
+  @override
+  String get beneficiaryAccountNumber => 'பயனாளி கணக்கு எண்';
 }

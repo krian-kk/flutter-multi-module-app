@@ -1253,7 +1253,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventId: ConstantEventValues.phoneUnreachableEventId,
         eventType: eventType,
         caseId: caseId,
-        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callerServiceID: Singleton.instance.callerServiceID,
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         eventCode: eventCode,
@@ -1362,7 +1362,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventCode: ConstantEventValues.addressCustomerNotMetEvenCode,
         contact: contact,
         eventModule: 'Field Allocation',
-        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callerServiceID: Singleton.instance.callerServiceID,
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
@@ -1457,7 +1457,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     final AddressInvalidPostModel requestBodyData = AddressInvalidPostModel(
         eventId: ConstantEventValues.addressInvalidEventId,
-        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callerServiceID: Singleton.instance.callerServiceID,
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
@@ -1538,7 +1538,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     final PhoneInvalidPostModel requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
         eventType: eventType,
-        callerServiceID: Singleton.instance.callerServiceID ?? '',
+        callerServiceID: Singleton.instance.callerServiceID,
         callID: Singleton.instance.callID,
         callingID: Singleton.instance.callingID,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,

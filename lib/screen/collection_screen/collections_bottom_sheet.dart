@@ -617,9 +617,9 @@ class _CustomCollectionsBottomSheetState
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
                   ),
-                  callID: Singleton.instance.callID ?? '0',
-                  callingID: Singleton.instance.callingID ?? '0',
-                  callerServiceID: Singleton.instance.callerServiceID ?? '',
+                  callID: Singleton.instance.callID,
+                  callingID: Singleton.instance.callingID,
+                  callerServiceID: Singleton.instance.callerServiceID,
                   voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
                   // createdAt: (ConnectivityResult.none ==
                   //         await Connectivity().checkConnectivity())
@@ -632,6 +632,8 @@ class _CustomCollectionsBottomSheetState
                   eventModule:
                       widget.isCall! ? 'Telecalling' : 'Field Allocation',
                   invalidNumber: false);
+
+              print('collection data2 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
@@ -738,7 +740,7 @@ class _CustomCollectionsBottomSheetState
                         selectedPaymentModeButton, context),
                     customerName: widget.custName!,
                     followUpPriority: 'REVIEW',
-                    imageLocation: <String>[''],
+                    imageLocation: <String>[],
                     longitude: position.longitude,
                     latitude: position.latitude,
                     accuracy: position.accuracy,
@@ -750,9 +752,9 @@ class _CustomCollectionsBottomSheetState
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
                   ),
-                  callID: Singleton.instance.callID ?? '0',
-                  callingID: Singleton.instance.callingID ?? '0',
-                  callerServiceID: Singleton.instance.callerServiceID ?? '',
+                  callID: Singleton.instance.callID,
+                  callingID: Singleton.instance.callingID,
+                  callerServiceID: Singleton.instance.callerServiceID,
                   voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
                   createdBy: Singleton.instance.agentRef ?? '',
                   agentName: Singleton.instance.agentName ?? '',
@@ -761,6 +763,7 @@ class _CustomCollectionsBottomSheetState
                   eventModule:
                       widget.isCall! ? 'Telecalling' : 'Field Allocation',
                   invalidNumber: false);
+              print('collection data3 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;

@@ -260,7 +260,8 @@ class _CustomCaptureImageBottomSheetState
                                             position = res;
                                           });
                                         }
-                                        final PostImageCapturedModel requestBodyData =
+                                        final PostImageCapturedModel
+                                            requestBodyData =
                                             PostImageCapturedModel(
                                                 eventId: ConstantEventValues
                                                     .captureImageEventId,
@@ -268,35 +269,33 @@ class _CustomCaptureImageBottomSheetState
                                                     .captureImageEvenCode,
                                                 caseId: widget.bloc.caseId
                                                     .toString(),
-                                                contractor: Singleton.instance.contractor ??
+                                                contractor: Singleton
+                                                        .instance.contractor ??
                                                     '',
-                                                voiceCallEventCode: ConstantEventValues
-                                                    .voiceCallEventCode,
+                                                voiceCallEventCode:
+                                                    ConstantEventValues
+                                                        .voiceCallEventCode,
                                                 // createdAt: (ConnectivityResult.none ==
                                                 //         await Connectivity()
                                                 //             .checkConnectivity())
                                                 //     ? DateTime.now().toString()
                                                 //     : null,
-                                                createdBy:
-                                                    Singleton.instance.agentRef ??
-                                                        '',
+                                                createdBy: Singleton
+                                                        .instance.agentRef ??
+                                                    '',
                                                 agentName: Singleton
                                                         .instance.agentName ??
                                                     '',
-                                                agrRef:
-                                                    Singleton.instance.agrRef ??
-                                                        '',
-                                                callerServiceID: Singleton
-                                                        .instance
-                                                        .callerServiceID ??
+                                                agrRef: Singleton.instance.agrRef ??
                                                     '',
-                                                callID: Singleton
-                                                        .instance.callID ??
-                                                    '0',
-                                                callingID:
+                                                callerServiceID:
                                                     Singleton.instance
-                                                            .callingID ??
-                                                        ' 0',
+                                                        .callerServiceID,
+                                                callID:
+                                                    Singleton.instance.callID,
+                                                callingID:
+                                                    Singleton
+                                                        .instance.callingID,
                                                 invalidNumber: false,
                                                 eventType: 'IMAGE CAPTURED',
                                                 eventModule: (widget

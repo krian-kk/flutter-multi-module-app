@@ -54,7 +54,7 @@ class ReminderPostAPI {
   late String agrRef;
   late String? callID;
   late String? callingID;
-  late String callerServiceID;
+  late String? callerServiceID;
   late String voiceCallEventCode;
   late bool? invalidNumber;
 
