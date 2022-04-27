@@ -51,7 +51,6 @@ requestNotificationPermission() async {
   final FirebaseMessaging messaging = FirebaseMessaging.instance;
   final NotificationSettings settings = await messaging.requestPermission();
   if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-    //User granted permission
   } else {
     await openAppSettings();
   }
