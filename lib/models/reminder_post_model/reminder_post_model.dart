@@ -93,7 +93,7 @@ class EventAttr {
     required this.reminderDate,
     required this.time,
     required this.remarks,
-    this.followUpPriority = 'RETRY',
+    required this.followUpPriority,
     required this.latitude,
     required this.longitude,
     this.reginalText,

@@ -95,7 +95,7 @@ class EventAttr {
     required this.actionproposed,
     required this.remarks,
     required this.imageLocation,
-    this.followUpPriority = 'RETRY',
+    required this.followUpPriority,
     required this.altitude,
     required this.accuracy,
     required this.altitudeAccuracy,

@@ -54,6 +54,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
 import '../../../models/send_whatsapp_model.dart';
+import '../../../widgets/get_followuppriority_value.dart';
 
 part 'case_details_event.dart';
 
@@ -542,7 +543,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           Constants.doorLocked,
           caseId.toString(),
           HttpUrl.doorLockedUrl('doorLocked', userType.toString()),
-          'NEW',
+          'PTP',
           <dynamic>[
             <String, dynamic>{
               'cType': caseDetailsAPIValue
@@ -619,7 +620,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               agentName.toString(),
               agentName.toString(),
               agentName.toString(),
-              'REVIEW',
+              'PTP',
               addressSelectedInvalidClip,
               event.context,
             );
@@ -681,6 +682,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 ),
                 phoneSelectedInvalidClip,
                 event.context,
+                'Does Not Exist',
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.incorrectNumber) {
@@ -693,6 +695,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 ),
                 phoneSelectedInvalidClip,
                 event.context,
+                'Incorrect Number',
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.numberNotWorking) {
@@ -705,19 +708,20 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                 ),
                 phoneSelectedInvalidClip,
                 event.context,
+                'Number Not Working',
               );
             } else if (phoneSelectedInvalidClip ==
                 Languages.of(event.context)!.notOperational) {
               resultValue = await phoneInvalidButtonClick(
-                Constants.notOpeartional,
-                caseId.toString(),
-                HttpUrl.notOperationalUrl(
-                  'notOperational',
-                  userType.toString(),
-                ),
-                phoneSelectedInvalidClip,
-                event.context,
-              );
+                  Constants.notOpeartional,
+                  caseId.toString(),
+                  HttpUrl.notOperationalUrl(
+                    'notOperational',
+                    userType.toString(),
+                  ),
+                  phoneSelectedInvalidClip,
+                  event.context,
+                  'Not Operational');
             }
           } else {
             AppUtils.showToast(
@@ -779,6 +783,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             ),
             phoneSelectedUnreadableClip,
             event.context,
+            'Line Busy',
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.switchOff) {
@@ -792,6 +797,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             ),
             phoneSelectedUnreadableClip,
             event.context,
+            'Switch Off',
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.rnr) {
@@ -805,6 +811,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             ),
             phoneSelectedUnreadableClip,
             event.context,
+            'RNR',
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.outOfNetwork) {
@@ -818,6 +825,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             ),
             phoneSelectedUnreadableClip,
             event.context,
+            'Out Of Network',
           );
         } else if (phoneSelectedUnreadableClip ==
             Languages.of(event.context)!.disConnecting) {
@@ -831,6 +839,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             ),
             phoneSelectedUnreadableClip,
             event.context,
+            'Disconnecting',
           );
         }
         if (resultValue[Constants.success]) {
@@ -1248,6 +1257,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String urlString,
     String selectedClipValue,
     BuildContext context,
+    String newEventType,
   ) async {
     final PhoneUnreachablePostModel requestBodyData = PhoneUnreachablePostModel(
         eventId: ConstantEventValues.phoneUnreachableEventId,
@@ -1260,7 +1270,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         eventAttr: PhoneUnreachableEventAttr(
           remarks: phoneUnreachableRemarksController.text,
-          followUpPriority: 'REVIEW',
+          followUpPriority: EventFollowUpPriority.unreachableFollowUpPriority(
+            currentCaseStatus:
+                caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,
+            eventType: newEventType,
+            currentFollowUpPriority:
+                caseDetailsAPIValue.result!.caseDetails!.followUpPriority!,
+          ),
           nextActionDate: phoneUnreachableSelectedDate != ''
               ? phoneUnreachableSelectedDate
               : phoneUnreachableNextActionDateController.text,
@@ -1311,6 +1327,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (await postResult[Constants.success]) {
+      // here update followUpPriority value.
+      caseDetailsAPIValue.result!.caseDetails!.followUpPriority =
+          requestBodyData.eventAttr.followUpPriority;
+      caseDetailsAPIValue.result!.caseDetails!.telSubStatus = newEventType;
+
       isSubmitedForMyVisits = true;
       submitedEventType = 'Unreachable';
       if (userType == Constants.telecaller) {
@@ -1534,6 +1555,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     String urlString,
     String selectedClipValue,
     BuildContext context,
+    String newEventType,
   ) async {
     final PhoneInvalidPostModel requestBodyData = PhoneInvalidPostModel(
         eventId: ConstantEventValues.phoneInvalidEventId,
@@ -1554,7 +1576,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventCode: ConstantEventValues.phoneInvalidEvenCode,
         eventAttr: PhoneInvalidEventAttr(
           remarks: phoneInvalidRemarksController.text,
-          nextActionDate: DateTime.now().toString(),
+          followUpPriority: EventFollowUpPriority.phoneInvalidFollowUpPriority(
+            currentCaseStatus:
+                caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,
+            eventType: newEventType,
+            currentFollowUpPriority:
+                caseDetailsAPIValue.result!.caseDetails!.followUpPriority!,
+          ),
+          // nextActionDate: DateTime.now().toString(),
           reginalText: returnS2TPhoneInvalid.result?.reginalText,
           translatedText: returnS2TPhoneInvalid.result?.translatedText,
           audioS3Path: returnS2TPhoneInvalid.result?.audioS3Path,
@@ -1593,6 +1622,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
 
     if (await postResult[Constants.success]) {
+      // here update followUpPriority value.
+      caseDetailsAPIValue.result!.caseDetails!.followUpPriority =
+          requestBodyData.eventAttr.followUpPriority;
+      caseDetailsAPIValue.result!.caseDetails!.telSubStatus = newEventType;
+
       isSubmitedForMyVisits = true;
       submitedEventType = 'Phone Invalid';
       if (userType == Constants.telecaller) {

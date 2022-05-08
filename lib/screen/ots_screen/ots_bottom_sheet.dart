@@ -533,7 +533,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ? 'TC : OTS'
                       : 'OTS',
               caseId: widget.caseId,
-              imageLocation: <String>[''],
+              imageLocation: <String>[],
               eventAttr: OTSEventAttr(
                 date: otsPaymentDateControlller.text,
                 remarkOts: remarksControlller.text,
@@ -573,7 +573,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             //     .remove((key, value) => value == requestBodyData.createdAt);
             //  remove(requestBodyData.createdAt);
 
-            // print(
+            // debugPrint(
             //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
 
             final Map<String, dynamic> postdata =

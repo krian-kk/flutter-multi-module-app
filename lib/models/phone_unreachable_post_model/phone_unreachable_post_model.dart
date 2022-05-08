@@ -91,7 +91,7 @@ class PhoneUnreachablePostModel {
 class PhoneUnreachableEventAttr {
   PhoneUnreachableEventAttr({
     required this.remarks,
-    this.followUpPriority = 'AWAITING CONTACT',
+    required this.followUpPriority,
     required this.nextActionDate,
     this.reginalText,
     this.translatedText,

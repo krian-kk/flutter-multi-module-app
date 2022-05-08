@@ -133,7 +133,7 @@ class EventAttr {
   late String time;
   late String remarks;
   late int ptpAmount;
-  late String reference;
+  late String? reference;
   late String mode;
   late String? pTPType;
   late String followUpPriority;

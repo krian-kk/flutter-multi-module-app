@@ -30,6 +30,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
   const CustomRepoBottomSheet(
@@ -390,48 +391,52 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   }
                                   final RepoPostModel requestBodyData =
                                       RepoPostModel(
-                                          eventId:
-                                              ConstantEventValues.repoEventId,
+                                          eventId: ConstantEventValues
+                                              .repoEventId,
                                           eventType: Constants.repo,
                                           caseId: widget.caseId,
-                                          eventCode:
-                                              ConstantEventValues.repoEvenCode,
-                                          callerServiceID: Singleton
-                                              .instance.callerServiceID,
-                                          voiceCallEventCode:
-                                              ConstantEventValues
-                                                  .voiceCallEventCode,
+                                          eventCode: ConstantEventValues
+                                              .repoEvenCode,
+                                          voiceCallEventCode: ConstantEventValues
+                                              .voiceCallEventCode,
                                           // createdAt: (ConnectivityResult.none ==
                                           //         await Connectivity()
                                           //             .checkConnectivity())
                                           //     ? DateTime.now().toString()
                                           //     : null,
-                                          createdBy:
-                                              Singleton.instance.agentRef ?? '',
-                                          agentName:
-                                              Singleton.instance.agentName ??
-                                                  '',
-                                          agrRef:
-                                              Singleton.instance.agrRef ?? '',
-                                          contractor:
-                                              Singleton.instance.contractor ??
-                                                  '',
-                                          eventModule: (widget.userType ==
-                                                  Constants.telecaller)
-                                              ? 'Telecalling'
-                                              : 'Field Allocation',
-                                          contact: <RepoContact>[
-                                            RepoContact(
-                                              cType: widget.postValue['cType'],
-                                              value: widget.postValue['value'],
-                                              health: widget.health,
-                                            )
-                                          ],
+                                          createdBy: Singleton
+                                                  .instance.agentRef ??
+                                              '',
+                                          agentName: Singleton
+                                                  .instance.agentName ??
+                                              '',
+                                          agrRef: Singleton
+                                                  .instance.agrRef ??
+                                              '',
+                                          contractor: Singleton
+                                                  .instance.contractor ??
+                                              '',
+                                          eventModule:
+                                              (widget
+                                                          .userType ==
+                                                      Constants.telecaller)
+                                                  ? 'Telecalling'
+                                                  : 'Field Allocation',
+                                          contact: RepoContact(
+                                            cType: widget.postValue['cType'],
+                                            value: widget.postValue['value'],
+                                            health: widget.health,
+                                          ),
                                           callID:
-                                              Singleton.instance.callID ?? '0',
-                                          callingID:
-                                              Singleton.instance.callingID ??
-                                                  '0',
+                                              Singleton
+                                                  .instance.callID
+                                                  .toString(),
+                                          callingID: Singleton
+                                              .instance.callingID
+                                              .toString(),
+                                          callerServiceID: Singleton
+                                              .instance.callerServiceID
+                                              .toString(),
                                           invalidNumber: false,
                                           eventAttr: EventAttr(
                                             modelMake:
@@ -446,10 +451,27 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                                 'T' +
                                                 timeControlller.text.trim() +
                                                 ':00.000Z',
-                                            imageLocation: <String>[''],
+                                            imageLocation: <String>[],
                                             customerName: Singleton.instance
                                                     .caseCustomerName ??
                                                 '',
+                                            followUpPriority:
+                                                EventFollowUpPriority
+                                                    .connectedFollowUpPriority(
+                                              currentCaseStatus: widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result!
+                                                  .caseDetails!
+                                                  .telSubStatus!,
+                                              eventType: 'REPO',
+                                              currentFollowUpPriority: widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result!
+                                                  .caseDetails!
+                                                  .followUpPriority!,
+                                            ),
                                             longitude: position.longitude,
                                             latitude: position.latitude,
                                             accuracy: position.accuracy,
@@ -463,6 +485,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                             audioS3Path: returnS2Tdata
                                                 .result?.audioS3Path,
                                           ));
+
+                                  debugPrint(
+                                      "requestg body data for REPO ----> ${jsonEncode(requestBodyData)}");
 
                                   final Map<String, dynamic> postdata =
                                       jsonDecode(jsonEncode(
@@ -510,6 +535,12 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       formDatas: FormData.fromMap(postdata),
                                     );
                                     if (postResult[Constants.success]) {
+                                      // here update followUpPriority value.
+                                      widget.bloc.caseDetailsAPIValue.result!
+                                              .caseDetails!.followUpPriority =
+                                          requestBodyData
+                                              .eventAttr.followUpPriority;
+
                                       widget.bloc.add(
                                         ChangeIsSubmitForMyVisitEvent(
                                           Constants.repo,

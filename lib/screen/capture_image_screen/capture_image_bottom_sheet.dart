@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -260,8 +261,7 @@ class _CustomCaptureImageBottomSheetState
                                             position = res;
                                           });
                                         }
-                                        final PostImageCapturedModel
-                                            requestBodyData =
+                                        final PostImageCapturedModel requestBodyData =
                                             PostImageCapturedModel(
                                                 eventId: ConstantEventValues
                                                     .captureImageEventId,
@@ -269,8 +269,7 @@ class _CustomCaptureImageBottomSheetState
                                                     .captureImageEvenCode,
                                                 caseId: widget.bloc.caseId
                                                     .toString(),
-                                                contractor: Singleton
-                                                        .instance.contractor ??
+                                                contractor: Singleton.instance.contractor ??
                                                     '',
                                                 voiceCallEventCode:
                                                     ConstantEventValues
@@ -280,22 +279,23 @@ class _CustomCaptureImageBottomSheetState
                                                 //             .checkConnectivity())
                                                 //     ? DateTime.now().toString()
                                                 //     : null,
-                                                createdBy: Singleton
-                                                        .instance.agentRef ??
-                                                    '',
+                                                createdBy:
+                                                    Singleton.instance.agentRef ??
+                                                        '',
                                                 agentName: Singleton
                                                         .instance.agentName ??
                                                     '',
-                                                agrRef: Singleton.instance.agrRef ??
-                                                    '',
-                                                callerServiceID:
-                                                    Singleton.instance
-                                                        .callerServiceID,
-                                                callID:
-                                                    Singleton.instance.callID,
-                                                callingID:
-                                                    Singleton
-                                                        .instance.callingID,
+                                                agrRef:
+                                                    Singleton.instance.agrRef ??
+                                                        '',
+                                                callerServiceID: Singleton
+                                                    .instance.callerServiceID
+                                                    .toString(),
+                                                callID: Singleton.instance.callID
+                                                    .toString(),
+                                                callingID: Singleton
+                                                    .instance.callingID
+                                                    .toString(),
                                                 invalidNumber: false,
                                                 eventType: 'IMAGE CAPTURED',
                                                 eventModule: (widget
@@ -306,7 +306,7 @@ class _CustomCaptureImageBottomSheetState
                                                 eventAttr: EventAttr(
                                                   remarks:
                                                       remarksControlller.text,
-                                                  imageLocation: <String>[''],
+                                                  imageLocation: <String>[],
                                                   longitude: position.longitude,
                                                   latitude: position.latitude,
                                                   accuracy: position.accuracy,
@@ -320,6 +320,10 @@ class _CustomCaptureImageBottomSheetState
                                                   audioS3Path: returnS2Tdata
                                                       .result?.audioS3Path,
                                                 ));
+
+                                        debugPrint(
+                                            "requestg body data for capture image ----> ${jsonEncode(requestBodyData)}");
+
                                         widget.bloc.add(PostImageCapturedEvent(
                                             postData: requestBodyData,
                                             fileData: uploadFileLists));

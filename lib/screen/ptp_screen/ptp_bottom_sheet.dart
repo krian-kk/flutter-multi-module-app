@@ -35,6 +35,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../utils/language_to_constant_convert.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
   const CustomPtpBottomSheet(
@@ -603,7 +604,15 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 reference: referenceControlller.text,
                 mode: ConvertString.convertLanguageToConstant(
                     selectedPaymentModeButton, context),
-                followUpPriority: 'PTP',
+                followUpPriority:
+                    EventFollowUpPriority.connectedFollowUpPriority(
+                  currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                      .caseDetails!.telSubStatus!,
+                  eventType: 'PTP',
+                  currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                      .result!.caseDetails!.followUpPriority!,
+                ),
+                // followUpPriority: 'PTP',
                 longitude: position.longitude,
                 latitude: position.latitude,
                 accuracy: position.accuracy,
@@ -656,6 +665,11 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 requestBodydata: jsonEncode(requestBodyData),
               );
               if (postResult[Constants.success]) {
+                // here update followUpPriority value.
+                widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                        .followUpPriority =
+                    requestBodyData.eventAttr.followUpPriority;
+
                 widget.bloc.add(
                   ChangeIsSubmitForMyVisitEvent(
                     Constants.ptp,

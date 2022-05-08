@@ -29,6 +29,8 @@ class CaseDetails {
     this.repoSubStatus,
     this.followUpDate,
     this.fieldfollowUpDate,
+    this.followUpPriority,
+    this.fieldfollowUpPriority,
     this.additionalInfo,
     this.module,
     this.fatherSpouseName,
@@ -110,6 +112,8 @@ class CaseDetails {
         repoSubStatus: json['repoSubStatus'] as String?,
         followUpDate: json['followUpDate'] as dynamic,
         fieldfollowUpDate: json['fieldfollowUpDate'] as String?,
+        followUpPriority: json['followUpPriority'],
+        fieldfollowUpPriority: json['fieldfollowUpPriority'],
         additionalInfo: json['additionalInfo'] as dynamic,
         module: json['module'] as String?,
         fatherSpouseName: json['fatherSpouseName'] as String?,
@@ -193,6 +197,8 @@ class CaseDetails {
   String? repoSubStatus;
   dynamic followUpDate;
   String? fieldfollowUpDate;
+  String? followUpPriority;
+  String? fieldfollowUpPriority;
   dynamic additionalInfo;
   String? module;
   String? fatherSpouseName;
@@ -282,6 +288,8 @@ class CaseDetails {
         'repoSubStatus': repoSubStatus,
         'followUpDate': followUpDate,
         'fieldfollowUpDate': fieldfollowUpDate,
+        'followUpPriority': followUpPriority,
+        'fieldfollowUpPriority': fieldfollowUpPriority,
         'additionalInfo': additionalInfo,
         'module': module,
         'fatherSpouseName': fatherSpouseName,
