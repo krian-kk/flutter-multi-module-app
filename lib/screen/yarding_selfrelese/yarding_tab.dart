@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -20,10 +21,10 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 
 class YardingTab extends StatefulWidget {
-  const YardingTab(this.bloc, {Key? key, this.caseId, this.custname})
+  const YardingTab(this.bloc, {Key? key, this.id, this.custname})
       : super(key: key);
   final DashboardBloc bloc;
-  final String? caseId;
+  final String? id;
   final String? custname;
 
   @override
@@ -133,8 +134,8 @@ class _YardingTabState extends State<YardingTab> {
                                     //   );
                                     // } else {
                                     final requestBodyData = YardingPostModel(
-                                        // caseId: widget.caseId!,
-                                        caseId: widget.caseId.toString(),
+                                        // id: widget.id!,
+                                        id: widget.id.toString(),
                                         contractor:
                                             Singleton.instance.contractor!,
                                         repo: Repo(
@@ -142,8 +143,10 @@ class _YardingTabState extends State<YardingTab> {
                                           date: dateController.text,
                                           time: timeController.text,
                                           remarks: remarksController.text,
-                                          imageLocation: [''],
+                                          imageLocation: [],
                                         ));
+                                    debugPrint(
+                                        'requestBodyData for yarding tab ---> ${jsonEncode(requestBodyData)}');
                                     widget.bloc.add(PostYardingDataEvent(
                                         postData: requestBodyData,
                                         fileData: uploadFileLists));

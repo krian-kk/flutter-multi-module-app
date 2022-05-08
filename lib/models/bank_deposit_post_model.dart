@@ -1,31 +1,31 @@
 class BankDepositPostModel {
   BankDepositPostModel({
-    required this.caseIds,
+    required this.ids,
     required this.deposition,
     required this.contractor,
-    // required this.caseIDs,
+    // required this._ids,
   });
 
   BankDepositPostModel.fromJson(Map<String, dynamic> json) {
-    caseIds = json['caseIds'].forEach((dynamic v) {
-      caseIds.add(v);
+    ids = json['_ids'].forEach((dynamic v) {
+      ids.add(v);
     });
     deposition = json['deposition'];
     contractor = json['contractor'];
-    // caseIDs = json['caseIDs'];
+    // _ids = json['_ids'];
   }
 
-  late List<String> caseIds;
+  late List<String> ids;
   late Deposition deposition;
   late String contractor;
-  // late CaseIds caseIDs;
+  // late _ids _ids;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['caseIds'] = caseIds;
+    data['_ids'] = ids;
     data['deposition'] = deposition;
     data['contractor'] = contractor;
-    // data['caseIDs'] = caseIDs;
+    // data['_ids'] = _ids;
     return data;
   }
 }

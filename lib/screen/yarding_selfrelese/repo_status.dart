@@ -8,8 +8,8 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 
 class RepoStatus {
-  static Widget buildRepoSelfReleaseTab(BuildContext context, String? caseID,
-      String? custName, DashboardBloc bloc) {
+  static Widget buildRepoSelfReleaseTab(
+      BuildContext context, String? _id, String? custName, DashboardBloc bloc) {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.83,
       child: Container(
@@ -62,12 +62,12 @@ class RepoStatus {
                       children: [
                         YardingTab(
                           bloc,
-                          caseId: caseID,
+                          id: _id,
                           custname: custName,
                         ),
                         SelfReleaseTab(
                           bloc,
-                          caseId: caseID,
+                          id: _id,
                           custname: custName,
                         ),
                       ],
