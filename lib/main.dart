@@ -264,7 +264,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         return MaterialApp(
           builder: (BuildContext context, Widget? child) => MediaQuery(
               data:
-                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
               child: child!),
           locale: _locale,
           supportedLocales: const [

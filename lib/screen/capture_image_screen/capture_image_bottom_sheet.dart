@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -270,8 +271,9 @@ class _CustomCaptureImageBottomSheetState
                                                     .toString(),
                                                 contractor: Singleton.instance.contractor ??
                                                     '',
-                                                voiceCallEventCode: ConstantEventValues
-                                                    .voiceCallEventCode,
+                                                voiceCallEventCode:
+                                                    ConstantEventValues
+                                                        .voiceCallEventCode,
                                                 // createdAt: (ConnectivityResult.none ==
                                                 //         await Connectivity()
                                                 //             .checkConnectivity())
@@ -287,16 +289,13 @@ class _CustomCaptureImageBottomSheetState
                                                     Singleton.instance.agrRef ??
                                                         '',
                                                 callerServiceID: Singleton
-                                                        .instance
-                                                        .callerServiceID ??
-                                                    '',
-                                                callID: Singleton
-                                                        .instance.callID ??
-                                                    '0',
-                                                callingID:
-                                                    Singleton.instance
-                                                            .callingID ??
-                                                        ' 0',
+                                                    .instance.callerServiceID
+                                                    .toString(),
+                                                callID: Singleton.instance.callID
+                                                    .toString(),
+                                                callingID: Singleton
+                                                    .instance.callingID
+                                                    .toString(),
                                                 invalidNumber: false,
                                                 eventType: 'IMAGE CAPTURED',
                                                 eventModule: (widget
@@ -307,7 +306,7 @@ class _CustomCaptureImageBottomSheetState
                                                 eventAttr: EventAttr(
                                                   remarks:
                                                       remarksControlller.text,
-                                                  imageLocation: <String>[''],
+                                                  imageLocation: <String>[],
                                                   longitude: position.longitude,
                                                   latitude: position.latitude,
                                                   accuracy: position.accuracy,
@@ -321,6 +320,10 @@ class _CustomCaptureImageBottomSheetState
                                                   audioS3Path: returnS2Tdata
                                                       .result?.audioS3Path,
                                                 ));
+
+                                        debugPrint(
+                                            "requestg body data for capture image ----> ${jsonEncode(requestBodyData)}");
+
                                         widget.bloc.add(PostImageCapturedEvent(
                                             postData: requestBodyData,
                                             fileData: uploadFileLists));

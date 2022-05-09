@@ -1,22 +1,22 @@
 class SelfReleasePostModel {
   SelfReleasePostModel({
-    required this.caseId,
+    required this.id,
     required this.repo,
     required this.contractor,
   });
 
   SelfReleasePostModel.fromJson(Map<String, dynamic> json) {
-    caseId = json['caseId'];
+    id = json['_id'];
     repo = json['repo'];
     contractor = json['contractor'];
   }
-  late String caseId;
+  late String id;
   late Repo repo;
   late String contractor;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['caseId'] = caseId;
+    data['_id'] = id;
     data['repo'] = repo;
     data['contractor'] = contractor;
     return data;

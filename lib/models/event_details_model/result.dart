@@ -8,6 +8,10 @@ class EvnetDetailsResultsModel {
     this.eventAttr,
     this.createdAt,
     this.createdBy,
+    this.eventModule,
+    this.agrRef,
+    this.contractor,
+    this.eventCode,
   });
 
   factory EvnetDetailsResultsModel.fromJson(Map<String, dynamic> json) =>
@@ -20,6 +24,10 @@ class EvnetDetailsResultsModel {
             : EventAttr.fromJson(json['eventAttr'] as Map<String, dynamic>),
         createdAt: json['createdAt'] as String?,
         createdBy: json['createdBy'] as String?,
+        eventModule: json['eventModule'],
+        agrRef: json['agrRef'],
+        contractor: json['contractor'],
+        eventCode: json['eventCode'],
       );
   String? id;
   String? caseId;
@@ -27,6 +35,10 @@ class EvnetDetailsResultsModel {
   EventAttr? eventAttr;
   String? createdAt;
   String? createdBy;
+  String? eventModule;
+  String? agrRef;
+  String? contractor;
+  String? eventCode;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
@@ -35,5 +47,9 @@ class EvnetDetailsResultsModel {
         'eventAttr': eventAttr?.toJson(),
         'createdAt': createdAt,
         'createdBy': createdBy,
+        'eventModule': eventModule,
+        'agrRef': agrRef,
+        'contractor': contractor,
+        'eventCode': eventCode,
       };
 }

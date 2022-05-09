@@ -52,9 +52,9 @@ class OtherFeedBackPostModel {
   late String agentName;
   late String contractor;
   late String agrRef;
-  late String callID;
-  late String callingID;
-  late String callerServiceID;
+  late String? callID;
+  late String? callingID;
+  late String? callerServiceID;
   late String voiceCallEventCode;
   late bool? invalidNumber;
 
@@ -95,7 +95,7 @@ class EventAttr {
     required this.actionproposed,
     required this.remarks,
     required this.imageLocation,
-    this.followUpPriority = 'RETRY',
+    required this.followUpPriority,
     required this.altitude,
     required this.accuracy,
     required this.altitudeAccuracy,

@@ -18,6 +18,7 @@ class EventAttr {
     this.modelMake,
     this.registrationNo,
     this.chassisNo,
+    this.appStatus,
     this.reginalText,
     this.translatedText,
     this.audioS3Path,
@@ -42,6 +43,7 @@ class EventAttr {
         modelMake: json['modelMake'] as String?,
         registrationNo: json['registrationNo'] as String?,
         chassisNo: json['chassisNo'] as String?,
+        appStatus: json['appStatus'],
         reginalText: json['reginal_text'] as String?,
         translatedText: json['translated_text'] as String?,
         audioS3Path: json['audioS3Path'] as String?,
@@ -64,6 +66,7 @@ class EventAttr {
   String? modelMake;
   String? registrationNo;
   String? chassisNo;
+  String? appStatus;
   String? reginalText;
   String? translatedText;
   String? audioS3Path;
@@ -87,6 +90,7 @@ class EventAttr {
         'modelMake': modelMake,
         'registrationNo': registrationNo,
         'chassisNo': chassisNo,
+        'appStatus': appStatus,
         'reginal_text': reginalText,
         'translated_text': translatedText,
         'audioS3Path': audioS3Path,

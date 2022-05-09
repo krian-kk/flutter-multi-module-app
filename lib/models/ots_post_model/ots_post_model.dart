@@ -56,7 +56,7 @@ class OtsPostModel {
   OTSContact contact;
   String? callId;
   String? callingId;
-  String callerServiceId;
+  String? callerServiceId;
   String voiceCallEventCode;
   bool? invalidNumber;
   String agrRef;

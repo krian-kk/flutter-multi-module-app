@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
@@ -149,8 +150,7 @@ class _BankTabState extends State<BankTab> {
 
                                   final id = ObjectIdWidget();
                                   final requestBodyData = BankDepositPostModel(
-                                      caseIds: widget.selectedCaseIds!.length ==
-                                              1
+                                      ids: widget.selectedCaseIds!.length == 1
                                           ? [...widget.selectedCaseIds!, '$id']
                                           : widget.selectedCaseIds!,
                                       contractor:
@@ -163,11 +163,14 @@ class _BankTabState extends State<BankTab> {
                                         recptAmount: receiptController.text,
                                         deptAmount: depositController.text,
                                         reference: referenceController.text,
-                                        imageLocation: [''],
+                                        imageLocation: [],
                                         mode: widget.mode.toString(),
                                         depositDate: DateTime.now().toString(),
                                         status: 'deposited',
                                       ));
+
+                                  debugPrint(
+                                      'requestBodyData for bank tab ----> ${jsonEncode(requestBodyData)}');
 
                                   if (double.parse(receiptController.text) ==
                                       double.parse(depositController.text)) {

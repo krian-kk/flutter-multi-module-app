@@ -93,7 +93,7 @@ class EventAttr {
     required this.actionDate,
     this.disputereasons,
     required this.remarks,
-    this.followUpPriority = 'REVIEW',
+    required this.followUpPriority,
     required this.latitude,
     required this.longitude,
     this.reginalText,

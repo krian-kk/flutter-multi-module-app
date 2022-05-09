@@ -41,6 +41,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomCollectionsBottomSheet extends StatefulWidget {
   const CustomCollectionsBottomSheet(
@@ -604,8 +605,16 @@ class _CustomCollectionsBottomSheetState
                     mode: ConvertString.convertLanguageToConstant(
                         selectedPaymentModeButton, context),
                     customerName: widget.custName!,
-                    followUpPriority: 'REVIEW',
-                    imageLocation: <String>[''],
+                    // followUpPriority: 'REVIEW',
+                    followUpPriority:
+                        EventFollowUpPriority.connectedFollowUpPriority(
+                      currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                          .caseDetails!.telSubStatus!,
+                      eventType: 'Receipt',
+                      currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                          .result!.caseDetails!.followUpPriority!,
+                    ),
+                    imageLocation: <String>[],
                     longitude: position.longitude,
                     latitude: position.latitude,
                     accuracy: position.accuracy,
@@ -617,9 +626,10 @@ class _CustomCollectionsBottomSheetState
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
                   ),
-                  callID: Singleton.instance.callID ?? '0',
-                  callingID: Singleton.instance.callingID ?? '0',
-                  callerServiceID: Singleton.instance.callerServiceID ?? '',
+                  callID: Singleton.instance.callID.toString(),
+                  callingID: Singleton.instance.callingID.toString(),
+                  callerServiceID:
+                      Singleton.instance.callerServiceID.toString(),
                   voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
                   // createdAt: (ConnectivityResult.none ==
                   //         await Connectivity().checkConnectivity())
@@ -632,6 +642,8 @@ class _CustomCollectionsBottomSheetState
                   eventModule:
                       widget.isCall! ? 'Telecalling' : 'Field Allocation',
                   invalidNumber: false);
+
+              // print('collection data2 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
@@ -657,6 +669,11 @@ class _CustomCollectionsBottomSheetState
                   AppUtils.showErrorToast(
                       postResult['data']['result']['error']);
                 } else {
+                  // here update followUpPriority value.
+                  widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                          .followUpPriority =
+                      requestBodyData.eventAttr.followUpPriority;
+
                   AppUtils.topSnackBar(
                       context, Constants.successfullySubmitted);
                   widget.bloc.add(
@@ -737,8 +754,16 @@ class _CustomCollectionsBottomSheetState
                     mode: ConvertString.convertLanguageToConstant(
                         selectedPaymentModeButton, context),
                     customerName: widget.custName!,
-                    followUpPriority: 'REVIEW',
-                    imageLocation: <String>[''],
+                    // followUpPriority: 'REVIEW',
+                    followUpPriority:
+                        EventFollowUpPriority.connectedFollowUpPriority(
+                      currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                          .caseDetails!.telSubStatus!,
+                      eventType: 'Receipt',
+                      currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                          .result!.caseDetails!.followUpPriority!,
+                    ),
+                    imageLocation: <String>[],
                     longitude: position.longitude,
                     latitude: position.latitude,
                     accuracy: position.accuracy,
@@ -750,9 +775,10 @@ class _CustomCollectionsBottomSheetState
                     translatedText: returnS2Tdata.result?.translatedText,
                     audioS3Path: returnS2Tdata.result?.audioS3Path,
                   ),
-                  callID: Singleton.instance.callID ?? '0',
-                  callingID: Singleton.instance.callingID ?? '0',
-                  callerServiceID: Singleton.instance.callerServiceID ?? '',
+                  callID: Singleton.instance.callID.toString(),
+                  callingID: Singleton.instance.callingID.toString(),
+                  callerServiceID:
+                      Singleton.instance.callerServiceID.toString(),
                   voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
                   createdBy: Singleton.instance.agentRef ?? '',
                   agentName: Singleton.instance.agentName ?? '',
@@ -761,6 +787,7 @@ class _CustomCollectionsBottomSheetState
                   eventModule:
                       widget.isCall! ? 'Telecalling' : 'Field Allocation',
                   invalidNumber: false);
+              // print('collection data3 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))
                       as Map<String, dynamic>;
@@ -844,6 +871,11 @@ class _CustomCollectionsBottomSheetState
                           AppUtils.showErrorToast(
                               postResult['data']['result']['error']);
                         } else {
+                          // here update followUpPriority value.
+                          widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                                  .followUpPriority =
+                              requestBodyData.eventAttr.followUpPriority;
+
                           AppUtils.topSnackBar(
                               context, Constants.successfullySubmitted);
                           widget.bloc.add(

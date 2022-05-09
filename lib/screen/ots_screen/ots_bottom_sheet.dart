@@ -533,7 +533,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                       ? 'TC : OTS'
                       : 'OTS',
               caseId: widget.caseId,
-              imageLocation: <String>[''],
+              imageLocation: <String>[],
               eventAttr: OTSEventAttr(
                 date: otsPaymentDateControlller.text,
                 remarkOts: remarksControlller.text,
@@ -560,9 +560,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 health: ConstantEventValues.otsHealth,
                 value: widget.postValue['value'],
               ),
-              callId: Singleton.instance.callID ?? '0',
-              callingId: Singleton.instance.callingID ?? '0',
-              callerServiceId: Singleton.instance.callerServiceID ?? '',
+              callId: Singleton.instance.callID,
+              callingId: Singleton.instance.callingID,
+              callerServiceId: Singleton.instance.callerServiceID,
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               agrRef: Singleton.instance.agrRef ?? '',
               contractor: Singleton.instance.contractor ?? '',
@@ -573,7 +573,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
             //     .remove((key, value) => value == requestBodyData.createdAt);
             //  remove(requestBodyData.createdAt);
 
-            // print(
+            // debugPrint(
             //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
 
             final Map<String, dynamic> postdata =

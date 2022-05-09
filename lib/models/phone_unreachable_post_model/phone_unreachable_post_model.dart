@@ -51,7 +51,7 @@ class PhoneUnreachablePostModel {
   late String createdBy;
   late String? callID;
   late String? callingID;
-  late String callerServiceID;
+  late String? callerServiceID;
   late String voiceCallEventCode;
   late int? invalidNumber;
   late String agentName;
@@ -91,7 +91,7 @@ class PhoneUnreachablePostModel {
 class PhoneUnreachableEventAttr {
   PhoneUnreachableEventAttr({
     required this.remarks,
-    this.followUpPriority = 'AWAITING CONTACT',
+    required this.followUpPriority,
     required this.nextActionDate,
     this.reginalText,
     this.translatedText,

@@ -42,6 +42,7 @@ import 'package:origa/widgets/ios_keyboard_actions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   const CustomOtherFeedBackBottomSheet(
@@ -553,9 +554,9 @@ class _CustomOtherFeedBackBottomSheetState
             agentName: Singleton.instance.agentName ?? '',
             agrRef: Singleton.instance.agrRef ?? '',
             contractor: Singleton.instance.contractor ?? '',
-            callID: Singleton.instance.callID ?? '',
-            callerServiceID: Singleton.instance.callerServiceID ?? '',
-            callingID: Singleton.instance.callingID ?? '',
+            callID: Singleton.instance.callID,
+            callerServiceID: Singleton.instance.callerServiceID,
+            callingID: Singleton.instance.callingID,
             caseId: widget.caseId,
             eventCode: ConstantEventValues.otherFeedbackEvenCode,
             eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
@@ -566,7 +567,7 @@ class _CustomOtherFeedBackBottomSheetState
               collectorfeedback: collectorFeedBackValue ?? '',
               actionproposed: actionproposedValue ?? '',
               actionDate: dateControlller.text,
-              imageLocation: <String>[''],
+              imageLocation: <String>[],
               longitude: position.longitude,
               latitude: position.latitude,
               accuracy: position.accuracy,
@@ -575,6 +576,13 @@ class _CustomOtherFeedBackBottomSheetState
               speed: position.speed,
               altitudeAccuracy: 0,
               // agentLocation: AgentLocation(),
+              followUpPriority: EventFollowUpPriority.connectedFollowUpPriority(
+                currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                    .caseDetails!.telSubStatus!,
+                eventType: 'Feedback',
+                currentFollowUpPriority: widget.bloc.caseDetailsAPIValue.result!
+                    .caseDetails!.followUpPriority!,
+              ),
               contact:
                   otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
               reginalText: returnS2Tdata.result?.reginalText,
@@ -629,6 +637,11 @@ class _CustomOtherFeedBackBottomSheetState
               formDatas: FormData.fromMap(postdata),
             );
             if (postResult[Constants.success]) {
+              // here update followUpPriority value.
+              widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                      .followUpPriority =
+                  requestBodyData.eventAttr.followUpPriority;
+
               widget.bloc.add(
                 ChangeIsSubmitForMyVisitEvent(
                   Constants.otherFeedback,

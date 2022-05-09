@@ -711,4 +711,16 @@ abstract class Languages {
   String get officeaddress;
 
   String get followUpPriority;
+
+  String get fatherSpouseName;
+
+  String get lastPaymentMode;
+
+  String get dpd;
+
+  String get zone;
+
+  String get language;
+
+  String get beneficiaryAccountNumber;
 }

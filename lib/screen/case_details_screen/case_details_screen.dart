@@ -1193,6 +1193,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     ),
                     const SizedBox(height: 10),
                     CustomText(
+                      Languages.of(context)!.beneficiaryAccountNumber,
+                      fontSize: FontSize.twelve,
+                      color: ColorResource.color666666,
+                    ),
+                    const SizedBox(height: 4),
+                    CustomText(
+                      bloc.caseDetailsAPIValue.result?.caseDetails
+                              ?.repaymentInfo?.benefeciaryAccNo ??
+                          '-',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color333333,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomText(
                       Languages.of(context)!.referenceUrl,
                       fontSize: FontSize.twelve,
                       color: ColorResource.color666666,

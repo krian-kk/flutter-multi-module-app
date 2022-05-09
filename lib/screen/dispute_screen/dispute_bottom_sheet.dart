@@ -33,6 +33,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomDisputeBottomSheet extends StatefulWidget {
   const CustomDisputeBottomSheet(
@@ -416,6 +417,14 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       : '',
                   longitude: latLng.longitude,
                   latitude: latLng.latitude,
+                  followUpPriority:
+                      EventFollowUpPriority.connectedFollowUpPriority(
+                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                        .caseDetails!.telSubStatus!,
+                    eventType: 'Dispute',
+                    currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                        .result!.caseDetails!.followUpPriority!,
+                  ),
                   reginalText: returnS2Tdata.result?.reginalText,
                   translatedText: returnS2Tdata.result?.translatedText,
                   audioS3Path: returnS2Tdata.result?.audioS3Path,
@@ -451,6 +460,11 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         ),
                         requestBodydata: jsonEncode(requestBodyData));
                 if (postResult[Constants.success]) {
+                  // here update followUpPriority value.
+                  widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                          .followUpPriority =
+                      requestBodyData.eventAttr.followUpPriority;
+
                   widget.bloc.add(
                     ChangeIsSubmitForMyVisitEvent(
                       Constants.dispute,

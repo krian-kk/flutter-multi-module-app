@@ -1,6 +1,6 @@
 class CompanyBranchDepositPostModel {
   CompanyBranchDepositPostModel({
-    required this.caseIds,
+    required this.ids,
     required this.deposition,
     required this.contractor,
     // this.eventModule = 'Field Allocation',
@@ -15,8 +15,8 @@ class CompanyBranchDepositPostModel {
   });
 
   CompanyBranchDepositPostModel.fromJson(Map<String, dynamic> json) {
-    caseIds = json['caseIds'].forEach((v) {
-      caseIds.add(v);
+    ids = json['_ids'].forEach((v) {
+      ids.add(v);
     });
     deposition = json['deposition'];
     contractor = json['contractor'];
@@ -30,7 +30,7 @@ class CompanyBranchDepositPostModel {
     // agrRef = json['agrRef'];
   }
 
-  late List<String> caseIds;
+  late List<String> ids;
   late Deposition deposition;
   late String contractor;
   // String? eventModule;
@@ -45,7 +45,7 @@ class CompanyBranchDepositPostModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['caseIds'] = caseIds;
+    data['_ids'] = ids;
     data['deposition'] = deposition;
     data['contractor'] = contractor;
 

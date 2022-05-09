@@ -33,6 +33,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../widgets/get_followuppriority_value.dart';
 
 class CustomRtpBottomSheet extends StatefulWidget {
   const CustomRtpBottomSheet(
@@ -427,6 +428,14 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                     : '',
                 longitude: latLng.longitude,
                 latitude: latLng.latitude,
+                followUpPriority:
+                    EventFollowUpPriority.connectedFollowUpPriority(
+                  currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                      .caseDetails!.telSubStatus!,
+                  eventType: 'Denial',
+                  currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                      .result!.caseDetails!.followUpPriority!,
+                ),
                 amountDenied: Singleton.instance.overDueAmount ?? '',
                 reginalText: returnS2Tdata.result?.reginalText,
                 translatedText: returnS2Tdata.result?.translatedText,
@@ -462,6 +471,11 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                       HttpUrl.denialPostUrl('denial', widget.userType),
                       requestBodydata: jsonEncode(requestBodyData));
               if (postResult[Constants.success]) {
+                // here update followUpPriority value.
+                widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                        .followUpPriority =
+                    requestBodyData.eventAttr.followUpPriority;
+
                 widget.bloc.add(ChangeIsSubmitForMyVisitEvent(Constants.rtp));
                 if (!(widget.userType == Constants.fieldagent &&
                     widget.isCall!)) {

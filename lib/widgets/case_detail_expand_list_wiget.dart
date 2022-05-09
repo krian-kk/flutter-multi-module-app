@@ -221,6 +221,32 @@ class ListOfCaseDetails {
                 .toString()),
 
         ListOfCaseDetails.textFieldView(
+            title: Languages.of(context)!.fatherSpouseName,
+            value: bloc
+                .caseDetailsAPIValue.result?.caseDetails?.fatherSpouseName
+                .toString()),
+
+        ListOfCaseDetails.textFieldView(
+            title: Languages.of(context)!.lastPaymentMode,
+            value: bloc.caseDetailsAPIValue.result?.caseDetails?.lastPaymentMode
+                .toString()),
+
+        ListOfCaseDetails.textFieldView(
+            title: Languages.of(context)!.zone,
+            value:
+                bloc.caseDetailsAPIValue.result?.caseDetails?.zone.toString()),
+
+        ListOfCaseDetails.textFieldView(
+            title: Languages.of(context)!.dpd,
+            value:
+                bloc.caseDetailsAPIValue.result?.caseDetails?.dpd.toString()),
+
+        ListOfCaseDetails.textFieldView(
+            title: Languages.of(context)!.language,
+            value: bloc.caseDetailsAPIValue.result?.caseDetails?.language
+                .toString()),
+
+        ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.lastPaidAmount,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.lastPaidAmount
                 .toString()),

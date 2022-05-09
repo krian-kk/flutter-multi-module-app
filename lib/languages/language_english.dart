@@ -1072,4 +1072,22 @@ class LanguageEn extends Languages {
 
   @override
   String get followUpPriority => 'Follow up priority';
+
+  @override
+  String get fatherSpouseName => 'Father Spouse Name';
+
+  @override
+  String get lastPaymentMode => 'Last Payment Mode';
+
+  @override
+  String get dpd => 'DPD';
+
+  @override
+  String get zone => 'Zone';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get beneficiaryAccountNumber => 'Beneficiary Account Number';
 }

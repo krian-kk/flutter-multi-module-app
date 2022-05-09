@@ -15,7 +15,7 @@ class RepoPostModel {
     required this.eventModule,
     this.callID,
     this.callingID,
-    required this.callerServiceID,
+    this.callerServiceID,
     required this.voiceCallEventCode,
     this.invalidNumber,
     required this.agrRef,
@@ -27,9 +27,7 @@ class RepoPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = EventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((dynamic v) {
-      contact.add(v);
-    });
+    contact = RepoContact.fromJson(json['contact']);
     createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     agentName = json['agentName'];
@@ -47,7 +45,7 @@ class RepoPostModel {
   late String caseId;
   late String eventCode;
   late EventAttr eventAttr;
-  late List<RepoContact> contact;
+  late RepoContact contact;
   late String? createdAt;
   late String createdBy;
   late String agentName;
@@ -55,7 +53,7 @@ class RepoPostModel {
   late String eventModule;
   late String? callID;
   late String? callingID;
-  late String callerServiceID;
+  late String? callerServiceID;
   late String voiceCallEventCode;
   late bool? invalidNumber;
   late String agrRef;
@@ -72,7 +70,7 @@ class RepoPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] = contact.map((RepoContact v) => v.toJson()).toList();
+    data['contact'] = contact.toJson();
     // data['createdAt'] = createdAt;
     if (isOnline == false) {
       data['createdAt'] = DateTime.now().toString();
@@ -99,7 +97,7 @@ class EventAttr {
     required this.remarks,
     required this.repo,
     required this.date,
-    this.followUpPriority = 'REVIEW',
+    required this.followUpPriority,
     required this.imageLocation,
     required this.customerName,
     this.altitude,

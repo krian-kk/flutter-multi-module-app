@@ -22,6 +22,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:path_provider/path_provider.dart';
 
+import '../../widgets/eventdetail_status.dart';
+
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   const CustomEventDetailsBottomSheet(
     this.cardTitle,
@@ -257,12 +259,21 @@ class _CustomEventDetailsBottomSheetState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     if (expandedList[index].createdAt != null)
-                      CustomText(
-                        DateFormateUtils.followUpDateFormate(
-                            expandedList[index].createdAt.toString()),
-                        fontSize: FontSize.seventeen,
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color000000,
+                      Row(
+                        children: [
+                          CustomText(
+                            DateFormateUtils.followUpDateFormate(
+                                expandedList[index].createdAt.toString()),
+                            fontSize: FontSize.seventeen,
+                            fontWeight: FontWeight.w700,
+                            color: ColorResource.color000000,
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          EventDetailsAppStatus.eventDetailAppStatus(
+                              expandedList[index].eventAttr!.appStatus ?? '')
+                        ],
                       ),
                     CustomText(
                       expandedList[index].eventType.toString().toUpperCase(),
@@ -274,20 +285,25 @@ class _CustomEventDetailsBottomSheetState
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: <Widget>[
+                  CustomText(
+                    '${expandedList[index].eventModule}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
                   if (expandedList[index].createdBy != null)
                     CustomText(
                       '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  if (expandedList[index].eventType?.toLowerCase() ==
-                          Constants.receipt.toLowerCase() &&
-                      expandedList[index].eventAttr?.amountCollected != null)
-                    CustomText(
-                      '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
+                  // if (expandedList[index].eventType?.toLowerCase() ==
+                  //         Constants.receipt.toLowerCase() &&
+                  //     expandedList[index].eventAttr?.amountCollected != null)
+                  //   CustomText(
+                  //     '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   if (
                   // expandedList[index].eventType?.toLowerCase() ==
                   //       Constants.ptp.toLowerCase() &&
@@ -357,7 +373,7 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.chequeRefNo != null)
                     CustomText(
-                      '${Languages.of(context)!.refCheque.replaceAll('*', '')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                      '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase()} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -468,15 +484,6 @@ class _CustomEventDetailsBottomSheetState
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (expandedList[index].eventAttr?.customerName != null)
-                          CustomText(
-                            expandedList[index]
-                                .eventAttr!
-                                .customerName
-                                .toString(),
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
                         if (expandedList[index].eventAttr?.modelMake != null)
                           CustomText(
                             '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
@@ -530,12 +537,44 @@ class _CustomEventDetailsBottomSheetState
                       audioPath: expandedList[index].eventAttr?.audioS3Path,
                       index: index,
                     ),
+                  appStatus(expandedList[index].eventAttr!.appStatus ?? '')
                 ],
               ),
             ),
           ),
         ),
       ],
+    );
+  }
+
+  appStatus(status) {
+    Widget? returnWidget;
+    switch (status) {
+      case 'approved':
+        returnWidget = appStatusText(ColorResource.red, 'Approved');
+        break;
+      case 'new':
+        returnWidget = appStatusText(ColorResource.orange, 'Awaiting Approval');
+        break;
+      case 'rejected':
+        returnWidget = appStatusText(ColorResource.green, 'Rejected');
+        break;
+      default:
+        returnWidget = const SizedBox();
+        break;
+    }
+    return returnWidget;
+  }
+
+  Widget appStatusText(Color color, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 13),
+      child: CustomText(
+        value,
+        color: color,
+        fontWeight: FontWeight.w500,
+        fontSize: FontSize.sixteen,
+      ),
     );
   }
 

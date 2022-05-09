@@ -54,7 +54,7 @@ class ReminderPostAPI {
   late String agrRef;
   late String? callID;
   late String? callingID;
-  late String callerServiceID;
+  late String? callerServiceID;
   late String voiceCallEventCode;
   late bool? invalidNumber;
 
@@ -93,7 +93,7 @@ class EventAttr {
     required this.reminderDate,
     required this.time,
     required this.remarks,
-    this.followUpPriority = 'RETRY',
+    required this.followUpPriority,
     required this.latitude,
     required this.longitude,
     this.reginalText,

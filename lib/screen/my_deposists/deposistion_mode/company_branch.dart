@@ -144,8 +144,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                     final id = ObjectIdWidget();
                                     final requestBodyData =
                                         CompanyBranchDepositPostModel(
-                                      caseIds: widget.selectedCaseIds!.length ==
-                                              1
+                                      ids: widget.selectedCaseIds!.length == 1
                                           ? [...widget.selectedCaseIds!, '$id']
                                           : widget.selectedCaseIds!,
                                       contractor:
@@ -158,7 +157,7 @@ class _CompanyBranchState extends State<CompanyBranch> {
                                         recptAmount: receiptController.text,
                                         deptAmount: depositController.text,
                                         reference: referenceController.text,
-                                        imageLocation: [''],
+                                        imageLocation: [],
                                         mode: widget.mode.toString(),
                                         depositDate: DateTime.now().toString(),
                                         status: 'deposited',

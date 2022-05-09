@@ -1075,4 +1075,22 @@ class LanguageHi extends Languages {
 
   @override
   String get followUpPriority => 'प्राथमिकता का पालन करें';
+
+  @override
+  String get fatherSpouseName => 'पिता पति का नाम';
+
+  @override
+  String get lastPaymentMode => 'अंतिम भुगतान मोड';
+
+  @override
+  String get dpd => 'DPD';
+
+  @override
+  String get zone => 'क्षेत्र';
+
+  @override
+  String get language => 'भाषा';
+
+  @override
+  String get beneficiaryAccountNumber => 'लाभार्थी खाता नंबर';
 }
