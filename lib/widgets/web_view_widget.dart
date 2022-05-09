@@ -30,12 +30,6 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          controller.runJavascript('add(30, 10)');
-        },
-      ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
