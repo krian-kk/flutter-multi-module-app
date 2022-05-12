@@ -13,6 +13,7 @@ class CallCustomerModel {
     required this.agrRef,
     required this.agentName,
     required this.agentType,
+    required this.contractor,
   });
 
   CallCustomerModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +30,7 @@ class CallCustomerModel {
     agrRef = json['agrRef'];
     agentName = json['agentName'];
     agentType = json['agentType'];
+    contractor = json['contractor'];
   }
 
   late String from;
@@ -38,12 +40,13 @@ class CallCustomerModel {
   late String customerName;
   late String service;
   late String eventCode;
-  late String callerServiceID;
+  late String? callerServiceID;
   late String caseId;
   late String sId;
   late String agrRef;
   late String agentName;
   late String agentType;
+  late String? contractor;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -60,6 +63,7 @@ class CallCustomerModel {
     data['agrRef'] = agrRef;
     data['agentName'] = agentName;
     data['agentType'] = agentType;
+    data['contractor'] = contractor;
     return data;
   }
 }

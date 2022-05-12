@@ -286,8 +286,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     customerName: widget.custName!,
                                     service: bloc.serviceProviderListValue,
                                     callerServiceID:
-                                        Singleton.instance.callerServiceID ??
-                                            '',
+                                        Singleton.instance.callerServiceID,
+                                    contractor: Singleton.instance.contractor,
                                     caseId: widget.caseId,
                                     sId: widget.sid,
                                     agrRef: widget.caseDetailsAPIValue!.result!

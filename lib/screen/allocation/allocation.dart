@@ -466,8 +466,8 @@ class _AllocationScreenState extends State<AllocationScreen>
                               .result?.voiceAgencyData?.first.agencyId ??
                           '0',
                       callerServiceID: voiceAgencyDetails
-                              .result?.voiceAgencyData?.first.agencyId ??
-                          '0',
+                          .result?.voiceAgencyData?.first.agencyId,
+                      contractor: Singleton.instance.contractor,
                       caseId: bloc
                           .autoCallingResultList[state.customerIndex!].caseId!,
                       sId:

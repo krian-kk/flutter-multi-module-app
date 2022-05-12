@@ -223,6 +223,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
+
+              // if cloudTelephone false means dont show autoCalling tab
+              if (jsonData['result']['cloudTelephony'] == false) {
+                if (userType == Constants.telecaller) {
+                  selectOptions = [
+                    Languages.of(event.context)!.priority,
+                    // Languages.of(event.context)!.autoCalling,
+                  ];
+                }
+              }
             } else {
               if (getContractorDetails['data'] != null) {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');

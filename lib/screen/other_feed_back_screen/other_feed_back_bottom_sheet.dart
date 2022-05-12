@@ -923,12 +923,12 @@ class _CustomOtherFeedBackBottomSheetState
                                                   FilteringTextInputFormatter
                                                       .deny(
                                                           Constants.rEGEXEMOJI),
-                                                  if (listOfContact[index]
-                                                      .controller
-                                                      .text
-                                                      .isEmpty)
-                                                    FilteringTextInputFormatter
-                                                        .deny(' ')
+                                                  // if (listOfContact[index]
+                                                  //     .controller
+                                                  //     .text
+                                                  //     .isEmpty)
+                                                  //   FilteringTextInputFormatter
+                                                  //       .deny(' ')
                                                 ],
                                         ),
                                       ),

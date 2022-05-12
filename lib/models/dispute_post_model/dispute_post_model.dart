@@ -93,6 +93,7 @@ class EventAttr {
     required this.actionDate,
     this.disputereasons,
     required this.remarks,
+    required this.amountDenied,
     required this.followUpPriority,
     required this.latitude,
     required this.longitude,
@@ -105,6 +106,7 @@ class EventAttr {
     actionDate = json['actionDate'];
     disputereasons = json['disputereasons'];
     remarks = json['remarks'];
+    amountDenied = json['amountDenied'];
     followUpPriority = json['followUpPriority'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
@@ -115,6 +117,7 @@ class EventAttr {
   late String actionDate;
   late String? disputereasons;
   late String remarks;
+  late String amountDenied;
   late String followUpPriority;
   late double latitude;
   late double longitude;
@@ -127,6 +130,7 @@ class EventAttr {
     data['actionDate'] = actionDate;
     data['disputereasons'] = disputereasons;
     data['remarks'] = remarks;
+    data['amountDenied'] = amountDenied;
     data['followUpPriority'] = followUpPriority;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;

@@ -1269,7 +1269,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventCode: eventCode,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
         eventAttr: PhoneUnreachableEventAttr(
-          remarks: phoneUnreachableRemarksController.text,
+          remarks: phoneUnreachableRemarksController.text.isNotEmpty
+              ? phoneUnreachableRemarksController.text
+              : null,
           followUpPriority: EventFollowUpPriority.unreachableFollowUpPriority(
             currentCaseStatus:
                 caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,
@@ -1346,7 +1348,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
-      phoneUnreachableRemarksController.text = '';
+      phoneUnreachableRemarksController.text;
       phoneSelectedUnreadableClip = '';
     }
     return postResult;
@@ -1396,7 +1398,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
         eventAttr: CustomerNotMetEventAttr(
-          remarks: addressCustomerNotMetRemarksController.text,
+          remarks: addressCustomerNotMetRemarksController.text.isNotEmpty
+              ? addressCustomerNotMetRemarksController.text
+              : null,
           followUpPriority: followUpPriority,
           nextActionDate: addressCustomerNotMetSelectedDate != ''
               ? addressCustomerNotMetSelectedDate
@@ -1494,7 +1498,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         caseId: caseId,
         eventCode: ConstantEventValues.addressInvalidEvenCode,
         eventAttr: AddressInvalidEventAttr(
-          remarks: addressInvalidRemarksController.text,
+          remarks: addressInvalidRemarksController.text.isNotEmpty
+              ? addressInvalidRemarksController.text
+              : null,
           followUpPriority: followUpPriority,
           longitude: position.longitude,
           latitude: position.latitude,
@@ -1575,7 +1581,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         caseId: caseId,
         eventCode: ConstantEventValues.phoneInvalidEvenCode,
         eventAttr: PhoneInvalidEventAttr(
-          remarks: phoneInvalidRemarksController.text,
+          remarks: phoneInvalidRemarksController.text.isNotEmpty
+              ? phoneInvalidRemarksController.text
+              : null,
           followUpPriority: EventFollowUpPriority.phoneInvalidFollowUpPriority(
             currentCaseStatus:
                 caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,

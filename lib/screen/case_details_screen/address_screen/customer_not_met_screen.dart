@@ -124,9 +124,9 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         const SizedBox(height: 15),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
+                          Languages.of(context)!.remarks.replaceAll('*', ''),
                           widget.bloc.addressCustomerNotMetRemarksController,
-                          validationRules: const <String>['required'],
+                          // validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
                           returnS2Tresponse: (dynamic val) {

@@ -74,9 +74,9 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       const SizedBox(height: 15),
                       Flexible(
                           child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks,
+                        Languages.of(context)!.remarks.replaceAll('*', ''),
                         widget.bloc.addressInvalidRemarksController,
-                        validationRules: const <String>['required'],
+                        // validationRules: const <String>['required'],
                         isLabel: true,
                         isVoiceRecordWidget: true,
                         returnS2Tresponse: (dynamic val) {

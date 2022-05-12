@@ -105,7 +105,7 @@ class PhoneInvalidEventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
-  late String remarks;
+  late String? remarks;
   late String followUpPriority;
   // late String nextActionDate;
   late String? reginalText;

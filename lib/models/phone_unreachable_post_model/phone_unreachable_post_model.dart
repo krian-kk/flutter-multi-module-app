@@ -90,7 +90,7 @@ class PhoneUnreachablePostModel {
 
 class PhoneUnreachableEventAttr {
   PhoneUnreachableEventAttr({
-    required this.remarks,
+    this.remarks,
     required this.followUpPriority,
     required this.nextActionDate,
     this.reginalText,
@@ -106,7 +106,7 @@ class PhoneUnreachableEventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
-  late String remarks;
+  late String? remarks;
   late String followUpPriority;
   late String nextActionDate;
   late String? reginalText;
