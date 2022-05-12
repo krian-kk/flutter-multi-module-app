@@ -388,10 +388,13 @@ class ListOfCaseDetails {
                 .toLowerCase() ==
             'mobile') {
           ctype = Languages.of(context)!.mobile;
-        } else if (bloc
-                .caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
-                .toLowerCase() ==
-            'email') {
+        } else if (bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
+                    .cType!
+                    .toLowerCase() ==
+                'email' ||
+            bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
+                    .toLowerCase() ==
+                'email id') {
           ctype = Languages.of(context)!.email;
         } else {
           ctype = bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]

@@ -412,6 +412,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 eventAttr: EventAttr(
                   actionDate: nextActionDateControlller.text,
                   remarks: remarksControlller.text,
+                  amountDenied: Singleton.instance.overDueAmount ?? '',
                   disputereasons: disputeDropDownValue != 'select'
                       ? disputeDropDownValue
                       : '',

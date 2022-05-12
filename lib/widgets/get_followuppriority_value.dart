@@ -10,6 +10,7 @@ class EventFollowUpPriority {
     try {
       if (EventFollowUpPriority.eventFollowUpPriority(currentCaseStatus) <=
           EventFollowUpPriority.eventFollowUpPriority(eventType)) {
+        print('nandha');
         if (eventType == 'PTP' ||
             eventType == 'SURRENDER' ||
             eventType == 'OTS') {
@@ -26,9 +27,12 @@ class EventFollowUpPriority {
         } else {
           return currentFollowUpPriority;
         }
+      } else {
+        return currentFollowUpPriority;
       }
     } catch (e) {
-      // debugPrint('if check error ${e.toString()}');
+      debugPrint(
+          'if check error ${e.toString()} and  $currentFollowUpPriority');
       return currentFollowUpPriority;
     }
   }

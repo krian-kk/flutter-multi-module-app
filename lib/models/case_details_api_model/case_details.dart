@@ -105,8 +105,9 @@ class CaseDetails {
         cust: json['cust'] as String?,
         accNo: json['accNo'] as String?,
         agrRef: json['agrRef'] as String?,
-        collSubStatus: json['collSubStatus'] as String?,
-        telSubStatus: json['telSubStatus'] as String?,
+        collSubStatus:
+            json['collSubStatus'] != "" ? json['collSubStatus'] : null,
+        telSubStatus: json['telSubStatus'],
         telStatus: json['telStatus'] as String?,
         repoStatus: json['repoStatus'] as String?,
         repoSubStatus: json['repoSubStatus'] as String?,

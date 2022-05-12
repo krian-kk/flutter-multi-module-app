@@ -142,7 +142,7 @@ class AddressInvalidEventAttr {
     return data;
   }
 
-  late String remarks;
+  late String? remarks;
   late String followUpPriority;
   late double altitude;
   late double accuracy;

@@ -135,9 +135,9 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                         const SizedBox(height: 15),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
+                          Languages.of(context)!.remarks.replaceAll('*', ''),
                           widget.bloc.phoneUnreachableRemarksController,
-                          validationRules: const <String>['required'],
+                          // validationRules: const <String>['required'],
                           isLabel: true,
                           isVoiceRecordWidget: true,
                           editStringCallBack: ((dynamic values) {
