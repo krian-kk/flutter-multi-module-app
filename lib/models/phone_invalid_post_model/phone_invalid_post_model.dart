@@ -53,7 +53,7 @@ class PhoneInvalidPostModel {
   late String? callingID;
   late String? callerServiceID;
   late String voiceCallEventCode;
-  late bool? invalidNumber;
+  late String? invalidNumber;
   late String agentName;
   late String contractor;
   late String agrRef;

@@ -250,6 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Navigator.push(
           //     context, MaterialPageRoute(builder: (context) => ChatScreen()));
           messageShowBottomSheet(fromID: state.fromId, toID: state.toId);
+          bloc.newMsgCount = 0;
         }
         if (state is ChangeProfileImageState) {
           profileImageShowBottomSheet();
@@ -622,18 +623,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             SizedBox(
                               width: 200,
                               child: CustomButton(
-                                Languages.of(context)!.message.toUpperCase(),
+                                Languages.of(context)!.chat.toUpperCase(),
                                 onTap: () => bloc.add(ClickMessageEvent(
                                   fromId: bloc.profileAPIValue.result![0].aRef,
                                   toId: bloc.profileAPIValue.result![0].parent,
                                 )),
-                                fontSize: FontSize.sixteen,
+                                fontSize: FontSize.twenty,
                                 cardShape: 5,
-                                leadingWidget: const CircleAvatar(
+                                isTrailing:
+                                    bloc.newMsgCount != 0 ? true : false,
+                                leadingWidget: CircleAvatar(
                                   radius: 13,
                                   backgroundColor: ColorResource.colorFFFFFF,
                                   child: CustomText(
-                                    '2',
+                                    bloc.newMsgCount >= 100
+                                        ? '100+'
+                                        : bloc.newMsgCount.toString(),
                                     fontSize: FontSize.twelve,
                                     lineHeight: 1,
                                     color: ColorResource.colorEA6D48,

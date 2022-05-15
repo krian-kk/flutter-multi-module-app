@@ -641,6 +641,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 resAddressId0: Singleton.instance.resAddressId_0 ?? '',
                 contactId0: Singleton.instance.contactId_0 ?? '',
               ),
+              invalidNumber: Singleton.instance.invalidNumber,
             );
 
             if (ConnectivityResult.none ==

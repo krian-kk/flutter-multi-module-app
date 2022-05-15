@@ -18,7 +18,7 @@ class DenialPostModel {
     required this.callingID,
     required this.callerServiceID,
     required this.voiceCallEventCode,
-    this.invalidNumber,
+    required this.invalidNumber,
   });
 
   DenialPostModel.fromJson(Map<String, dynamic> json) {
@@ -56,7 +56,7 @@ class DenialPostModel {
   late String? callingID;
   late String? callerServiceID;
   late String voiceCallEventCode;
-  late bool? invalidNumber;
+  late String? invalidNumber;
 
   Map<String, dynamic> toJson() {
     bool isOnline = true;
@@ -96,6 +96,7 @@ class EventAttr {
     required this.followUpPriority,
     this.latitude = 0,
     this.longitude = 0,
+    this.accuracy = 0,
     this.reginalText,
     this.translatedText,
     this.audioS3Path,
@@ -109,6 +110,7 @@ class EventAttr {
     followUpPriority = json['followUpPriority'];
     latitude = json['Latitude'];
     longitude = json['Longitude'];
+    accuracy = json['accuracy'];
     reginalText = json['reginal_text'];
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
@@ -120,6 +122,7 @@ class EventAttr {
   late String followUpPriority;
   late double latitude;
   late double longitude;
+  late double accuracy;
   late String? reginalText;
   late String? translatedText;
   late String? audioS3Path;
@@ -133,6 +136,7 @@ class EventAttr {
     data['followUpPriority'] = followUpPriority;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+    data['accuracy'] = accuracy;
     if (reginalText != null && translatedText != null && audioS3Path != null) {
       data['reginal_text'] = reginalText;
       data['translated_text'] = translatedText;

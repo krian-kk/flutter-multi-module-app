@@ -383,11 +383,22 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
               });
             }
             if (isNotAutoCalling) {
+              Position position = Position(
+                longitude: 0,
+                latitude: 0,
+                timestamp: DateTime.now(),
+                accuracy: 0,
+                altitude: 0,
+                heading: 0,
+                speed: 0,
+                speedAccuracy: 0,
+              );
               LatLng latLng = const LatLng(0, 0);
               if (Geolocator.checkPermission().toString() !=
                   PermissionStatus.granted.toString()) {
                 final Position res = await Geolocator.getCurrentPosition();
                 setState(() {
+                  position = res;
                   latLng = LatLng(res.latitude, res.longitude);
                 });
               }
@@ -418,6 +429,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       : '',
                   longitude: latLng.longitude,
                   latitude: latLng.latitude,
+                  accuracy: position.accuracy,
                   followUpPriority:
                       EventFollowUpPriority.connectedFollowUpPriority(
                     currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
@@ -437,6 +449,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   resAddressId0: Singleton.instance.resAddressId_0 ?? '',
                   contactId0: Singleton.instance.contactId_0 ?? '',
                 ),
+                invalidNumber: Singleton.instance.invalidNumber,
               );
 
               if (ConnectivityResult.none ==

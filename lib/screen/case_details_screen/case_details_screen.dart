@@ -1273,114 +1273,169 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ),
                                   ),
                         const SizedBox(width: 30),
-                        bloc.isSendWhatsappLoading
-                            ? Container(
-                                margin: const EdgeInsets.only(right: 50),
-                                height: 37,
-                                width: 37,
-                                decoration: BoxDecoration(
-                                    color: ColorResource.color23375A,
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: const CustomLoadingWidget(
-                                  radius: 11,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Flexible(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    bloc.add(SendWhatsAppEvent(context,
-                                        caseID: bloc.caseDetailsAPIValue.result!
-                                            .caseDetails!.caseId!));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 11.2),
+                        bloc.isGeneratePaymentLink
+                            ? bloc.isGeneratePaymentLinkLoading
+                                ? Container(
+                                    margin: const EdgeInsets.only(right: 50),
+                                    height: 37,
+                                    width: 37,
                                     decoration: BoxDecoration(
-                                      color: ColorResource.color23375A,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                          color: ColorResource.colorECECEC),
+                                        color: ColorResource.color23375A,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: const CustomLoadingWidget(
+                                      radius: 11,
+                                      strokeWidth: 2,
                                     ),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        SvgPicture.asset(
-                                          ImageResource.whatsApp,
-                                          height: 17,
+                                  )
+                                : Flexible(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        if (await Connectivity()
+                                                .checkConnectivity() !=
+                                            ConnectivityResult.none) {
+                                          setState(() {
+                                            bloc.isGeneratePaymentLinkLoading =
+                                                true;
+                                          });
+                                        } else {
+                                          AppUtils.noInternetSnackbar(context);
+                                        }
+                                        bloc.add(GeneratePaymenLinktEvent(
+                                            context,
+                                            caseID: bloc.caseDetailsAPIValue
+                                                .result!.caseDetails!.caseId!));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 13),
+                                        decoration: BoxDecoration(
+                                          color: ColorResource.color23375A,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: ColorResource.colorECECEC),
                                         ),
-                                        const SizedBox(width: 7),
-                                        Expanded(
-                                          child: CustomText(
-                                              Languages.of(context)!
-                                                  .sendWhatsapp,
-                                              fontSize: FontSize.twelve,
-                                              fontWeight: FontWeight.w700,
-                                              lineHeight: 1.0,
-                                              color: ColorResource.colorffffff),
-                                        ),
-                                      ],
+                                        child: CustomText(
+                                            Languages.of(context)!
+                                                .generatePaymentLink
+                                                .toUpperCase(),
+                                            fontSize: FontSize.twelve,
+                                            fontWeight: FontWeight.w700,
+                                            lineHeight: 1.0,
+                                            color: ColorResource.colorffffff),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
+                                  )
+                            : const SizedBox(),
+                        // bloc.isSendWhatsappLoading
+                        //     ? Container(
+                        //         margin: const EdgeInsets.only(right: 50),
+                        //         height: 37,
+                        //         width: 37,
+                        //         decoration: BoxDecoration(
+                        //             color: ColorResource.color23375A,
+                        //             borderRadius: BorderRadius.circular(25)),
+                        //         child: const CustomLoadingWidget(
+                        //           radius: 11,
+                        //           strokeWidth: 2,
+                        //         ),
+                        //       )
+                        //     : Flexible(
+                        //         child: GestureDetector(
+                        //           onTap: () {
+                        //             bloc.add(SendWhatsAppEvent(context,
+                        //                 caseID: bloc.caseDetailsAPIValue.result!
+                        //                     .caseDetails!.caseId!));
+                        //           },
+                        //           child: Container(
+                        //             padding: const EdgeInsets.symmetric(
+                        //                 horizontal: 15, vertical: 11.2),
+                        //             decoration: BoxDecoration(
+                        //               color: ColorResource.color23375A,
+                        //               borderRadius: BorderRadius.circular(8),
+                        //               border: Border.all(
+                        //                   color: ColorResource.colorECECEC),
+                        //             ),
+                        //             child: Row(
+                        //               mainAxisSize: MainAxisSize.min,
+                        //               children: [
+                        //                 SvgPicture.asset(
+                        //                   ImageResource.whatsApp,
+                        //                   height: 17,
+                        //                 ),
+                        //                 const SizedBox(width: 7),
+                        //                 Expanded(
+                        //                   child: CustomText(
+                        //                       Languages.of(context)!
+                        //                           .sendWhatsapp,
+                        //                       fontSize: FontSize.twelve,
+                        //                       fontWeight: FontWeight.w700,
+                        //                       lineHeight: 1.0,
+                        //                       color: ColorResource.colorffffff),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           ),
+                        //         ),
+                        //       ),
                       ],
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    bloc.isGeneratePaymentLink
-                        ? bloc.isGeneratePaymentLinkLoading
-                            ? Container(
-                                margin: const EdgeInsets.only(right: 50),
-                                height: 37,
-                                width: 37,
-                                decoration: BoxDecoration(
-                                    color: ColorResource.color23375A,
-                                    borderRadius: BorderRadius.circular(25)),
-                                child: const CustomLoadingWidget(
-                                  radius: 11,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : Flexible(
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    if (await Connectivity()
-                                            .checkConnectivity() !=
-                                        ConnectivityResult.none) {
-                                      setState(() {
-                                        bloc.isGeneratePaymentLinkLoading =
-                                            true;
-                                      });
-                                    } else {
-                                      AppUtils.noInternetSnackbar(context);
-                                    }
-                                    bloc.add(GeneratePaymenLinktEvent(context,
-                                        caseID: bloc.caseDetailsAPIValue.result!
-                                            .caseDetails!.caseId!));
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 13),
-                                    decoration: BoxDecoration(
-                                      color: ColorResource.color23375A,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(
-                                          color: ColorResource.colorECECEC),
-                                    ),
-                                    child: CustomText(
-                                        Languages.of(context)!
-                                            .generatePaymentLink
-                                            .toUpperCase(),
-                                        fontSize: FontSize.twelve,
-                                        fontWeight: FontWeight.w700,
-                                        lineHeight: 1.0,
-                                        color: ColorResource.colorffffff),
-                                  ),
-                                ),
-                              )
-                        : const SizedBox(),
+                    // bloc.isGeneratePaymentLink
+                    //     ? bloc.isGeneratePaymentLinkLoading
+                    //         ? Container(
+                    //             margin: const EdgeInsets.only(right: 50),
+                    //             height: 37,
+                    //             width: 37,
+                    //             decoration: BoxDecoration(
+                    //                 color: ColorResource.color23375A,
+                    //                 borderRadius: BorderRadius.circular(25)),
+                    //             child: const CustomLoadingWidget(
+                    //               radius: 11,
+                    //               strokeWidth: 2,
+                    //             ),
+                    //           )
+                    //         : Flexible(
+                    //             child: GestureDetector(
+                    //               onTap: () async {
+                    //                 if (await Connectivity()
+                    //                         .checkConnectivity() !=
+                    //                     ConnectivityResult.none) {
+                    //                   setState(() {
+                    //                     bloc.isGeneratePaymentLinkLoading =
+                    //                         true;
+                    //                   });
+                    //                 } else {
+                    //                   AppUtils.noInternetSnackbar(context);
+                    //                 }
+                    //                 bloc.add(GeneratePaymenLinktEvent(context,
+                    //                     caseID: bloc.caseDetailsAPIValue.result!
+                    //                         .caseDetails!.caseId!));
+                    //               },
+                    //               child: Container(
+                    //                 padding: const EdgeInsets.symmetric(
+                    //                     horizontal: 15, vertical: 13),
+                    //                 decoration: BoxDecoration(
+                    //                   color: ColorResource.color23375A,
+                    //                   borderRadius: BorderRadius.circular(8),
+                    //                   border: Border.all(
+                    //                       color: ColorResource.colorECECEC),
+                    //                 ),
+                    //                 child: CustomText(
+                    //                     Languages.of(context)!
+                    //                         .generatePaymentLink
+                    //                         .toUpperCase(),
+                    //                     fontSize: FontSize.twelve,
+                    //                     fontWeight: FontWeight.w700,
+                    //                     lineHeight: 1.0,
+                    //                     color: ColorResource.colorffffff),
+                    //               ),
+                    //             ),
+                    //           )
+                    //     : const SizedBox(),
                   ],
                 ),
               )

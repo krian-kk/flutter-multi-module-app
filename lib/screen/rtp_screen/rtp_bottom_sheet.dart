@@ -398,12 +398,23 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
             });
           }
           if (isNotAutoCalling) {
+            Position position = Position(
+              longitude: 0,
+              latitude: 0,
+              timestamp: DateTime.now(),
+              accuracy: 0,
+              altitude: 0,
+              heading: 0,
+              speed: 0,
+              speedAccuracy: 0,
+            );
             LatLng latLng = const LatLng(0, 0);
+            final Position res;
             if (Geolocator.checkPermission().toString() !=
                 PermissionStatus.granted.toString()) {
               final Position res = await Geolocator.getCurrentPosition();
               setState(() {
-                // position = res;
+                position = res;
                 latLng = LatLng(res.latitude, res.longitude);
               });
             }
@@ -427,6 +438,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                     ? selectedDropdownValue
                     : '',
                 longitude: latLng.longitude,
+                accuracy: position.accuracy,
                 latitude: latLng.latitude,
                 followUpPriority:
                     EventFollowUpPriority.connectedFollowUpPriority(
@@ -452,6 +464,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
               callID: Singleton.instance.callID,
               callerServiceID: Singleton.instance.callerServiceID,
               callingID: Singleton.instance.callingID,
+              invalidNumber: Singleton.instance.invalidNumber,
             );
 
             if (ConnectivityResult.none ==

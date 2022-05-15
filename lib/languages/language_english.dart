@@ -449,7 +449,7 @@ class LanguageEn extends Languages {
   String get ptpAmount => 'PTP Amount*';
 
   @override
-  String get paymentMode => 'Payment Mode';
+  String get paymentMode => 'Payment Mode*';
 
   @override
   String get reference => 'Reference*';
@@ -1090,4 +1090,7 @@ class LanguageEn extends Languages {
 
   @override
   String get beneficiaryAccountNumber => 'Beneficiary Account Number';
+
+  @override
+  String get chat => 'Chat';
 }

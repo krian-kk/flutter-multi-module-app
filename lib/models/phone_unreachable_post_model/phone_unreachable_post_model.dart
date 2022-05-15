@@ -53,7 +53,7 @@ class PhoneUnreachablePostModel {
   late String? callingID;
   late String? callerServiceID;
   late String voiceCallEventCode;
-  late int? invalidNumber;
+  late String? invalidNumber;
   late String agentName;
   late String contractor;
   late String agrRef;

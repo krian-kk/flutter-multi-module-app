@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/chat_history.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/models/notification_model.dart';
 import 'package:origa/models/profile_api_result_model/profile_api_result_model.dart';
@@ -36,6 +37,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
   bool isProfileImageUpdating = false;
   File? image;
+  ChatHistoryModel chatHistoryData = ChatHistoryModel();
+  int newMsgCount = 0;
 
 // customer language preference data
   List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
@@ -71,18 +74,36 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         }
       }
 
-      notificationList.addAll([
-        NotificationMainModel('Today Sep 15   7:04 PM', [
-          NotificationChildModel('Mr. Debashish Sr. Manager',
-              'Hi, Check Case Details with all in pincode 600054 .')
-        ]),
-        NotificationMainModel('Yesterday Sep 14   7:04 PM', [
-          NotificationChildModel('Mr. Debashish Sr. Manager',
-              'Hi, Check Case Details with all in pincode 600054 .'),
-          NotificationChildModel('Mr. Debashish Sr. Manager',
-              'Hi, Check Case Details with all in pincode 600054 .')
-        ]),
-      ]);
+      final String? history =
+          HttpUrl.chatHistory2 + Singleton.instance.agentRef! + '/';
+      final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
+          APIRequestType.get, '$history${profileAPIValue.result![0].parent}');
+
+      if (chatHistory[Constants.success]) {
+        // print('chat history in profile ----> ${chatHistory['data']}');
+        final Map<String, dynamic> jsonData = chatHistory['data'];
+        chatHistoryData = ChatHistoryModel.fromJson(jsonData);
+
+        chatHistoryData.result?.forEach((element) {
+          if (element.dateSeen == null) {
+            // print('chat date seen ----> ${element.dateSeen}');
+            newMsgCount++;
+          }
+        });
+      }
+
+      // notificationList.addAll([
+      //   NotificationMainModel('Today Sep 15   7:04 PM', [
+      //     NotificationChildModel('Mr. Debashish Sr. Manager',
+      //         'Hi, Check Case Details with all in pincode 600054 .')
+      //   ]),
+      //   NotificationMainModel('Yesterday Sep 14   7:04 PM', [
+      //     NotificationChildModel('Mr. Debashish Sr. Manager',
+      //         'Hi, Check Case Details with all in pincode 600054 .'),
+      //     NotificationChildModel('Mr. Debashish Sr. Manager',
+      //         'Hi, Check Case Details with all in pincode 600054 .')
+      //   ]),
+      // ]);
       yield ProfileLoadedState();
     }
     if (event is ClickNotificationEvent) {
@@ -151,8 +172,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       yield ProfileLoadingState();
       final SharedPreferences _prefs = await SharedPreferences.getInstance();
       Singleton.instance.isOfflineStorageFeatureEnabled = false;
-       await FirebaseFirestore.instance.terminate();
-      await _prefs.clear();
+      await FirebaseFirestore.instance.terminate();
+      // await _prefs.clear();
+      await _prefs.setString(Constants.accessToken, '');
+      await _prefs.setString(Constants.userType, '');
+      await _prefs.setString('addressValue', '');
+      await _prefs.setBool('areyouatOffice', true);
+      // await _prefs.setBool(Constants.rememberMe, false);
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

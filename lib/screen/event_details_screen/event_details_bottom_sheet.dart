@@ -315,7 +315,9 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
-                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+                      expandedList[index].eventType == 'RECEIPT'
+                          ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
+                          : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -367,13 +369,13 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.reminderDate != null)
                     CustomText(
-                      '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.chequeRefNo != null)
                     CustomText(
-                      '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase()} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                      '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -385,13 +387,13 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.nextActionDate != null)
                     CustomText(
-                      '${Languages.of(context)!.nextActionDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
                   if (expandedList[index].eventAttr?.actionDate != null)
                     CustomText(
-                      '${Languages.of(context)!.nextActionDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),

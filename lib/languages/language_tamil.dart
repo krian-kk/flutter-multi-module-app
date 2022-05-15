@@ -450,7 +450,7 @@ class LanguageTa extends Languages {
   String get ptpAmount => 'PTP தொகை*';
 
   @override
-  String get paymentMode => 'கட்டண முறை';
+  String get paymentMode => 'கட்டண முறை*';
 
   @override
   String get reference => 'குறிப்பு*';
@@ -1097,4 +1097,7 @@ class LanguageTa extends Languages {
 
   @override
   String get beneficiaryAccountNumber => 'பயனாளி கணக்கு எண்';
+
+  @override
+  String get chat => 'அரட்டை';
 }

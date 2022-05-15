@@ -56,7 +56,7 @@ class CollectionPostModel {
   late String? callingID;
   late String? callerServiceID;
   late String voiceCallEventCode;
-  late bool? invalidNumber;
+  late String? invalidNumber;
 
   Map<String, dynamic> toJson() {
     bool isOnline = true;

@@ -560,7 +560,7 @@ class _CustomOtherFeedBackBottomSheetState
             caseId: widget.caseId,
             eventCode: ConstantEventValues.otherFeedbackEvenCode,
             eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
-            invalidNumber: false,
+            invalidNumber: Singleton.instance.invalidNumber.toString(),
             eventAttr: EventAttr(
               remarks: remarksController.text,
               vehicleavailable: isVehicleAvailable,
