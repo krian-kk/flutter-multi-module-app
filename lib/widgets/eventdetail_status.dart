@@ -6,13 +6,16 @@ class EventDetailsAppStatus {
     Widget? returnWidget;
     switch (appStatusValue) {
       case 'approved':
-        returnWidget = colorWidget(ColorResource.red);
+        returnWidget = colorWidget(ColorResource.green);
         break;
       case 'new':
         returnWidget = colorWidget(ColorResource.orange);
         break;
       case 'rejected':
-        returnWidget = colorWidget(ColorResource.green);
+        returnWidget = colorWidget(ColorResource.red);
+        break;
+      case 'pending':
+        returnWidget = colorWidget(ColorResource.orange);
         break;
       default:
         returnWidget = const SizedBox();

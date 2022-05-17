@@ -49,6 +49,18 @@ class Validator {
           return ValidationState(error: 'Please enter valid  mobile number');
         }
       }
+      if (rule == 'password') {
+        const String pattern =
+            r'(^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$)';
+        final RegExp regExp = RegExp(pattern);
+        if (input.isEmpty) {
+          return ValidationState(error: 'Please enter new password');
+        } else if (!regExp.hasMatch(input)) {
+          return ValidationState(
+              error:
+                  'Password must contain a lowercase letter, a capital (uppercase) letter, a number and should be minimum 6 characters in length.');
+        }
+      }
     }
 
     return ValidationState(status: true);

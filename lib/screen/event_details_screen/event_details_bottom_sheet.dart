@@ -315,7 +315,8 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.date != null)
                     CustomText(
-                      expandedList[index].eventType == 'RECEIPT'
+                      expandedList[index].eventType == 'RECEIPT' ||
+                              expandedList[index].eventType == 'TC : RECEIPT'
                           ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
                           : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
                       fontWeight: FontWeight.w700,
@@ -553,13 +554,16 @@ class _CustomEventDetailsBottomSheetState
     Widget? returnWidget;
     switch (status) {
       case 'approved':
-        returnWidget = appStatusText(ColorResource.red, 'Approved');
+        returnWidget = appStatusText(ColorResource.green, 'Approved');
         break;
       case 'new':
         returnWidget = appStatusText(ColorResource.orange, 'Awaiting Approval');
         break;
+      case 'pending':
+        returnWidget = appStatusText(ColorResource.orange, 'Awaiting Approval');
+        break;
       case 'rejected':
-        returnWidget = appStatusText(ColorResource.green, 'Rejected');
+        returnWidget = appStatusText(ColorResource.red, 'Rejected');
         break;
       default:
         returnWidget = const SizedBox();

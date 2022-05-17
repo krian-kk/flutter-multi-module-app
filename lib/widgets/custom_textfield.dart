@@ -35,6 +35,7 @@ class CustomTextField extends StatefulWidget {
     this.isLabel = false,
     this.isBorder = false,
     this.isFill = false,
+    this.errorMaxLine = 1,
     this.autovalidateMode,
     this.cursorColor = ColorResource.color666666,
     this.contentPadding = const EdgeInsets.fromLTRB(25, 15, 20, 15),
@@ -67,6 +68,7 @@ class CustomTextField extends StatefulWidget {
   final Function? onChange;
   final bool isBorder;
   final bool isFill;
+  final int errorMaxLine;
   final Color cursorColor;
   final Function(bool)? validatorCallBack;
   final AutovalidateMode? autovalidateMode;
@@ -170,9 +172,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
         labelText: widget.isLabel ? widget.hintText : null,
         isDense: false,
         counterText: widget.descriptionText,
-        errorMaxLines: 1,
-        errorStyle:
-            Theme.of(context).textTheme.subtitle1!.copyWith(color: Colors.red),
+        errorMaxLines: widget.errorMaxLine,
+        errorStyle: const TextStyle(color: Colors.red, fontSize: 11),
         counterStyle: const TextStyle(
             color: ColorResource.color666666,
             fontFamily: 'Lato-Medium',

@@ -337,9 +337,9 @@ class _CustomCollectionsBottomSheetState
                                               'required'
                                             ],
                                             isReadOnly: true,
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickDate(
-                                                    context, (String? newDate,
+                                            onTapped: () => PickDateAndTimeUtils
+                                                .pickCollectionDate(context,
+                                                    (String? newDate,
                                                         String? followUpDate) {
                                               if (newDate != null &&
                                                   followUpDate != null) {
@@ -666,8 +666,17 @@ class _CustomCollectionsBottomSheetState
               if (postResult[Constants.success]) {
                 if (postResult['data']['result']['error'] != null) {
                   setState(() => isSubmit = true);
-                  AppUtils.showErrorToast(
-                      postResult['data']['result']['error']);
+
+                  await Fluttertoast.showToast(
+                      msg: postResult['data']['result']['error'],
+                      timeInSecForIosWeb: 3,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 14.0);
+                  // AppUtils.showErrorToast(
+                  //     postResult['data']['result']['error']);
                 } else {
                   // here update followUpPriority value.
                   widget.bloc.caseDetailsAPIValue.result!.caseDetails!

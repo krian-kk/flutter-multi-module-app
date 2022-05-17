@@ -572,9 +572,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   isFill: true,
                                   isBorder: true,
                                   isLabel: true,
+                                  errorMaxLine: 5,
                                   borderColor: ColorResource.colorFFFFFF,
-                                  validationRules: const <String>['required'],
-                                  maximumWordCount: 10,
+                                  validationRules: const <String>['password'],
+                                  // maximumWordCount: 10,
                                   focusNode: newPasswordFocusNode,
                                   onEditing: () {
                                     mobileNumberFocusNode.unfocus();
