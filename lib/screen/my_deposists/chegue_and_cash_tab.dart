@@ -358,7 +358,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                                 .result!
                                                                 .cases![index]
                                                                 .eventAttr!
-                                                                .amountCollected);
+                                                                .amountCollected
+                                                                .toString());
 
                                                     // widget.bloc.listOfIndex
                                                     //     .removeAt(index);
@@ -369,7 +370,8 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                                                                 .result!
                                                                 .cases![index]
                                                                 .eventAttr!
-                                                                .amountCollected);
+                                                                .amountCollected
+                                                                .toString());
 
                                                     // widget.bloc.listOfIndex
                                                     //     .add(index);

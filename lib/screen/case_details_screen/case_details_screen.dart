@@ -1264,7 +1264,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                           const SizedBox(width: 7),
                                           CustomText(
                                               Languages.of(context)!.sendSMS,
-                                              fontSize: FontSize.twelve,
+                                              fontSize: FontSize.eleven,
                                               fontWeight: FontWeight.w700,
                                               lineHeight: 1.0,
                                               color: ColorResource.colorffffff),
@@ -1272,7 +1272,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       ),
                                     ),
                                   ),
-                        const SizedBox(width: 30),
+                        // const SizedBox(width: 30),
                         bloc.isGeneratePaymentLink
                             ? bloc.isGeneratePaymentLinkLoading
                                 ? Container(
@@ -1320,8 +1320,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                             Languages.of(context)!
                                                 .generatePaymentLink
                                                 .toUpperCase(),
-                                            fontSize: FontSize.twelve,
+                                            fontSize: FontSize.eleven,
                                             fontWeight: FontWeight.w700,
+                                            // isSingleLine: true,
                                             lineHeight: 1.0,
                                             color: ColorResource.colorffffff),
                                       ),
@@ -1369,7 +1370,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         //                   child: CustomText(
                         //                       Languages.of(context)!
                         //                           .sendWhatsapp,
-                        //                       fontSize: FontSize.twelve,
+                        //                       fontSize: FontSize.eleven,
                         //                       fontWeight: FontWeight.w700,
                         //                       lineHeight: 1.0,
                         //                       color: ColorResource.colorffffff),
@@ -1428,7 +1429,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     //                     Languages.of(context)!
                     //                         .generatePaymentLink
                     //                         .toUpperCase(),
-                    //                     fontSize: FontSize.twelve,
+                    //                     fontSize: FontSize.eleven,
                     //                     fontWeight: FontWeight.w700,
                     //                     lineHeight: 1.0,
                     //                     color: ColorResource.colorffffff),

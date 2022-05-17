@@ -135,7 +135,7 @@ class CustomCardList {
                                   resultData[index].agrRef ?? '';
                               bloc.add(NavigateCaseDetailEvent(paramValues: {
                                 'caseID': resultData[index].caseId,
-                                'isOffline': true
+                                'isOffline': false
                               }));
                             },
                             child: Container(

@@ -329,7 +329,7 @@ class _CustomEventDetailsBottomSheetState
                     ),
                   if (expandedList[index].eventAttr?.mode != null)
                     CustomText(
-                      '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.mode.toString()}',
+                      '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
@@ -349,18 +349,18 @@ class _CustomEventDetailsBottomSheetState
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),
-                  if (expandedList[index].eventAttr?.followUpPriority != null)
-                    CustomText(
-                      '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.customerName != null)
-                    CustomText(
-                      '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
+                  // if (expandedList[index].eventAttr?.followUpPriority != null)
+                  //   CustomText(
+                  //     '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
+                  // if (expandedList[index].eventAttr?.customerName != null)
+                  //   CustomText(
+                  //     '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
+                  //     fontWeight: FontWeight.w700,
+                  //     color: ColorResource.color000000,
+                  //   ),
                   if (expandedList[index].eventAttr?.amountCollected != null)
                     CustomText(
                       '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
