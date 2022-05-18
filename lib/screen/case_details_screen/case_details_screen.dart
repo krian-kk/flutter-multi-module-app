@@ -1103,12 +1103,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         const SizedBox(
           height: 10,
         ),
-        CustomText(
-          Languages.of(context)!.repaymentInfo,
-          fontSize: FontSize.sixteen,
-          fontWeight: FontWeight.w700,
-        ),
-        const SizedBox(height: 5),
+        // CustomText(
+        //   Languages.of(context)!.repaymentInfo,
+        //   fontSize: FontSize.sixteen,
+        //   fontWeight: FontWeight.w700,
+        // ),
+        // const SizedBox(height: 5),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
