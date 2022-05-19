@@ -31,6 +31,7 @@ class Singleton {
   String? callID;
   String? callingID;
   String? callerServiceID;
+  String? invalidNumber;
   String? resAddressId_0;
   String? contactId_0;
   bool? startCalling;

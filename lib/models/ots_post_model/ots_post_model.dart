@@ -58,7 +58,7 @@ class OtsPostModel {
   String? callingId;
   String? callerServiceId;
   String voiceCallEventCode;
-  bool? invalidNumber;
+  String? invalidNumber;
   String agrRef;
   String contractor;
   List<String> imageLocation;

@@ -450,7 +450,7 @@ class LanguageHi extends Languages {
   String get ptpAmount => 'PTP का राशि*';
 
   @override
-  String get paymentMode => 'भुगतान का प्रकार';
+  String get paymentMode => 'भुगतान का प्रकार*';
 
   @override
   String get reference => 'संदर्भ*';
@@ -1093,4 +1093,7 @@ class LanguageHi extends Languages {
 
   @override
   String get beneficiaryAccountNumber => 'लाभार्थी खाता नंबर';
+
+  @override
+  String get chat => 'बात करना';
 }

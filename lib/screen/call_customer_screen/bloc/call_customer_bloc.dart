@@ -51,6 +51,7 @@ class CallCustomerBloc extends Bloc<CallCustomerEvent, CallCustomerState> {
             Singleton.instance.callerServiceID =
                 voiceAgencyDetails.result?.voiceAgencyData?.first.agencyId ??
                     '';
+            Singleton.instance.invalidNumber = 'false';
 
             Singleton.instance.callID =
                 voiceAgencyDetails.result?.agentAgencyContact ?? '';

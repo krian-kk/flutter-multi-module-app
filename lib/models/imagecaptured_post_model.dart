@@ -14,7 +14,7 @@ class PostImageCapturedModel {
     this.callingID,
     required this.callerServiceID,
     required this.voiceCallEventCode,
-    this.invalidNumber,
+    required this.invalidNumber,
     required this.agentName,
     required this.contractor,
     required this.agrRef,
@@ -54,7 +54,7 @@ class PostImageCapturedModel {
   late String? callingID;
   late String? callerServiceID;
   late String voiceCallEventCode;
-  late bool? invalidNumber;
+  late String? invalidNumber;
   late String agentName;
   late String contractor;
   late String agrRef;

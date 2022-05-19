@@ -76,6 +76,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
             APIRequestType.get, '$history${event.toAref ?? toId}');
 
         if (chatHistory[Constants.success]) {
+          print('chat history ----> ${chatHistory['data']}');
           final Map<String, dynamic> jsonData = chatHistory['data'];
           chatHistoryData = ChatHistoryModel.fromJson(jsonData);
 

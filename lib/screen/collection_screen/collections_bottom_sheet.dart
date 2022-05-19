@@ -337,9 +337,9 @@ class _CustomCollectionsBottomSheetState
                                               'required'
                                             ],
                                             isReadOnly: true,
-                                            onTapped: () =>
-                                                PickDateAndTimeUtils.pickDate(
-                                                    context, (String? newDate,
+                                            onTapped: () => PickDateAndTimeUtils
+                                                .pickCollectionDate(context,
+                                                    (String? newDate,
                                                         String? followUpDate) {
                                               if (newDate != null &&
                                                   followUpDate != null) {
@@ -583,65 +583,65 @@ class _CustomCollectionsBottomSheetState
                 });
               }
               final CollectionPostModel requestBodyData = CollectionPostModel(
-                  eventId: ConstantEventValues.collectionEventId,
-                  eventCode: ConstantEventValues.collectionEvenCode,
-                  eventType: (widget.userType == Constants.telecaller ||
-                          widget.isCall!)
-                      ? 'TC : RECEIPT'
-                      : 'RECEIPT',
-                  caseId: widget.caseId,
-                  contact: CollectionsContact(
-                    cType: widget.postValue['cType'],
-                    value: widget.postValue['value'],
-                    health: ConstantEventValues.collectionHealth,
-                    resAddressId0: Singleton.instance.resAddressId_0 ?? '',
-                    contactId0: Singleton.instance.contactId_0 ?? '',
+                eventId: ConstantEventValues.collectionEventId,
+                eventCode: ConstantEventValues.collectionEvenCode,
+                eventType:
+                    (widget.userType == Constants.telecaller || widget.isCall!)
+                        ? 'TC : RECEIPT'
+                        : 'RECEIPT',
+                caseId: widget.caseId,
+                contact: CollectionsContact(
+                  cType: widget.postValue['cType'],
+                  value: widget.postValue['value'],
+                  health: ConstantEventValues.collectionHealth,
+                  resAddressId0: Singleton.instance.resAddressId_0 ?? '',
+                  contactId0: Singleton.instance.contactId_0 ?? '',
+                ),
+                eventAttr: EventAttr(
+                  amountCollected: amountCollectedControlller.text,
+                  chequeRefNo: chequeControlller.text,
+                  date: dateControlller.text,
+                  remarks: remarksControlller.text,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
+                  customerName: widget.custName!,
+                  // followUpPriority: 'REVIEW',
+                  followUpPriority:
+                      EventFollowUpPriority.connectedFollowUpPriority(
+                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                        .caseDetails!.telSubStatus!,
+                    eventType: 'Receipt',
+                    currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                        .result!.caseDetails!.followUpPriority!,
                   ),
-                  eventAttr: EventAttr(
-                    amountCollected: amountCollectedControlller.text,
-                    chequeRefNo: chequeControlller.text,
-                    date: dateControlller.text,
-                    remarks: remarksControlller.text,
-                    mode: ConvertString.convertLanguageToConstant(
-                        selectedPaymentModeButton, context),
-                    customerName: widget.custName!,
-                    // followUpPriority: 'REVIEW',
-                    followUpPriority:
-                        EventFollowUpPriority.connectedFollowUpPriority(
-                      currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                          .caseDetails!.telSubStatus!,
-                      eventType: 'Receipt',
-                      currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                          .result!.caseDetails!.followUpPriority!,
-                    ),
-                    imageLocation: <String>[],
-                    longitude: position.longitude,
-                    latitude: position.latitude,
-                    accuracy: position.accuracy,
-                    altitude: position.altitude,
-                    heading: position.heading,
-                    speed: position.speed,
-                    deposition: CollectionsDeposition(),
-                    reginalText: returnS2Tdata.result?.reginalText,
-                    translatedText: returnS2Tdata.result?.translatedText,
-                    audioS3Path: returnS2Tdata.result?.audioS3Path,
-                  ),
-                  callID: Singleton.instance.callID.toString(),
-                  callingID: Singleton.instance.callingID.toString(),
-                  callerServiceID:
-                      Singleton.instance.callerServiceID.toString(),
-                  voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-                  // createdAt: (ConnectivityResult.none ==
-                  //         await Connectivity().checkConnectivity())
-                  //     ? DateTime.now().toString()
-                  //     : null,
-                  createdBy: Singleton.instance.agentRef ?? '',
-                  agentName: Singleton.instance.agentName ?? '',
-                  agrRef: Singleton.instance.agrRef ?? '',
-                  contractor: Singleton.instance.contractor ?? '',
-                  eventModule:
-                      widget.isCall! ? 'Telecalling' : 'Field Allocation',
-                  invalidNumber: false);
+                  imageLocation: <String>[],
+                  longitude: position.longitude,
+                  latitude: position.latitude,
+                  accuracy: position.accuracy,
+                  altitude: position.altitude,
+                  heading: position.heading,
+                  speed: position.speed,
+                  deposition: CollectionsDeposition(),
+                  reginalText: returnS2Tdata.result?.reginalText,
+                  translatedText: returnS2Tdata.result?.translatedText,
+                  audioS3Path: returnS2Tdata.result?.audioS3Path,
+                ),
+                callID: Singleton.instance.callID.toString(),
+                callingID: Singleton.instance.callingID.toString(),
+                callerServiceID: Singleton.instance.callerServiceID.toString(),
+                voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+                // createdAt: (ConnectivityResult.none ==
+                //         await Connectivity().checkConnectivity())
+                //     ? DateTime.now().toString()
+                //     : null,
+                createdBy: Singleton.instance.agentRef ?? '',
+                agentName: Singleton.instance.agentName ?? '',
+                agrRef: Singleton.instance.agrRef ?? '',
+                contractor: Singleton.instance.contractor ?? '',
+                eventModule:
+                    widget.isCall! ? 'Telecalling' : 'Field Allocation',
+                invalidNumber: Singleton.instance.invalidNumber.toString(),
+              );
 
               // print('collection data2 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
@@ -666,8 +666,17 @@ class _CustomCollectionsBottomSheetState
               if (postResult[Constants.success]) {
                 if (postResult['data']['result']['error'] != null) {
                   setState(() => isSubmit = true);
-                  AppUtils.showErrorToast(
-                      postResult['data']['result']['error']);
+
+                  await Fluttertoast.showToast(
+                      msg: postResult['data']['result']['error'],
+                      timeInSecForIosWeb: 3,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 14.0);
+                  // AppUtils.showErrorToast(
+                  //     postResult['data']['result']['error']);
                 } else {
                   // here update followUpPriority value.
                   widget.bloc.caseDetailsAPIValue.result!.caseDetails!
@@ -732,61 +741,61 @@ class _CustomCollectionsBottomSheetState
                 });
               }
               final CollectionPostModel requestBodyData = CollectionPostModel(
-                  eventId: ConstantEventValues.collectionEventId,
-                  eventCode: ConstantEventValues.collectionEvenCode,
-                  eventType: (widget.userType == Constants.telecaller ||
-                          widget.isCall!)
-                      ? 'TC : RECEIPT'
-                      : 'RECEIPT',
-                  caseId: widget.caseId,
-                  contact: CollectionsContact(
-                    cType: widget.postValue['cType'],
-                    value: widget.postValue['value'],
-                    health: ConstantEventValues.collectionHealth,
-                    resAddressId0: Singleton.instance.resAddressId_0 ?? '',
-                    contactId0: Singleton.instance.contactId_0 ?? '',
+                eventId: ConstantEventValues.collectionEventId,
+                eventCode: ConstantEventValues.collectionEvenCode,
+                eventType:
+                    (widget.userType == Constants.telecaller || widget.isCall!)
+                        ? 'TC : RECEIPT'
+                        : 'RECEIPT',
+                caseId: widget.caseId,
+                contact: CollectionsContact(
+                  cType: widget.postValue['cType'],
+                  value: widget.postValue['value'],
+                  health: ConstantEventValues.collectionHealth,
+                  resAddressId0: Singleton.instance.resAddressId_0 ?? '',
+                  contactId0: Singleton.instance.contactId_0 ?? '',
+                ),
+                eventAttr: EventAttr(
+                  amountCollected: amountCollectedControlller.text,
+                  chequeRefNo: chequeControlller.text,
+                  date: dateControlller.text,
+                  remarks: remarksControlller.text,
+                  mode: ConvertString.convertLanguageToConstant(
+                      selectedPaymentModeButton, context),
+                  customerName: widget.custName!,
+                  // followUpPriority: 'REVIEW',
+                  followUpPriority:
+                      EventFollowUpPriority.connectedFollowUpPriority(
+                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
+                        .caseDetails!.telSubStatus!,
+                    eventType: 'Receipt',
+                    currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
+                        .result!.caseDetails!.followUpPriority!,
                   ),
-                  eventAttr: EventAttr(
-                    amountCollected: amountCollectedControlller.text,
-                    chequeRefNo: chequeControlller.text,
-                    date: dateControlller.text,
-                    remarks: remarksControlller.text,
-                    mode: ConvertString.convertLanguageToConstant(
-                        selectedPaymentModeButton, context),
-                    customerName: widget.custName!,
-                    // followUpPriority: 'REVIEW',
-                    followUpPriority:
-                        EventFollowUpPriority.connectedFollowUpPriority(
-                      currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                          .caseDetails!.telSubStatus!,
-                      eventType: 'Receipt',
-                      currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                          .result!.caseDetails!.followUpPriority!,
-                    ),
-                    imageLocation: <String>[],
-                    longitude: position.longitude,
-                    latitude: position.latitude,
-                    accuracy: position.accuracy,
-                    altitude: position.altitude,
-                    heading: position.heading,
-                    speed: position.speed,
-                    deposition: CollectionsDeposition(),
-                    reginalText: returnS2Tdata.result?.reginalText,
-                    translatedText: returnS2Tdata.result?.translatedText,
-                    audioS3Path: returnS2Tdata.result?.audioS3Path,
-                  ),
-                  callID: Singleton.instance.callID.toString(),
-                  callingID: Singleton.instance.callingID.toString(),
-                  callerServiceID:
-                      Singleton.instance.callerServiceID.toString(),
-                  voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
-                  createdBy: Singleton.instance.agentRef ?? '',
-                  agentName: Singleton.instance.agentName ?? '',
-                  agrRef: Singleton.instance.agrRef ?? '',
-                  contractor: Singleton.instance.contractor ?? '',
-                  eventModule:
-                      widget.isCall! ? 'Telecalling' : 'Field Allocation',
-                  invalidNumber: false);
+                  imageLocation: <String>[],
+                  longitude: position.longitude,
+                  latitude: position.latitude,
+                  accuracy: position.accuracy,
+                  altitude: position.altitude,
+                  heading: position.heading,
+                  speed: position.speed,
+                  deposition: CollectionsDeposition(),
+                  reginalText: returnS2Tdata.result?.reginalText,
+                  translatedText: returnS2Tdata.result?.translatedText,
+                  audioS3Path: returnS2Tdata.result?.audioS3Path,
+                ),
+                callID: Singleton.instance.callID.toString(),
+                callingID: Singleton.instance.callingID.toString(),
+                callerServiceID: Singleton.instance.callerServiceID.toString(),
+                voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+                createdBy: Singleton.instance.agentRef ?? '',
+                agentName: Singleton.instance.agentName ?? '',
+                agrRef: Singleton.instance.agrRef ?? '',
+                contractor: Singleton.instance.contractor ?? '',
+                eventModule:
+                    widget.isCall! ? 'Telecalling' : 'Field Allocation',
+                invalidNumber: Singleton.instance.invalidNumber.toString(),
+              );
               // print('collection data3 ---> ${jsonEncode(requestBodyData)}');
               final Map<String, dynamic> postdata =
                   jsonDecode(jsonEncode(requestBodyData.toJson()))

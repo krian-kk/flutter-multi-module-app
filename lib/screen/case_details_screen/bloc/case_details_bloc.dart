@@ -1268,6 +1268,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         callingID: Singleton.instance.callingID,
         eventCode: eventCode,
         voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        invalidNumber: Singleton.instance.invalidNumber,
         eventAttr: PhoneUnreachableEventAttr(
           remarks: phoneUnreachableRemarksController.text.isNotEmpty
               ? phoneUnreachableRemarksController.text
@@ -1397,6 +1398,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agentName: Singleton.instance.agentName ?? '',
         contractor: Singleton.instance.contractor ?? '',
         agrRef: Singleton.instance.agrRef ?? '',
+        invalidNumber: Singleton.instance.invalidNumber,
         eventAttr: CustomerNotMetEventAttr(
           remarks: addressCustomerNotMetRemarksController.text.isNotEmpty
               ? addressCustomerNotMetRemarksController.text
@@ -1497,6 +1499,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         eventType: eventType,
         caseId: caseId,
         eventCode: ConstantEventValues.addressInvalidEvenCode,
+        invalidNumber: Singleton.instance.invalidNumber,
         eventAttr: AddressInvalidEventAttr(
           remarks: addressInvalidRemarksController.text.isNotEmpty
               ? addressInvalidRemarksController.text
@@ -1580,6 +1583,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         agrRef: Singleton.instance.agrRef ?? '',
         caseId: caseId,
         eventCode: ConstantEventValues.phoneInvalidEvenCode,
+        invalidNumber: Singleton.instance.invalidNumber,
         eventAttr: PhoneInvalidEventAttr(
           remarks: phoneInvalidRemarksController.text.isNotEmpty
               ? phoneInvalidRemarksController.text

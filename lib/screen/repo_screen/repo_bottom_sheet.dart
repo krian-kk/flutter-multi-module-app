@@ -434,10 +434,13 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           callingID: Singleton
                                               .instance.callingID
                                               .toString(),
-                                          callerServiceID: Singleton
-                                              .instance.callerServiceID
+                                          callerServiceID:
+                                              Singleton
+                                                  .instance.callerServiceID
+                                                  .toString(),
+                                          invalidNumber: Singleton
+                                              .instance.invalidNumber
                                               .toString(),
-                                          invalidNumber: false,
                                           eventAttr: EventAttr(
                                             modelMake:
                                                 modelMakeControlller.text,

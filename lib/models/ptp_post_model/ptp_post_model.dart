@@ -18,7 +18,7 @@ class PTPPostModel {
       this.callingID,
       required this.callerServiceID,
       required this.voiceCallEventCode,
-      this.invalidNumber});
+      required this.invalidNumber});
 
   PTPPostModel.fromJson(Map<String, dynamic> json) {
     eventId = json['eventId'];
@@ -55,7 +55,7 @@ class PTPPostModel {
   late String? callingID;
   late String? callerServiceID;
   late String? voiceCallEventCode;
-  late bool? invalidNumber;
+  late String? invalidNumber;
 
   Map<String, dynamic> toJson() {
     bool isOnline = true;

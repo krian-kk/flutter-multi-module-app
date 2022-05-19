@@ -566,6 +566,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
               agrRef: Singleton.instance.agrRef ?? '',
               contractor: Singleton.instance.contractor ?? '',
+              invalidNumber: Singleton.instance.invalidNumber.toString(),
             );
 
             // requestBodyData

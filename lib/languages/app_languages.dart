@@ -723,4 +723,6 @@ abstract class Languages {
   String get language;
 
   String get beneficiaryAccountNumber;
+
+  String get chat;
 }
