@@ -53,7 +53,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     bloc = ProfileBloc()..add(ProfileInitialEvent(context));
     getAddress();
+
+    openChatScreenFromNotificationClick();
     super.initState();
+  }
+
+  // If you click notification then update 'charScreenFromNotification' is 'true' then open chat screen
+  Future<void> openChatScreenFromNotificationClick() async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
+    if (Singleton.instance.charScreenFromNotification) {
+      bloc.add(ClickMessageEvent(
+        fromId: bloc.profileAPIValue.result![0].aRef ??
+            _prefs.getString(Constants.agentRef),
+        toId: bloc.profileAPIValue.result![0].parent,
+      ));
+    }
+    setState(() {
+      Singleton.instance.charScreenFromNotification = false;
+    });
   }
 
   getAddress() async {

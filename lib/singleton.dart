@@ -26,6 +26,7 @@ class Singleton {
   ContractorDetailsModel? feedbackTemplate;
   bool? cloudTelephony;
   String? overDueAmount;
+  bool charScreenFromNotification = false;
 
   // Localstorage for call details
   String? callID;

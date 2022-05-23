@@ -163,16 +163,21 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               });
               break;
             case '3':
-              final SharedPreferences _prefs =
-                  await SharedPreferences.getInstance();
-              // Initiate chat bloc
-              final ChatScreenBloc chatbloc = ChatScreenBloc();
-              chatbloc.add(ChatInitialEvent());
-              await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
-              // Navigate Chat Screen
-              OnclickNotificationNavigateScreen().messageScreenBottomSheet(
-                  context,
-                  fromID: _prefs.getString(Constants.agentRef));
+              // Here call the profile screen then open  chat screen
+              setState(() {
+                Singleton.instance.charScreenFromNotification = true;
+                _controller!.index = 2;
+              });
+              // final SharedPreferences _prefs =
+              //     await SharedPreferences.getInstance();
+              // // Initiate chat bloc
+              // final ChatScreenBloc chatbloc = ChatScreenBloc();
+              // chatbloc.add(ChatInitialEvent());
+              // await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
+              // // Navigate Chat Screen
+              // OnclickNotificationNavigateScreen().messageScreenBottomSheet(
+              //     context,
+              //     fromID: _prefs.getString(Constants.agentRef));
               break;
             case '4':
               // Initiate Dashboard bloc

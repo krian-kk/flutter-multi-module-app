@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -34,7 +35,7 @@ class _WebViewWidgetState extends State<WebViewWidget> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           BottomSheetAppbar(
-            title: Languages.of(context)!.callCustomer,
+            title: 'Help',
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
                 .copyWith(bottom: 5),
           ),
@@ -56,6 +57,14 @@ class _WebViewWidgetState extends State<WebViewWidget> {
                   },
                   onPageStarted: (String val) {
                     //_loadHTML(controller: controller);
+                  },
+                  javascriptChannels: {
+                    JavascriptChannel(
+                        name: 'JavascriptChannel',
+                        onMessageReceived: (JavascriptMessage message) {
+                          debugPrint(
+                              'JavascriptMessage message ----> ${message.message}');
+                        })
                   },
                   onPageFinished: (String finish) {
                     setState(() => isLoading = false);

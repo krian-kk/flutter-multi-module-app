@@ -252,4 +252,7 @@ class HttpUrl {
 //Send Whatsapp message from backend
   static final String sendWhatsapp =
       baseUrl + fieldAgent + 'case-details/notifyCustomer?';
+
+  //chat count update
+  static final String updateChatSeen = '$url/node/api/updateFCMMessage';
 }
