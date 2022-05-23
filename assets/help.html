@@ -1,34 +1,42 @@
 <html>
+
 <head>
 </head>
+
 <body id="colorback">
-<h1>Temporary Title</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
-    cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis
-    ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum
-    lacinia arcu eget nulla.</p>
-<head>
-    <!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
-    <script>
-	window.fwSettings = {
-	'widget_id':81000001329
-	};
-	!function(){if("function"!=typeof window.FreshworksWidget){var n=function(){n.q.push(arguments)};n.q=[],window.FreshworksWidget=n}}()
+    <h1>Temporary Title</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
+        cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis
+        ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum
+        lacinia arcu eget nulla.</p>
+    <!-- <img alt="=tiger" width="300px"
+        src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Ftiger&psig=AOvVaw2worRTRtbRvy-9dMZXYvEi&ust=1653117557796000&source=images&cd=vfe&ved=0CAwQjRxqFwoTCLi2ofjE7fcCFQAAAAAdAAAAABAD">
+    </img> -->
+
+    <head>
+        <!--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+        <script>
+            window.fwSettings = {
+                'widget_id': 81000001329
+            };
+            !function () { if ("function" != typeof window.FreshworksWidget) { var n = function () { n.q.push(arguments) }; n.q = [], window.FreshworksWidget = n } }()
 
 
-    </script>
-    <script type='text/javascript' src='https://ind-widget.freshworks.com/widgets/81000001329.js'
-            async></script>
-    <script>
-	window.opener.postMessage(data, "https://ind-widget.freshworks.com/widgets/81000001329.js");
+        </script>
+        <script type='text/javascript' src='https://ind-widget.freshworks.com/widgets/81000001329.js' async></script>
+        <script>
+            window.opener.postMessage(data, "https://ind-widget.freshworks.com/widgets/81000001329.js");
+        </script>
+        <script>
+            JavascriptChannel.postMessage("Hi Nandha");
+        </script>
+    </head>
 
+    <body>
+        <script>
+            FreshworksWidget('hide', 'launcher');
+            FreshworksWidget('open');
+        </script>
+    </body>
 
-    </script>
-</head>
-<body>
-<script>
-	FreshworksWidget('hide', 'launcher');
-    FreshworksWidget('open');
-</script>
-</body>
 </html>

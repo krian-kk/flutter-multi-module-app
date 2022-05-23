@@ -85,7 +85,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         chatHistoryData = ChatHistoryModel.fromJson(jsonData);
 
         chatHistoryData.result?.forEach((element) {
-          if (element.dateSeen == null) {
+          if (element.dateSeen == null &&
+              element.fromId != profileAPIValue.result![0].aRef) {
             // print('chat date seen ----> ${element.dateSeen}');
             newMsgCount++;
           }

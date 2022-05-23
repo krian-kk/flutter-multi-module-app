@@ -320,22 +320,24 @@ class _ChatScreenState extends State<ChatScreen> {
       }).onData((data) {
         debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
 
-        setState(() {
-          final ReceivingData receivedData =
-              ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
+        if (mounted) {
+          setState(() {
+            final ReceivingData receivedData =
+                ReceivingData.fromJson(jsonDecode(jsonEncode(data.data)));
 
-          bloc.messageHistory.add(ChatHistory(
-              data: receivedData.message,
-              name: data.name,
-              dateTime: data.timestamp));
-          // bloc.messageHistory.insert(
-          //   0,
-          //   ChatHistory(
-          //       data: receivedData.message,
-          //       name: data.name,
-          //       dateTime: data.timestamp),
-          // );
-        });
+            bloc.messageHistory.add(ChatHistory(
+                data: receivedData.message,
+                name: data.name,
+                dateTime: data.timestamp));
+            // bloc.messageHistory.insert(
+            //   0,
+            //   ChatHistory(
+            //       data: receivedData.message,
+            //       name: data.name,
+            //       dateTime: data.timestamp),
+            // );
+          });
+        }
       });
 
       // getHistory();
@@ -518,8 +520,10 @@ class _ChatScreenState extends State<ChatScreen> {
                           chatChannel.publish(messages: [
                             ably.Message(
                                 name: toARef,
-                                data: messageController.text.trim()),
+                                data: messageController.text.trim(),
+                                timestamp: DateTime.now()),
                           ]).then((value) {
+                            // debugPrint('message has been sended------->');
                             setState(() {
                               bloc.messageHistory.add(ChatHistory(
                                   data: messageController.text.trim(),

@@ -20,6 +20,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
   AgentInformation agentDetails = AgentInformation();
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
   List<ChatHistory> messageHistory = [];
+  List<dynamic> unSeenMesg = [];
 
   String? toId;
 
@@ -40,6 +41,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
       } else {
         // Get toAref from profile detail API
         if (event.toAref == null) {
+          debugPrint('get toAref data from profile api ');
           final Map<String, dynamic> getProfileData =
               await APIRepository.apiRequest(
                   APIRequestType.get, HttpUrl.profileUrl);
@@ -76,7 +78,6 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
             APIRequestType.get, '$history${event.toAref ?? toId}');
 
         if (chatHistory[Constants.success]) {
-          print('chat history ----> ${chatHistory['data']}');
           final Map<String, dynamic> jsonData = chatHistory['data'];
           chatHistoryData = ChatHistoryModel.fromJson(jsonData);
 
@@ -86,10 +87,31 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
               name: element.toId,
               dateTime: DateTime.parse(element.dateSent!),
             ));
+            if (element.dateSeen == null) {
+              unSeenMesg.add({
+                '_id': element.sId,
+                'type': element.type,
+                'fromId': element.fromId,
+                'toId': element.toId,
+                'message': element.message,
+                'dateSent': element.dateSent,
+                'dateSeen': DateTime.now().toString()
+              });
+            }
           });
-          debugPrint(
-              "Chat History  from instalmint API == > ${chatHistory['data']}");
         } else {}
+
+        // debugPrint('check unseen msg ----> $unSeenMesg');
+        // When user seen the mseeage that is updated to seened mesg
+        if (unSeenMesg.isNotEmpty || unSeenMesg != []) {
+          final Map<String, dynamic> postResult =
+              await APIRepository.apiRequest(
+            APIRequestType.post,
+            HttpUrl.updateChatSeen,
+            requestBodydata: {'msgs': unSeenMesg},
+          );
+          // if (postResult[Constants.success]) {}
+        }
       }
 
       yield ChatScreenLoadedState();
@@ -102,8 +124,6 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
 //   static String chatDate(String date) =>
 //       DateFormat('yyyy-MM-dd  HH:mm').format(DateTime.parse(date));
 // }
-
-
 
 // import 'package:bloc/bloc.dart';
 // import 'package:connectivity_plus/connectivity_plus.dart';
