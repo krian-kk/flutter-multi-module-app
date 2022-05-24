@@ -268,7 +268,11 @@ class CustomCardList {
                                                           null
                                                       ? resultData[index]
                                                           .address!
-                                                          .first
+                                                          .firstWhere((element) => (element
+                                                                      .cType ==
+                                                                  'residence address' ||
+                                                              element.cType ==
+                                                                  'office address'))
                                                           .value!
                                                       : '-',
                                                   color:

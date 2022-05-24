@@ -63,7 +63,8 @@ class ContractorResult {
       this.caseStatusDownload,
       this.userAdminList,
       this.feedbackTemplate,
-      this.otsEnable});
+      this.otsEnable,
+      this.appBuildVersion});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -118,6 +119,7 @@ class ContractorResult {
       });
     }
     otsEnable = json['otsEnable'];
+    appBuildVersion = json['appBuildVersion'];
   }
   String? sId;
   String? usernamePrefix;
@@ -158,6 +160,7 @@ class ContractorResult {
   List<UserAdminList>? userAdminList;
   List<FeedbackTemplate>? feedbackTemplate;
   bool? otsEnable;
+  String? appBuildVersion;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -209,6 +212,7 @@ class ContractorResult {
           feedbackTemplate!.map((v) => v.toJson()).toList();
     }
     data['otsEnable'] = otsEnable;
+    data['appBuildVersion'] = appBuildVersion;
     return data;
   }
 }

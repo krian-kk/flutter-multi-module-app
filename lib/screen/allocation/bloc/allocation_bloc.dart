@@ -646,13 +646,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;
       }
-      // debugPrint(
-      //     'Selected cases is stareed or not--> ${resultList[event.selectedStarIndex].starredCase}');
-      //
-      // debugPrint(
-      //     'Selected cases is account number--> ${resultList[event.selectedStarIndex].accNo}');
-      // // resultList[event.selectedStarIndex].starredCase =
-      // //     !resultList[event.selectedStarIndex].starredCase;
+
       yield UpdateStaredCaseState(
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase,

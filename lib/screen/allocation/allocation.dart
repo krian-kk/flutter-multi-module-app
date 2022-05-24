@@ -735,15 +735,18 @@ class _AllocationScreenState extends State<AllocationScreen>
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
-              final removedItem = bloc.resultList[state.selectedIndex];
-              bloc.resultList.removeAt(state.selectedIndex);
-              // To pick and add next starred false case
-              final firstWhereIndex =
-                  bloc.resultList.indexWhere((note) => !note.starredCase);
-              setState(() {
-                bloc.resultList.insert(firstWhereIndex, removedItem);
-                bloc.starCount--;
-              });
+              // For realod puspose
+
+              // final removedItem = bloc.resultList[state.selectedIndex];
+              // bloc.resultList.removeAt(state.selectedIndex);
+              // // To pick and add next starred false case
+              // final firstWhereIndex =
+              //     bloc.resultList.indexWhere((note) => !note.starredCase);
+              // setState(() {
+              //   bloc.resultList.insert(firstWhereIndex, removedItem);
+              //   bloc.starCount--;
+              // });
+              bloc.add(TapPriorityEvent());
             } else {
               await FirebaseUtils.updateStarred(
                   isStarred: false, caseId: state.caseId);
