@@ -1349,7 +1349,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       phoneUnreachableSelectedDate = '';
       phoneUnreachableNextActionDateController.text = '';
-      phoneUnreachableRemarksController.text;
+      phoneUnreachableRemarksController.clear();
       phoneSelectedUnreadableClip = '';
     }
     return postResult;
@@ -1448,7 +1448,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           ConvertString.convertLanguageToConstant(selectedClipValue, context);
       addressCustomerNotMetSelectedDate = '';
       addressCustomerNotMetNextActionDateController.text = '';
-      addressCustomerNotMetRemarksController.text = '';
+      addressCustomerNotMetRemarksController.clear();
       addressSelectedCustomerNotMetClip = '';
     } else {}
     return postResult;
@@ -1551,7 +1551,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       isEventSubmited = true;
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
           ConvertString.convertLanguageToConstant(selectedClipValue, context);
-      addressInvalidRemarksController.text = '';
+      addressInvalidRemarksController.clear();
       addressSelectedInvalidClip = '';
     }
     return postResult;
@@ -1651,7 +1651,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
             selectedClipValue;
       }
-      phoneInvalidRemarksController.text = '';
+      phoneInvalidRemarksController.clear();
       phoneSelectedInvalidClip = '';
     }
     return postResult;
