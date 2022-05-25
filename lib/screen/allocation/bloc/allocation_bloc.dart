@@ -486,7 +486,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        yield MapInitiateState();
+        yield LoadingState();
+        // yield MapInitiateState();
         final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,

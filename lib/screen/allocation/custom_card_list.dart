@@ -71,15 +71,19 @@ class CustomCardList {
                                       resultData[index].distanceMeters != null)
                                     Column(
                                       children: [
-                                        CustomText(
-                                          resultData[index].distanceMeters !=
-                                                  null
-                                              ? Constants.approx +
-                                                  ' ' +
-                                                  distanceValues!
-                                              : '-',
-                                          lineHeight: 1,
-                                          color: ColorResource.color101010,
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: CustomText(
+                                            resultData[index].distanceMeters !=
+                                                    null
+                                                ? Constants.approx +
+                                                    ' ' +
+                                                    distanceValues!
+                                                : '-',
+                                            lineHeight: 1,
+                                            color: ColorResource.color101010,
+                                          ),
                                         ),
                                         const SizedBox(
                                           width: 10,

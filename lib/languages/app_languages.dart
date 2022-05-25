@@ -289,6 +289,8 @@ abstract class Languages {
 
   String get submit;
 
+  String get proceed;
+
   String get nextActionDate;
 
   String get nextActionTime;

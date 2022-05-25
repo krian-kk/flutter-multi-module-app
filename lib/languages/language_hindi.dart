@@ -1096,4 +1096,7 @@ class LanguageHi extends Languages {
 
   @override
   String get chat => 'बात करना';
+
+  @override
+  String get proceed => 'आगे बढ़ना';
 }

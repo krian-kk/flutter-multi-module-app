@@ -1100,4 +1100,7 @@ class LanguageTa extends Languages {
 
   @override
   String get chat => 'அரட்டை';
+
+  @override
+  String get proceed => 'தொடரவும்';
 }

@@ -386,6 +386,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         if (state is CaseListViewLoadingState) {
           isCaseDetailLoading = true;
         }
+
         if (state is MapViewState) {
           mapView(context);
           bloc.isShowSearchPincode = false;
@@ -850,6 +851,9 @@ class _AllocationScreenState extends State<AllocationScreen>
           if (state is AllocationLoadingState) {
             return const SkeletonLoading();
           }
+          if (state is LoadingState) {
+            return const CustomLoadingWidget();
+          }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
             floatingActionButton: internetAvailability != 'none'
@@ -1105,10 +1109,13 @@ class _AllocationScreenState extends State<AllocationScreen>
                                     selected: bloc.selectedOption == index,
                                     selectedColor: ColorResource.color23375A,
                                     onSelected: (value) {
-                                      setState(() {
-                                        bloc.selectedOption =
-                                            value ? index : bloc.selectedOption;
-                                      });
+                                      if (index != 2) {
+                                        setState(() {
+                                          bloc.selectedOption = value
+                                              ? index
+                                              : bloc.selectedOption;
+                                        });
+                                      }
                                       switch (index) {
                                         case 0:
                                           setState(() {
@@ -1145,9 +1152,9 @@ class _AllocationScreenState extends State<AllocationScreen>
                                                       .toString(),
                                                   maxDistMeters:
                                                       Constants.allDisMeters)));
-                                          setState(() {
-                                            bloc.showFilterDistance = false;
-                                          });
+                                          // setState(() {
+                                          //   bloc.showFilterDistance = false;
+                                          // });
                                           break;
                                         default:
                                           setState(() {
