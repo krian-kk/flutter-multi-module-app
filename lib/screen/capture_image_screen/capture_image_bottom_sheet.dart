@@ -326,7 +326,8 @@ class _CustomCaptureImageBottomSheetState
 
                                         widget.bloc.add(PostImageCapturedEvent(
                                             postData: requestBodyData,
-                                            fileData: uploadFileLists));
+                                            fileData: uploadFileLists,
+                                            context: context));
                                       } else {
                                         AppUtils.showToast(
                                           Languages.of(context)!.uploadImage,

@@ -90,8 +90,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                             widget.bloc
                                 .addressCustomerNotMetNextActionDateController,
                             isLabel: true,
-                            focusNode:
-                                widget.bloc.addressInvalidRemarksFocusNode,
+                            focusNode: widget.bloc
+                                .addressCustomerNotMetNextActionDateFocusNode,
                             isReadOnly: true,
                             validationRules: const <String>['required'],
                             onTapped: () =>

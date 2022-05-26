@@ -96,6 +96,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           bloc: bloc,
           listener: (BuildContext context, CaseDetailsState state) {
             if (state is PostDataApiSuccessState) {
+              bloc.translateTextAddressInvalid = '';
+              bloc.translateTextCustomerNotMet = '';
+              bloc.translateTextUnReachable = '';
+              bloc.translateTextPhoneInvalid = '';
               AppUtils.topSnackBar(context, Constants.eventUpdatedSuccess);
             }
             if (state is CaseDetailsLoadedState) {

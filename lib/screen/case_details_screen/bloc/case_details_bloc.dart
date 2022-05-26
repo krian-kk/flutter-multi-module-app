@@ -506,6 +506,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
+          Navigator.pop(event.context!);
           yield PostDataApiSuccessState();
         }
       }
