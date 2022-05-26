@@ -549,6 +549,11 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           Constants.repo,
                                         ),
                                       );
+                                      // set speech to text data is null
+                                      returnS2Tdata.result?.reginalText = null;
+                                      returnS2Tdata.result?.translatedText =
+                                          null;
+                                      returnS2Tdata.result?.audioS3Path = null;
                                       AppUtils.topSnackBar(context,
                                           Constants.successfullySubmitted);
                                       widget.bloc.add(

@@ -484,6 +484,12 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       Constants.dispute,
                     ),
                   );
+
+                  // set speech to text data is null
+                  returnS2Tdata.result?.reginalText = null;
+                  returnS2Tdata.result?.translatedText = null;
+                  returnS2Tdata.result?.audioS3Path = null;
+
                   if (!(widget.userType == Constants.fieldagent &&
                       widget.isCall!)) {
                     widget.bloc.add(

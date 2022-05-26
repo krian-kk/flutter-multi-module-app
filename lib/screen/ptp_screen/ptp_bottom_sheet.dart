@@ -670,6 +670,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 widget.bloc.caseDetailsAPIValue.result!.caseDetails!
                         .followUpPriority =
                     requestBodyData.eventAttr.followUpPriority;
+                // set speech to text data is null
+                returnS2Tdata.result?.reginalText = null;
+                returnS2Tdata.result?.translatedText = null;
+                returnS2Tdata.result?.audioS3Path = null;
 
                 widget.bloc.add(
                   ChangeIsSubmitForMyVisitEvent(
