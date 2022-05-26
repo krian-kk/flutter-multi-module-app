@@ -6,6 +6,8 @@ class AllocationInitial extends AllocationState {}
 
 class AllocationLoadingState extends AllocationState {}
 
+class LoadingState extends AllocationState {}
+
 class AllocationLoadedState extends AllocationState {
   AllocationLoadedState({this.successResponse});
   final dynamic successResponse;

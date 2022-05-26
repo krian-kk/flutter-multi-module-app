@@ -486,7 +486,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        yield MapInitiateState();
+        yield LoadingState();
+        // yield MapInitiateState();
         final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
@@ -646,13 +647,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         resultList[event.selectedStarIndex].starredCase =
             !resultList[event.selectedStarIndex].starredCase;
       }
-      // debugPrint(
-      //     'Selected cases is stareed or not--> ${resultList[event.selectedStarIndex].starredCase}');
-      //
-      // debugPrint(
-      //     'Selected cases is account number--> ${resultList[event.selectedStarIndex].accNo}');
-      // // resultList[event.selectedStarIndex].starredCase =
-      // //     !resultList[event.selectedStarIndex].starredCase;
+
       yield UpdateStaredCaseState(
           caseId: event.caseID,
           isStared: resultList[event.selectedStarIndex].starredCase,

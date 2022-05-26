@@ -1093,4 +1093,7 @@ class LanguageEn extends Languages {
 
   @override
   String get chat => 'Chat';
+
+  @override
+  String get proceed => 'Proceed';
 }

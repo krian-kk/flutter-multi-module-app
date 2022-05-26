@@ -83,7 +83,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
+      debugPrint('Receiving notification messsage ---> ${message}');
+
       if (message != null) {
+        debugPrint('Receiving notification messsage ---> ${message.data}');
         NotificationDataModel notificationData = NotificationDataModel();
         try {
           notificationData = NotificationDataModel.fromJson(message.data);
@@ -98,11 +101,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      debugPrint('Receiving notification data ---> ${message.data}');
       NotificationDataModel notificationData = NotificationDataModel();
       try {
         notificationData = NotificationDataModel.fromJson(message.data);
+        debugPrint('Receiving notification data ---> $notificationData');
       } catch (e) {
-        // debugPrint(e.toString());
+        debugPrint(e.toString());
       }
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
@@ -112,6 +117,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // listen and Show notification message
       if (Platform.isAndroid) {
         if (notification != null && android != null) {
+          debugPrint('Receiving notification data1 ---> $notificationData');
           flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
@@ -190,6 +196,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<dynamic> forgroundOnClickNotification(String? payload) async {
+    debugPrint('forgroundOnClickNotification published!... -----> ${payload}');
     //Handle notification tapped logic here
     bloc!.add(AppStarted(context: context, notificationData: payload));
   }

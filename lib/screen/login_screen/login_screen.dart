@@ -31,6 +31,7 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/web_view_widget.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
@@ -61,12 +62,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
-    // if (kDebugMode) {
-    //   userId.text = 'CDE_46';
-    //   password.text = 'Origa123';
-    //   // userId.text = 'YES_fos';
-    //   // password.text = 'Agent1234';
-    // }
+    if (kDebugMode) {
+      userId.text = 'MB_fos';
+      password.text = 'Asd@123';
+      // userId.text = 'YES_fos';
+      // password.text = 'Agent1234';
+    }
     // userId.text = 'CDE_46';
     // password.text = 'Origa123';
     username = FocusNode();
@@ -614,11 +615,14 @@ class _LoginScreenState extends State<LoginScreen> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         bloc.add(NoInternetConnectionEvent());
       } else {
+        final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
         final params = {
           'userName': userId.text,
           'agentRef': userId.text,
           'password': password.text,
-          'fcmToken': fcmToken
+          'fcmToken': fcmToken,
+          'appVersion': packageInfo.version
         };
         bloc.add(
           SignInEvent(

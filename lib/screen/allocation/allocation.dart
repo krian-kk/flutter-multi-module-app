@@ -386,6 +386,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         if (state is CaseListViewLoadingState) {
           isCaseDetailLoading = true;
         }
+
         if (state is MapViewState) {
           mapView(context);
           bloc.isShowSearchPincode = false;
@@ -735,15 +736,18 @@ class _AllocationScreenState extends State<AllocationScreen>
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
-              final removedItem = bloc.resultList[state.selectedIndex];
-              bloc.resultList.removeAt(state.selectedIndex);
-              // To pick and add next starred false case
-              final firstWhereIndex =
-                  bloc.resultList.indexWhere((note) => !note.starredCase);
-              setState(() {
-                bloc.resultList.insert(firstWhereIndex, removedItem);
-                bloc.starCount--;
-              });
+              // For realod puspose
+
+              // final removedItem = bloc.resultList[state.selectedIndex];
+              // bloc.resultList.removeAt(state.selectedIndex);
+              // // To pick and add next starred false case
+              // final firstWhereIndex =
+              //     bloc.resultList.indexWhere((note) => !note.starredCase);
+              // setState(() {
+              //   bloc.resultList.insert(firstWhereIndex, removedItem);
+              //   bloc.starCount--;
+              // });
+              bloc.add(TapPriorityEvent());
             } else {
               await FirebaseUtils.updateStarred(
                   isStarred: false, caseId: state.caseId);
@@ -846,6 +850,9 @@ class _AllocationScreenState extends State<AllocationScreen>
         builder: (BuildContext context, AllocationState state) {
           if (state is AllocationLoadingState) {
             return const SkeletonLoading();
+          }
+          if (state is LoadingState) {
+            return const CustomLoadingWidget();
           }
           return Scaffold(
             backgroundColor: ColorResource.colorF7F8FA,
@@ -1102,10 +1109,13 @@ class _AllocationScreenState extends State<AllocationScreen>
                                     selected: bloc.selectedOption == index,
                                     selectedColor: ColorResource.color23375A,
                                     onSelected: (value) {
-                                      setState(() {
-                                        bloc.selectedOption =
-                                            value ? index : bloc.selectedOption;
-                                      });
+                                      if (index != 2) {
+                                        setState(() {
+                                          bloc.selectedOption = value
+                                              ? index
+                                              : bloc.selectedOption;
+                                        });
+                                      }
                                       switch (index) {
                                         case 0:
                                           setState(() {
@@ -1142,9 +1152,9 @@ class _AllocationScreenState extends State<AllocationScreen>
                                                       .toString(),
                                                   maxDistMeters:
                                                       Constants.allDisMeters)));
-                                          setState(() {
-                                            bloc.showFilterDistance = false;
-                                          });
+                                          // setState(() {
+                                          //   bloc.showFilterDistance = false;
+                                          // });
                                           break;
                                         default:
                                           setState(() {

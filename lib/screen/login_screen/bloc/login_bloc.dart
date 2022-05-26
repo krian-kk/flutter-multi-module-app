@@ -356,7 +356,11 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../models/contractor_detail_model.dart';
+import '../../../models/contractor_information_model.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';

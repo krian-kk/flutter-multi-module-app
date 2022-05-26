@@ -4,6 +4,7 @@ import 'package:ably_flutter/ably_flutter.dart' as ably;
 import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
@@ -20,7 +21,9 @@ import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../notification_navigate_screen.dart';
 import 'chat_model/message_model.dart';
 import 'chat_screen_state.dart';
 
@@ -72,6 +75,16 @@ class _ChatScreenState extends State<ChatScreen> {
     // bloc = ChatScreenBloc()..add(ChatInitialEvent());
   }
 
+  Future<dynamic> forgroundOnClickNotification(String? payload) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    debugPrint(
+        'new forgroundOnClickNotification published!... -----> ${payload}');
+    OnclickNotificationNavigateScreen().messageScreenBottomSheet(context,
+        fromID: _prefs.getString(Constants.agentRef));
+    //Handle notification tapped logic here
+    // bloc!.add(AppStarted(context: context, notificationData: payload));
+  }
+
   // void scrollToBottom() {
   //   final bottomOffset = scrollController.position.maxScrollExtent;
   //   scrollController.animateTo(
@@ -91,9 +104,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Future<void> leaveChannelPresence() async {
     presenceChannel = realtimeInstance.channels.get('chat:mobile:presence');
-    await presenceChannel!.presence
-        .enterClient(clientIDFromARef!, PresenceAction.leave);
-    debugPrint('presenceChannel->${presenceChannel!.state.toString()}');
+    // await presenceChannel!.presence
+    //     .enterClient(clientIDFromARef!, PresenceAction.leave);
+    await presenceChannel!.presence.leave();
+    debugPrint('presenceChannel 12345->${presenceChannel!.state.toString()}');
   }
 
   @override
@@ -121,120 +135,128 @@ class _ChatScreenState extends State<ChatScreen> {
           if (state is ChatScreenInitial) {
             return const CustomLoadingWidget();
           }
-          return SafeArea(
-            child: Scaffold(
-              backgroundColor: ColorResource.colorffffff,
-              body: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () => FocusScope.of(context).unfocus(),
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 13,
-                        ),
-                        BottomSheetAppbar(
-                            title:
-                                Languages.of(context)!.message.toUpperCase()),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        bloc.agentDetails.result!.isNotEmpty
-                            ? Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 7),
-                                child: Container(
-                                  width: double.infinity,
-                                  decoration: const BoxDecoration(
-                                      color: ColorResource.colorF7F8FA,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10.0))),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: SvgPicture.asset(
-                                              ImageResource.profile),
-                                          width: 38,
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            color: ColorResource.color23375A,
-                                            borderRadius:
-                                                BorderRadius.circular(52.5),
+          return WillPopScope(
+            onWillPop: () {
+              Navigator.pop(context);
+              return Future<bool>(() => false);
+            },
+            child: SafeArea(
+              child: Scaffold(
+                backgroundColor: ColorResource.colorffffff,
+                body: Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () => FocusScope.of(context).unfocus(),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 13,
+                          ),
+                          BottomSheetAppbar(
+                              title:
+                                  Languages.of(context)!.message.toUpperCase()),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          bloc.agentDetails.result!.isNotEmpty
+                              ? Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 7),
+                                  child: Container(
+                                    width: double.infinity,
+                                    decoration: const BoxDecoration(
+                                        color: ColorResource.colorF7F8FA,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10.0))),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 10),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: SvgPicture.asset(
+                                                ImageResource.profile),
+                                            width: 38,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              color: ColorResource.color23375A,
+                                              borderRadius:
+                                                  BorderRadius.circular(52.5),
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          width: 7,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            CustomText(
-                                              bloc.agentDetails.result?[0]
-                                                      .name ??
-                                                  '-',
-                                              fontSize: FontSize.sixteen,
-                                              color: ColorResource.color101010,
-                                            ),
-                                            CustomText(
-                                              bloc.agentDetails.result?[0]
-                                                      .type ??
-                                                  '-',
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color333333,
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                          const SizedBox(
+                                            width: 7,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              CustomText(
+                                                bloc.agentDetails.result?[0]
+                                                        .name ??
+                                                    '-',
+                                                fontSize: FontSize.sixteen,
+                                                color:
+                                                    ColorResource.color101010,
+                                              ),
+                                              CustomText(
+                                                bloc.agentDetails.result?[0]
+                                                        .type ??
+                                                    '-',
+                                                fontWeight: FontWeight.w700,
+                                                color:
+                                                    ColorResource.color333333,
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              )
-                            : const SizedBox(),
-                        const SizedBox(height: 7),
-                        Expanded(
-                          child: bloc.messageHistory.isNotEmpty
-                              ? ListView.builder(
-                                  reverse: true,
-                                  // controller: scrollController,
-                                  // physics:
-                                  //     const NeverScrollableScrollPhysics(),
-                                  // shrinkWrap: true,
-                                  padding: const EdgeInsets.only(top: 15.0),
-                                  itemCount: bloc.messageHistory.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final ChatHistory message = bloc
-                                        .messageHistory.reversed
-                                        .toList()[index];
-                                    // final bool isMe = message.sender!.id == currentUser.id;
-                                    // message.name == clientIDFromARef;
-                                    return _buildMessage(
-                                        message,
-                                        message.name != clientIDFromARef
-                                            ? true
-                                            : false);
-                                  },
                                 )
-                              : Center(
-                                  child: CustomText(
-                                    Constants.statrtConverstation,
-                                    color: Colors.grey.shade300,
-                                    fontSize: FontSize.fifteen,
-                                    fontWeight: FontWeight.w500,
+                              : const SizedBox(),
+                          const SizedBox(height: 7),
+                          Expanded(
+                            child: bloc.messageHistory.isNotEmpty
+                                ? ListView.builder(
+                                    reverse: true,
+                                    // controller: scrollController,
+                                    // physics:
+                                    //     const NeverScrollableScrollPhysics(),
+                                    // shrinkWrap: true,
+                                    padding: const EdgeInsets.only(top: 15.0),
+                                    itemCount: bloc.messageHistory.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final ChatHistory message = bloc
+                                          .messageHistory.reversed
+                                          .toList()[index];
+                                      // final bool isMe = message.sender!.id == currentUser.id;
+                                      // message.name == clientIDFromARef;
+                                      return _buildMessage(
+                                          message,
+                                          message.name != clientIDFromARef
+                                              ? true
+                                              : false);
+                                    },
+                                  )
+                                : Center(
+                                    child: CustomText(
+                                      Constants.statrtConverstation,
+                                      color: Colors.grey.shade300,
+                                      fontSize: FontSize.fifteen,
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
-                                ),
-                        ),
-                        const SizedBox(height: 70),
-                      ],
+                          ),
+                          const SizedBox(height: 70),
+                        ],
+                      ),
                     ),
-                  ),
-                  _buildMessageComposer(),
-                ],
+                    _buildMessageComposer(),
+                  ],
+                ),
               ),
             ),
           );
@@ -319,6 +341,19 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       }).onData((data) {
         debugPrint('New daTA arrived from $clientIDFromARef ${data.data}');
+
+        // flutterLocalNotificationsPlugin.show(
+        //   0,
+        //   'notification.title',
+        //   'notification.body',
+        //   NotificationDetails(
+        //     android: AndroidNotificationDetails(
+        //       channel.id,
+        //       channel.name,
+        //     ),
+        //   ),
+        //   payload: '3',
+        // );
 
         if (mounted) {
           setState(() {

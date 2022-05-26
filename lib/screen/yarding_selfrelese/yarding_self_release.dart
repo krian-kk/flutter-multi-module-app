@@ -27,7 +27,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
   }
 
   int? _selectedIndex;
-  String? caseID;
+  String? _id;
   String? custName;
 
   _onSelected(int index) {
@@ -397,7 +397,7 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                         index);
                                                                     setState(
                                                                         () {
-                                                                      caseID = widget
+                                                                      _id = widget
                                                                           .bloc
                                                                           .yardingAndSelfReleaseData
                                                                           .result![
@@ -452,6 +452,6 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 RepoStatus.buildRepoSelfReleaseTab(
-                    context, caseID, custName, widget.bloc)));
+                    context, _id, custName, widget.bloc)));
   }
 }

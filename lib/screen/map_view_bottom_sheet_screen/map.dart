@@ -127,7 +127,7 @@ class _MapNavigationState extends State<MapNavigation> {
                     fontWeight: FontWeight.w400,
                     color: ColorResource.color101010),
                 descriptionTextAlign: TextAlign.start,
-                okBtnText: Languages.of(context)!.submit.toUpperCase(),
+                okBtnText: Languages.of(context)!.proceed.toUpperCase(),
                 cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
                 okBtnFunction: (val) async {
                   Navigator.pop(context);
