@@ -651,6 +651,11 @@ class _CustomOtherFeedBackBottomSheetState
                 ChangeHealthStatusEvent(),
               );
 
+              // set speech to text data is null
+              returnS2Tdata.result?.reginalText = null;
+              returnS2Tdata.result?.translatedText = null;
+              returnS2Tdata.result?.audioS3Path = null;
+
               if (widget.isAutoCalling) {
                 Navigator.pop(widget.paramValue['context']);
                 Navigator.pop(widget.paramValue['context']);

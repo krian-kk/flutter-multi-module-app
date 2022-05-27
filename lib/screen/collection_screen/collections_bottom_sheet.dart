@@ -688,6 +688,11 @@ class _CustomCollectionsBottomSheetState
                   widget.bloc.add(
                     ChangeHealthStatusEvent(),
                   );
+
+                  // set speech to text data is null
+                  returnS2Tdata.result?.reginalText = null;
+                  returnS2Tdata.result?.translatedText = null;
+                  returnS2Tdata.result?.audioS3Path = null;
                   // Send SMS Notification
                   if (Singleton
                           .instance.contractorInformations!.result!.sendSms! &&
@@ -857,6 +862,10 @@ class _CustomCollectionsBottomSheetState
                               double.parse(amountCollectedControlller.text),
                         ),
                       );
+                      // set speech to text data is null
+                      returnS2Tdata.result?.reginalText = null;
+                      returnS2Tdata.result?.translatedText = null;
+                      returnS2Tdata.result?.audioS3Path = null;
                       if (widget.isAutoCalling) {
                         Navigator.pop(widget.paramValue['context']);
                         Navigator.pop(widget.paramValue['context']);

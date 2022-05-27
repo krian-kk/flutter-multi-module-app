@@ -506,6 +506,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
+          Navigator.pop(event.context!);
           yield PostDataApiSuccessState();
         }
       }
@@ -1351,6 +1352,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.clear();
       phoneSelectedUnreadableClip = '';
+      returnS2TUnReachable.result?.reginalText = null;
+      returnS2TUnReachable.result?.translatedText = null;
+      returnS2TUnReachable.result?.audioS3Path = null;
     }
     return postResult;
   }
@@ -1450,6 +1454,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.clear();
       addressSelectedCustomerNotMetClip = '';
+      returnS2TCustomerNotMet.result?.reginalText = null;
+      returnS2TCustomerNotMet.result?.translatedText = null;
+      returnS2TCustomerNotMet.result?.audioS3Path = null;
     } else {}
     return postResult;
   }
@@ -1552,6 +1559,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
           ConvertString.convertLanguageToConstant(selectedClipValue, context);
       addressInvalidRemarksController.clear();
+      returnS2TAddressInvalid.result?.reginalText = null;
+      returnS2TAddressInvalid.result?.translatedText = null;
+      returnS2TAddressInvalid.result?.audioS3Path = null;
       addressSelectedInvalidClip = '';
     }
     return postResult;
@@ -1653,6 +1663,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       phoneInvalidRemarksController.clear();
       phoneSelectedInvalidClip = '';
+      returnS2TPhoneInvalid.result?.reginalText = null;
+      returnS2TPhoneInvalid.result?.translatedText = null;
+      returnS2TPhoneInvalid.result?.audioS3Path = null;
     }
     return postResult;
   }
