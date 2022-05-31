@@ -550,8 +550,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
       AppUtils.showToast('Please wait audio is converting');
     } else {
       if (isRecord == Constants.submit) {
-        setState(() => remarksControlller.text = translateText);
-        setState(() => isTranslate = false);
+        setState(() {
+          remarksControlller.text = translateText;
+          isTranslate = false;
+        });
       }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton != '') {
@@ -670,6 +672,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 widget.bloc.caseDetailsAPIValue.result!.caseDetails!
                         .followUpPriority =
                     requestBodyData.eventAttr.followUpPriority;
+                // set speech to text data is null
+                returnS2Tdata.result?.reginalText = null;
+                returnS2Tdata.result?.translatedText = null;
+                returnS2Tdata.result?.audioS3Path = null;
 
                 widget.bloc.add(
                   ChangeIsSubmitForMyVisitEvent(
@@ -710,6 +716,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                       context, Constants.successfullySubmitted);
                   Navigator.pop(context);
                 }
+                setState(() {
+                  remarksControlller.clear();
+                  translateText = '';
+                });
               }
             }
           }

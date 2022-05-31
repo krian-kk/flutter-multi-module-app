@@ -115,10 +115,11 @@ class EventDetailsEvent extends CaseDetailsEvent {
 }
 
 class PostImageCapturedEvent extends CaseDetailsEvent {
-  PostImageCapturedEvent({this.postData, this.fileData});
+  PostImageCapturedEvent({this.postData, this.fileData, this.context});
 
   final PostImageCapturedModel? postData;
   final List<File>? fileData;
+  final BuildContext? context;
 }
 
 class AddedNewAddressListEvent extends CaseDetailsEvent {}

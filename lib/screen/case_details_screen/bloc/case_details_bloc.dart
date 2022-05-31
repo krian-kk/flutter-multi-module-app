@@ -297,6 +297,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(EventDetailsEvent(Constants.collections,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
+
+        // // otsEnable is true means show OTS button otherwise dont show
+        // // 'otsEnable' value get from contractor details
+        // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
+        //     true)
         CustomerMetGridModel(
             ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
             onTap: () => add(EventDetailsEvent(Constants.ots,
@@ -393,6 +398,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   callId: event.callId,
                 )),
             isCall: true),
+
+        // // otsEnable is true means show OTS button otherwise dont show
+        // // 'otsEnable' value get from contractor details
+        // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
+        //     true)
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(EventDetailsEvent(
                   Languages.of(event.context)!.ots.toUpperCase(),
@@ -506,6 +516,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
+          Navigator.pop(event.context!);
           yield PostDataApiSuccessState();
         }
       }
@@ -989,7 +1000,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.showToast(
               sendwhatsappModel.result!.message ?? 'Send Whatsapp Success');
         } else {
-          AppUtils.showToast('Error while sending WhatsApp');
+          AppUtils.showToast(
+            'Error while sending WhatsApp',
+            backgroundColor: Colors.red,
+          );
         }
       } else {
         AppUtils.noInternetSnackbar(event.context);
@@ -1351,6 +1365,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       phoneUnreachableNextActionDateController.text = '';
       phoneUnreachableRemarksController.clear();
       phoneSelectedUnreadableClip = '';
+      returnS2TUnReachable.result?.reginalText = null;
+      returnS2TUnReachable.result?.translatedText = null;
+      returnS2TUnReachable.result?.audioS3Path = null;
     }
     return postResult;
   }
@@ -1450,6 +1467,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       addressCustomerNotMetNextActionDateController.text = '';
       addressCustomerNotMetRemarksController.clear();
       addressSelectedCustomerNotMetClip = '';
+      returnS2TCustomerNotMet.result?.reginalText = null;
+      returnS2TCustomerNotMet.result?.translatedText = null;
+      returnS2TCustomerNotMet.result?.audioS3Path = null;
     } else {}
     return postResult;
   }
@@ -1552,6 +1572,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseDetailsAPIValue.result?.caseDetails?.collSubStatus =
           ConvertString.convertLanguageToConstant(selectedClipValue, context);
       addressInvalidRemarksController.clear();
+      returnS2TAddressInvalid.result?.reginalText = null;
+      returnS2TAddressInvalid.result?.translatedText = null;
+      returnS2TAddressInvalid.result?.audioS3Path = null;
       addressSelectedInvalidClip = '';
     }
     return postResult;
@@ -1653,6 +1676,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
       phoneInvalidRemarksController.clear();
       phoneSelectedInvalidClip = '';
+      returnS2TPhoneInvalid.result?.reginalText = null;
+      returnS2TPhoneInvalid.result?.translatedText = null;
+      returnS2TPhoneInvalid.result?.audioS3Path = null;
     }
     return postResult;
   }

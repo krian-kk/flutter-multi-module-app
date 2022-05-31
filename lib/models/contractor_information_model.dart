@@ -64,7 +64,8 @@ class ContractorResult {
       this.userAdminList,
       this.feedbackTemplate,
       this.otsEnable,
-      this.appBuildVersion});
+      this.appBuildVersion,
+      this.hideSendRepaymentInfoWhatsappButton});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -120,6 +121,8 @@ class ContractorResult {
     }
     otsEnable = json['otsEnable'];
     appBuildVersion = json['appBuildVersion'];
+    hideSendRepaymentInfoWhatsappButton =
+        json['hideSendRepaymentInfoWhatsappButton'];
   }
   String? sId;
   String? usernamePrefix;
@@ -161,6 +164,7 @@ class ContractorResult {
   List<FeedbackTemplate>? feedbackTemplate;
   bool? otsEnable;
   String? appBuildVersion;
+  bool? hideSendRepaymentInfoWhatsappButton;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -213,6 +217,8 @@ class ContractorResult {
     }
     data['otsEnable'] = otsEnable;
     data['appBuildVersion'] = appBuildVersion;
+    data['hideSendRepaymentInfoWhatsappButton'] =
+        hideSendRepaymentInfoWhatsappButton;
     return data;
   }
 }
