@@ -1000,7 +1000,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           AppUtils.showToast(
               sendwhatsappModel.result!.message ?? 'Send Whatsapp Success');
         } else {
-          AppUtils.showToast('Error while sending WhatsApp');
+          AppUtils.showToast(
+            'Error while sending WhatsApp',
+            backgroundColor: Colors.red,
+          );
         }
       } else {
         AppUtils.noInternetSnackbar(event.context);
