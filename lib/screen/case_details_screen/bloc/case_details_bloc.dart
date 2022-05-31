@@ -297,6 +297,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             Languages.of(event.context!)!.collections.toUpperCase(),
             onTap: () => add(EventDetailsEvent(Constants.collections,
                 caseDetailsAPIValue.result?.addressDetails!, false))),
+
+        // // otsEnable is true means show OTS button otherwise dont show
+        // // 'otsEnable' value get from contractor details
+        // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
+        //     true)
         CustomerMetGridModel(
             ImageResource.ots, Languages.of(event.context!)!.ots.toUpperCase(),
             onTap: () => add(EventDetailsEvent(Constants.ots,
@@ -393,6 +398,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   callId: event.callId,
                 )),
             isCall: true),
+
+        // // otsEnable is true means show OTS button otherwise dont show
+        // // 'otsEnable' value get from contractor details
+        // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
+        //     true)
         CustomerMetGridModel(ImageResource.ots, Constants.ots,
             onTap: () => add(EventDetailsEvent(
                   Languages.of(event.context)!.ots.toUpperCase(),
