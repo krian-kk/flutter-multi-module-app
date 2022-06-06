@@ -42,6 +42,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/custom_snackbar/top_snack_bar.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/language_to_constant_convert.dart';
@@ -328,9 +329,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paymentCofigurationData =
               PaymentConfigurationModel.fromJson(postResult['data']);
 
-          isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
-          isGeneratePaymentLink =
-              paymentCofigurationData.data![0].payment![0].dynamicLink!;
+          if (paymentCofigurationData.data!.isNotEmpty) {
+            isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
+            isGeneratePaymentLink =
+                paymentCofigurationData.data![0].payment![0].dynamicLink!;
+          } else {
+            AppUtils.showToast('The payment data is empty');
+          }
         }
       }
       yield CaseDetailsLoadedState();
