@@ -1099,4 +1099,16 @@ class LanguageHi extends Languages {
 
   @override
   String get proceed => 'आगे बढ़ना';
+
+  @override
+  String get authorizationLetter => 'प्राधिकार पत्र';
+
+  @override
+  String get idCard => 'परिचय पत्र';
+
+  @override
+  String get front => 'सामने';
+
+  @override
+  String get back => 'पीछे';
 }

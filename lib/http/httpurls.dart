@@ -1,8 +1,8 @@
 class HttpUrl {
   // 1st - Customer will be reject ->
-  static String url = 'https://collect.origa.ai';
+  // static String url = 'https://collect.origa.ai';
 
-  // static String url = 'https://uat-collect.origa.ai';
+  static String url = 'https://uat-collect.origa.ai';
 
   // static String url = 'https://collect.instalmint.com';
   // static String? url = '';
@@ -255,4 +255,13 @@ class HttpUrl {
 
   //chat count update
   static final String updateChatSeen = '$url/node/api/updateFCMMessage';
+
+  static final String authorizationLetter =
+      baseUrl + fieldAgent + 'profile/getAuthorizationLetter';
+
+  static final String idCardFront =
+      baseUrl + fieldAgent + 'profile/getIdCardFront';
+
+  static final String idCardBack =
+      baseUrl + fieldAgent + 'profile/getIdCardBack';
 }

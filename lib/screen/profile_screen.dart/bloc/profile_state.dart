@@ -8,9 +8,15 @@ class ProfileLoadedState extends ProfileState {}
 
 class ProfileLoadingState extends ProfileState {}
 
+class AuthorizationLoadingState extends ProfileState {}
+
 class ClickNotificationState extends ProfileState {}
 
 class ClickChangeLaunguageState extends ProfileState {}
+
+class ClickAuthorizationLetterState extends ProfileState {}
+
+class ClickIDCardState extends ProfileState {}
 
 class CustomerLaunguagePrefrerenceState extends ProfileState {}
 
@@ -33,3 +39,5 @@ class LoginState extends ProfileState {}
 class NoInternetState extends ProfileState {}
 
 class PostDataApiSuccessState extends ProfileState {}
+
+class SwitchCardState extends ProfileState {}

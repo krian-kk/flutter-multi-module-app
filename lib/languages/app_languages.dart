@@ -727,4 +727,12 @@ abstract class Languages {
   String get beneficiaryAccountNumber;
 
   String get chat;
+
+  String get authorizationLetter;
+
+  String get idCard;
+
+  String get front;
+
+  String get back;
 }

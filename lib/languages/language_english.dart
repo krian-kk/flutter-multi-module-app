@@ -1096,4 +1096,16 @@ class LanguageEn extends Languages {
 
   @override
   String get proceed => 'Proceed';
+
+  @override
+  String get authorizationLetter => 'Authorization Letter';
+
+  @override
+  String get idCard => 'ID Card';
+
+  @override
+  String get front => 'Front';
+
+  @override
+  String get back => 'Back';
 }

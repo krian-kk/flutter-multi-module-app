@@ -11,6 +11,10 @@ class ClickNotificationEvent extends ProfileEvent {}
 
 class ClickChangeLaunguageEvent extends ProfileEvent {}
 
+class ClickAuthorizationLetterEvent extends ProfileEvent {}
+
+class ClickIDCardEvent extends ProfileEvent {}
+
 class CustomerLaunguagePrefrerenceEvent extends ProfileEvent {
   CustomerLaunguagePrefrerenceEvent(this.context);
   final BuildContext context;
@@ -38,3 +42,5 @@ class PostProfileImageEvent extends ProfileEvent {
   PostProfileImageEvent({this.postValue});
   final dynamic postValue;
 }
+
+class SwitchCardEvent extends ProfileEvent {}

@@ -40,6 +40,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
   int newMsgCount = 0;
 
+  String? authorizationLetter;
+  String? idCardFront;
+  String? idCardBack;
+
 // customer language preference data
   List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
 
@@ -110,8 +114,59 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is ClickNotificationEvent) {
       yield ClickNotificationState();
     }
+
     if (event is ClickChangeLaunguageEvent) {
       yield ClickChangeLaunguageState();
+    }
+
+    if (event is ClickAuthorizationLetterEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetState();
+      } else {
+        yield AuthorizationLoadingState();
+
+        final Map<String, dynamic> getAuthorizationLetter =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.authorizationLetter);
+        if (getAuthorizationLetter[Constants.success]) {
+          final Map<String, dynamic> jsonData = getAuthorizationLetter['data'];
+          authorizationLetter = jsonData['result'].toString();
+          // AppUtils.showErrorToast(jsonData['result']['message']);
+        }
+        yield ClickAuthorizationLetterState();
+      }
+      yield ProfileLoadedState();
+    }
+
+    if (event is ClickIDCardEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        yield NoInternetState();
+      } else {
+        yield AuthorizationLoadingState();
+
+        final Map<String, dynamic> getIdCardFront =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.idCardFront);
+        if (getIdCardFront[Constants.success]) {
+          final Map<String, dynamic> idCardFrontData = getIdCardFront['data'];
+          // AppUtils.showErrorToast(idCardFrontData['result']['message']);
+          idCardFront = idCardFrontData['result'].toString();
+        }
+
+        final Map<String, dynamic> getIdCardBack =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.idCardBack);
+        if (getIdCardBack[Constants.success]) {
+          final Map<String, dynamic> idCardBackData = getIdCardBack['data'];
+          idCardBack = idCardBackData['result'].toString();
+        }
+        yield ClickIDCardState();
+      }
+      yield ProfileLoadedState();
+    }
+
+    if (event is SwitchCardEvent) {
+      yield SwitchCardState();
     }
 
     if (event is CustomerLaunguagePrefrerenceEvent) {

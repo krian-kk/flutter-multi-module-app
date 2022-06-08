@@ -1103,4 +1103,16 @@ class LanguageTa extends Languages {
 
   @override
   String get proceed => 'தொடரவும்';
+
+  @override
+  String get authorizationLetter => 'அங்கீகார கடிதம்';
+
+  @override
+  String get idCard => 'அடையாள அட்டை';
+
+  @override
+  String get front => 'முன் பக்கம்';
+
+  @override
+  String get back => 'பின் பக்கம்';
 }

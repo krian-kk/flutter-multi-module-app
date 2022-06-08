@@ -65,7 +65,8 @@ class ContractorResult {
       this.feedbackTemplate,
       this.otsEnable,
       this.appBuildVersion,
-      this.hideSendRepaymentInfoWhatsappButton});
+      this.hideSendRepaymentInfoWhatsappButton,
+      this.enableAgencyManagement});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -123,6 +124,7 @@ class ContractorResult {
     appBuildVersion = json['appBuildVersion'];
     hideSendRepaymentInfoWhatsappButton =
         json['hideSendRepaymentInfoWhatsappButton'];
+    enableAgencyManagement = json['enableAgencyManagement'];
   }
   String? sId;
   String? usernamePrefix;
@@ -165,6 +167,7 @@ class ContractorResult {
   bool? otsEnable;
   String? appBuildVersion;
   bool? hideSendRepaymentInfoWhatsappButton;
+  bool? enableAgencyManagement;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -219,6 +222,7 @@ class ContractorResult {
     data['appBuildVersion'] = appBuildVersion;
     data['hideSendRepaymentInfoWhatsappButton'] =
         hideSendRepaymentInfoWhatsappButton;
+    data['enableAgencyManagement'] = enableAgencyManagement;
     return data;
   }
 }

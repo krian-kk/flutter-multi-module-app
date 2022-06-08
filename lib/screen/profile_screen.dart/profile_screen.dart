@@ -37,6 +37,9 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'authorization_letter.dart';
+import 'id_card.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -212,6 +215,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
+      if (Singleton
+          .instance.contractorInformations!.result!.enableAgencyManagement!)
+        ProfileNavigation(
+            title: Languages.of(context)!.authorizationLetter,
+            isEnable: true,
+            onTap: () {
+              bloc.add(ClickAuthorizationLetterEvent());
+            }),
+      if (Singleton
+          .instance.contractorInformations!.result!.enableAgencyManagement!)
+        ProfileNavigation(
+            title: Languages.of(context)!.idCard,
+            isEnable: true,
+            onTap: () {
+              bloc.add(ClickIDCardEvent());
+            }),
       // ProfileNavigation(
       //     title: Languages.of(context)!.notification,
       //     notificationCount: 3,
@@ -261,6 +280,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           languageBottomSheet();
         }
 
+        if (state is ClickAuthorizationLetterState) {
+          authorizationLetterBottomSheet();
+        }
+
+        if (state is ClickIDCardState) {
+          idCardBottomSheet();
+        }
+
         if (state is CustomerLaunguagePrefrerenceState) {
           customerSupportLanguageBottomSheet();
         }
@@ -297,6 +324,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: BlocBuilder<ProfileBloc, ProfileState>(
         bloc: bloc,
         builder: (BuildContext context, ProfileState state) {
+          if (state is AuthorizationLoadingState) {
+            return const CustomLoadingWidget();
+          }
           if (state is ProfileLoadingState) {
             // return const CustomLoadingWidget();
             return const SkeletonLoading();
@@ -786,6 +816,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
                 LanguageBottomSheetScreen(bloc: bloc)));
+  }
+
+  authorizationLetterBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                AuthorizationLetterBottomSheetScreen(bloc: bloc)));
+  }
+
+  idCardBottomSheet() {
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorFFFFFF,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                IdCardBottomSheetScreen(bloc: bloc)));
   }
 
   customerSupportLanguageBottomSheet() {
