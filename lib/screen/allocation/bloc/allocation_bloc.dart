@@ -139,10 +139,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield AllocationOfflineState(successResponse: 'offlineData');
       } else {
         final SharedPreferences _pref = await SharedPreferences.getInstance();
-        // if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
-        //   debugPrint('Values--> in off initiateState');
-        //   yield AllocationOfflineState(successResponse: "offlineData");
-        // } else {
         isNoInternetAndServerError = false;
         // Now set priority case is a load more event
         isPriorityLoadMore = true;

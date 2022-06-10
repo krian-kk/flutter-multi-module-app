@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +46,7 @@ import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
@@ -53,6 +56,23 @@ class AllocationScreen extends StatefulWidget {
 
   @override
   _AllocationScreenState createState() => _AllocationScreenState();
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    if (kDebugMode) {
+      AppUtils.showToast('Work manager triggered ');
+      print('Native called background task: $task');
+    } //simpleTask will be emitted here.
+    if (await Permission.location.isGranted) {
+      final Position result = await Geolocator.getCurrentPosition();
+      await APIRepository.apiRequest(
+          APIRequestType.put,
+          HttpUrl.updateDeviceLocation +
+              'lat=${result.latitude}&lng=${result.longitude}');
+    }
+    return Future.value(true);
+  });
 }
 
 class _AllocationScreenState extends State<AllocationScreen>
@@ -97,11 +117,51 @@ class _AllocationScreenState extends State<AllocationScreen>
   @override
   void initState() {
     super.initState();
-    debugPrint('Allocation screen');
     bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
+
     internetChecking();
     getCurrentLocation();
+  }
+
+  Future<void> locationTracker() async {
+    await Workmanager().initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
+    if (Platform.isAndroid) {
+      if (kDebugMode) {
+        AppUtils.showToast('Platform.isAndroid');
+      }
+      await Workmanager().registerPeriodicTask(
+        'uniqueNameIdentifier',
+        'uniqueNamePeriodicTask',
+        constraints: Constraints(
+            networkType: NetworkType.connected,
+            requiresBatteryNotLow: true,
+            requiresCharging: true,
+            requiresDeviceIdle: true,
+            requiresStorageNotLow: true),
+        initialDelay: const Duration(seconds: 5),
+        frequency: const Duration(minutes: 15),
+      );
+    } else {
+      if (kDebugMode) {
+        AppUtils.showToast('Platform.isIOS ');
+      }
+      await Workmanager().registerPeriodicTask(
+        'uniqueNameIdentifier',
+        'uniqueNamePeriodicTask',
+        frequency: const Duration(minutes: 15),
+        initialDelay: const Duration(seconds: 5),
+        constraints: Constraints(
+            networkType: NetworkType.connected,
+            requiresBatteryNotLow: true,
+            requiresCharging: true,
+            requiresDeviceIdle: true,
+            requiresStorageNotLow: true),
+      );
+    }
   }
 
   Future<void> internetChecking() async {
@@ -152,23 +212,32 @@ class _AllocationScreenState extends State<AllocationScreen>
   //get current location lat, alng and address
   getCurrentLocation() async {
     if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
-      final Position result = await Geolocator.getCurrentPosition();
-      if (mounted) {
-        setState(() {
-          position = result;
-        });
-      }
-
-      final List<Placemark> placemarks =
-          await placemarkFromCoordinates(result.latitude, result.longitude);
-      if (mounted) {
-        setState(() {
-          currentAddress = placemarks.toList().first.street.toString() +
-              ', ' +
-              placemarks.toList().first.subLocality.toString() +
-              ', ' +
-              placemarks.toList().first.postalCode.toString();
-        });
+      await Permission.location.request();
+      if (await Permission.location.isGranted) {
+        final Position result = await Geolocator.getCurrentPosition();
+        if (mounted) {
+          setState(() {
+            position = result;
+          });
+        }
+        final List<Placemark> placeMarks =
+            await placemarkFromCoordinates(result.latitude, result.longitude);
+        if (mounted) {
+          setState(() {
+            currentAddress = placeMarks.toList().first.street.toString() +
+                ', ' +
+                placeMarks.toList().first.subLocality.toString() +
+                ', ' +
+                placeMarks.toList().first.postalCode.toString();
+          });
+          await APIRepository.apiRequest(
+              APIRequestType.put,
+              HttpUrl.updateDeviceLocation +
+                  'lat=${position.latitude}&lng=${position.longitude}');
+          await locationTracker();
+        }
+      } else {
+        await openAppSettings();
       }
     }
   }

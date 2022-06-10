@@ -5,6 +5,7 @@ import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -16,7 +17,9 @@ import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_theme.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';
@@ -35,8 +38,8 @@ Future<void> main() async {
   if (Platform.isIOS) {
     requestNotificationPermission();
   }
-
   Bloc.observer = EchoBlocDelegate();
+
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (BuildContext context) {
@@ -83,7 +86,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
-      debugPrint('Receiving notification messsage ---> ${message}');
+      debugPrint('Receiving notification messsage ---> $message');
 
       if (message != null) {
         debugPrint('Receiving notification messsage ---> ${message.data}');
@@ -196,7 +199,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<dynamic> forgroundOnClickNotification(String? payload) async {
-    debugPrint('forgroundOnClickNotification published!... -----> ${payload}');
+    debugPrint('forgroundOnClickNotification published!... -----> $payload');
     //Handle notification tapped logic here
     bloc!.add(AppStarted(context: context, notificationData: payload));
   }
@@ -242,24 +245,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       fetchTimeout: const Duration(seconds: 10),
       minimumFetchInterval: const Duration(seconds: 5),
     ));
-    // try {
-    //   // final SharedPreferences _prefs = await SharedPreferences.getInstance();
-    //   // if (kDebugMode) {
-    //   //   HttpUrl.url = remoteConfig.getString('uatMobileAppBaseUrl');
-    //   // } else {
-    //   //   HttpUrl.url = remoteConfig.getString('productionMobileAppBaseUrl');
-    //   // }
-    //   // if (kDebugMode) {
-    //   //   Singleton.instance.isOfflineStorageFeatureEnabled = true;
-    //   // } else {
-    //   //   Singleton.instance.isOfflineStorageFeatureEnabled =
-    //   //       _prefs.getBool('isOfflineFeature') ?? false;
-    //   // }
-    //   // Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
-    // } catch (e) {
-    //   debugPrint('Catch-> $e');
-    //   await setupRemoteConfig();
-    // }
     return remoteConfig;
   }
 

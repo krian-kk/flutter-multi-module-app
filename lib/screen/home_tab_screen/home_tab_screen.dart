@@ -11,7 +11,6 @@ import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
-import 'package:origa/screen/message_screen/chat_screen_bloc.dart';
 import 'package:origa/screen/notification_navigate_screen.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/singleton.dart';
@@ -26,7 +25,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/app_utils.dart';
-import '../message_screen/chat_screen_event.dart';
 import '../notification_navigate_screen.dart';
 import 'bloc/home_tab_event.dart';
 
@@ -168,16 +166,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                 Singleton.instance.charScreenFromNotification = true;
                 _controller!.index = 2;
               });
-              // final SharedPreferences _prefs =
-              //     await SharedPreferences.getInstance();
-              // // Initiate chat bloc
-              // final ChatScreenBloc chatbloc = ChatScreenBloc();
-              // chatbloc.add(ChatInitialEvent());
-              // await Future<dynamic>.delayed(const Duration(milliseconds: 1000));
-              // // Navigate Chat Screen
-              // OnclickNotificationNavigateScreen().messageScreenBottomSheet(
-              //     context,
-              //     fromID: _prefs.getString(Constants.agentRef));
               break;
             case '4':
               // Initiate Dashboard bloc
@@ -185,7 +173,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               //Navigate MyVisit and MyCalls Screen
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyVisitsEvent());
-              // dashboardbloc.add(SetTimeperiodValueEvent());
               await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
               if (dashboardbloc.myVisitsData.result != null) {
                 OnclickNotificationNavigateScreen()
