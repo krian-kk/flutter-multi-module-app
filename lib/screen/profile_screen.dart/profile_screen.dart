@@ -35,6 +35,7 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/web_view_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authorization_letter.dart';
@@ -265,7 +266,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             bloc.add(ClickChangeSecurityPinEvent());
           },
           isEnable: true,
-        )
+        ),
+      ProfileNavigation(
+          title: Languages.of(context)!.help,
+          isEnable: true,
+          onTap: () {
+            webViewScreen(context,
+                urlAddress: 'https://origahelpdesk.w3spaces.com');
+          }),
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: bloc,
@@ -781,6 +789,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 )));
+  }
+
+  webViewScreen(BuildContext context, {required String urlAddress}) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: false,
+      context: context,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(100),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: WebViewWidget(urlAddress: urlAddress),
+        );
+      },
+    );
   }
 
   changePasswordBottomSheet(BuildContext buildContext) {
