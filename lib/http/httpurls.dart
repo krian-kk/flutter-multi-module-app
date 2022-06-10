@@ -1,11 +1,7 @@
 class HttpUrl {
   // 1st - Customer will be reject ->
   // static String url = 'https://collect.origa.ai';
-
   static String url = 'https://uat-collect.origa.ai';
-
-  // static String url = 'https://collect.instalmint.com';
-  // static String? url = '';
 
   // static String? url = Singleton.instance.baseUrl;
   static const String version = 'v1/';
@@ -25,6 +21,7 @@ class HttpUrl {
 
   static String sendSMSurl = '$url/node/api/v2/notification/sendNotification';
   static final String chatHistory2 = '$url/node/api/getChatHistory/';
+
   //Get API
   // For AutoCalling API
   static final String autoCallingURL =
@@ -268,4 +265,7 @@ class HttpUrl {
 
   static final String idCardBack =
       baseUrl + fieldAgent + 'profile/getIdCardBack';
+  // Get Agent Secure Pin Code
+  static final String updateDeviceLocation =
+      baseUrl + fieldAgent + 'profile/updateDeviceLocation?';
 }
