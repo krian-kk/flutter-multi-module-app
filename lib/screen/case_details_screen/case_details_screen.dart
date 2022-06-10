@@ -43,6 +43,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import '../../widgets/case_detail_expand_list_wiget.dart';
+import 'check_whatsapp_button_enable.dart';
 
 class CaseDetailsScreen extends StatefulWidget {
   const CaseDetailsScreen(
@@ -1277,9 +1278,22 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ),
                                   ),
                         const SizedBox(width: 30),
-                        Singleton.instance.contractorInformations?.result
-                                    ?.hideSendRepaymentInfoWhatsappButton ==
-                                false
+                        CheckWhatsappButtonEnable.checkWAbutton(
+                                whatsappTemplate: Singleton
+                                    .instance
+                                    .contractorInformations
+                                    ?.result
+                                    ?.repaymentWhatsappTemplate,
+                                whatsappTemplateName: Singleton
+                                    .instance
+                                    .contractorInformations
+                                    ?.result
+                                    ?.repaymentWhatsappTemplateName,
+                                whatsappKey: bloc.campaingnConfigModel.result
+                                    ?.whatsappApiKey)
+                            // Singleton.instance.contractorInformations?.result
+                            //             ?.hideSendRepaymentInfoWhatsappButton ==
+                            //         false
                             ? bloc.isSendWhatsappLoading
                                 ? Container(
                                     margin: const EdgeInsets.only(right: 50),
@@ -1402,9 +1416,22 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Singleton.instance.contractorInformations?.result
-                                ?.hideSendRepaymentInfoWhatsappButton ==
-                            false
+                    CheckWhatsappButtonEnable.checkWAbutton(
+                            whatsappTemplate: Singleton
+                                .instance
+                                .contractorInformations
+                                ?.result
+                                ?.repaymentWhatsappTemplate,
+                            whatsappTemplateName: Singleton
+                                .instance
+                                .contractorInformations
+                                ?.result
+                                ?.repaymentWhatsappTemplateName,
+                            whatsappKey: bloc
+                                .campaingnConfigModel.result?.whatsappApiKey)
+                        // Singleton.instance.contractorInformations?.result
+                        //             ?.hideSendRepaymentInfoWhatsappButton ==
+                        //         false
                         ? bloc.isGeneratePaymentLink
                             ? bloc.isGeneratePaymentLinkLoading
                                 ? Container(

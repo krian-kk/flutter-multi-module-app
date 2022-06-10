@@ -354,9 +354,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 : Scaffold(
                     backgroundColor: ColorResource.colorF7F8FA,
-                    body: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
-                      child: SingleChildScrollView(
+                    body: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
@@ -655,7 +655,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                               ),
-                            )
+                            ),
+                            const SizedBox(height: 25),
                           ],
                         ),
                       ),

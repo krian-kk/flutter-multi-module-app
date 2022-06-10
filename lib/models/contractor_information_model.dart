@@ -66,7 +66,9 @@ class ContractorResult {
       this.otsEnable,
       this.appBuildVersion,
       this.hideSendRepaymentInfoWhatsappButton,
-      this.enableAgencyManagement});
+      this.enableAgencyManagement,
+      this.repaymentWhatsappTemplate,
+      this.repaymentWhatsappTemplateName});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -125,6 +127,8 @@ class ContractorResult {
     hideSendRepaymentInfoWhatsappButton =
         json['hideSendRepaymentInfoWhatsappButton'];
     enableAgencyManagement = json['enableAgencyManagement'];
+    repaymentWhatsappTemplate = json['repaymentWhatsappTemplate'];
+    repaymentWhatsappTemplateName = json['repaymentWhatsappTemplateName'];
   }
   String? sId;
   String? usernamePrefix;
@@ -168,6 +172,8 @@ class ContractorResult {
   String? appBuildVersion;
   bool? hideSendRepaymentInfoWhatsappButton;
   bool? enableAgencyManagement;
+  String? repaymentWhatsappTemplate;
+  String? repaymentWhatsappTemplateName;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -223,6 +229,8 @@ class ContractorResult {
     data['hideSendRepaymentInfoWhatsappButton'] =
         hideSendRepaymentInfoWhatsappButton;
     data['enableAgencyManagement'] = enableAgencyManagement;
+    data['repaymentWhatsappTemplate'] = repaymentWhatsappTemplate;
+    data['repaymentWhatsappTemplateName'] = repaymentWhatsappTemplateName;
     return data;
   }
 }

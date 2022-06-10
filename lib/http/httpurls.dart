@@ -253,6 +253,10 @@ class HttpUrl {
   static final String sendWhatsapp =
       baseUrl + fieldAgent + 'case-details/notifyCustomer?';
 
+  //Send Whatsapp button showing based on whatsapp api key
+  static final String campaignConfig =
+      baseUrl + fieldAgent + 'case-details-events/campaignConfig';
+
   //chat count update
   static final String updateChatSeen = '$url/node/api/updateFCMMessage';
 

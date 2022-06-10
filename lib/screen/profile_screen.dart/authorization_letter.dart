@@ -1,13 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-
 import '../../languages/app_languages.dart';
 import '../../utils/color_resource.dart';
 import '../../widgets/bottomsheet_appbar.dart';
@@ -95,10 +91,7 @@ class _AuthorizationLetterBottomSheetScreenState
                                     JavascriptChannel(
                                         name: 'JavascriptChannel',
                                         onMessageReceived:
-                                            (JavascriptMessage message) {
-                                          // debugPrint(
-                                          //     'JavascriptMessage message ----> ${message.message}');
-                                        })
+                                            (JavascriptMessage message) {})
                                   },
                                   onPageFinished: (String finish) {
                                     setState(() => isLoading = false);

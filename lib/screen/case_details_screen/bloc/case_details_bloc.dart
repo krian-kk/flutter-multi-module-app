@@ -12,6 +12,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
+import 'package:origa/models/campaign_config_model.dart';
 import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/case_details_api_model/result.dart';
@@ -90,6 +91,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   String? noInternetAndServerErrorMsg = '';
   CaseDetailsApiModel caseDetailsAPIValue = CaseDetailsApiModel();
   SendWhatsappModel sendwhatsappModel = SendWhatsappModel();
+  CampaignConfigModel campaingnConfigModel = CampaignConfigModel();
 
   // Address Details Screen
   String addressSelectedCustomerNotMetClip = '';
@@ -338,6 +340,26 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           }
         }
       }
+
+      //Send Whatsapp button showing based on whatsapp api key
+      if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
+        final Map<String, dynamic> getCampaignConfig =
+            await APIRepository.apiRequest(
+                APIRequestType.get, HttpUrl.campaignConfig);
+        if (getCampaignConfig[Constants.success] == true) {
+          try {
+            campaingnConfigModel =
+                CampaignConfigModel.fromJson(getCampaignConfig['data']);
+            debugPrint(
+                '-----whatsapp key----- ${campaingnConfigModel.result!.whatsappApiKey}');
+          } catch (e) {
+            debugPrint(e.toString());
+          }
+        }
+      } else {
+        AppUtils.noInternetSnackbar(event.context!);
+      }
+
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
