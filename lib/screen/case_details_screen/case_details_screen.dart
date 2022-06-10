@@ -1288,7 +1288,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     .instance
                                     .contractorInformations
                                     ?.result
-                                    ?.repaymentWhatsappTemplateName,
+                                    ?.sendRepaymentInfoWhatsappTemplateName,
                                 whatsappKey: bloc.campaingnConfigModel.result
                                     ?.whatsappApiKey)
                             // Singleton.instance.contractorInformations?.result
@@ -1426,7 +1426,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                 .instance
                                 .contractorInformations
                                 ?.result
-                                ?.repaymentWhatsappTemplateName,
+                                ?.sendRepaymentInfoWhatsappTemplateName,
                             whatsappKey: bloc
                                 .campaingnConfigModel.result?.whatsappApiKey)
                         // Singleton.instance.contractorInformations?.result
