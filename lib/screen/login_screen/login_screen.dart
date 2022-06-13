@@ -122,32 +122,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return returnValue;
   }
 
-  webViewScreen(BuildContext context, {required String urlAddress}) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      isDismissible: false,
-      enableDrag: false,
-      context: context,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return WillPopScope(
-          onWillPop: () async {
-            return false;
-          },
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.9,
-            child: WebViewWidget(urlAddress: urlAddress),
-          ),
-        );
-      },
-    );
-  }
-
   Future<bool> createMpin(String? mPin) async {
     bool returnValue = false;
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
@@ -556,22 +530,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 ColorResource.colorffffff,
                                           ),
                                         const SizedBox(height: 10),
-                                        // CustomButton(
-                                        //   Languages.of(context)!.help,
-                                        //   onTap: () => webViewScreen(
-                                        //     context,
-                                        //     urlAddress:
-                                        //         'https://www.google.com/?client=safari',
-                                        //   ),
-                                        //   borderColor:
-                                        //       ColorResource.color23375A,
-                                        //   cardShape: 90,
-                                        //   fontSize: FontSize.sixteen,
-                                        //   fontWeight: FontWeight.w600,
-                                        //   textColor: ColorResource.color23375A,
-                                        //   buttonBackgroundColor:
-                                        //       ColorResource.colorffffff,
-                                        // ),
+                                        CustomButton(
+                                          Languages.of(context)!.help,
+                                          onTap: () => webViewScreen(
+                                            context,
+                                            urlAddress:
+                                                'https://origahelpdesk.w3spaces.com',
+                                          ),
+                                          borderColor:
+                                              ColorResource.color23375A,
+                                          cardShape: 90,
+                                          fontSize: FontSize.sixteen,
+                                          fontWeight: FontWeight.w600,
+                                          textColor: ColorResource.color23375A,
+                                          buttonBackgroundColor:
+                                              ColorResource.colorffffff,
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -593,6 +567,29 @@ class _LoginScreenState extends State<LoginScreen> {
               });
         });
   }
+
+
+  webViewScreen(BuildContext context, {required String urlAddress}) {
+    showModalBottomSheet(
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: false,
+      context: context,
+      backgroundColor: ColorResource.colorFFFFFF,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(100),
+        ),
+      ),
+      builder: (BuildContext context) {
+        return SizedBox(
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: WebViewWidget(urlAddress: urlAddress),
+        );
+      },
+    );
+  }
+
 
   resendOTPBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(

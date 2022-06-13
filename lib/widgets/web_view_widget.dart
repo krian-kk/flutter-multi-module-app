@@ -1,13 +1,7 @@
-import 'dart:async';
-import 'dart:convert';
-
-import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:origa/languages/app_languages.dart';
-import 'package:origa/widgets/bottomsheet_appbar.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWidget extends StatefulWidget {
   const WebViewWidget({Key? key, required this.urlAddress}) : super(key: key);
@@ -18,63 +12,73 @@ class WebViewWidget extends StatefulWidget {
 }
 
 class _WebViewWidgetState extends State<WebViewWidget> {
-  late WebViewController controller;
-  final Completer<WebViewController> completer = Completer<WebViewController>();
+  // late WebViewController controller;
+  // final Completer<WebViewController> completer = Completer<WebViewController>();
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    /*final flutterWebviewPlugin = FlutterWebviewPlugin();
+
+    flutterWebviewPlugin.onUrlChanged.listen((String url) {
+      AppUtils.showToast('url-> $url');
+    });
+    flutterWebviewPlugin.onDestroy.listen((event) {
+      AppUtils.showToast('onDestroy-> $event');
+    });
+    flutterWebviewPlugin.onUrlChanged.listen((event) {
+      AppUtils.showToast('onUrlChanged-> $event');
+    });
+
+    flutterWebviewPlugin.onProgressChanged.listen((event) {
+      debugPrint('onProgressChanged--> $event');
+    });
+
+    flutterWebviewPlugin.onStateChanged.listen((event) {
+      debugPrint('onStateChanged--> $event');
+    });
+
+    flutterWebviewPlugin.onBack.listen((event) {
+      debugPrint('onBack--> $event');
+    });*/
+  }
+
+  void navigator() {
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          BottomSheetAppbar(
-            title: 'Help',
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                .copyWith(bottom: 5),
-          ),
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                WebView(
-                  javascriptMode: JavascriptMode.unrestricted,
-                  initialUrl: '',
-                  onWebViewCreated:
-                      (WebViewController webViewController) async {
-                    controller = webViewController;
-                    final String fileContent =
-                        await rootBundle.loadString('assets/help.html');
-                    await controller.loadUrl(Uri.dataFromString(fileContent,
-                            mimeType: 'text/html',
-                            encoding: Encoding.getByName('utf-8'))
-                        .toString());
-                  },
-                  onPageStarted: (String val) {
-                    //_loadHTML(controller: controller);
-                  },
-                  javascriptChannels: {
-                    JavascriptChannel(
-                        name: 'JavascriptChannel',
-                        onMessageReceived: (JavascriptMessage message) {
-                          debugPrint(
-                              'JavascriptMessage message ----> ${message.message}');
-                        })
-                  },
-                  onPageFinished: (String finish) {
-                    setState(() => isLoading = false);
-                  },
-                ),
-                isLoading ? const CustomLoadingWidget() : const SizedBox(),
-              ],
+    return WillPopScope(
+      onWillPop: () async {
+        navigator();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Expanded(
+              child: Stack(
+                children: const <Widget>[
+                  WebviewScaffold(
+                    url: 'https://origahelpdesk.w3spaces.com',
+                    clearCache: true,
+                    allowFileURLs: true,
+                    displayZoomControls: true,
+                    appCacheEnabled: true,
+                    withLocalUrl: true,
+                    supportMultipleWindows: true,
+                    resizeToAvoidBottomInset: true,
+                    initialChild: CustomLoadingWidget(),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
