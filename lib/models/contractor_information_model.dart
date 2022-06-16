@@ -68,7 +68,7 @@ class ContractorResult {
       this.hideSendRepaymentInfoWhatsappButton,
       this.enableAgencyManagement,
       this.repaymentWhatsappTemplate,
-      this.repaymentWhatsappTemplateName});
+      this.sendRepaymentInfoWhatsappTemplateName});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -128,7 +128,8 @@ class ContractorResult {
         json['hideSendRepaymentInfoWhatsappButton'];
     enableAgencyManagement = json['enableAgencyManagement'];
     repaymentWhatsappTemplate = json['repaymentWhatsappTemplate'];
-    repaymentWhatsappTemplateName = json['repaymentWhatsappTemplateName'];
+    sendRepaymentInfoWhatsappTemplateName =
+        json['sendRepaymentInfoWhatsappTemplateName'];
   }
   String? sId;
   String? usernamePrefix;
@@ -173,7 +174,7 @@ class ContractorResult {
   bool? hideSendRepaymentInfoWhatsappButton;
   bool? enableAgencyManagement;
   String? repaymentWhatsappTemplate;
-  String? repaymentWhatsappTemplateName;
+  String? sendRepaymentInfoWhatsappTemplateName;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -230,7 +231,8 @@ class ContractorResult {
         hideSendRepaymentInfoWhatsappButton;
     data['enableAgencyManagement'] = enableAgencyManagement;
     data['repaymentWhatsappTemplate'] = repaymentWhatsappTemplate;
-    data['repaymentWhatsappTemplateName'] = repaymentWhatsappTemplateName;
+    data['sendRepaymentInfoWhatsappTemplateName'] =
+        sendRepaymentInfoWhatsappTemplateName;
     return data;
   }
 }

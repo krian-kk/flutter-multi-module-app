@@ -6,7 +6,7 @@ class CheckWhatsappButtonEnable {
       required String? whatsappTemplateName,
       required String? whatsappKey}) {
     // debugPrint(
-    //     'CheckWhatsappButtonEnable ----> $whatsappTemplate  $whatsappTemplateName $whatsappKey');
+    //     'CheckWhatsappButtonEnable ---->   $whatsappTemplateName $whatsappKey $whatsappTemplate ');
     bool returnValue;
     if (whatsappTemplate == null ||
         whatsappTemplateName == null ||
