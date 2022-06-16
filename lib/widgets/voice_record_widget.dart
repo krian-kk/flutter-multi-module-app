@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,6 +71,7 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   Speech2TextModel getTranslatedData = Speech2TextModel();
 
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
+  bool isOffline = false;
 
   @override
   void initState() {
@@ -78,7 +80,23 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
         recorderIsInited = true;
       });
     });
+    toCheckIsOfflineNorNot();
     super.initState();
+  }
+
+  toCheckIsOfflineNorNot() async {
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      isOffline = true;
+    }
+    Connectivity().onConnectivityChanged.listen((event) {
+      setState(() {
+        if (event.name == 'none') {
+          isOffline = true;
+        } else {
+          isOffline = false;
+        }
+      });
+    });
   }
 
   @override
@@ -172,22 +190,6 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     await audioTranslateAPI();
   }
 
-  // getFiles() async {
-  //   FilePickerResult? result = await FilePicker.platform
-  //       .pickFiles(allowMultiple: false, type: FileType.audio);
-  //   if (result != null) {
-  //     setState(() {
-  //       uploadFileLists = result.paths.map((path) => File(path!)).toList();
-  //     });
-  //     await audioTranslateAPI();
-  //   } else {
-  //     AppUtils.showToast(
-  //       Languages.of(context)!.canceled,
-  //       gravity: ToastGravity.CENTER,
-  //     );
-  //   }
-  // }
-
   audioTranslateAPI() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final AudioRemarksPostModel requestBodyData = AudioRemarksPostModel(
@@ -247,75 +249,80 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
     return Listener(
       child: GestureDetector(
         onTap: () async {
-          if (!isStartLoading) {
-            final SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-            if (prefs.getString(Constants.s2tLangcode) != null) {
-              if (isRecordOn) {
-                if (mounted) {
-                  setState(() {
-                    timer?.cancel();
-                    if (mounted) {
-                      setState(() {
-                        glowingRadius = 17;
-                        recordContainerWidth = 1;
-                        recordContainerColor = Colors.transparent;
-                        recordCountText = '';
-                        isRecordOn = false;
-                        stopRecorder();
-                      });
-                    }
-                  });
-                }
-              } else {
-                int secondsRemaining = 30;
-                if (mounted) {
-                  setState(() {
-                    isRecordOn = true;
-                    glowingRadius = 22;
-                    recordContainerWidth = 120;
-                    recordContainerColor = ColorResource.colorF7F8FA;
-                    recordCountText = '30 Sec';
-                  });
-                }
-                await startRecord();
-                timer = Timer.periodic(const Duration(seconds: 1), (_) {
-                  if (secondsRemaining != 0) {
-                    if (mounted) {
-                      setState(() {
-                        secondsRemaining--;
-                        recordCountText = '${secondsRemaining.toString()} Sec';
-                      });
-                    }
-                  } else {
+          if (isOffline) {
+            AppUtils.noInternetSnackbar(context);
+          } else {
+            if (!isStartLoading) {
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
+              if (prefs.getString(Constants.s2tLangcode) != null) {
+                if (isRecordOn) {
+                  if (mounted) {
                     setState(() {
-                      if (timer!.isActive) {
-                        timer?.cancel();
-                        stopRecorder();
-                        if (mounted) {
-                          setState(() {
-                            isRecordOn = false;
-                            recordContainerColor = Colors.transparent;
-                            glowingRadius = 17;
-                            recordContainerWidth = 1;
-                            recordCountText = '';
-                          });
-                        }
+                      timer?.cancel();
+                      if (mounted) {
+                        setState(() {
+                          glowingRadius = 17;
+                          recordContainerWidth = 1;
+                          recordContainerColor = Colors.transparent;
+                          recordCountText = '';
+                          isRecordOn = false;
+                          stopRecorder();
+                        });
                       }
                     });
                   }
-                });
-              }
-              widget.recordingData!(isRecordOn);
-            } else {
-              await DialogUtils.showDialog(
-                  buildContext: context,
-                  title: Languages.of(context)!.errorMsgS2TlangCode,
-                  description: '',
-                  okBtnText: Languages.of(context)!.cancel.toUpperCase(),
-                  okBtnFunction: (String val) {
-                    Navigator.pop(context);
+                } else {
+                  int secondsRemaining = 30;
+                  if (mounted) {
+                    setState(() {
+                      isRecordOn = true;
+                      glowingRadius = 22;
+                      recordContainerWidth = 120;
+                      recordContainerColor = ColorResource.colorF7F8FA;
+                      recordCountText = '30 Sec';
+                    });
+                  }
+                  await startRecord();
+                  timer = Timer.periodic(const Duration(seconds: 1), (_) {
+                    if (secondsRemaining != 0) {
+                      if (mounted) {
+                        setState(() {
+                          secondsRemaining--;
+                          recordCountText =
+                              '${secondsRemaining.toString()} Sec';
+                        });
+                      }
+                    } else {
+                      setState(() {
+                        if (timer!.isActive) {
+                          timer?.cancel();
+                          stopRecorder();
+                          if (mounted) {
+                            setState(() {
+                              isRecordOn = false;
+                              recordContainerColor = Colors.transparent;
+                              glowingRadius = 17;
+                              recordContainerWidth = 1;
+                              recordCountText = '';
+                            });
+                          }
+                        }
+                      });
+                    }
                   });
+                }
+                widget.recordingData!(isRecordOn);
+              } else {
+                await DialogUtils.showDialog(
+                    buildContext: context,
+                    title: Languages.of(context)!.errorMsgS2TlangCode,
+                    description: '',
+                    okBtnText: Languages.of(context)!.cancel.toUpperCase(),
+                    okBtnFunction: (String val) {
+                      Navigator.pop(context);
+                    });
+              }
             }
           }
         },

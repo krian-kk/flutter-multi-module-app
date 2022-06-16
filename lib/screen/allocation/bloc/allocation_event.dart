@@ -3,9 +3,9 @@ part of 'allocation_bloc.dart';
 class AllocationEvent extends BaseEquatable {}
 
 class AllocationInitialEvent extends AllocationEvent {
-  AllocationInitialEvent(this.context, {this.isOfflineAPI = false});
+  AllocationInitialEvent(this.context);
   final BuildContext context;
-  final bool isOfflineAPI;
+  // final bool isOfflineAPI;
 }
 
 class MapViewEvent extends AllocationEvent {

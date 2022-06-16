@@ -1,9 +1,13 @@
 class ProfileApiModel {
-  ProfileApiModel({this.status, this.message, this.result});
+  ProfileApiModel({this.status, this.message, this.result, this.enableOffline});
 
   ProfileApiModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
+    // enableOffline will be from server based on contractor
+    if (json['enableOffline'] != null) {
+      enableOffline = json['enableOffline'];
+    }
     if (json['result'] != null) {
       result = <Result>[];
       json['result'].forEach((dynamic v) {
@@ -11,8 +15,10 @@ class ProfileApiModel {
       });
     }
   }
+
   int? status;
   String? message;
+  bool? enableOffline = false;
   List<Result>? result;
 
   Map<String, dynamic> toJson() {
@@ -79,6 +85,7 @@ class Result {
     profileImgUrl = json['profileImgUrl'];
     mPin = json['mPin'];
   }
+
   String? sId;
   String? aRef;
   List<String>? areaCode;
@@ -142,6 +149,7 @@ class Audit {
     upBy = json['upBy'];
     upAt = json['upAt'];
   }
+
   String? crBy;
   String? crAt;
   String? syncAt;
@@ -166,6 +174,7 @@ class Contact {
     cType = json['cType'];
     value = json['value'];
   }
+
   String? cType;
   String? value;
 

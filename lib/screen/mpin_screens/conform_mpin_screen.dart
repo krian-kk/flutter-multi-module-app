@@ -76,6 +76,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
               appContext: context,
               controller: contoller,
               length: 4,
+              obscureText: true,
               mainAxisAlignment: MainAxisAlignment.center,
               animationType: AnimationType.scale,
               onChanged: (String value) {

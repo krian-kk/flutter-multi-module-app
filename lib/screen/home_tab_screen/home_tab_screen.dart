@@ -239,7 +239,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               child: Container(
                 alignment: Alignment.center,
                 height: 30,
-                color: Colors.red,
+                color: ColorResource.colorE72C30,
                 width: MediaQuery.of(context).size.width,
                 child: CustomText(
                   Languages.of(context)!.youAreInOffline,
@@ -291,6 +291,9 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                               title = StringResource.dashboard
                                                   .toUpperCase();
                                             });
+                                          } else {
+                                            AppUtils.noInternetSnackbar(
+                                                context);
                                           }
                                           break;
                                         case 2:
@@ -299,6 +302,9 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                               title = StringResource.profile
                                                   .toUpperCase();
                                             });
+                                          } else {
+                                            AppUtils.noInternetSnackbar(
+                                                context);
                                           }
                                           break;
                                         default:

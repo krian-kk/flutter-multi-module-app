@@ -98,9 +98,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
-      if (!event.isOfflineAPI) {
-        yield AllocationLoadingState();
-      }
+      // if (!Singleton.instance.isOfflineEnabledContractorBased) {
+      yield AllocationLoadingState();
+      // }
       final SharedPreferences _pref = await SharedPreferences.getInstance();
       Singleton.instance.buildContext = event.context;
       userType = _pref.getString(Constants.userType);
@@ -142,12 +142,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isNoInternetAndServerError = false;
         // Now set priority case is a load more event
         isPriorityLoadMore = true;
+        final bool appDataLoadedFromFirebase =
+            _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
 
         //event.isOfflineAPI! For offline purpose only
         final Map<String, dynamic> priorityListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                event.isOfflineAPI == true
+                Singleton.instance.isOfflineEnabledContractorBased &&
+                        !appDataLoadedFromFirebase &&
+                        _pref.getString(Constants.userType) ==
+                            Constants.fieldagent
                     ? HttpUrl.priorityCaseListV2
                     : HttpUrl.priorityCaseListV1 +
                         'pageNo=${Constants.pageNo}' +
@@ -172,15 +177,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .collection(Constants.firebaseCase)
                 .get()
                 .then((value) {
-              for (var element in value.docs) {
-                // try {
-                //   debugPrint(
-                //       'Result items--> ${Result.fromJson(jsonDecode(jsonEncode(element.data()))).caseId}');
-                // } catch (e) {
-                //   debugPrint('Catch items--> ${e.toString()}');
-                // }
-                // debugPrint('Allocation items--> ${value.docs.length + 1}');
-              }
+              value.docChanges.forEach((element) {
+                debugPrint('Element--> $element');
+              });
               AppUtils.showToast('App synced with local');
             });
             isOfflineTriggered = true;
@@ -188,6 +187,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
             await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
+            add(AllocationInitialEvent(event.context));
           } else {
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
@@ -220,7 +220,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
 
-              // if cloudTelephone false means dont show autoCalling tab
+              // if cloudTelephone false means don't show autoCalling tab
               if (jsonData['result']['cloudTelephony'] == false) {
                 if (userType == Constants.telecaller) {
                   selectOptions = [
@@ -235,18 +235,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             }
             yield AllocationLoadedState(successResponse: resultList);
-            //if with offline release
-            if (Singleton.instance.isMPin) {
-              if (userType == Constants.fieldagent && !isOfflineTriggered) {
-                final bool isOfflineExisitingInThisDevice =
-                    _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
-                if (!isOfflineExisitingInThisDevice) {
-                  await FirebaseFirestore.instance.terminate();
-                  add(AllocationInitialEvent(event.context,
-                      isOfflineAPI: true));
-                }
-              }
-            }
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

@@ -45,10 +45,8 @@ class Singleton {
 
   //store update health value
   dynamic updateHealthStatus;
-
   String? customerContactNo;
-
-  bool isMPin = false;
+  bool isOfflineEnabledContractorBased = false;
 
   static final Singleton instance = Singleton.internal();
 }

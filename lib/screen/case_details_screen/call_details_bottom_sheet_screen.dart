@@ -28,9 +28,10 @@ class CallDetailsBottomSheetScreen extends StatefulWidget {
 }
 
 class _CallDetailsBottomSheetScreenState
-    extends State<CallDetailsBottomSheetScreen> {
+    extends State<CallDetailsBottomSheetScreen>
+    with SingleTickerProviderStateMixin {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext buildContext) {
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (BuildContext context, CaseDetailsState state) {
@@ -108,15 +109,6 @@ class _CallDetailsBottomSheetScreenState
                             shrinkWrap: true,
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
-                            // itemCount: widget.bloc.listOfCallDetails!
-                            //     .where((element) =>
-                            //         element['ccType'] == 'mobile' ||
-                            //         element['ccType'] == 'resNo' ||
-                            //         element['ccType'] == 'office contact no.' ||
-                            //         element['ccType'] ==
-                            //             'residence contact no.')
-                            //     .toList()
-                            //     .length,
                             itemBuilder: (BuildContext context, int i) {
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
@@ -176,7 +168,7 @@ class _CallDetailsBottomSheetScreenState
                                                         .toUpperCase();
                                               } else {
                                                 AppUtils.showErrorToast(
-                                                    Languages.of(context)!
+                                                    Languages.of(buildContext)!
                                                         .noInternetConnection);
                                               }
                                             },
@@ -269,7 +261,7 @@ class _CallDetailsBottomSheetScreenState
                                                             } else {
                                                               AppUtils.showErrorToast(
                                                                   Languages.of(
-                                                                          context)!
+                                                                          buildContext)!
                                                                       .noInternetConnection);
                                                             }
                                                           },

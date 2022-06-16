@@ -215,31 +215,32 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               ),
                               const SizedBox(height: 15),
                               Flexible(
-                                  child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remarks,
-                                remarksControlller,
-                                validationRules: const <String>['required'],
-                                isLabel: true,
-                                isVoiceRecordWidget: true,
-                                returnS2Tresponse: (dynamic val) {
-                                  if (val is Speech2TextModel) {
+                                child: CustomReadOnlyTextField(
+                                  Languages.of(context)!.remarks,
+                                  remarksControlller,
+                                  validationRules: const <String>['required'],
+                                  isLabel: true,
+                                  isVoiceRecordWidget: true,
+                                  returnS2Tresponse: (dynamic val) {
+                                    if (val is Speech2TextModel) {
+                                      setState(() {
+                                        returnS2Tdata = val;
+                                      });
+                                    }
+                                  },
+                                  checkRecord: (String? isRecord, String? text,
+                                      Speech2TextModel returnS2Tdata) {
                                     setState(() {
-                                      returnS2Tdata = val;
+                                      this.isRecord = isRecord;
+                                      this.returnS2Tdata = returnS2Tdata;
+                                      translateText = text!;
+                                      isTranslate = true;
                                     });
-                                  }
-                                },
-                                checkRecord: (String? isRecord, String? text,
-                                    Speech2TextModel returnS2Tdata) {
-                                  setState(() {
-                                    this.isRecord = isRecord;
-                                    this.returnS2Tdata = returnS2Tdata;
-                                    translateText = text!;
-                                    isTranslate = true;
-                                  });
-                                },
-                                isSubmit: isTranslate,
-                                caseId: widget.bloc.caseId,
-                              )),
+                                  },
+                                  isSubmit: isTranslate,
+                                  caseId: widget.bloc.caseId,
+                                ),
+                              ),
                               const SizedBox(height: 15),
                               Flexible(
                                 child: CustomDropDownButton(

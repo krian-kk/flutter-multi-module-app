@@ -356,13 +356,10 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../models/contractor_detail_model.dart';
-import '../../../models/contractor_information_model.dart';
-
 part 'login_event.dart';
+
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
@@ -498,24 +495,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
           if (loginResponse.data!.accessToken != null) {
             // Here check mpin flow show or not (offline or Online)
-            if (Singleton.instance.isMPin) {
-              // profile details API
-              final Map<String, dynamic> getProfileData =
-                  await APIRepository.apiRequest(
-                      APIRequestType.get, HttpUrl.profileUrl);
 
-              if (getProfileData['success']) {
-                yield SignInCompletedState();
-                final Map<String, dynamic> jsonData = getProfileData['data'];
-                final profileAPIValue = ProfileApiModel.fromJson(jsonData);
-                // mPin flow
-                yield EnterSecurePinState(
-                  securePin: profileAPIValue.result?.first.mPin,
-                  userName: profileAPIValue.result?.first.aRef,
-                );
+            final Map<String, dynamic> getProfileData =
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.profileUrl);
+            if (getProfileData['success']) {
+              yield SignInCompletedState();
+              final Map<String, dynamic> jsonData = getProfileData['data'];
+              final profileAPIValue = ProfileApiModel.fromJson(jsonData);
+              Singleton.instance.usertype = Constants.telecaller;
+              if (profileAPIValue.result!.first.type == 'COLLECTOR') {
+                Singleton.instance.isOfflineEnabledContractorBased =
+                    profileAPIValue.enableOffline!;
+                await _prefs.setBool(
+                    Constants.isOfflineStorage, profileAPIValue.enableOffline!);
+                Singleton.instance.usertype = Constants.fieldagent;
+              }
+
+              /* Here (profileAPIValue.result!.first.type == 'COLLECTOR') mean collector is field agent
+              Filed agent only having offline concept - When app is going to work with offline app required mPin flow */
+              if (Singleton.instance.isOfflineEnabledContractorBased &&
+                  Singleton.instance.usertype == Constants.fieldagent) {
+                if (getProfileData['success']) {
+                  yield EnterSecurePinState(
+                      securePin: profileAPIValue.result?.first.mPin,
+                      userName: profileAPIValue.result?.first.aRef);
+                }
+              } else {
+                yield TriggerHomeTabState();
               }
             } else {
-              yield TriggerHomeTabState();
+              AppUtils.showToast(getProfileData['data'],
+                  backgroundColor: Colors.red);
             }
           }
         } else {
@@ -553,7 +564,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         // getting Agent Details
         final agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
-        // chech agent type COLLECTOR or TELECALLER then store agent-type in local storage
+        // each agent type COLLECTOR or TELECALLER then store agent-type in local storage
         if (agentDetails.status == 200) {
           if (agentDetails.data!.first.agentType == 'COLLECTOR') {
             await _prefs.setString(Constants.userType, Constants.fieldagent);

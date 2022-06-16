@@ -1,9 +1,11 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -32,6 +34,7 @@ class CustomerMetScreen extends StatefulWidget {
 
 class _CustomerMetScreenState extends State<CustomerMetScreen> {
   String selectedOptionBottomSheetButton = '';
+
   @override
   void initState() {
     super.initState();
@@ -167,19 +170,26 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                     buttonBackgroundColor:
                                         ColorResource.colorBEC4CF,
                                     isLeading: true,
-                                    onTap: () {
+                                    onTap: () async {
                                       if (!widget.bloc.isQRcodeBtnLoading) {
-                                        widget.bloc.add(GenerateQRcodeEvent(
-                                            context,
-                                            caseID: widget
-                                                .bloc
-                                                .caseDetailsAPIValue
-                                                .result!
-                                                .caseDetails!
-                                                .caseId!));
-                                        setState(() {
-                                          widget.bloc.isQRcodeBtnLoading = true;
-                                        });
+                                        if (ConnectivityResult.none !=
+                                            await Connectivity()
+                                                .checkConnectivity()) {
+                                          widget.bloc.add(GenerateQRcodeEvent(
+                                              context,
+                                              caseID: widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result!
+                                                  .caseDetails!
+                                                  .caseId!));
+                                          setState(() {
+                                            widget.bloc.isQRcodeBtnLoading =
+                                                true;
+                                          });
+                                        } else {
+                                          AppUtils.noInternetSnackbar(context);
+                                        }
                                       }
                                     },
                                     trailingWidget:

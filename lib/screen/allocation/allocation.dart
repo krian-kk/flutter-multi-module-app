@@ -119,9 +119,10 @@ class _AllocationScreenState extends State<AllocationScreen>
     super.initState();
     bloc = AllocationBloc();
     _controller = ScrollController()..addListener(_loadMore);
-
     internetChecking();
-    getCurrentLocation();
+    if (Singleton.instance.usertype == Constants.fieldagent) {
+      getCurrentLocation();
+    }
   }
 
   Future<void> locationTracker() async {
@@ -1213,17 +1214,17 @@ class _AllocationScreenState extends State<AllocationScreen>
                                           }
                                           break;
                                         case 2:
-                                          bloc.add(MapViewEvent(
+                                          bloc.add(
+                                            MapViewEvent(
                                               paramValues: BuildRouteDataModel(
                                                   lat: position.latitude
                                                       .toString(),
                                                   long: position.longitude
                                                       .toString(),
                                                   maxDistMeters:
-                                                      Constants.allDisMeters)));
-                                          // setState(() {
-                                          //   bloc.showFilterDistance = false;
-                                          // });
+                                                      Constants.allDisMeters),
+                                            ),
+                                          );
                                           break;
                                         default:
                                           setState(() {
@@ -1252,7 +1253,8 @@ class _AllocationScreenState extends State<AllocationScreen>
                 bloc.isAutoCalling
                     ? Expanded(
                         child: AutoCalling.buildAutoCalling(context, bloc))
-                    : isOffline /*&& Singleton.instance.isOfflineStorageFeatureEnabled*/
+                    : isOffline &&
+                            Singleton.instance.isOfflineEnabledContractorBased
                         ? StreamBuilder<QuerySnapshot>(
                             stream: FirebaseFirestore.instance
                                 .collection(

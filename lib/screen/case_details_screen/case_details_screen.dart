@@ -135,7 +135,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is CDNoInternetState) {
-              AppUtils.noInternetSnackbar(context);
+             // AppUtils.noInternetSnackbar(context);
             }
             if (state is CallCaseDetailsState) {
               Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
@@ -1108,12 +1108,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         const SizedBox(
           height: 10,
         ),
-        // CustomText(
-        //   Languages.of(context)!.repaymentInfo,
-        //   fontSize: FontSize.sixteen,
-        //   fontWeight: FontWeight.w700,
-        // ),
-        // const SizedBox(height: 5),
         Container(
           width: double.infinity,
           decoration: BoxDecoration(
@@ -1247,10 +1241,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ),
                                   )
                                 : GestureDetector(
-                                    onTap: () {
-                                      if (!bloc.isSendSMSloading) {
-                                        bloc.add(SendSMSEvent(context,
-                                            type: Constants.repaymentInfoType));
+                                    onTap: () async {
+                                      if (ConnectivityResult.none !=
+                                          await Connectivity()
+                                              .checkConnectivity()) {
+                                        if (!bloc.isSendSMSloading) {
+                                          bloc.add(SendSMSEvent(context,
+                                              type:
+                                                  Constants.repaymentInfoType));
+                                        }
+                                      } else {
+                                        AppUtils.noInternetSnackbar(context);
                                       }
                                     },
                                     child: Container(

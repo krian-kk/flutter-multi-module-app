@@ -259,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           onTap: () {
             bloc.add(ClickChangePassswordEvent());
           }),
-      if (Singleton.instance.isMPin)
+      if (Singleton.instance.isOfflineEnabledContractorBased)
         ProfileNavigation(
           title: Languages.of(context)!.changeSecurePIN,
           onTap: () {

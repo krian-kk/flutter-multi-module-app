@@ -212,13 +212,16 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
             await PreferenceHelper.getPreference(Constants.mPin);
         final String? agentRef =
             await PreferenceHelper.getPreference(Constants.agentRef);
+        Singleton.instance.isOfflineEnabledContractorBased =
+            await PreferenceHelper.getPreference(Constants.isOfflineStorage) ??
+                false;
         // await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
         //     arguments: state.notificationData);
         // await SharedPreferences.getInstance().then((value) {
         //   String? mPin = value.getString(Constants.mPin);
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
-        if (Singleton.instance.isMPin) {
+        if (Singleton.instance.isOfflineEnabledContractorBased) {
           if (mPin != null) {
             await showMPinDialog(
                 mPin: mPin,
@@ -236,8 +239,6 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
             arguments: state.notificationData,
           );
         }
-
-        // // });
       }
 
       if (state is AuthenticationUnAuthenticated) {
@@ -256,7 +257,11 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
           final String mPin = value.getString(Constants.mPin).toString();
           final String agentRef =
               value.getString(Constants.agentRef).toString();
-          if (Singleton.instance.isMPin) {
+          Singleton.instance.isOfflineEnabledContractorBased =
+              value.getBool(Constants.isOfflineStorage) ?? false;
+          Singleton.instance.usertype = value.getString(Constants.userType);
+          if (Singleton.instance.isOfflineEnabledContractorBased &&
+              Singleton.instance.usertype == Constants.fieldagent) {
             await showMPinDialog(
                 mPin: mPin, buildContext: context, userName: agentRef);
           } else {

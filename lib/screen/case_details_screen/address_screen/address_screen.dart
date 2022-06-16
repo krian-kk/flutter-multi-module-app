@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -202,33 +203,43 @@ class _AddressScreenState extends State<AddressScreen>
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () async {
-                                      Position? currentLocation;
-                                      await MapUtils.getCurrentLocation(context)
-                                          .then((Position value) {
-                                        setState(() {
-                                          currentLocation = value;
+                                      if (ConnectivityResult.none !=
+                                          await Connectivity()
+                                              .checkConnectivity()) {
+                                        Position? currentLocation;
+                                        await MapUtils.getCurrentLocation(
+                                                context)
+                                            .then((Position value) {
+                                          setState(() {
+                                            currentLocation = value;
+                                          });
                                         });
-                                      });
-                                      final Northeast? destinationLocation =
-                                          await MapUtils.convertAddressToLarlng(
-                                        address: widget
-                                                .bloc
-                                                .caseDetailsAPIValue
-                                                .result!
-                                                .addressDetails![widget.index]
-                                            ['value'],
-                                        context: context,
-                                      );
-                                      if (destinationLocation != null) {
-                                        await MapUtils.openMap(
-                                            startLatitude:
-                                                currentLocation!.latitude,
-                                            startLongitude:
-                                                currentLocation!.longitude,
-                                            destinationLatitude:
-                                                destinationLocation.lat ?? 0.0,
-                                            destinationLongitude:
-                                                destinationLocation.lng ?? 0.0);
+                                        final Northeast? destinationLocation =
+                                            await MapUtils
+                                                .convertAddressToLarlng(
+                                          address: widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result!
+                                                  .addressDetails![widget.index]
+                                              ['value'],
+                                          context: context,
+                                        );
+                                        if (destinationLocation != null) {
+                                          await MapUtils.openMap(
+                                              startLatitude:
+                                                  currentLocation!.latitude,
+                                              startLongitude:
+                                                  currentLocation!.longitude,
+                                              destinationLatitude:
+                                                  destinationLocation.lat ??
+                                                      0.0,
+                                              destinationLongitude:
+                                                  destinationLocation.lng ??
+                                                      0.0);
+                                        }
+                                      } else {
+                                        AppUtils.noInternetSnackbar(context);
                                       }
                                     },
                                     child: SizedBox(

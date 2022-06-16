@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -17,7 +18,7 @@ import 'package:path_provider/path_provider.dart';
 import '../singleton.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
-  const CustomReadOnlyTextField(
+  CustomReadOnlyTextField(
     this.hintText,
     this.controller, {
     Key? key,
@@ -91,7 +92,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Function? validatorCallBack;
   final double height;
   final TextCapitalization? textCapitalization;
-  final bool isVoiceRecordWidget;
+  bool isVoiceRecordWidget;
   final bool isNumberOnly;
   final String? caseId;
   final String? agrRef;
