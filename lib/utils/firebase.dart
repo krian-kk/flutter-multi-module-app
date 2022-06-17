@@ -24,7 +24,8 @@ class FirebaseUtils {
     bool returnValues = false;
     final eventMap = eventsDetails as Map<String, dynamic>;
     eventMap['dateTime'] = DateTime.now();
-    if (Singleton.instance.usertype == Constants.fieldagent) {
+    if (Singleton.instance.usertype == Constants.fieldagent &&
+        Singleton.instance.isOfflineEnabledContractorBased) {
       FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)
@@ -118,7 +119,8 @@ class FirebaseUtils {
 
   // to update the case detail starred cases or not
   static updateStarred({dynamic isStarred, dynamic caseId}) async {
-    if (Singleton.instance.usertype == Constants.fieldagent) {
+    if (Singleton.instance.usertype == Constants.fieldagent &&
+        Singleton.instance.isOfflineEnabledContractorBased) {
       await FirebaseFirestore.instance
           .collection(Singleton.instance.firebaseDatabaseName)
           .doc(Singleton.instance.agentRef)

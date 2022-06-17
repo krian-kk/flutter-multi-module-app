@@ -17,9 +17,7 @@ import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
 import 'package:origa/utils/app_theme.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:workmanager/workmanager.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'bloc.dart';

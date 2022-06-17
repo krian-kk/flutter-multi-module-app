@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -19,29 +20,6 @@ class _WebViewWidgetState extends State<WebViewWidget> {
   @override
   void initState() {
     super.initState();
-    /*final flutterWebviewPlugin = FlutterWebviewPlugin();
-
-    flutterWebviewPlugin.onUrlChanged.listen((String url) {
-      AppUtils.showToast('url-> $url');
-    });
-    flutterWebviewPlugin.onDestroy.listen((event) {
-      AppUtils.showToast('onDestroy-> $event');
-    });
-    flutterWebviewPlugin.onUrlChanged.listen((event) {
-      AppUtils.showToast('onUrlChanged-> $event');
-    });
-
-    flutterWebviewPlugin.onProgressChanged.listen((event) {
-      debugPrint('onProgressChanged--> $event');
-    });
-
-    flutterWebviewPlugin.onStateChanged.listen((event) {
-      debugPrint('onStateChanged--> $event');
-    });
-
-    flutterWebviewPlugin.onBack.listen((event) {
-      debugPrint('onBack--> $event');
-    });*/
   }
 
   void navigator() {
@@ -62,17 +40,26 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           children: <Widget>[
             Expanded(
               child: Stack(
-                children: const <Widget>[
+                children: <Widget>[
                   WebviewScaffold(
                     url: 'https://origahelpdesk.w3spaces.com',
                     clearCache: true,
                     allowFileURLs: true,
                     displayZoomControls: true,
+                    javascriptChannels: {
+                      JavascriptChannel(
+                        name: 'Print',
+                        onMessageReceived: (JavascriptMessage message) {
+                          debugPrint(
+                              'Java script message--> ${message.message}');
+                        },
+                      ),
+                    },
                     appCacheEnabled: true,
                     withLocalUrl: true,
                     supportMultipleWindows: true,
                     resizeToAvoidBottomInset: true,
-                    initialChild: CustomLoadingWidget(),
+                    initialChild: const CustomLoadingWidget(),
                   ),
                 ],
               ),
