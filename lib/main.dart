@@ -74,9 +74,26 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   AuthenticationBloc? bloc;
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    debugPrint('AppLifecycleState--> ${state.name}');
+    super.didChangeAppLifecycleState(state);
+    try {
+      if (state != AppLifecycleState.resumed) {
+        FirebaseFirestore.instance.disableNetwork();
+      } else {
+        FirebaseFirestore.instance.enableNetwork();
+      }
+    } catch (error) {
+      debugPrint(
+        'LifecycleManager | didChangeAppLifecycleState | ' + error.toString(),
+      );
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
-
+    WidgetsBinding.instance.addObserver(this);
     bloc = BlocProvider.of<AuthenticationBloc>(context);
     androidAndIOSNotification();
 
@@ -216,22 +233,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       });
     });
     super.didChangeDependencies();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    try {
-      if (state != AppLifecycleState.resumed) {
-        FirebaseFirestore.instance.disableNetwork();
-      } else {
-        FirebaseFirestore.instance.enableNetwork();
-      }
-    } catch (error) {
-      debugPrint(
-        'LifecycleManager | didChangeAppLifecycleState | ' + error.toString(),
-      );
-    }
   }
 
   //Getting firebase remote data for app URL

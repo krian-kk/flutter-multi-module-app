@@ -46,7 +46,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen>  {
   late LoginBloc bloc;
 
   late TextEditingController userId = TextEditingController();
@@ -58,17 +58,23 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode passwords = FocusNode();
   bool _obscureText = true;
   bool _isChecked = false;
+  //
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   debugPrint('AppLifecycleState--> ${state.name}');
+  //   super.didChangeAppLifecycleState(state);
+  // }
 
   @override
   void initState() {
+    // WidgetsBinding.instance.addObserver(this);
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
-      userId.text = 'CDE_chinnaduraitc';
-      password.text = '9585313659';
+      // userId.text = 'CDE_chinnaduraitc';
+      // password.text = '9585313659';
 
-
-      // userId.text = 'CDE_fos1';
-      // password.text = 'Origa123';
+      userId.text = 'CDE_fos1';
+      password.text = 'Origa123';
 
       // userId.text = 'DEC_origatest';
       // password.text = 'Origa123';
@@ -545,7 +551,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                               ColorResource.color23375A,
                                           cardShape: 90,
                                           fontSize: FontSize.sixteen,
-                                          fontWeight: FontWeight.w600,
                                           textColor: ColorResource.color23375A,
                                           buttonBackgroundColor:
                                               ColorResource.colorffffff,
@@ -572,7 +577,6 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
-
   webViewScreen(BuildContext context, {required String urlAddress}) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -593,7 +597,6 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
   }
-
 
   resendOTPBottomSheet(BuildContext buildContext) {
     showModalBottomSheet(
