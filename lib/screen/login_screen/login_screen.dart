@@ -46,7 +46,7 @@ class LoginScreen extends StatefulWidget {
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen>  {
+class _LoginScreenState extends State<LoginScreen> {
   late LoginBloc bloc;
 
   late TextEditingController userId = TextEditingController();
@@ -58,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen>  {
   FocusNode passwords = FocusNode();
   bool _obscureText = true;
   bool _isChecked = false;
+
   //
   // @override
   // void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -73,8 +74,8 @@ class _LoginScreenState extends State<LoginScreen>  {
       // userId.text = 'CDE_chinnaduraitc';
       // password.text = '9585313659';
 
-      userId.text = 'CDE_fos1';
-      password.text = 'Origa123';
+      // userId.text = 'CDE_fos1';
+      // password.text = 'Origa123';
 
       // userId.text = 'DEC_origatest';
       // password.text = 'Origa123';
@@ -82,9 +83,10 @@ class _LoginScreenState extends State<LoginScreen>  {
       // password.text = 'Asd@123';
       // userId.text = 'YES_fos';
       // password.text = 'Agent1234';
+
+      userId.text = 'CDE_46';
+      password.text = 'Origa123';
     }
-    // userId.text = 'CDE_46';
-    // password.text = 'Origa123';
     username = FocusNode();
     passwords = FocusNode();
     _loadUserNamePassword();
@@ -539,27 +541,65 @@ class _LoginScreenState extends State<LoginScreen>  {
                                             buttonBackgroundColor:
                                                 ColorResource.colorffffff,
                                           ),
-                                        const SizedBox(height: 10),
-                                        CustomButton(
-                                          Languages.of(context)!.help,
-                                          onTap: () => webViewScreen(
-                                            context,
-                                            urlAddress:
-                                                'https://origahelpdesk.w3spaces.com',
-                                          ),
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          cardShape: 90,
-                                          fontSize: FontSize.sixteen,
-                                          textColor: ColorResource.color23375A,
-                                          buttonBackgroundColor:
-                                              ColorResource.colorffffff,
-                                        ),
+                                        // const SizedBox(height: 10),
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
+                            ),
+                          ),
+                          floatingActionButton: GestureDetector(
+                            onTap: () {
+                              webViewScreen(context,
+                                  urlAddress:
+                                      'https://origahelpdesk.w3spaces.com');
+                            },
+                            child: Container(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white),
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(100),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(2),
+                                    child: const Icon(
+                                      Icons.question_mark_rounded,
+                                      size: 14.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    Languages.of(context)!.help,
+                                    textScaleFactor: 3,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle1!
+                                        .copyWith(
+                                            color: Colors.white,
+                                            fontSize: 6,
+                                            backgroundColor:
+                                                Colors.transparent),
+                                  )
+                                ],
+                              ),
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(30),
+                                    bottomRight: Radius.circular(30),
+                                    topLeft: Radius.circular(30),
+                                    topRight: Radius.circular(5)),
+                                color: ColorResource.color23375A,
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 5),
                             ),
                           ),
                         );
@@ -625,7 +665,6 @@ class _LoginScreenState extends State<LoginScreen>  {
         bloc.add(NoInternetConnectionEvent());
       } else {
         final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-
         final params = {
           'userName': userId.text,
           'agentRef': userId.text,

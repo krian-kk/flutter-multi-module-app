@@ -234,6 +234,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');
               }
             }
+            if (Singleton.instance.isOfflineEnabledContractorBased &&
+                _pref.getString(Constants.userType) == Constants.fieldagent) {
+              await FirebaseFirestore.instance
+                  .collection(Singleton.instance.firebaseDatabaseName)
+                  .doc(Singleton.instance.agentRef)
+                  .collection(Constants.firebaseCase)
+                  .get()
+                  .then((value) {
+                for (var element in value.docChanges) {
+                  debugPrint('Element--> $element');
+                }
+              });
+            }
             yield AllocationLoadedState(successResponse: resultList);
           }
         } else if (priorityListData['statusCode'] == 401 ||

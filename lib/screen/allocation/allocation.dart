@@ -1286,20 +1286,27 @@ class _AllocationScreenState extends State<AllocationScreen>
                                   ConnectionState.active) {
                                 // bloc.resultList.clear();
                                 // resultList.clear();
+
                                 bloc.resultList = [];
                                 resultList = [];
                                 bloc.starCount = 0;
+                                bloc.totalCases = 0;
+                                // setState(() {
                                 for (var element in snapshot.data!.docs) {
                                   final tempResult = Result.fromJson(
                                       element.data()! as Map<String, dynamic>);
                                   bloc.resultList.add(tempResult);
                                   resultList.add(tempResult);
+                                  bloc.totalCases++;
+                                  debugPrint(
+                                      'Cases count--> ${resultList.length}');
                                   if (tempResult.starredCase == true) {
                                     bloc.starCount++;
                                   }
                                 }
                                 resultList.sort((a, b) {
                                   return b.starredCase ? 1 : -1;
+                                  // });
                                 });
                               }
                               return resultList.isEmpty
