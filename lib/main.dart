@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
@@ -16,7 +17,9 @@ import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
+import 'package:origa/utils/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -94,9 +97,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
     bloc = BlocProvider.of<AuthenticationBloc>(context);
     androidAndIOSNotification();
-
+    //
+    // final scoresRef =
+    //     FirebaseDatabase.instance.ref(Singleton.instance.firebaseDatabaseName);
+    // scoresRef.keepSynced(true);
     // Background Notification onclick process
     FirebaseMessaging.instance
         .getInitialMessage()
