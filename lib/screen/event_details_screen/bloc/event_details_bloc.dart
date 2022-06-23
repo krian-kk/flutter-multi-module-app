@@ -37,16 +37,16 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             await Connectivity().checkConnectivity()) {
           // yield CDNoInternetState();
           //Getting event details from firebase databse
+
           await FirebaseFirestore.instance
               .collection(Singleton.instance.firebaseDatabaseName)
               .doc(Singleton.instance.agentRef)
               .collection(Constants
                   .firebaseEvent) // To get the events from event collection
-              .orderBy('dateTime', descending: true)
-              .where(
-                Constants.caseId,
-                isEqualTo: event.caseId,
-              ) //To find respective events of case details
+              // .orderBy('createdAt', descending: true)
+              .where(Constants.caseId,
+                  isEqualTo:
+                      event.caseId) //To find respective events of case details
               .limit(5) // Need to show the last five events only
               .get()
               .then((QuerySnapshot<Map<String, dynamic>> value) {
@@ -64,9 +64,9 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                   debugPrint(e.toString());
                 }
               }
-              eventDetailsAPIValues.result = results;
-              eventDetailsAPIValues.result =
-                  eventDetailsAPIValues.result!.reversed.toList();
+              eventDetailsAPIValues.result = results.reversed.toList();
+              // eventDetailsAPIValues.result =
+              //     eventDetailsAPIValues.result!.reversed.toList();
             } else {
               eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
             }

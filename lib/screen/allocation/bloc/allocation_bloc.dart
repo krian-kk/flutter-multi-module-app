@@ -14,6 +14,7 @@ import 'package:origa/models/allocation_model.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
+import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
@@ -182,6 +183,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               });
               AppUtils.showToast('App synced with local');
             });
+            await FirebaseFirestore.instance
+                .collection(Singleton.instance.firebaseDatabaseName)
+                .doc(Singleton.instance.agentRef)
+                .collection(Constants.firebaseEvent)
+                .get()
+                .then((QuerySnapshot<Map<String, dynamic>> value) {
+              if (value.docs.isNotEmpty) {
+                for (QueryDocumentSnapshot<Map<String, dynamic>> element
+                    in value.docs) {
+                  try {
+                    debugPrint(
+                        'Event details case id--> ${EvnetDetailsResultsModel.fromJson(element.data()).agrRef}');
+                  } catch (e) {
+                    debugPrint(e.toString());
+                  }
+                }
+              }
+            });
             isOfflineTriggered = true;
             totalCases = 0;
             await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
@@ -244,6 +263,24 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   .then((value) {
                 for (var element in value.docChanges) {
                   debugPrint('Element--> $element');
+                }
+              });
+              await FirebaseFirestore.instance
+                  .collection(Singleton.instance.firebaseDatabaseName)
+                  .doc(Singleton.instance.agentRef)
+                  .collection(Constants.firebaseEvent)
+                  .get()
+                  .then((QuerySnapshot<Map<String, dynamic>> value) {
+                if (value.docs.isNotEmpty) {
+                  for (QueryDocumentSnapshot<Map<String, dynamic>> element
+                      in value.docs) {
+                    try {
+                      debugPrint(
+                          'Event details case id--> ${EvnetDetailsResultsModel.fromJson(element.data()).agrRef}');
+                    } catch (e) {
+                      debugPrint(e.toString());
+                    }
+                  }
                 }
               });
             }
