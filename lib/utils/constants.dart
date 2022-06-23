@@ -195,4 +195,6 @@ class Constants {
   static const String stop = 'stop';
   static const String submit = 'submit';
   static const String none = 'none';
+
+  static const String caseNotAllocated = 'This case is not allocated to you';
 }
