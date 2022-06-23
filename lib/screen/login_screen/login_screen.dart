@@ -549,57 +549,64 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          floatingActionButton: GestureDetector(
-                            onTap: () {
-                              webViewScreen(context,
-                                  urlAddress:
-                                      'https://origahelpdesk.w3spaces.com');
-                            },
-                            child: Container(
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.white),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(100),
+                          floatingActionButton: Visibility(
+                            visible: WidgetsBinding
+                                        .instance.window.viewInsets.bottom >
+                                    0.0
+                                ? false
+                                : true,
+                            child: GestureDetector(
+                              onTap: () {
+                                webViewScreen(context,
+                                    urlAddress:
+                                        'https://origahelpdesk.w3spaces.com');
+                              },
+                              child: Container(
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.white),
+                                        borderRadius: const BorderRadius.all(
+                                          Radius.circular(100),
+                                        ),
+                                      ),
+                                      padding: const EdgeInsets.all(2),
+                                      child: const Icon(
+                                        Icons.question_mark_rounded,
+                                        size: 14.0,
+                                        color: Colors.white,
                                       ),
                                     ),
-                                    padding: const EdgeInsets.all(2),
-                                    child: const Icon(
-                                      Icons.question_mark_rounded,
-                                      size: 14.0,
-                                      color: Colors.white,
+                                    const SizedBox(
+                                      width: 10,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    Languages.of(context)!.help,
-                                    textScaleFactor: 3,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle1!
-                                        .copyWith(
-                                            color: Colors.white,
-                                            fontSize: 6,
-                                            backgroundColor:
-                                                Colors.transparent),
-                                  )
-                                ],
+                                    Text(
+                                      Languages.of(context)!.help,
+                                      textScaleFactor: 3,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1!
+                                          .copyWith(
+                                              color: Colors.white,
+                                              fontSize: 6,
+                                              backgroundColor:
+                                                  Colors.transparent),
+                                    )
+                                  ],
+                                ),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(30),
+                                      bottomRight: Radius.circular(30),
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(5)),
+                                  color: ColorResource.color23375A,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 5),
                               ),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(30),
-                                    bottomRight: Radius.circular(30),
-                                    topLeft: Radius.circular(30),
-                                    topRight: Radius.circular(5)),
-                                color: ColorResource.color23375A,
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 5),
                             ),
                           ),
                         );

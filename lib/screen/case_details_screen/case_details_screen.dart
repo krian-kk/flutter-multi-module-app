@@ -135,7 +135,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               );
             }
             if (state is CDNoInternetState) {
-             // AppUtils.noInternetSnackbar(context);
+              // AppUtils.noInternetSnackbar(context);
             }
             if (state is CallCaseDetailsState) {
               Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
@@ -416,19 +416,33 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                   children: <Widget>[
                                                     const SizedBox(height: 10),
                                                     GestureDetector(
-                                                      onTap: () => bloc.add(
-                                                          ClickPushAndPOPCaseDetailsEvent(
-                                                              paramValues: <
-                                                                  String,
-                                                                  dynamic>{
-                                                            'caseID': bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.otherLoanDetails![
-                                                                    index]
-                                                                .caseId,
-                                                            'isAddress': true
-                                                          })),
+                                                      onTap: () {
+                                                        if (bloc
+                                                            .caseDetailsAPIValue
+                                                            .result!
+                                                            .otherLoanDetails![
+                                                                index]
+                                                            .canAccess!) {
+                                                          bloc.add(
+                                                              ClickPushAndPOPCaseDetailsEvent(
+                                                                  paramValues: <
+                                                                      String,
+                                                                      dynamic>{
+                                                                'caseID': bloc
+                                                                    .caseDetailsAPIValue
+                                                                    .result
+                                                                    ?.otherLoanDetails![
+                                                                        index]
+                                                                    .caseId,
+                                                                'isAddress':
+                                                                    true
+                                                              }));
+                                                        } else {
+                                                          AppUtils.showErrorToast(
+                                                              Constants
+                                                                  .caseNotAllocated);
+                                                        }
+                                                      },
                                                       child: Container(
                                                         width: double.infinity,
                                                         decoration: BoxDecoration(

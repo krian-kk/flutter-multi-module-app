@@ -8,7 +8,10 @@ class OtherLoanDetail {
       this.accNo,
       this.caseId,
       this.bankName,
-      this.agrRef});
+      this.agrRef,
+      this.supportAllocatedTo,
+      this.aRef,
+      this.canAccess});
 
   factory OtherLoanDetail.fromJson(Map<String, dynamic> json) {
     return OtherLoanDetail(
@@ -21,6 +24,9 @@ class OtherLoanDetail {
       caseId: json['caseId'] as String?,
       bankName: json['bankName'] != null ? json['bankName'] as String? : ' ',
       agrRef: json['agrRef'] as String?,
+      supportAllocatedTo: json['SupportAllocatedTo'],
+      aRef: json['aRef'],
+      canAccess: json['canAccess'],
     );
   }
   String? id;
@@ -32,6 +38,9 @@ class OtherLoanDetail {
   String? caseId;
   String? bankName;
   String? agrRef;
+  String? supportAllocatedTo;
+  String? aRef;
+  bool? canAccess;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
@@ -43,5 +52,8 @@ class OtherLoanDetail {
         'caseId': caseId,
         'bankName': bankName,
         'agrRef': agrRef,
+        'SupportAllocatedTo': supportAllocatedTo,
+        'aRef': aRef,
+        'canAccess': canAccess,
       };
 }
