@@ -340,6 +340,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
@@ -516,6 +517,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               Filed agent only having offline concept - When app is going to work with offline app required mPin flow */
               if (Singleton.instance.isOfflineEnabledContractorBased &&
                   Singleton.instance.usertype == Constants.fieldagent) {
+                FirebaseDatabase.instance.setPersistenceEnabled(true);
                 if (getProfileData['success']) {
                   yield EnterSecurePinState(
                       securePin: profileAPIValue.result?.first.mPin,

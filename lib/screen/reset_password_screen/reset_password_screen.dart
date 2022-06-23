@@ -134,6 +134,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validatorCallBack: (bool values) {},
+                        validationRules: const ['required'],
                         suffixWidget: GestureDetector(
                           onTap: () async {
                             // SharedPreferences _prefs =
@@ -158,48 +159,52 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           child: GestureDetector(
                             onTap: isCheck
                                 ? () async {
-                                    setState(() => isCheck = false);
-                                    userIdFocusNode.unfocus();
-                                    mobileNumberController.clear();
-                                    userNameController.clear();
-                                    emailController.clear();
-                                    final Map<String, dynamic> getAgentDetail =
-                                        await APIRepository.apiRequest(
-                                            APIRequestType.get,
-                                            HttpUrl.resetPasswordCheckUrl(
-                                                userIdController.text));
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() => isCheck = false);
+                                      userIdFocusNode.unfocus();
+                                      mobileNumberController.clear();
+                                      userNameController.clear();
+                                      emailController.clear();
+                                      final Map<String, dynamic>
+                                          getAgentDetail =
+                                          await APIRepository.apiRequest(
+                                              APIRequestType.get,
+                                              HttpUrl.resetPasswordCheckUrl(
+                                                  userIdController.text));
 
-                                    if (getAgentDetail['success'] == false) {
-                                      final AgentDetailErrorModel
-                                          agentDetailError =
-                                          AgentDetailErrorModel.fromJson(
-                                              getAgentDetail['data']);
-                                      AppUtils.showToast(agentDetailError.msg!,
-                                          backgroundColor: Colors.red);
-                                    } else {
-                                      setState(() {
-                                        mobileNumberController.text =
-                                            getAgentDetail['data']['data'][0]
-                                                ['mobileNumber'];
-                                        userNameController.text =
-                                            getAgentDetail['data']['data'][0]
-                                                ['Agent_name'];
-                                        if (getAgentDetail['data']['data'][0]
-                                                ['email'] !=
-                                            '') {
-                                          emailController.text =
+                                      if (getAgentDetail['success'] == false) {
+                                        final AgentDetailErrorModel
+                                            agentDetailError =
+                                            AgentDetailErrorModel.fromJson(
+                                                getAgentDetail['data']);
+                                        AppUtils.showToast(
+                                            agentDetailError.msg!,
+                                            backgroundColor: Colors.red);
+                                      } else {
+                                        setState(() {
+                                          mobileNumberController.text =
                                               getAgentDetail['data']['data'][0]
-                                                  ['email'];
-                                        } else {
-                                          AppUtils.showToast(
-                                            Languages.of(context)!
-                                                .emailNotAvailable,
-                                            backgroundColor: Colors.red,
-                                          );
-                                        }
-                                      });
+                                                  ['mobileNumber'];
+                                          userNameController.text =
+                                              getAgentDetail['data']['data'][0]
+                                                  ['Agent_name'];
+                                          if (getAgentDetail['data']['data'][0]
+                                                  ['email'] !=
+                                              '') {
+                                            emailController.text =
+                                                getAgentDetail['data']['data']
+                                                    [0]['email'];
+                                          } else {
+                                            AppUtils.showToast(
+                                              Languages.of(context)!
+                                                  .emailNotAvailable,
+                                              backgroundColor: Colors.red,
+                                            );
+                                          }
+                                        });
+                                      }
+                                      setState(() => isCheck = true);
                                     }
-                                    setState(() => isCheck = true);
                                   }
                                 : () {},
                             child: Container(
@@ -630,53 +635,56 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                     cardShape: 75.0,
                                     onTap: isSaveNewPasswordLoad
                                         ? () async {
-                                            formKey.currentState!.validate();
-                                            if (newPasswordController.text ==
-                                                confirmPasswordController
-                                                    .text) {
-                                              setState(() =>
-                                                  isSaveNewPasswordLoad =
-                                                      false);
-                                              final ResetPasswordModel
-                                                  requestBodyData =
-                                                  ResetPasswordModel(
-                                                      otp: pinCodeController
-                                                          .text,
-                                                      username: name,
-                                                      newPassword:
-                                                          newPasswordController
-                                                              .text);
-                                              final Map<String, dynamic>
-                                                  postResult =
-                                                  await APIRepository.apiRequest(
-                                                      APIRequestType.post,
-                                                      HttpUrl
-                                                          .resetPasswordUrl(),
-                                                      requestBodydata:
-                                                          jsonEncode(
-                                                              requestBodyData
-                                                                  .toJson()));
-                                              if (postResult[
-                                                  Constants.success]) {
-                                                AppUtils.topSnackBar(
-                                                    context,
-                                                    Constants
-                                                        .successfullyUpdated);
-                                                // AppUtils.showToast(
-                                                //     Constants.successfullyUpdated,
-                                                //     gravity: ToastGravity.BOTTOM);
-                                                await Future<dynamic>.delayed(
-                                                    const Duration(seconds: 2));
-                                                Navigator.pop(context);
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              if (newPasswordController.text ==
+                                                  confirmPasswordController
+                                                      .text) {
+                                                setState(() =>
+                                                    isSaveNewPasswordLoad =
+                                                        false);
+                                                final ResetPasswordModel
+                                                    requestBodyData =
+                                                    ResetPasswordModel(
+                                                        otp: pinCodeController
+                                                            .text,
+                                                        username: name,
+                                                        newPassword:
+                                                            newPasswordController
+                                                                .text);
+                                                final Map<String, dynamic>
+                                                    postResult =
+                                                    await APIRepository.apiRequest(
+                                                        APIRequestType.post,
+                                                        HttpUrl
+                                                            .resetPasswordUrl(),
+                                                        requestBodydata:
+                                                            jsonEncode(
+                                                                requestBodyData
+                                                                    .toJson()));
+                                                if (postResult[
+                                                    Constants.success]) {
+                                                  AppUtils.topSnackBar(
+                                                      context,
+                                                      Constants
+                                                          .successfullyUpdated);
+                                                  // AppUtils.showToast(
+                                                  //     Constants.successfullyUpdated,
+                                                  //     gravity: ToastGravity.BOTTOM);
+                                                  await Future<dynamic>.delayed(
+                                                      const Duration(
+                                                          seconds: 2));
+                                                  Navigator.pop(context);
+                                                }
+                                              } else {
+                                                AppUtils.showToast(
+                                                  Languages.of(context)!
+                                                      .pleaseSelectCorrectPassword,
+                                                );
                                               }
-                                            } else {
-                                              AppUtils.showToast(
-                                                Languages.of(context)!
-                                                    .pleaseSelectCorrectPassword,
-                                              );
+                                              setState(() =>
+                                                  isSaveNewPasswordLoad = true);
                                             }
-                                            setState(() =>
-                                                isSaveNewPasswordLoad = true);
                                           }
                                         : () {},
                                     borderColor: ColorResource.colorBEC4CF,
