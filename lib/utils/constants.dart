@@ -197,4 +197,5 @@ class Constants {
   static const String none = 'none';
 
   static const String caseNotAllocated = 'This case is not allocated to you';
+  static const String contractorId = 'C0001';
 }

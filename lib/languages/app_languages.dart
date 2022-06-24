@@ -735,4 +735,10 @@ abstract class Languages {
   String get front;
 
   String get back;
+
+  String get notInterested;
+
+  String get notEligible;
+
+  String get login;
 }

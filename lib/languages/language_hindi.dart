@@ -1111,4 +1111,13 @@ class LanguageHi extends Languages {
 
   @override
   String get back => 'पीछे';
+
+  @override
+  String get notInterested => 'रुचि नहीं';
+
+  @override
+  String get notEligible => 'पात्र नहीं है';
+
+  @override
+  String get login => 'लॉग इन करें';
 }

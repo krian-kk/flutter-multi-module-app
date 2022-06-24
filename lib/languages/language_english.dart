@@ -1108,4 +1108,13 @@ class LanguageEn extends Languages {
 
   @override
   String get back => 'Back';
+
+  @override
+  String get notInterested => 'Not Interested';
+
+  @override
+  String get notEligible => 'Not Eligible';
+
+  @override
+  String get login => 'Login';
 }

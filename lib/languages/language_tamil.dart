@@ -1115,4 +1115,13 @@ class LanguageTa extends Languages {
 
   @override
   String get back => 'பின் பக்கம்';
+
+  @override
+  String get notInterested => 'ஆர்வம் இல்லை';
+
+  @override
+  String get notEligible => 'தகுதியற்ற';
+
+  @override
+  String get login => 'உள்நுழைய';
 }

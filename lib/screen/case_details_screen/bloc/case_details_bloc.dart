@@ -370,76 +370,95 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     if (event is PhoneBottomSheetInitialEvent) {
       yield PhoneBottomSheetLoadingState();
+      // print('contractor id is ----->  ${Singleton.instance.contractor}');
+      // print(
+      //     'contractor id 2 is ----->  ${Singleton.instance.contractorInformations!.result!.contractor}');
       phoneCustomerMetGridList.clear();
-      phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
-        CustomerMetGridModel(
-            ImageResource.ptp, Languages.of(event.context)!.ptp.toUpperCase(),
-            onTap: () => add(EventDetailsEvent(
-                  Constants.ptp,
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
-        CustomerMetGridModel(
-            ImageResource.rtp, Languages.of(event.context)!.rtp.toUpperCase(),
-            onTap: () => add(EventDetailsEvent(
-                  Constants.rtp,
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
-        CustomerMetGridModel(ImageResource.dispute,
-            Languages.of(event.context)!.dispute.toUpperCase(),
-            onTap: () => add(EventDetailsEvent(
-                  Constants.dispute,
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
-        CustomerMetGridModel(
-            ImageResource.remainder,
-            (Languages.of(event.context)!.remainderCb.toUpperCase())
-                .toUpperCase()
-                .toUpperCase(),
-            onTap: () => add(EventDetailsEvent(
-                  Constants.remainder,
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
-        CustomerMetGridModel(ImageResource.collections,
-            Languages.of(event.context)!.collections.toUpperCase(),
-            onTap: () => add(EventDetailsEvent(
-                  Constants.collections,
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
+      if (Singleton.instance.contractorInformations!.result!.contractor !=
+          Constants.contractorId) {
+        phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
+          CustomerMetGridModel(
+              ImageResource.ptp, Languages.of(event.context)!.ptp.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.ptp,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(
+              ImageResource.rtp, Languages.of(event.context)!.rtp.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.rtp,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.dispute,
+              Languages.of(event.context)!.dispute.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.dispute,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(
+              ImageResource.remainder,
+              (Languages.of(event.context)!.remainderCb.toUpperCase())
+                  .toUpperCase()
+                  .toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.remainder,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.collections,
+              Languages.of(event.context)!.collections.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.collections,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
 
-        // // otsEnable is true means show OTS button otherwise dont show
-        // // 'otsEnable' value get from contractor details
-        // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
-        //     true)
-        CustomerMetGridModel(ImageResource.ots, Constants.ots,
-            onTap: () => add(EventDetailsEvent(
-                  Languages.of(event.context)!.ots.toUpperCase(),
-                  caseDetailsAPIValue.result?.callDetails!,
-                  true,
-                  isCallFromCallDetails: event.isCallFromCaseDetails,
-                  callId: event.callId,
-                )),
-            isCall: true),
-      ]);
+          // // otsEnable is true means show OTS button otherwise dont show
+          // // 'otsEnable' value get from contractor details
+          // if (Singleton.instance.contractorInformations?.result?.otsEnable ==
+          //     true)
+          CustomerMetGridModel(ImageResource.ots, Constants.ots,
+              onTap: () => add(EventDetailsEvent(
+                    Languages.of(event.context)!.ots.toUpperCase(),
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+        ]);
+      } else {
+        // phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
+        //   CustomerMetGridModel(ImageResource.collections,
+        //       Languages.of(event.context)!.notInterested.toUpperCase(),
+        //       onTap: () => add(EventDetailsEvent(
+        //             Constants.collections,
+        //             caseDetailsAPIValue.result?.callDetails!,
+        //             true,
+        //             isCallFromCallDetails: event.isCallFromCaseDetails,
+        //             callId: event.callId,
+        //           )),
+        //       isCall: true),
+        // ]);
+      }
       yield PhoneBottomSheetLoadedState();
     }
     if (event is AddedNewAddressListEvent) {
