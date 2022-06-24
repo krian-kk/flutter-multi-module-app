@@ -25,23 +25,18 @@ class PreferenceHelper {
     return prefs.get(keyPair).toString();
   }
 
-  static Future<double> getDouble({required String keyPair}) async {
+  static Future<double?> getDouble({required String keyPair}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return double.parse(prefs.get(keyPair).toString());
+    return prefs.getDouble(keyPair);
   }
 
-  static Future<int> getInt({required String keyPair}) async {
+  static Future<int?> getInt({required String keyPair}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return int.parse(prefs.get(keyPair).toString());
+    return prefs.getInt(keyPair);
   }
 
   static Future<bool> getBool({required String keyPair}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get(keyPair) as bool;
-  }
-
-  static Future<dynamic> getPreference(String keyPair) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get(keyPair);
+    return prefs.getBool(keyPair) ?? false;
   }
 }

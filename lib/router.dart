@@ -208,12 +208,11 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
             'Router AuthenticationAuthenticated @notification tyep ${state.notificationData}');
 
         final String? mPin =
-            await PreferenceHelper.getPreference(Constants.mPin);
+            await PreferenceHelper.getString(keyPair: Constants.mPin);
         final String? agentRef =
-            await PreferenceHelper.getPreference(Constants.agentRef);
+            await PreferenceHelper.getString(keyPair: Constants.agentRef);
         Singleton.instance.isOfflineEnabledContractorBased =
-            await PreferenceHelper.getPreference(Constants.isOfflineStorage) ??
-                false;
+            await PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage);
         // await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
         //     arguments: state.notificationData);
         // await SharedPreferences.getInstance().then((value) {

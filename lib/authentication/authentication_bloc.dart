@@ -77,18 +77,23 @@ class AuthenticationBloc
               yield AuthenticationUnAuthenticated(
                   notificationData: event.notificationData);
             } else {
-              Singleton.instance.accessToken =
-                  PreferenceHelper.getString(keyPair: Constants.accessToken)
-                      .toString();
-              Singleton.instance.refreshToken =
-                  PreferenceHelper.getString(keyPair: Constants.refreshToken)
-                      .toString();
-              Singleton.instance.sessionID =
-                  PreferenceHelper.getString(keyPair: Constants.sessionId)
-                      .toString();
-              Singleton.instance.agentRef =
-                  PreferenceHelper.getString(keyPair: Constants.agentRef)
-                      .toString();
+              await PreferenceHelper.getString(keyPair: Constants.accessToken)
+                  .then((value) {
+                Singleton.instance.accessToken = value;
+              });
+
+              await PreferenceHelper.getString(keyPair: Constants.refreshToken)
+                  .then((value) {
+                Singleton.instance.refreshToken = value;
+              });
+              await PreferenceHelper.getString(keyPair: Constants.sessionId)
+                  .then((value) {
+                Singleton.instance.sessionID = value;
+              });
+              await PreferenceHelper.getString(keyPair: Constants.agentRef)
+                  .then((value) {
+                Singleton.instance.agentRef = value;
+              });
 
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(APIRequestType.get,
