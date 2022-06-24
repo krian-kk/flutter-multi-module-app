@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
 import 'package:origa/widgets/custom_button.dart';
-import 'package:origa/widgets/custom_text.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../../languages/app_languages.dart';
 import '../../utils/color_resource.dart';
-import '../../utils/image_resource.dart';
 import '../../widgets/bottomsheet_appbar.dart';
 import '../../widgets/custom_loading_widget.dart';
 
@@ -30,6 +28,7 @@ class IdCardBottomSheetScreen extends StatefulWidget {
 
 class _IdCardBottomSheetScreenState extends State<IdCardBottomSheetScreen> {
   bool _showFrontSide = true;
+
   // bool _flipXAxis = true;
   late WebViewController controller;
   final Completer<WebViewController> completer = Completer<WebViewController>();

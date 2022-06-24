@@ -43,15 +43,14 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/custom_snackbar/top_snack_bar.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/language_to_constant_convert.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
@@ -211,9 +210,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString(Constants.userType);
-      agentName = _pref.getString(Constants.agentName);
+      userType =
+          PreferenceHelper.getString(keyPair: Constants.userType).toString();
+      agentName =
+          PreferenceHelper.getString(keyPair: Constants.agentName).toString();
       // check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
         final Stream streamingDocument = FirebaseFirestore.instance

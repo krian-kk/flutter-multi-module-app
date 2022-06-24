@@ -9,7 +9,7 @@ import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:origa/utils/preference_helper.dart';
 
 enum APIRequestType {
   get,
@@ -40,7 +40,6 @@ class APIRepository {
       String? savePath,
       bool isPop = false}) async {
     Map<String, dynamic> returnValue;
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     debugPrint(
         'Before Request --> urlString-->$urlString \n  requestBodydata-->$requestBodydata //Completed');
@@ -102,7 +101,7 @@ class APIRepository {
         debugPrint('Access Token is => ${response.headers['access-token']}');
         // Here get New Access Token for every API call then store
         if (response.headers['access-token']![0].toString() != 'false') {
-          await _prefs.setString(Constants.accessToken,
+          await PreferenceHelper.setPreference(Constants.accessToken,
               response.headers['access-token']![0].toString());
           Singleton.instance.accessToken =
               response.headers['access-token']![0].toString();

@@ -16,7 +16,6 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_event.dart';
 
@@ -34,7 +33,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   List<NotificationMainModel> notificationList = <NotificationMainModel>[];
   List<LanguageModel> languageList = [];
   String? userType;
-  dynamic languageValue = PreferenceHelper.getPreference('mainLanguage');
   bool isProfileImageUpdating = false;
   File? image;
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
@@ -51,9 +49,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
-
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString(Constants.userType);
+      userType =
+          PreferenceHelper.getString(keyPair: Constants.userType).toString();
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -226,17 +223,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
     if (event is LoginEvent) {
       yield ProfileLoadingState();
-      final SharedPreferences _prefs = await SharedPreferences.getInstance();
       Singleton.instance.isOfflineStorageFeatureEnabled = false;
       await FirebaseFirestore.instance.terminate();
       // await _prefs.clear();
-      await _prefs.setString(Constants.accessToken, '');
-      await _prefs.setString(Constants.userType, '');
-      await _prefs.setBool(Constants.appDataLoadedFromFirebase, false);
-      await _prefs.setString(Constants.appDataLoadedFromFirebaseTime, '');
-      await _prefs.setString('addressValue', '');
-      await _prefs.setBool('areyouatOffice', true);
-      // await _prefs.setBool(Constants.rememberMe, false);
+      await PreferenceHelper.setPreference(Constants.accessToken, '');
+      await PreferenceHelper.setPreference(Constants.userType, '');
+      await PreferenceHelper.setPreference(
+          Constants.appDataLoadedFromFirebase, false);
+      await PreferenceHelper.setPreference(
+          Constants.appDataLoadedFromFirebaseTime, '');
+      await PreferenceHelper.setPreference('addressValue', '');
+      await PreferenceHelper.setPreference('areyouatOffice', true);
       yield LoginState();
     }
     if (event is ClickMarkAsHomeEvent) {

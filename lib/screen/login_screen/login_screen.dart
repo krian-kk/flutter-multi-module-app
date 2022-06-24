@@ -32,7 +32,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/web_view_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'bloc/login_bloc.dart';
 
@@ -164,9 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFunction: (mPin) async {
                 // Create Secure Mpin APi
                 if (await createMpin(mPin)) {
-                  final SharedPreferences _prefs =
-                      await SharedPreferences.getInstance();
-                  await _prefs.setString(Constants.mPin, mPin!);
+                  await PreferenceHelper.setPreference(Constants.mPin, mPin!);
                   Navigator.pop(context);
                   bloc.add(TriggeredHomeTabEvent(userId.text));
                 } else {
@@ -277,9 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
               saveFuction: (mPin) async {
                 // New Pin Create Api in this
                 if (await createMpin(mPin)) {
-                  final SharedPreferences _prefs =
-                      await SharedPreferences.getInstance();
-                  await _prefs.setString(Constants.mPin, mPin!);
+                  await PreferenceHelper.setPreference(Constants.mPin, mPin!);
                   Navigator.pop(context);
                   Navigator.pop(context);
                   bloc.add(TriggeredHomeTabEvent(userId.text));
@@ -757,13 +752,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _handleRemeberme(bool value) {
     _isChecked = value;
-    SharedPreferences.getInstance().then(
-      (prefs) {
-        prefs.setBool(Constants.rememberMe, value);
-        prefs.setString(Constants.rememberUserId, userId.text);
-        prefs.setString(Constants.rememberPassword, password.text);
-      },
-    );
+    PreferenceHelper.setPreference(Constants.rememberMe, value);
+    PreferenceHelper.setPreference(Constants.rememberUserId, userId.text);
+    PreferenceHelper.setPreference(Constants.rememberPassword, password.text);
     setState(() {
       _isChecked = value;
     });
@@ -771,10 +762,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _loadUserNamePassword() async {
     try {
-      final SharedPreferences _prefs = await SharedPreferences.getInstance();
-      final _username = _prefs.getString(Constants.rememberUserId) ?? '';
-      final _password = _prefs.getString(Constants.rememberPassword) ?? '';
-      final _remeberMe = _prefs.getBool(Constants.rememberMe) ?? false;
+      final String _username =
+          PreferenceHelper.getString(keyPair: Constants.rememberUserId)
+              .toString();
+      final String _password =
+          PreferenceHelper.getString(keyPair: Constants.rememberPassword)
+              .toString();
+      final bool _remeberMe =
+          PreferenceHelper.getBool(keyPair: Constants.rememberMe) as bool;
 
       if (_remeberMe) {
         setState(() {

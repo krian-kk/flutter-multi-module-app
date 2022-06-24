@@ -19,10 +19,10 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/app_utils.dart';
 import '../notification_navigate_screen.dart';
@@ -89,38 +89,40 @@ class _HomeTabScreenState extends State<HomeTabScreen>
   }
 
   Future<void> timeCalculateForOffline() async {
-    final SharedPreferences _pref = await SharedPreferences.getInstance();
-    await SharedPreferences.getInstance().then((SharedPreferences value) {
-      try {
-        final int nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
-                    .parse(value
-                        .getString(Constants.appDataLoadedFromFirebaseTime)!)
-                    .add(const Duration(days: 1)))
-                .millisecondsSinceEpoch -
-            DateTime.now().millisecondsSinceEpoch;
-        if (nextLoginTime > 0) {
-          Future<dynamic>.delayed(
-            Duration(milliseconds: nextLoginTime),
-          ).asStream().listen((dynamic value) {
-            if (Singleton.instance.isOfflineStorageFeatureEnabled) {
-              _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
-              Singleton.instance.isOfflineStorageFeatureEnabled = false;
-              _pref.setBool(Constants.appDataLoadedFromFirebase, false);
-              Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
-            }
-          });
-        } else {
+    try {
+      final int nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
+                  .parse(PreferenceHelper.getString(
+                          keyPair: Constants.appDataLoadedFromFirebaseTime)
+                      .toString())
+                  .add(const Duration(days: 1)))
+              .millisecondsSinceEpoch -
+          DateTime.now().millisecondsSinceEpoch;
+      if (nextLoginTime > 0) {
+        Future<dynamic>.delayed(
+          Duration(milliseconds: nextLoginTime),
+        ).asStream().listen((dynamic value) {
           if (Singleton.instance.isOfflineStorageFeatureEnabled) {
-            _pref.setBool(Constants.appDataLoadedFromFirebase, false);
+            PreferenceHelper.setPreference(
+                Constants.appDataLoadedFromFirebaseTime, '');
             Singleton.instance.isOfflineStorageFeatureEnabled = false;
-            _pref.setString(Constants.appDataLoadedFromFirebaseTime, '');
+            PreferenceHelper.setPreference(
+                Constants.appDataLoadedFromFirebase, false);
             Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
           }
+        });
+      } else {
+        if (Singleton.instance.isOfflineStorageFeatureEnabled) {
+          PreferenceHelper.setPreference(
+              Constants.appDataLoadedFromFirebase, false);
+          Singleton.instance.isOfflineStorageFeatureEnabled = false;
+          PreferenceHelper.setPreference(
+              Constants.appDataLoadedFromFirebaseTime, '');
+          await Navigator.pushReplacementNamed(context, AppRoutes.loginScreen);
         }
-      } catch (e) {
-        debugPrint(e.toString());
       }
-    });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   @override
@@ -182,9 +184,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               }
               break;
             case '5':
-              final SharedPreferences _pref =
-                  await SharedPreferences.getInstance();
-              if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+              if (Singleton.instance.usertype == Constants.fieldagent) {
                 // Initiate Dashboard bloc
                 final DashboardBloc dashboardbloc = DashboardBloc();
                 //Navigate MyDeposists Screen

@@ -8,7 +8,6 @@ import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../utils/constants.dart';
 
@@ -37,10 +36,12 @@ class _CustomerLanguagePreferenceState
   }
 
   getLanguageCode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      ratioIndex = prefs.getInt(Constants.s2tLangSelectedIndex);
-      setLanguageCode = prefs.getString(Constants.s2tLangcode);
+      ratioIndex =
+          PreferenceHelper.getInt(keyPair: Constants.s2tLangSelectedIndex)
+              as int;
+      setLanguageCode =
+          PreferenceHelper.getString(keyPair: Constants.s2tLangcode).toString();
     });
   }
 

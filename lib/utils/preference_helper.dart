@@ -44,15 +44,4 @@ class PreferenceHelper {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.get(keyPair);
   }
-// static Future<String> getStringPreferenceValue(String keyPair) async {
-//   final prefs = await SharedPreferences.getInstance();
-//   return prefs.getString(keyPair) ?? '';
-// }
-
-// // Set Biometric authentication
-
-// static void setBioMetricValue(String value) {
-//   storage.write(key: Constants.bioMetricLogin, value: value);
-// }
-
 }

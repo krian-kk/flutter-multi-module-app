@@ -23,7 +23,6 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/preference_helper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authentication/authentication_bloc.dart';
 import 'authentication/authentication_state.dart';
@@ -253,23 +252,23 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
       }
 
       if (state is OfflineState) {
-        await SharedPreferences.getInstance().then((value) async {
-          final String mPin = value.getString(Constants.mPin).toString();
-          final String agentRef =
-              value.getString(Constants.agentRef).toString();
-          Singleton.instance.isOfflineEnabledContractorBased =
-              value.getBool(Constants.isOfflineStorage) ?? false;
-          Singleton.instance.usertype = value.getString(Constants.userType);
-          if (Singleton.instance.isOfflineEnabledContractorBased &&
-              Singleton.instance.usertype == Constants.fieldagent) {
-            await showMPinDialog(
-                mPin: mPin, buildContext: context, userName: agentRef);
-          } else {
-            await Navigator.pushReplacementNamed(
-                context, AppRoutes.homeTabScreen);
-          }
-        });
-        // Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen);
+        final String mPin =
+            PreferenceHelper.getString(keyPair: Constants.mPin).toString();
+        final String agentRef =
+            PreferenceHelper.getString(keyPair: Constants.agentRef).toString();
+        Singleton.instance.isOfflineEnabledContractorBased =
+            PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage)
+                as bool;
+        Singleton.instance.usertype =
+            PreferenceHelper.getString(keyPair: Constants.userType).toString();
+        if (Singleton.instance.isOfflineEnabledContractorBased &&
+            Singleton.instance.usertype == Constants.fieldagent) {
+          await showMPinDialog(
+              mPin: mPin, buildContext: context, userName: agentRef);
+        } else {
+          await Navigator.pushReplacementNamed(
+              context, AppRoutes.homeTabScreen);
+        }
       }
       if (state is SplashScreenState) {
         await Navigator.pushNamed(context, AppRoutes.splashScreen);

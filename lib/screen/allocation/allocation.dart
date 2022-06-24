@@ -38,6 +38,7 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
@@ -45,7 +46,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'bloc/allocation_bloc.dart';
@@ -873,12 +873,10 @@ class _AllocationScreenState extends State<AllocationScreen>
             requestBodydata: jsonEncode(requestBodyData),
           );
           if (postResult[Constants.success]) {
-            final SharedPreferences _pref =
-                await SharedPreferences.getInstance();
             setState(() {
               isSubmitRUOffice = false;
               bloc.areyouatOffice = false;
-              _pref.setBool('areyouatOffice', false);
+              PreferenceHelper.setPreference('areyouatOffice', false);
             });
             AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
           } else {
