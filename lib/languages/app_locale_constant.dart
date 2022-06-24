@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:origa/main.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:origa/utils/preference_helper.dart';
 
 const String prefSelectedLanguageCode = 'SelectedLanguageCode';
 
 Future<Locale> setLocale(String languageCode) async {
-  final SharedPreferences _prefs = await SharedPreferences.getInstance();
-  await _prefs.setString(prefSelectedLanguageCode, languageCode);
+  await PreferenceHelper.setPreference(prefSelectedLanguageCode, languageCode);
   return _locale(languageCode);
 }
 
 Future<Locale> getLocale() async {
-  final SharedPreferences _prefs = await SharedPreferences.getInstance();
-  final String languageCode =
-      _prefs.getString(prefSelectedLanguageCode) ?? 'en';
-  return _locale(languageCode);
+  String? languageCode;
+  await PreferenceHelper.getString(keyPair: prefSelectedLanguageCode)
+      .then((value) {
+    languageCode = value;
+  });
+  return _locale(languageCode!);
 }
 
 Locale _locale(String languageCode) {
