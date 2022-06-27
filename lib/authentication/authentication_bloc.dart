@@ -94,7 +94,7 @@ class AuthenticationBloc
               });
               await PreferenceHelper.getString(keyPair: Constants.agentRef)
                   .then((value) {
-                Singleton.instance.sessionID = value;
+                Singleton.instance.agentRef = value;
               });
 
               final Map<String, dynamic> agentDetail =
