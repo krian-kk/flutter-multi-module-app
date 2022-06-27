@@ -105,15 +105,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       Singleton.instance.buildContext = event.context;
       await PreferenceHelper.getString(keyPair: Constants.userType)
           .then((value) {
-        userType = value;
+        userType = value.toString();
       });
       await PreferenceHelper.getString(keyPair: Constants.agentName)
           .then((value) {
-        agentName = value;
+        agentName = value.toString();
       });
       await PreferenceHelper.getString(keyPair: Constants.agentRef)
           .then((value) {
-        agrRef = value;
+        agrRef = value.toString();
       });
       await PreferenceHelper.getBool(keyPair: 'areyouatOffice').then((value) {
         areyouatOffice = value ?? false;

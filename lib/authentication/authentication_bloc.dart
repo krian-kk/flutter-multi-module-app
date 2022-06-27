@@ -7,6 +7,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
+import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
@@ -24,28 +25,29 @@ class AuthenticationBloc
       await Future<dynamic>.delayed(const Duration(seconds: 2));
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        if (PreferenceHelper.getString(keyPair: Constants.userType)
-                .toString() ==
-            Constants.fieldagent) {
-          if (PreferenceHelper.getBool(
-                  keyPair: Constants.appDataLoadedFromFirebase) as bool ==
-              true) {
-            Singleton.instance.usertype =
-                PreferenceHelper.getString(keyPair: Constants.userType)
-                    .toString();
-            Singleton.instance.agentRef =
-                PreferenceHelper.getString(keyPair: Constants.agentRef)
-                    .toString();
-            yield OfflineState();
-          } else {
-            yield AuthenticationUnAuthenticated(
-                notificationData: event.notificationData);
-          }
+        bool appDataLoadedFromFirebase = false;
+        await PreferenceHelper.getString(keyPair: Constants.agentRef)
+            .then((value) {
+          Singleton.instance.agentRef = value;
+        });
+
+        await PreferenceHelper.getString(keyPair: Constants.userType)
+            .then((value) {
+          Singleton.instance.usertype = value;
+        });
+
+        await PreferenceHelper.getBool(
+                keyPair: Constants.appDataLoadedFromFirebase)
+            .then((value) {
+          appDataLoadedFromFirebase = value;
+        });
+        if (Singleton.instance.usertype == Constants.fieldagent &&
+            appDataLoadedFromFirebase) {
+          yield OfflineState();
         } else {
           yield AuthenticationUnAuthenticated(
               notificationData: event.notificationData);
         }
-        // AppUtils.showErrorToast('No Internet Connection');
       } else {
         String? getToken;
         String? getUserName;
@@ -92,12 +94,12 @@ class AuthenticationBloc
               });
               await PreferenceHelper.getString(keyPair: Constants.agentRef)
                   .then((value) {
-                Singleton.instance.agentRef = value;
+                Singleton.instance.sessionID = value;
               });
 
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(APIRequestType.get,
-                      HttpUrl.agentDetailUrl + getUserName!);
+                      HttpUrl.agentInformation + 'aRef=$getUserName');
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(
@@ -122,9 +124,9 @@ class AuthenticationBloc
                       backgroundColor: Colors.red);
                 }
 
-                final dynamic agentDetails =
-                    AgentDetailsModel.fromJson(agentDetail['data']);
-                if (agentDetails.data![0].agentType == 'COLLECTOR') {
+                final agentDetails =
+                    AgentInformation.fromJson(agentDetail['data']);
+                if (agentDetails.result!.first.type == 'COLLECTOR') {
                   await PreferenceHelper.setPreference(
                       Constants.userType, Constants.fieldagent);
                   Singleton.instance.usertype = Constants.fieldagent;
@@ -134,26 +136,29 @@ class AuthenticationBloc
                   Singleton.instance.usertype = Constants.telecaller;
                 }
 
-                if (agentDetails.data![0].agentType != null) {
+                if (agentDetails.result!.first.type != null) {
                   Singleton.instance.agentName =
-                      agentDetails.data![0].agentName!;
+                      agentDetails.result!.first.name!;
                   await PreferenceHelper.setPreference(
-                      Constants.agentName, agentDetails.data![0].agentName!);
-                  await PreferenceHelper.setPreference(
-                      Constants.mobileNo, agentDetails.data![0].mobNo!);
-                  await PreferenceHelper.setPreference(
-                      Constants.email, agentDetails.data![0].email!);
-                  await PreferenceHelper.setPreference(
-                      Constants.contractor, agentDetails.data![0].contractor!);
+                      Constants.agentName, agentDetails.result!.first.name!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.mobileNo, agentDetails.result!.first.mobNo!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.email, agentDetails.data![0].email!);
+                  await PreferenceHelper.setPreference(Constants.contractor,
+                      agentDetails.result!.first.contractor!);
                   Singleton.instance.contractor =
-                      agentDetails.data![0].contractor!;
+                      agentDetails.result!.first.contractor!;
                   await PreferenceHelper.setPreference(
-                      Constants.status, agentDetails.data![0].status!);
-                  await PreferenceHelper.setPreference(
-                      Constants.code, agentDetails.code!);
-                  await PreferenceHelper.setPreference(
-                      Constants.userAdmin, agentDetails.data![0].userAdmin!);
+                      Constants.status, agentDetails.result!.first.status!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.code, agentDetails.code!);
+                  await PreferenceHelper.setPreference(Constants.userAdmin,
+                      agentDetails.result!.first.userAdmin!);
                   yield AuthenticationAuthenticated(
+                      notificationData: event.notificationData);
+                } else {
+                  yield AuthenticationUnAuthenticated(
                       notificationData: event.notificationData);
                 }
               }

@@ -2,17 +2,21 @@ import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/http/logging.dart';
 import 'package:origa/singleton.dart';
 
 class DioClient {
   static dynamic dioConfig() {
+    debugPrint('DioClient accessToken---> ${Singleton.instance.accessToken} ');
     final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 60000, //60s
-        receiveTimeout: 60000, //60s
+        connectTimeout: 60000,
+        //60s
+        receiveTimeout: 60000,
+        //60s
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)
@@ -41,8 +45,10 @@ class DioClient {
     final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 60000, //60s
-        receiveTimeout: 60000, //60s
+        connectTimeout: 60000,
+        //60s
+        receiveTimeout: 60000,
+        //60s
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)
