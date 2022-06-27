@@ -37,11 +37,13 @@ class _CustomerLanguagePreferenceState
 
   getLanguageCode() async {
     setState(() {
-      ratioIndex =
-          PreferenceHelper.getInt(keyPair: Constants.s2tLangSelectedIndex)
-              as int;
-      setLanguageCode =
-          PreferenceHelper.getString(keyPair: Constants.s2tLangcode).toString();
+      PreferenceHelper.getInt(keyPair: Constants.s2tLangSelectedIndex)
+          .then((value) {
+        ratioIndex = value;
+      });
+      PreferenceHelper.getString(keyPair: Constants.s2tLangcode).then((value) {
+        setLanguageCode = value;
+      });
     });
   }
 
