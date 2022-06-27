@@ -77,9 +77,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getAddress() async {
-    addressValue =
-        (PreferenceHelper.getString(keyPair: 'addressValue').toString())
-            .toString();
+    await PreferenceHelper.getString(keyPair: 'addressValue').then((value) {
+      addressValue = value!;
+    });
   }
 
   Future<dynamic> pickImage(

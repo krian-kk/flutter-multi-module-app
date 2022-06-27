@@ -127,7 +127,7 @@ class APIRepository {
 
       debugPrint(
           'Error Status :  urlString-->$urlString \n  requestBodydata-->$requestBodydata'
-          '\n  response-->${jsonEncode(e.response)}');
+          '\n  response-->${e.response}');
 
       if (error.toString() != 'DioErrorType.response') {
         // isPop is used for if i load new api then get any error then pop the back screen
