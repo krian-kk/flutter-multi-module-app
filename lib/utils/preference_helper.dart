@@ -12,9 +12,11 @@ class PreferenceHelper {
     await SharedPreferences.getInstance().then((value) {
       value.setString(
           keyPair,
-          Encrypter(AES(Key.fromUtf8(deviceId!)))
-              .encrypt(argValues.toString(), iv: IV.fromLength(16))
-              .base16);
+          (argValues == '' || argValues == null)
+              ? argValues
+              : Encrypter(AES(Key.fromUtf8(deviceId!)))
+                  .encrypt(argValues.toString(), iv: IV.fromLength(16))
+                  .base16);
     });
   }
 

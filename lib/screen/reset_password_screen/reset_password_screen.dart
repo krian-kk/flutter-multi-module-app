@@ -36,6 +36,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   bool isSubmit = false;
   bool isSendOTP = true;
   bool isTime = false;
+  bool isEnableResendOtp = true;
+  int sendOtpTapCount = 0;
 
   bool isCheck = true;
   bool isSaveNewPasswordLoad = true;
@@ -47,6 +49,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   FocusNode userNameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
   FocusNode pinCodeFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void secondsOTP() {
     setState(() {
@@ -345,36 +352,50 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                Center(
-                                  child: InkWell(
-                                    onTap: isTime
-                                        ? () {}
-                                        : () async {
-                                            final Map<String, dynamic>
-                                                postResult =
-                                                await APIRepository.apiRequest(
-                                              APIRequestType.post,
-                                              HttpUrl.resendOTPUrl(),
-                                              requestBodydata: <String,
-                                                  dynamic>{
-                                                'aRef': userIdController.text
-                                              },
-                                            );
-                                            if (postResult[Constants.success]) {
-                                              secondsOTP();
-                                            }
-                                          },
-                                    child: CustomText(
-                                      Languages.of(context)!
-                                          .resendOTP
-                                          .toUpperCase(),
-                                      isUnderLine: true,
-                                      color: isTime
-                                          ? ColorResource.color23375A
-                                              .withOpacity(0.5)
-                                          : ColorResource.color23375A,
-                                      fontSize: FontSize.sixteen,
-                                      fontWeight: FontWeight.w600,
+                                Visibility(
+                                  visible: isEnableResendOtp,
+                                  child: Center(
+                                    child: InkWell(
+                                      onTap: isTime
+                                          ? () {}
+                                          : () async {
+                                              final Map<String, dynamic>
+                                                  postResult =
+                                                  await APIRepository
+                                                      .apiRequest(
+                                                APIRequestType.post,
+                                                HttpUrl.resendOTPUrl(),
+                                                requestBodydata: <String,
+                                                    dynamic>{
+                                                  'aRef': userIdController.text
+                                                },
+                                              );
+                                              if (postResult[
+                                                  Constants.success]) {
+                                                setState(() {
+                                                  sendOtpTapCount++;
+                                                });
+
+                                                if (sendOtpTapCount == 3) {
+                                                  setState(() {
+                                                    isEnableResendOtp = false;
+                                                  });
+                                                }
+                                                secondsOTP();
+                                              }
+                                            },
+                                      child: CustomText(
+                                        Languages.of(context)!
+                                            .resendOTP
+                                            .toUpperCase(),
+                                        isUnderLine: true,
+                                        color: isTime
+                                            ? ColorResource.color23375A
+                                                .withOpacity(0.5)
+                                            : ColorResource.color23375A,
+                                        fontSize: FontSize.sixteen,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -436,6 +457,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       if (await postResult[Constants.success]) {
                                         setState(() {
                                           isSendOTP = false;
+                                          sendOtpTapCount++;
                                           isTime = true;
                                           secondsOTP();
                                         });

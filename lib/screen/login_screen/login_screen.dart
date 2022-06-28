@@ -762,21 +762,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _loadUserNamePassword() async {
     try {
-      final String _username =
-          PreferenceHelper.getString(keyPair: Constants.rememberUserId)
-              .toString();
-      final String _password =
-          PreferenceHelper.getString(keyPair: Constants.rememberPassword)
-              .toString();
-      final bool _remeberMe =
-          PreferenceHelper.getBool(keyPair: Constants.rememberMe) as bool;
+      bool _remeberMe = false;
+      String? _username;
+      String? _password;
+      await PreferenceHelper.getString(keyPair: Constants.rememberPassword)
+          .then((value) {
+        _password = value;
+      });
+      await PreferenceHelper.getString(keyPair: Constants.rememberUserId)
+          .then((value) {
+        _username = value;
+      });
+      await PreferenceHelper.getBool(keyPair: Constants.rememberMe)
+          .then((value) {
+        _remeberMe = value;
+      });
 
       if (_remeberMe) {
         setState(() {
           _isChecked = true;
         });
-        userId.text = _username;
-        password.text = _password;
+        userId.text = _username!;
+        password.text = _password!;
       } else {
         setState(() {
           _isChecked = false;

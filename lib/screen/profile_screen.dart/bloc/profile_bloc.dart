@@ -72,7 +72,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           noInternetAndServerErrorMsg = getProfileData['data'];
         }
       }
-
+      await PreferenceHelper.getString(keyPair: Constants.agentRef)
+          .then((value) {
+        Singleton.instance.agentRef = value;
+      });
       final String? history =
           HttpUrl.chatHistory2 + Singleton.instance.agentRef! + '/';
       final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(

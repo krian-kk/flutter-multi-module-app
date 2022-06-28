@@ -17,8 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="Origa"
-        android:usesCleartextTraffic="true"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+        android:usesCleartextTraffic="true">
 
         <activity
             android:name=".MainActivity"
