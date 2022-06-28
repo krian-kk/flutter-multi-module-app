@@ -210,10 +210,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-      userType =
-          PreferenceHelper.getString(keyPair: Constants.userType).toString();
-      agentName =
-          PreferenceHelper.getString(keyPair: Constants.agentName).toString();
+      await PreferenceHelper.getString(keyPair: Constants.userType)
+          .then((value) {
+        userType = value;
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentName)
+          .then((value) {
+        agentName = value;
+      });
       // check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
         final Stream streamingDocument = FirebaseFirestore.instance
