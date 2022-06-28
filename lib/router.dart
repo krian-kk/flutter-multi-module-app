@@ -207,12 +207,30 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         debugPrint(
             'Router AuthenticationAuthenticated @notification tyep ${state.notificationData}');
 
-        final String? mPin =
-            await PreferenceHelper.getString(keyPair: Constants.mPin);
-        final String? agentRef =
-            await PreferenceHelper.getString(keyPair: Constants.agentRef);
-        Singleton.instance.isOfflineEnabledContractorBased =
-            await PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage);
+        // final String? mPin =
+        //     await PreferenceHelper.getString(keyPair: Constants.mPin);
+        // final String? agentRef =
+        //     await PreferenceHelper.getString(keyPair: Constants.agentRef);
+        // Singleton.instance.isOfflineEnabledContractorBased =
+        //     await PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage);
+
+        String? mPin;
+        String? agentRef;
+        await PreferenceHelper.getString(keyPair: Constants.mPin).then((value) {
+          mPin = value;
+        });
+        await PreferenceHelper.getString(keyPair: Constants.agentRef)
+            .then((value) {
+          agentRef = value;
+        });
+        await PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage)
+            .then((value) {
+          Singleton.instance.isOfflineEnabledContractorBased = value;
+        });
+        await PreferenceHelper.getString(keyPair: Constants.userType)
+            .then((value) {
+          Singleton.instance.usertype = value;
+        });
         // await Navigator.pushReplacementNamed(context, AppRoutes.homeTabScreen,
         //     arguments: state.notificationData);
         // await SharedPreferences.getInstance().then((value) {
@@ -251,15 +269,33 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
       }
 
       if (state is OfflineState) {
-        final String mPin =
-            PreferenceHelper.getString(keyPair: Constants.mPin).toString();
-        final String agentRef =
-            PreferenceHelper.getString(keyPair: Constants.agentRef).toString();
-        Singleton.instance.isOfflineEnabledContractorBased =
-            PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage)
-                as bool;
-        Singleton.instance.usertype =
-            PreferenceHelper.getString(keyPair: Constants.userType).toString();
+        String? mPin;
+        String? agentRef;
+        await PreferenceHelper.getString(keyPair: Constants.mPin).then((value) {
+          mPin = value;
+        });
+        await PreferenceHelper.getString(keyPair: Constants.agentRef)
+            .then((value) {
+          agentRef = value;
+        });
+        await PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage)
+            .then((value) {
+          Singleton.instance.isOfflineEnabledContractorBased = value;
+        });
+        await PreferenceHelper.getString(keyPair: Constants.userType)
+            .then((value) {
+          Singleton.instance.usertype = value;
+        });
+        // final String mPin =
+        //     PreferenceHelper.getString(keyPair: Constants.mPin).toString();
+        // final String agentRef =
+        //     PreferenceHelper.getString(keyPair: Constants.agentRef).toString();
+        // Singleton.instance.isOfflineEnabledContractorBased =
+        //     PreferenceHelper.getBool(keyPair: Constants.isOfflineStorage)
+        //         as bool;
+        // Singleton.instance.usertype =
+        //     PreferenceHelper.getString(keyPair: Constants.userType).toString();
+
         if (Singleton.instance.isOfflineEnabledContractorBased &&
             Singleton.instance.usertype == Constants.fieldagent) {
           await showMPinDialog(

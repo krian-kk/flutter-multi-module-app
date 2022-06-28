@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   List<NotificationMainModel> notificationList = <NotificationMainModel>[];
   List<LanguageModel> languageList = [];
-  String? userType;
+  // String? userType;
   bool isProfileImageUpdating = false;
   File? image;
   ChatHistoryModel chatHistoryData = ChatHistoryModel();
@@ -49,8 +49,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if (event is ProfileInitialEvent) {
       yield ProfileLoadingState();
-      userType =
-          PreferenceHelper.getString(keyPair: Constants.userType).toString();
       Singleton.instance.buildContext = event.context;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -74,7 +72,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           noInternetAndServerErrorMsg = getProfileData['data'];
         }
       }
-
+      await PreferenceHelper.getString(keyPair: Constants.agentRef)
+          .then((value) {
+        Singleton.instance.agentRef = value;
+      });
       final String? history =
           HttpUrl.chatHistory2 + Singleton.instance.agentRef! + '/';
       final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(

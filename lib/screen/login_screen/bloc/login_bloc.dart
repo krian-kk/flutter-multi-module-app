@@ -348,6 +348,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
+import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
 import 'package:origa/models/login_error_model.dart';
@@ -499,6 +500,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.agentRef =
               PreferenceHelper.getString(keyPair: Constants.agentRef)
                   .toString();
+
           if (loginResponse.data!.accessToken != null) {
             // Here check mpin flow show or not (offline or Online)
 
@@ -552,8 +554,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is TriggeredHomeTabEvent) {
       yield SignInLoadingState();
       // Execute agent detail URl to get Agent details
+      debugPrint('Agent type--> TriggeredHomeTabEvent');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.accessToken}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.refreshToken}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.sessionID}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.sessionID}');
+
+      // final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+      //     APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
+
       final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-          APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
+          APIRequestType.get,
+          HttpUrl.agentInformation + 'aRef=${event.userId}');
 
       if (agentDetail['success'] == false) {
         // Here facing error so close the loading
@@ -569,10 +585,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield SignInCompletedState();
 
         // getting Agent Details
-        final agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
+        final agentDetails = AgentInformation.fromJson(agentDetail['data']);
         // each agent type COLLECTOR or TELECALLER then store agent-type in local storage
         if (agentDetails.status == 200) {
-          if (agentDetails.data!.first.agentType == 'COLLECTOR') {
+          if (agentDetails.result!.first.type == 'COLLECTOR') {
             await PreferenceHelper.setPreference(
                 Constants.userType, Constants.fieldagent);
             Singleton.instance.usertype = Constants.fieldagent;
@@ -582,24 +598,25 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             Singleton.instance.usertype = Constants.telecaller;
           }
           // here storing all agent details in local storage
-          if (agentDetails.data!.first.agentType != null) {
-            Singleton.instance.agentName = agentDetails.data!.first.agentName!;
+          debugPrint('Agent type--> ${agentDetails.result!.first.type}');
+          if (agentDetails.result!.first.type != null) {
+            Singleton.instance.agentName = agentDetails.result!.first.name!;
             await PreferenceHelper.setPreference(
-                Constants.agentName, agentDetails.data!.first.agentName!);
+                Constants.agentName, agentDetails.result!.first.name!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.mobileNo, agentDetails.result!.first.!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.email, agentDetails.result!.first.!);
             await PreferenceHelper.setPreference(
-                Constants.mobileNo, agentDetails.data!.first.mobNo!);
-            await PreferenceHelper.setPreference(
-                Constants.email, agentDetails.data!.first.email!);
-            await PreferenceHelper.setPreference(
-                Constants.contractor, agentDetails.data!.first.contractor!);
+                Constants.contractor, agentDetails.result!.first.contractor!);
             Singleton.instance.contractor =
-                agentDetails.data!.first.contractor!;
+                agentDetails.result!.first.contractor!;
             await PreferenceHelper.setPreference(
-                Constants.status, agentDetails.data!.first.status!);
+                Constants.status, agentDetails.result!.first.status!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.code, agentDetails.result.first!);
             await PreferenceHelper.setPreference(
-                Constants.code, agentDetails.code!);
-            await PreferenceHelper.setPreference(
-                Constants.userAdmin, agentDetails.data!.first.userAdmin!);
+                Constants.userAdmin, agentDetails.result!.first.userAdmin!);
             // Here call share device info api
             Map<String, dynamic> deviceData = <String, dynamic>{};
 
@@ -698,7 +715,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           }
         } else {
           yield SignInLoadedState();
-          AppUtils.showToast(agentDetails.msg!, backgroundColor: Colors.red);
+          AppUtils.showToast(agentDetails.message!,
+              backgroundColor: Colors.red);
         }
       }
       yield HomeTabState();

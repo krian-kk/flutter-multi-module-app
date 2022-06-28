@@ -73,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // userId.text = 'CDE_chinnaduraitc';
       // password.text = '9585313659';
 
-      // userId.text = 'CDE_fos1';
-      // password.text = 'Origa123';
+      userId.text = 'CDE_fos1';
+      password.text = 'Origa123';
 
       // userId.text = 'DEC_origatest';
       // password.text = 'Origa123';
@@ -83,8 +83,8 @@ class _LoginScreenState extends State<LoginScreen> {
       // userId.text = 'YES_fos';
       // password.text = 'Agent1234';
 
-      userId.text = 'CDE_46';
-      password.text = 'Origa123';
+      // userId.text = 'CDE_46';
+      // password.text = 'Origa123';
     }
     username = FocusNode();
     passwords = FocusNode();
@@ -762,21 +762,28 @@ class _LoginScreenState extends State<LoginScreen> {
 
   _loadUserNamePassword() async {
     try {
-      final String _username =
-          PreferenceHelper.getString(keyPair: Constants.rememberUserId)
-              .toString();
-      final String _password =
-          PreferenceHelper.getString(keyPair: Constants.rememberPassword)
-              .toString();
-      final bool _remeberMe =
-          PreferenceHelper.getBool(keyPair: Constants.rememberMe) as bool;
+      bool _remeberMe = false;
+      String? _username;
+      String? _password;
+      await PreferenceHelper.getString(keyPair: Constants.rememberPassword)
+          .then((value) {
+        _password = value;
+      });
+      await PreferenceHelper.getString(keyPair: Constants.rememberUserId)
+          .then((value) {
+        _username = value;
+      });
+      await PreferenceHelper.getBool(keyPair: Constants.rememberMe)
+          .then((value) {
+        _remeberMe = value;
+      });
 
       if (_remeberMe) {
         setState(() {
           _isChecked = true;
         });
-        userId.text = _username;
-        password.text = _password;
+        userId.text = _username!;
+        password.text = _password!;
       } else {
         setState(() {
           _isChecked = false;

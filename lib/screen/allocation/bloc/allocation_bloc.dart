@@ -103,21 +103,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AllocationLoadingState();
       // }
       Singleton.instance.buildContext = event.context;
-      userType = Singleton.instance.usertype;
-      agentName = Singleton.instance.agentName;
-      agrRef = Singleton.instance.agrRef;
-      // await PreferenceHelper.getString(keyPair: Constants.userType)
-      //     .then((value) {
-      //   userType = value;
-      // });
-      // await PreferenceHelper.getString(keyPair: Constants.agentName)
-      //     .then((value) {
-      //   agentName = value;
-      // });
-      // await PreferenceHelper.getString(keyPair: Constants.agentRef)
-      //     .then((value) {
-      //   agrRef = value;
-      // });
+      await PreferenceHelper.getString(keyPair: Constants.userType)
+          .then((value) {
+        userType = value.toString();
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentName)
+          .then((value) {
+        agentName = value.toString();
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentRef)
+          .then((value) {
+        agrRef = value.toString();
+      });
       await PreferenceHelper.getBool(keyPair: 'areyouatOffice').then((value) {
         areyouatOffice = value ?? false;
       });
