@@ -8,6 +8,7 @@ class ContractorAllInformationModel {
         ? ContractorResult.fromJson(json['result'])
         : null;
   }
+
   int? status;
   String? message;
   ContractorResult? result;
@@ -66,7 +67,7 @@ class ContractorResult {
       this.otsEnable,
       this.appBuildVersion,
       this.hideSendRepaymentInfoWhatsappButton,
-      this.enableAgencyManagement,
+      this.enableAgencyManagement = false,
       this.repaymentWhatsappTemplate,
       this.sendRepaymentInfoWhatsappTemplateName});
 
@@ -131,6 +132,7 @@ class ContractorResult {
     sendRepaymentInfoWhatsappTemplateName =
         json['sendRepaymentInfoWhatsappTemplateName'];
   }
+
   String? sId;
   String? usernamePrefix;
   String? contractor;
@@ -172,7 +174,7 @@ class ContractorResult {
   bool? otsEnable;
   String? appBuildVersion;
   bool? hideSendRepaymentInfoWhatsappButton;
-  bool? enableAgencyManagement;
+  bool enableAgencyManagement = false;
   String? repaymentWhatsappTemplate;
   String? sendRepaymentInfoWhatsappTemplateName;
 
@@ -261,6 +263,7 @@ class MyCasesQueue {
     sortingOn = json['sortingOn'];
     orderByCol = json['orderByCol'];
   }
+
   SortOrderMyCasesUsingTelSubStatus? sortOrderMyCasesUsingTelSubStatus;
   List<Last3DayEventOrder>? last3DayEventOrder;
   int? myCasesQueueLength;
@@ -323,6 +326,7 @@ class SortOrderMyCasesUsingTelSubStatus {
     numbernotworking = json['numbernotworking'];
     notoperational = json['notoperational'];
   }
+
   int? new_;
   int? ptp;
   int? reminder;
@@ -371,6 +375,7 @@ class Last3DayEventOrder {
     telSubStatus = json['telSubStatus'];
     days = json['days'];
   }
+
   String? telSubStatus;
   int? days;
 
@@ -410,6 +415,7 @@ class Reports {
         ? Feedback.fromJson(json['agentGeoAnalysis'])
         : null;
   }
+
   Feedback? feedback;
   Feedback? resolution;
   Feedback? callLogReport;
@@ -455,6 +461,7 @@ class Feedback {
       });
     }
   }
+
   String? s3Bucket;
   String? s3FolderName;
   String? s3FilePath;
@@ -479,6 +486,7 @@ class Fields {
     label = json['label'];
     value = json['value'];
   }
+
   String? label;
   String? value;
 
@@ -499,6 +507,7 @@ class UserAdminList {
     userAdmin = json['userAdmin'];
     type = json['type'];
   }
+
   String? aRef;
   String? name;
   bool? userAdmin;
@@ -538,6 +547,7 @@ class FeedbackTemplate {
       });
     }
   }
+
   String? name;
   String? type;
   bool? hide;
@@ -587,6 +597,7 @@ class Data {
       });
     }
   }
+
   String? name;
   String? type;
   bool? hide;
@@ -619,6 +630,7 @@ class Options {
     value = json['value'];
     viewValue = json['viewValue'];
   }
+
   String? value;
   String? viewValue;
 

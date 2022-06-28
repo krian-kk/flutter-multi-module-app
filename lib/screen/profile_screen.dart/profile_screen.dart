@@ -215,16 +215,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
-      if (Singleton
-          .instance.contractorInformations!.result!.enableAgencyManagement!)
+      if (Singleton.instance.contractorInformations != null &&
+          Singleton
+              .instance.contractorInformations!.result!.enableAgencyManagement)
         ProfileNavigation(
             title: Languages.of(context)!.authorizationLetter,
             isEnable: true,
             onTap: () {
               bloc.add(ClickAuthorizationLetterEvent());
             }),
-      if (Singleton
-          .instance.contractorInformations!.result!.enableAgencyManagement!)
+      if (Singleton.instance.contractorInformations != null &&
+          Singleton
+              .instance.contractorInformations!.result!.enableAgencyManagement)
         ProfileNavigation(
             title: Languages.of(context)!.idCard,
             isEnable: true,
