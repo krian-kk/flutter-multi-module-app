@@ -23,7 +23,7 @@ class FirebaseUtils {
       required CaseDetailsBloc bloc}) async {
     bool returnValues = false;
     final eventMap = eventsDetails as Map<String, dynamic>;
-    eventMap['createdAt'] = DateTime.now();
+    eventMap['createdAt'] = DateTime.now().toIso8601String();
     if (Singleton.instance.usertype == Constants.fieldagent &&
         Singleton.instance.isOfflineEnabledContractorBased) {
       FirebaseFirestore.instance
