@@ -921,6 +921,10 @@ class LanguageTa extends Languages {
   String get enterOTP => 'OTP ஐ உள்ளிடவும்';
 
   @override
+  String get otpSentRegisterMobile =>
+      'உங்கள் பதிவு செய்யப்பட்ட மொபைல் எண்ணுக்கு OTP அனுப்பப்பட்டுள்ளது';
+
+  @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';
 
   @override

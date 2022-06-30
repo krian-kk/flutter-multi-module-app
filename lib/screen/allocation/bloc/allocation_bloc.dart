@@ -193,7 +193,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               for (var element in value.docChanges) {
                 debugPrint('Element--> $element');
               }
-              AppUtils.showToast('App synced with local');
             });
             await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
@@ -221,6 +220,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             await PreferenceHelper.setPreference(
                 Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
+            AppUtils.showToast('App synced with local');
             add(AllocationInitialEvent(event.context));
           } else {
             for (var element in priorityListData['data']['result']) {
@@ -268,6 +268,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');
               }
             }
+            yield AllocationLoadedState(successResponse: resultList);
             if (Singleton.instance.isOfflineEnabledContractorBased &&
                 Singleton.instance.usertype == Constants.fieldagent) {
               await FirebaseFirestore.instance
@@ -299,7 +300,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 }
               });
             }
-            yield AllocationLoadedState(successResponse: resultList);
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||

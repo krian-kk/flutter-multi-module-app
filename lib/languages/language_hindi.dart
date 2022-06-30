@@ -918,6 +918,10 @@ class LanguageHi extends Languages {
   String get enterOTP => 'कृपया ओटीपी दर्ज करें';
 
   @override
+  String get otpSentRegisterMobile =>
+      'आपके पंजीकृत मोबाइल नंबर पर ओटीपी भेजा गया है';
+
+  @override
   String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';
 
   @override

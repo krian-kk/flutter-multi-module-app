@@ -608,6 +608,8 @@ abstract class Languages {
 
   String get enterOTP;
 
+  String get otpSentRegisterMobile;
+
   String get youAreInOffline;
 
   String get disposition;
