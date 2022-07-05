@@ -11,9 +11,9 @@ class AgentDetailsModel {
     }
     msg = json['msg'];
     auth = json['auth'];
-    if (json['data'] != null) {
+    if (json['result'] != null) {
       data = <Data>[];
-      json['data'].forEach((v) {
+      json['result'].forEach((v) {
         data!.add(Data.fromJson(v));
       });
     }
@@ -32,7 +32,7 @@ class AgentDetailsModel {
     data['msg'] = msg;
     data['auth'] = auth;
     if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['result'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }

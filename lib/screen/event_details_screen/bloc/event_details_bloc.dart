@@ -37,13 +37,12 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             await Connectivity().checkConnectivity()) {
           // yield CDNoInternetState();
           //Getting event details from firebase databse
-
           await FirebaseFirestore.instance
               .collection(Singleton.instance.firebaseDatabaseName)
               .doc(Singleton.instance.agentRef)
               .collection(Constants
                   .firebaseEvent) // To get the events from event collection
-              // .orderBy('createdAt', descending: true)
+              .orderBy('createdAt', descending: true)
               .where(Constants.caseId,
                   isEqualTo:
                       event.caseId) //To find respective events of case details

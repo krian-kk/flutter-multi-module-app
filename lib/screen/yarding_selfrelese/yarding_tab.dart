@@ -20,6 +20,8 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 
+import '../../utils/string_resource.dart';
+
 class YardingTab extends StatefulWidget {
   const YardingTab(this.bloc, {Key? key, this.id, this.custname})
       : super(key: key);
@@ -61,6 +63,10 @@ class _YardingTabState extends State<YardingTab> {
         await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      AppUtils.showToast(
+        StringResource.fileUploadMessage,
+        gravity: ToastGravity.CENTER,
+      );
     } else {
       AppUtils.showToast(
         Languages.of(context)!.canceled,
@@ -231,7 +237,7 @@ class _YardingTabState extends State<YardingTab> {
                                 height: 7,
                               ),
                               CustomButton(
-                                Languages.of(context)!.uploadDepositSlip,
+                                Languages.of(context)!.simplyUpload,
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.sixteen,
                                 buttonBackgroundColor:

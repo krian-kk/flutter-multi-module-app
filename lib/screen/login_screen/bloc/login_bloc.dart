@@ -348,6 +348,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
+import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
 import 'package:origa/models/login_error_model.dart';
@@ -357,7 +358,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:origa/utils/preference_helper.dart';
 
 part 'login_event.dart';
 
@@ -442,7 +443,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is SignInEvent) {
       // started the sign in loading
       yield SignInLoadingState();
-      final SharedPreferences _prefs = await SharedPreferences.getInstance();
+      // final SharedPreferences _prefs = await SharedPreferences.getInstance();
 
       final Map<String, dynamic> response = await APIRepository.apiRequest(
           APIRequestType.post, HttpUrl.loginUrl,
@@ -475,25 +476,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (response['data']['data'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
-          await _prefs.setString(
+          // await _prefs.setString(
+          //     Constants.accessToken, loginResponse.data!.accessToken!);
+          await PreferenceHelper.setPreference(
               Constants.accessToken, loginResponse.data!.accessToken!);
-          await _prefs.setInt(
+          await PreferenceHelper.setPreference(
               Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
-          await _prefs.setString(
+          await PreferenceHelper.setPreference(
               Constants.refreshToken, loginResponse.data!.refreshToken!);
-          await _prefs.setInt(Constants.refreshTokenExpireTime,
+          await PreferenceHelper.setPreference(Constants.refreshTokenExpireTime,
               loginResponse.data!.refreshExpiresIn!);
-          await _prefs.setString(
+          await PreferenceHelper.setPreference(
               Constants.keycloakId, loginResponse.data!.keycloakId!);
-          await _prefs.setString(
+          await PreferenceHelper.setPreference(
               Constants.sessionId, loginResponse.data!.sessionState!);
-          await _prefs.setString(Constants.agentRef, event.userId!);
-          await _prefs.setString(Constants.userId, event.userId!);
+          await PreferenceHelper.setPreference(
+              Constants.agentRef, event.userId!);
+          await PreferenceHelper.setPreference(Constants.userId, event.userId!);
           Singleton.instance.accessToken = loginResponse.data!.accessToken!;
           Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
           Singleton.instance.sessionID = loginResponse.data!.sessionState!;
           Singleton.instance.agentRef = event.userId!;
-          Singleton.instance.agentRef = _prefs.getString(Constants.agentRef);
+          await PreferenceHelper.getString(keyPair: Constants.agentRef)
+              .then((value) {
+            Singleton.instance.agentRef = value;
+          });
+          // Singleton.instance.agentRef =
+          //     PreferenceHelper.getString(keyPair: Constants.agentRef)
+          //         .toString();
+
           if (loginResponse.data!.accessToken != null) {
             // Here check mpin flow show or not (offline or Online)
 
@@ -508,7 +519,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               if (profileAPIValue.result!.first.type == 'COLLECTOR') {
                 Singleton.instance.isOfflineEnabledContractorBased =
                     profileAPIValue.enableOffline!;
-                await _prefs.setBool(
+                await PreferenceHelper.setPreference(
                     Constants.isOfflineStorage, profileAPIValue.enableOffline!);
                 Singleton.instance.usertype = Constants.fieldagent;
               }
@@ -546,10 +557,23 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
     if (event is TriggeredHomeTabEvent) {
       yield SignInLoadingState();
-      final SharedPreferences _prefs = await SharedPreferences.getInstance();
       // Execute agent detail URl to get Agent details
+      debugPrint('Agent type--> TriggeredHomeTabEvent');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.accessToken}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.refreshToken}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.sessionID}');
+      debugPrint(
+          'Singleton.instance.accessToken Login bloc ${Singleton.instance.sessionID}');
+
+      // final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
+      //     APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
+
       final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
-          APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
+          APIRequestType.get,
+          HttpUrl.agentInformation + 'aRef=${event.userId}');
 
       if (agentDetail['success'] == false) {
         // Here facing error so close the loading
@@ -565,34 +589,38 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield SignInCompletedState();
 
         // getting Agent Details
-        final agentDetails = AgentDetailsModel.fromJson(agentDetail['data']);
+        final agentDetails = AgentInformation.fromJson(agentDetail['data']);
         // each agent type COLLECTOR or TELECALLER then store agent-type in local storage
         if (agentDetails.status == 200) {
-          if (agentDetails.data!.first.agentType == 'COLLECTOR') {
-            await _prefs.setString(Constants.userType, Constants.fieldagent);
+          if (agentDetails.result!.first.type == 'COLLECTOR') {
+            await PreferenceHelper.setPreference(
+                Constants.userType, Constants.fieldagent);
             Singleton.instance.usertype = Constants.fieldagent;
           } else {
-            await _prefs.setString(Constants.userType, Constants.telecaller);
+            await PreferenceHelper.setPreference(
+                Constants.userType, Constants.telecaller);
             Singleton.instance.usertype = Constants.telecaller;
           }
           // here storing all agent details in local storage
-          if (agentDetails.data!.first.agentType != null) {
-            Singleton.instance.agentName = agentDetails.data!.first.agentName!;
-            await _prefs.setString(
-                Constants.agentName, agentDetails.data!.first.agentName!);
-            await _prefs.setString(
-                Constants.mobileNo, agentDetails.data!.first.mobNo!);
-            await _prefs.setString(
-                Constants.email, agentDetails.data!.first.email!);
-            await _prefs.setString(
-                Constants.contractor, agentDetails.data!.first.contractor!);
+          debugPrint('Agent type--> ${agentDetails.result!.first.type}');
+          if (agentDetails.result!.first.type != null) {
+            Singleton.instance.agentName = agentDetails.result!.first.name!;
+            await PreferenceHelper.setPreference(
+                Constants.agentName, agentDetails.result!.first.name!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.mobileNo, agentDetails.result!.first.!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.email, agentDetails.result!.first.!);
+            await PreferenceHelper.setPreference(
+                Constants.contractor, agentDetails.result!.first.contractor!);
             Singleton.instance.contractor =
-                agentDetails.data!.first.contractor!;
-            await _prefs.setString(
-                Constants.status, agentDetails.data!.first.status!);
-            await _prefs.setString(Constants.code, agentDetails.code!);
-            await _prefs.setBool(
-                Constants.userAdmin, agentDetails.data!.first.userAdmin!);
+                agentDetails.result!.first.contractor!;
+            await PreferenceHelper.setPreference(
+                Constants.status, agentDetails.result!.first.status!);
+            // await PreferenceHelper.setPreference(
+            //     Constants.code, agentDetails.result.first!);
+            await PreferenceHelper.setPreference(
+                Constants.userAdmin, agentDetails.result!.first.userAdmin!);
             // Here call share device info api
             Map<String, dynamic> deviceData = <String, dynamic>{};
 
@@ -691,7 +719,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           }
         } else {
           yield SignInLoadedState();
-          AppUtils.showToast(agentDetails.msg!, backgroundColor: Colors.red);
+          AppUtils.showToast(agentDetails.message!,
+              backgroundColor: Colors.red);
         }
       }
       yield HomeTabState();

@@ -23,11 +23,11 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/image_resource.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/searching_data_model.dart';
 
 part 'dashboard_event.dart';
+
 part 'dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
@@ -55,6 +55,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   dynamic mtdAmountTotal = 0;
 
   String? todayDate;
+
   // This is search result cases
   List<Result> searchResultList = <Result>[];
   bool isShowSearchResult = false;
@@ -73,8 +74,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   Stream<DashboardState> mapEventToState(DashboardEvent event) async* {
     if (event is DashboardInitialEvent) {
       yield DashboardLoadingState();
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString(Constants.userType);
+      userType = Singleton.instance.usertype;
       Singleton.instance.buildContext = event.context;
 
       final DateTime currentDateTime = DateTime.now();
@@ -450,10 +450,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         yield NoInternetConnectionState();
       } else {
-        final SharedPreferences _pref = await SharedPreferences.getInstance();
-        userType = _pref.getString(Constants.userType);
         Map<String, dynamic> getMyVisitsData;
-        if (userType == Constants.fieldagent) {
+        if (Singleton.instance.usertype == Constants.fieldagent) {
           getMyVisitsData = await APIRepository.apiRequest(APIRequestType.get,
               HttpUrl.dashboardMyVisitsUrl + 'timePeriod=' + selectedFilter!);
         } else {

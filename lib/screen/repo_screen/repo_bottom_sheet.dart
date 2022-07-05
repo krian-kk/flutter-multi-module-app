@@ -30,6 +30,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../utils/string_resource.dart';
 import '../../widgets/get_followuppriority_value.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
@@ -114,6 +115,10 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     if (result != null) {
       uploadFileLists =
           result.paths.map((String? path) => File(path!)).toList();
+      AppUtils.showToast(
+        StringResource.fileUploadMessage,
+        gravity: ToastGravity.CENTER,
+      );
     } else {
       AppUtils.showToast(
         Languages.of(context)!.canceled,

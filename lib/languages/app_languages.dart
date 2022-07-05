@@ -741,4 +741,14 @@ abstract class Languages {
   String get notEligible;
 
   String get login;
+
+  String get feedback;
+
+  String get reasonForNotEligible;
+
+  String get reasonForNotIntrested;
+
+  String get loginStatus;
+
+  String get simplyUpload;
 }

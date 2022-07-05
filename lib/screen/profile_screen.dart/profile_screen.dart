@@ -36,7 +36,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/web_view_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'authorization_letter.dart';
 import 'id_card.dart';
@@ -64,12 +63,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // If you click notification then update 'charScreenFromNotification' is 'true' then open chat screen
   Future<void> openChatScreenFromNotificationClick() async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
     await Future<dynamic>.delayed(const Duration(milliseconds: 2000));
     if (Singleton.instance.charScreenFromNotification) {
       bloc.add(ClickMessageEvent(
         fromId: bloc.profileAPIValue.result![0].aRef ??
-            _prefs.getString(Constants.agentRef),
+            PreferenceHelper.getString(keyPair: Constants.agentRef).toString(),
         toId: bloc.profileAPIValue.result![0].parent,
       ));
     }
@@ -79,8 +77,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   getAddress() async {
-    final SharedPreferences _pref = await SharedPreferences.getInstance();
-    addressValue = (_pref.getString('addressValue') ?? '').toString();
+    await PreferenceHelper.getString(keyPair: 'addressValue').then((value) {
+      addressValue = value ?? '';
+    });
   }
 
   Future<dynamic> pickImage(
@@ -216,16 +215,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
-      if (Singleton
-          .instance.contractorInformations!.result!.enableAgencyManagement!)
+      if (Singleton.instance.contractorInformations != null &&
+          Singleton
+              .instance.contractorInformations!.result!.enableAgencyManagement!)
         ProfileNavigation(
             title: Languages.of(context)!.authorizationLetter,
             isEnable: true,
             onTap: () {
               bloc.add(ClickAuthorizationLetterEvent());
             }),
-      if (Singleton
-          .instance.contractorInformations!.result!.enableAgencyManagement!)
+      if (Singleton.instance.contractorInformations != null &&
+          Singleton
+              .instance.contractorInformations!.result!.enableAgencyManagement!)
         ProfileNavigation(
             title: Languages.of(context)!.idCard,
             isEnable: true,
@@ -1016,11 +1017,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 MapViewBottomSheetScreen(
                   title: Languages.of(context)!.markAsHome,
                   onClose: (dynamic value) async {
-                    final SharedPreferences _pref =
-                        await SharedPreferences.getInstance();
                     setState(() {
                       addressValue = value;
-                      _pref.setString('addressValue', value);
+                      PreferenceHelper.setPreference('addressValue', value);
                     });
                   },
                 )));

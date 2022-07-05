@@ -20,6 +20,9 @@ import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart'
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/login_conected/login_connected.dart';
+import 'package:origa/screen/not_eligible/not_eligible.dart';
+import 'package:origa/screen/not_intrested/not_intrested.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -1077,6 +1080,70 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     0.0,
               ),
             );
+          // this events only visible based on contractor
+          case Constants.notInterested:
+            return CustomNotIntrestedBottomSheet(
+              Languages.of(context)!.notInterested,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
+              isCall: isCall,
+              bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
+            );
+
+          case Constants.notEligible:
+            return CustomNotEligibleBottomSheet(
+              Languages.of(context)!.notEligible,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
+              isCall: isCall,
+              bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
+            );
+
+          case Constants.login:
+            return CustomLoginConnectedBottomSheet(
+              Languages.of(context)!.login,
+              caseId: bloc.caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName:
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                        ?.toDouble() ??
+                    0.0,
+              ),
+              userType: bloc.userType.toString(),
+              postValue: list[bloc.indexValue!],
+              isCall: isCall,
+              bloc: bloc,
+              isCallFromCaseDetails: isCallFromCallDetails,
+              callId: callId,
+            );
+
           default:
             return SizedBox(
                 height: MediaQuery.of(context).size.height * 0.89,

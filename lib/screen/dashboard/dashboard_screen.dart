@@ -23,7 +23,6 @@ import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/percent_indicatior_widget.dart';
-// import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../router.dart';
 

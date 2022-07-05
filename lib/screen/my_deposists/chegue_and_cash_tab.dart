@@ -75,9 +75,10 @@ class _ChegueAndCasshResultsState extends State<ChegueAndCasshResults> {
                   depositionModeSheet(context);
                 } else {
                   AppUtils.showToast(
-                    Languages.of(context)!.notSelectedCase,
-                    gravity: ToastGravity.CENTER,
-                  );
+                      Languages.of(context)!
+                          .notSelectedCase
+                          .replaceAll('case', 'receipt'),
+                      backgroundColor: Colors.red);
                 }
               },
             ),

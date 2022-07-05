@@ -7,11 +7,12 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
+import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/jwt_decorder_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationBloc
     extends Bloc<AuthenticationEvent, AuthenticationState> {
@@ -22,32 +23,50 @@ class AuthenticationBloc
       AuthenticationEvent event) async* {
     if (event is AppStarted) {
       await Future<dynamic>.delayed(const Duration(seconds: 2));
-      // if (response.isNotEmpty) {}
       Singleton.instance.buildContext = event.context;
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      // _pref.setBool(Constants.appDataLoadedFromFirebase, true);
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
-          if (_pref.getBool(Constants.appDataLoadedFromFirebase) == true) {
-            Singleton.instance.usertype = _pref.getString(Constants.userType);
-            Singleton.instance.agentRef = _pref.getString(Constants.agentRef);
-            yield OfflineState();
-          } else {
-            yield AuthenticationUnAuthenticated(
-                notificationData: event.notificationData);
-          }
+        bool appDataLoadedFromFirebase = false;
+        await PreferenceHelper.getString(keyPair: Constants.agentRef)
+            .then((value) {
+          Singleton.instance.agentRef = value;
+        });
+
+        await PreferenceHelper.getString(keyPair: Constants.userType)
+            .then((value) {
+          Singleton.instance.usertype = value;
+        });
+
+        await PreferenceHelper.getBool(
+                keyPair: Constants.appDataLoadedFromFirebase)
+            .then((value) {
+          appDataLoadedFromFirebase = value;
+        });
+        if (Singleton.instance.usertype == Constants.fieldagent &&
+            appDataLoadedFromFirebase) {
+          yield OfflineState();
         } else {
           yield AuthenticationUnAuthenticated(
               notificationData: event.notificationData);
         }
-        // AppUtils.showErrorToast('No Internet Connection');
       } else {
-        final SharedPreferences _prefs = await SharedPreferences.getInstance();
-        final String? getToken = _prefs.getString(Constants.accessToken) ?? '';
-        final String? getUserName = _prefs.getString(Constants.userId);
-        final String? getUserType = _prefs.getString(Constants.userType) ?? '';
+        String? getToken;
+        String? getUserName;
+        String? getUserType;
+        await PreferenceHelper.getString(keyPair: Constants.accessToken)
+            .then((value) {
+          getToken = value;
+        });
 
-        if (getToken == '') {
+        await PreferenceHelper.getString(keyPair: Constants.userId)
+            .then((value) {
+          getUserName = value;
+        });
+
+        await PreferenceHelper.getString(keyPair: Constants.userType)
+            .then((value) {
+          getUserType = value;
+        });
+        if (getToken == 'null' || getToken == null || getToken == '') {
           yield AuthenticationUnAuthenticated(
               notificationData: event.notificationData);
         } else {
@@ -60,18 +79,27 @@ class AuthenticationBloc
               yield AuthenticationUnAuthenticated(
                   notificationData: event.notificationData);
             } else {
-              Singleton.instance.accessToken =
-                  _prefs.getString(Constants.accessToken) ?? '';
-              Singleton.instance.refreshToken =
-                  _prefs.getString(Constants.refreshToken) ?? '';
-              Singleton.instance.sessionID =
-                  _prefs.getString(Constants.sessionId) ?? '';
-              Singleton.instance.agentRef =
-                  _prefs.getString(Constants.agentRef) ?? '';
+              await PreferenceHelper.getString(keyPair: Constants.accessToken)
+                  .then((value) {
+                Singleton.instance.accessToken = value;
+              });
+
+              await PreferenceHelper.getString(keyPair: Constants.refreshToken)
+                  .then((value) {
+                Singleton.instance.refreshToken = value;
+              });
+              await PreferenceHelper.getString(keyPair: Constants.sessionId)
+                  .then((value) {
+                Singleton.instance.sessionID = value;
+              });
+              await PreferenceHelper.getString(keyPair: Constants.agentRef)
+                  .then((value) {
+                Singleton.instance.agentRef = value;
+              });
 
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(APIRequestType.get,
-                      HttpUrl.agentDetailUrl + getUserName!);
+                      HttpUrl.agentInformation + 'aRef=$getUserName');
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(
@@ -96,38 +124,41 @@ class AuthenticationBloc
                       backgroundColor: Colors.red);
                 }
 
-                final dynamic agentDetails =
-                    AgentDetailsModel.fromJson(agentDetail['data']);
-                if (agentDetails.data![0].agentType == 'COLLECTOR') {
-                  await _prefs.setString(
+                final agentDetails =
+                    AgentInformation.fromJson(agentDetail['data']);
+                if (agentDetails.result!.first.type == 'COLLECTOR') {
+                  await PreferenceHelper.setPreference(
                       Constants.userType, Constants.fieldagent);
                   Singleton.instance.usertype = Constants.fieldagent;
                 } else {
-                  await _prefs.setString(
+                  await PreferenceHelper.setPreference(
                       Constants.userType, Constants.telecaller);
                   Singleton.instance.usertype = Constants.telecaller;
                 }
 
-                if (agentDetails.data![0].agentType != null) {
+                if (agentDetails.result!.first.type != null) {
                   Singleton.instance.agentName =
-                      agentDetails.data![0].agentName!;
-                  await _prefs.setString(
-                      Constants.agentName, agentDetails.data![0].agentName!);
-                  await _prefs.setString(
-                      Constants.mobileNo, agentDetails.data![0].mobNo!);
-                  await _prefs.setString(
-                      Constants.email, agentDetails.data![0].email!);
-                  await _prefs.setString(
-                      Constants.contractor, agentDetails.data![0].contractor!);
+                      agentDetails.result!.first.name!;
+                  await PreferenceHelper.setPreference(
+                      Constants.agentName, agentDetails.result!.first.name!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.mobileNo, agentDetails.result!.first.mobNo!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.email, agentDetails.data![0].email!);
+                  await PreferenceHelper.setPreference(Constants.contractor,
+                      agentDetails.result!.first.contractor!);
                   Singleton.instance.contractor =
-                      agentDetails.data![0].contractor!;
-                  await _prefs.setString(
-                      Constants.status, agentDetails.data![0].status!);
-                  await _prefs.setString(Constants.code, agentDetails.code!);
-                  await _prefs.setBool(
-                      Constants.userAdmin, agentDetails.data![0].userAdmin!);
-
+                      agentDetails.result!.first.contractor!;
+                  await PreferenceHelper.setPreference(
+                      Constants.status, agentDetails.result!.first.status!);
+                  // await PreferenceHelper.setPreference(
+                  //     Constants.code, agentDetails.code!);
+                  await PreferenceHelper.setPreference(Constants.userAdmin,
+                      agentDetails.result!.first.userAdmin!);
                   yield AuthenticationAuthenticated(
+                      notificationData: event.notificationData);
+                } else {
+                  yield AuthenticationUnAuthenticated(
                       notificationData: event.notificationData);
                 }
               }

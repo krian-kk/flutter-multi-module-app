@@ -268,4 +268,13 @@ class HttpUrl {
   // Get Agent Secure Pin Code
   static final String updateDeviceLocation =
       baseUrl + fieldAgent + 'profile/updateDeviceLocation?';
+
+  static final String notEligible =
+      baseUrl + fieldAgent + 'case-details-events/notEligible';
+
+  static final String notInterested =
+      baseUrl + fieldAgent + 'case-details-events/notInterested';
+
+  static final String loginEvent =
+      baseUrl + fieldAgent + 'case-details-events/login';
 }

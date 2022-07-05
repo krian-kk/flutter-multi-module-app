@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/languages/app_locale_constant.dart';
@@ -10,7 +12,6 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LanguageBottomSheetScreen extends StatefulWidget {
   const LanguageBottomSheetScreen({
@@ -29,6 +30,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   List<LanguageModel> languageList = <LanguageModel>[];
   String? setLanguageCode;
   int? ratioIndex;
+
   //  int? selectedLanguagesIndex;
 
   @override
@@ -38,10 +40,10 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
   }
 
   getLanguageCode() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      ratioIndex = prefs.getInt('mainLanguage') ?? 0;
-      setLanguageCode = prefs.getString('mainLanguageCode') ?? 'en';
+      ratioIndex = PreferenceHelper.getInt(keyPair: 'mainLanguage') as int;
+      setLanguageCode =
+          PreferenceHelper.getString(keyPair: 'mainLanguageCode').toString();
     });
   }
 

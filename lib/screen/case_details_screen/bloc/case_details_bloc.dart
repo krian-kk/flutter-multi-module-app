@@ -31,6 +31,9 @@ import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dar
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
 import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
+import 'package:origa/screen/login_conected/login_connected.dart';
+import 'package:origa/screen/not_eligible/not_eligible.dart';
+import 'package:origa/screen/not_intrested/not_intrested.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
 import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
 import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
@@ -43,15 +46,14 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/custom_snackbar/top_snack_bar.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/language_to_constant_convert.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
@@ -211,9 +213,14 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       caseId = event.paramValues['caseID'];
       paramValue = event.paramValues;
       listOfAddress = event.paramValues['mobileList'];
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      userType = _pref.getString(Constants.userType);
-      agentName = _pref.getString(Constants.agentName);
+      await PreferenceHelper.getString(keyPair: Constants.userType)
+          .then((value) {
+        userType = value;
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentName)
+          .then((value) {
+        agentName = value;
+      });
       // check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
         final Stream streamingDocument = FirebaseFirestore.instance
@@ -446,18 +453,61 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               isCall: true),
         ]);
       } else {
-        // phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
-        //   CustomerMetGridModel(ImageResource.collections,
-        //       Languages.of(event.context)!.notInterested.toUpperCase(),
-        //       onTap: () => add(EventDetailsEvent(
-        //             Constants.collections,
-        //             caseDetailsAPIValue.result?.callDetails!,
-        //             true,
-        //             isCallFromCallDetails: event.isCallFromCaseDetails,
-        //             callId: event.callId,
-        //           )),
-        //       isCall: true),
-        // ]);
+        phoneCustomerMetGridList.addAll(<CustomerMetGridModel>[
+          CustomerMetGridModel(
+              ImageResource.remainder,
+              (Languages.of(event.context)!.remainderCb.toUpperCase())
+                  .toUpperCase()
+                  .toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.remainder,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.feedbackconnected,
+              Languages.of(event.context)!.feedback.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.otherFeedback,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.notintrested,
+              Languages.of(event.context)!.notInterested.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.notInterested,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.noteligible,
+              Languages.of(event.context)!.notEligible.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.notEligible,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+          CustomerMetGridModel(ImageResource.loginconnected,
+              Languages.of(event.context)!.login.toUpperCase(),
+              onTap: () => add(EventDetailsEvent(
+                    Constants.login,
+                    caseDetailsAPIValue.result?.callDetails!,
+                    true,
+                    isCallFromCallDetails: event.isCallFromCaseDetails,
+                    callId: event.callId,
+                  )),
+              isCall: true),
+        ]);
       }
       yield PhoneBottomSheetLoadedState();
     }
@@ -1292,6 +1342,75 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               contactNumber: listOfAddress![paramValue['phoneIndex']].value,
               caseDetailsBloc: this,
               caseDetailsAPIValue: caseDetailsAPIValue,
+            );
+          // this events only visible based on contractor
+          case Constants.notInterested:
+            return CustomNotIntrestedBottomSheet(
+              Languages.of(context)!.notInterested,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+              bloc: this,
+            );
+
+          case Constants.notEligible:
+            return CustomNotEligibleBottomSheet(
+              Languages.of(context)!.notEligible,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+              bloc: this,
+            );
+
+          case Constants.login:
+            return CustomLoginConnectedBottomSheet(
+              Languages.of(context)!.login,
+              caseId: caseId.toString(),
+              customerLoanUserWidget: CustomLoanUserDetails(
+                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                userId:
+                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userAmount:
+                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                        0.0,
+              ),
+              userType: userType.toString(),
+              postValue: indexValue != null
+                  ? list[indexValue!]
+                  : list[paramValue['contactIndex']],
+              isCall: isCall,
+              isAutoCalling: isAutoCalling,
+              allocationBloc: allocationBloc,
+              paramValue: paramValue,
+              bloc: this,
             );
 
           default:

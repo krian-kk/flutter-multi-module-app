@@ -23,7 +23,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:origa/utils/preference_helper.dart';
 
 part 'allocation_event.dart';
 
@@ -102,16 +102,35 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       // if (!Singleton.instance.isOfflineEnabledContractorBased) {
       yield AllocationLoadingState();
       // }
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
       Singleton.instance.buildContext = event.context;
-      userType = _pref.getString(Constants.userType);
-      agentName = _pref.getString(Constants.agentName);
-      agrRef = _pref.getString(Constants.agentRef);
+      await PreferenceHelper.getString(keyPair: Constants.userType)
+          .then((value) {
+        userType = value.toString();
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentName)
+          .then((value) {
+        agentName = value.toString();
+      });
+      await PreferenceHelper.getString(keyPair: Constants.agentRef)
+          .then((value) {
+        agrRef = value.toString();
+      });
+      await PreferenceHelper.getString(keyPair: 'ruAtOfficeDay')
+          .then((value) async {
+        if (value != DateTime.now().day.toString()) {
+          await PreferenceHelper.getBool(keyPair: 'areyouatOffice')
+              .then((value) {
+            areyouatOffice = value ?? false;
+          });
+        } else {
+          areyouatOffice = false;
+        }
+      });
+
       isShowSearchPincode = false;
       selectedDistance = Languages.of(event.context)!.all;
 
       // check in office location captured or not
-      areyouatOffice = _pref.getBool('areyouatOffice') ?? true;
 
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
@@ -139,12 +158,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             Languages.of(event.context)!.noInternetConnection;
         yield AllocationOfflineState(successResponse: 'offlineData');
       } else {
-        final SharedPreferences _pref = await SharedPreferences.getInstance();
         isNoInternetAndServerError = false;
         // Now set priority case is a load more event
         isPriorityLoadMore = true;
-        final bool appDataLoadedFromFirebase =
-            _pref.getBool(Constants.appDataLoadedFromFirebase) ?? false;
+        bool appDataLoadedFromFirebase = false;
+        await PreferenceHelper.getBool(
+                keyPair: Constants.appDataLoadedFromFirebase)
+            .then((value) {
+          appDataLoadedFromFirebase = value;
+        });
 
         //event.isOfflineAPI! For offline purpose only
         final Map<String, dynamic> priorityListData =
@@ -152,8 +174,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 APIRequestType.get,
                 Singleton.instance.isOfflineEnabledContractorBased &&
                         !appDataLoadedFromFirebase &&
-                        _pref.getString(Constants.userType) ==
-                            Constants.fieldagent
+                        Singleton.instance.usertype == Constants.fieldagent
                     ? HttpUrl.priorityCaseListV2
                     : HttpUrl.priorityCaseListV1 +
                         'pageNo=${Constants.pageNo}' +
@@ -178,9 +199,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 .collection(Constants.firebaseCase)
                 .get()
                 .then((value) {
-              value.docChanges.forEach((element) {
+              for (var element in value.docChanges) {
                 debugPrint('Element--> $element');
-              });
+              }
               AppUtils.showToast('App synced with local');
             });
             await FirebaseFirestore.instance
@@ -203,8 +224,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             });
             isOfflineTriggered = true;
             totalCases = 0;
-            await _pref.setBool(Constants.appDataLoadedFromFirebase, true);
-            await _pref.setString(Constants.appDataLoadedFromFirebaseTime,
+
+            await PreferenceHelper.setPreference(
+                Constants.appDataLoadedFromFirebase, true);
+            await PreferenceHelper.setPreference(
+                Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
             add(AllocationInitialEvent(event.context));
           } else {
@@ -254,7 +278,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             }
             if (Singleton.instance.isOfflineEnabledContractorBased &&
-                _pref.getString(Constants.userType) == Constants.fieldagent) {
+                Singleton.instance.usertype == Constants.fieldagent) {
               await FirebaseFirestore.instance
                   .collection(Singleton.instance.firebaseDatabaseName)
                   .doc(Singleton.instance.agentRef)
@@ -392,22 +416,30 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield PriorityLoadMoreState(successResponse: resultList);
     }
     if (event is CallSuccessfullyConnectedEvent) {
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      int index;
-      index = _pref.getInt('autoCallingIndexValue') ?? 0;
-      indexValue = index;
-      await _pref.setInt('autoCallingIndexValue', index + 1);
+      int? index = 0;
+      await PreferenceHelper.getInt(keyPair: 'autoCallingIndexValue')
+          .then((value) {
+        index = value;
+      });
+      indexValue = index!;
+      await PreferenceHelper.setPreference('autoCallingIndexValue', index! + 1);
       if (Singleton.instance.startCalling ?? false) {
         yield StartCallingState();
       }
     }
     if (event is CallUnSuccessfullyConnectedEvent) {
-      final SharedPreferences _pref = await SharedPreferences.getInstance();
-      int index, subIndex;
-      index = _pref.getInt('autoCallingIndexValue') ?? 0;
-      subIndex = _pref.getInt('autoCallingSubIndexValue') ?? 0;
-      await _pref.setInt('autoCallingIndexValue', index + 1);
-      await _pref.setInt('autoCallingSubIndexValue', subIndex + 1);
+      int? index, subIndex;
+      await PreferenceHelper.getInt(keyPair: 'autoCallingIndexValue')
+          .then((value) {
+        index = value;
+      });
+      await PreferenceHelper.getInt(keyPair: 'autoCallingSubIndexValue')
+          .then((value) {
+        subIndex = value;
+      });
+      await PreferenceHelper.setPreference('autoCallingIndexValue', index! + 1);
+      await PreferenceHelper.setPreference(
+          'autoCallingSubIndexValue', subIndex! + 1);
       if (Singleton.instance.startCalling ?? false) {
         yield StartCallingState();
       }
@@ -670,8 +702,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is UpdateStaredCaseEvent) {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-        final SharedPreferences _pref = await SharedPreferences.getInstance();
-        if (_pref.getString(Constants.userType) == Constants.fieldagent) {
+        if (Singleton.instance.usertype == Constants.fieldagent) {
           resultList[event.selectedStarIndex].starredCase =
               !resultList[event.selectedStarIndex].starredCase;
         } else {

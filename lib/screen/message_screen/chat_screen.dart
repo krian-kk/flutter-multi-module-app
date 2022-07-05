@@ -4,6 +4,7 @@ import 'package:ably_flutter/ably_flutter.dart' as ably;
 import 'package:ably_flutter/ably_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -17,11 +18,11 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../notification_navigate_screen.dart';
 import 'chat_model/message_model.dart';
@@ -45,6 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
   late ably.RealtimeChannel chatChannel;
   late ably.RealtimeChannel receiptChannel;
   var messageController = TextEditingController();
+
   // late ScrollController scrollController;
 
   // var myRandomClientId = '';
@@ -76,11 +78,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<dynamic> forgroundOnClickNotification(String? payload) async {
-    final SharedPreferences _prefs = await SharedPreferences.getInstance();
     debugPrint(
         'new forgroundOnClickNotification published!... -----> ${payload}');
     OnclickNotificationNavigateScreen().messageScreenBottomSheet(context,
-        fromID: _prefs.getString(Constants.agentRef));
+        fromID:
+            PreferenceHelper.getString(keyPair: Constants.agentRef).toString());
     //Handle notification tapped logic here
     // bloc!.add(AppStarted(context: context, notificationData: payload));
   }

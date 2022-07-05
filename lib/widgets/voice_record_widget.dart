@@ -18,11 +18,11 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/avator_glow_widget.dart';
 import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../languages/app_languages.dart';
 import '../utils/constants.dart';
@@ -191,10 +191,13 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
   }
 
   audioTranslateAPI() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? languageCode;
+    await PreferenceHelper.getString(keyPair: Constants.s2tLangcode)
+        .then((value) {
+      languageCode = value;
+    });
     final AudioRemarksPostModel requestBodyData = AudioRemarksPostModel(
-      // langCode: AppUtils.getLanguageCode(context).toString() + "-IN",
-      langCode: prefs.getString(Constants.s2tLangcode),
+      langCode: languageCode,
       agrRef: Singleton.instance.agrRef,
     );
     final Map<String, dynamic> postdata =
@@ -253,9 +256,12 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
             AppUtils.noInternetSnackbar(context);
           } else {
             if (!isStartLoading) {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              if (prefs.getString(Constants.s2tLangcode) != null) {
+              String? s2tLangcode;
+              await PreferenceHelper.getString(keyPair: Constants.s2tLangcode)
+                  .then((value) {
+                s2tLangcode = value;
+              });
+              if (s2tLangcode != null) {
                 if (isRecordOn) {
                   if (mounted) {
                     setState(() {

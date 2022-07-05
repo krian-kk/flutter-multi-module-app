@@ -1124,4 +1124,19 @@ class LanguageTa extends Languages {
 
   @override
   String get login => 'உள்நுழைய';
+
+  @override
+  String get feedback => 'பிற குறிப்பு';
+
+  @override
+  String get reasonForNotEligible => 'தகுதி இல்லாததற்கான காரணம் *';
+
+  @override
+  String get reasonForNotIntrested => 'ஆர்வம் இல்லாததற்கான காரணம் *';
+
+  @override
+  String get loginStatus => 'உள்நுழைவு நிலை *';
+
+  @override
+  String get simplyUpload => 'வெறுமனே பதிவேற்றவும்';
 }

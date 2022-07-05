@@ -95,4 +95,17 @@ class StringResource {
   static String remainingSeconds(int time) {
     return '$time seconds';
   }
+
+  static const String fileLoggedIntoSystem = 'File logged into system';
+  static const String documentsPending = 'Documents pending';
+  static const String creditDecisionPending = 'Credit Decision pending';
+  static const String enquiryCall = 'Enquiry call';
+  static const String rateIssue = 'Rate issue';
+  static const String documentIssue = 'Document issue';
+  static const String ciblBounce = 'CIBIL Issue/CIBIL Bounce';
+  static const String salaryIssue = 'FOIR issue/Salary issue';
+  static const String negativeProfile = 'Negative Profile';
+
+  static const String imageUploadMessage = 'Image uploaded successfully';
+  static const String fileUploadMessage = 'File uploaded successfully';
 }

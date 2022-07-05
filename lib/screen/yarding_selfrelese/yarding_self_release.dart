@@ -97,9 +97,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                 repoStatusModeSheet(context);
                               } else {
                                 AppUtils.showToast(
-                                  Languages.of(context)!.notSelectedCase,
-                                  gravity: ToastGravity.CENTER,
-                                );
+                                    Languages.of(context)!.notSelectedCase,
+                                    backgroundColor: Colors.red);
                               }
                             },
                           ),

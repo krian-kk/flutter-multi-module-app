@@ -63,6 +63,9 @@ class Constants {
   static const String incorrectNumber = 'TC : Incorrect Number';
   static const String notOpeartional = 'TC : Not Operational';
   static const String numberNotWorking = 'TC : Number Not Working';
+  static const String notInterested = 'Not Interested';
+  static const String notEligible = 'Not Eligible';
+  static const String login = 'Login';
 
   // This is used for check telsubstatus
   static const String telsubstatuslineBusy = 'Line Busy';

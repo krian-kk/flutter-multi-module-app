@@ -1120,4 +1120,19 @@ class LanguageHi extends Languages {
 
   @override
   String get login => 'लॉग इन करें';
+
+  @override
+  String get feedback => 'अन्य प्रतिक्रिया';
+
+  @override
+  String get reasonForNotEligible => 'पात्र नहीं होने का कारण *';
+
+  @override
+  String get reasonForNotIntrested => 'रुचि नहीं लेने का कारण *';
+
+  @override
+  String get loginStatus => 'लॉगिन स्थिति *';
+
+  @override
+  String get simplyUpload => 'बस अपलोड करें';
 }

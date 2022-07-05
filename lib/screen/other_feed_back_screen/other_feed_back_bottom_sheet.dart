@@ -42,6 +42,7 @@ import 'package:origa/widgets/ios_keyboard_actions.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../utils/string_resource.dart';
 import '../../widgets/get_followuppriority_value.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
@@ -123,6 +124,10 @@ class _CustomOtherFeedBackBottomSheetState
       } else {
         uploadFileLists =
             result.paths.map((String? path) => File(path!)).toList();
+        AppUtils.showToast(
+          StringResource.fileUploadMessage,
+          gravity: ToastGravity.CENTER,
+        );
       }
     } else {
       AppUtils.showToast(
@@ -344,7 +349,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                   Flexible(
                                                     child: CustomText(
                                                       Languages.of(context)!
-                                                          .uploadAudioFile,
+                                                          .uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
