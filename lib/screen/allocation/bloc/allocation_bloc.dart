@@ -40,6 +40,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int customerCount = 0;
   int totalCount = 0;
   int tempTotalCount = 0;
+  // int autoCallingTotalCaseCount = 0;
 
   String? userType;
   String? agentName;
@@ -202,7 +203,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               for (var element in value.docChanges) {
                 debugPrint('Element--> $element');
               }
-              AppUtils.showToast('App synced with local');
             });
             await FirebaseFirestore.instance
                 .collection(Singleton.instance.firebaseDatabaseName)
@@ -230,6 +230,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             await PreferenceHelper.setPreference(
                 Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
+            AppUtils.showToast('App synced with local');
             add(AllocationInitialEvent(event.context));
           } else {
             for (var element in priorityListData['data']['result']) {
@@ -277,6 +278,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');
               }
             }
+            yield AllocationLoadedState(successResponse: resultList);
             if (Singleton.instance.isOfflineEnabledContractorBased &&
                 Singleton.instance.usertype == Constants.fieldagent) {
               await FirebaseFirestore.instance
@@ -308,7 +310,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 }
               });
             }
-            yield AllocationLoadedState(successResponse: resultList);
           }
         } else if (priorityListData['statusCode'] == 401 ||
             priorityListData['data'] == Constants.connectionTimeout ||
@@ -680,14 +681,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       );
       autoCallingResultList.clear();
       if (autoCallingListData[Constants.success] == true) {
+        // // here to get autocalling total case count
+        // autoCallingTotalCaseCount = autoCallingListData['data']['totalCases'];
         for (var element in autoCallingListData['data']['result']) {
           autoCallingResultList
               .add(Result.fromJson(jsonDecode(jsonEncode(element))));
         }
       }
-      // autoCallingResultList.clear();
-      // autoCallingResultList = resultList;
-      totalCount = autoCallingResultList.length;
+      // // autoCallingResultList.clear();
+      // // autoCallingResultList = resultList;
+      // totalCount = autoCallingResultList.length;
+
+      // here to get autocalling total case count
+      totalCount = autoCallingListData['data']['totalCases'];
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>
             (element.cType == 'office address' ||

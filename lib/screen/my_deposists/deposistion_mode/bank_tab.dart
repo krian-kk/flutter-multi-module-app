@@ -79,15 +79,9 @@ class _BankTabState extends State<BankTab> {
         await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
-      AppUtils.showToast(
-        StringResource.fileUploadMessage,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 

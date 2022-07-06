@@ -8,6 +8,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
+import 'package:origa/models/event_details_model/event_details_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
@@ -23,6 +24,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../widgets/eventdetail_status.dart';
+import 'package:collection/collection.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   const CustomEventDetailsBottomSheet(
@@ -395,6 +397,18 @@ class _CustomEventDetailsBottomSheetState
                   if (expandedList[index].eventAttr?.actionDate != null)
                     CustomText(
                       '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.reasons != null)
+                    CustomText(
+                      '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
+                      fontWeight: FontWeight.w700,
+                      color: ColorResource.color000000,
+                    ),
+                  if (expandedList[index].eventAttr?.disputereasons != null)
+                    CustomText(
+                      '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
                       fontWeight: FontWeight.w700,
                       color: ColorResource.color000000,
                     ),

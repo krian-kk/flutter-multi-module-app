@@ -683,7 +683,7 @@ class LanguageHi extends Languages {
       'कृपया सही उपयोगकर्ता का पहचान दर्ज करें';
 
   @override
-  String get pleaseSelectOptions => 'कृपया विकल्प चुनें';
+  String get pleaseSelectOptions => 'कृपया घटना को अपडेट करें।';
 
   @override
   String get pleaseSelectPaymentMode => 'कृपया भुगतान का तरीका चुनें!';
@@ -918,6 +918,10 @@ class LanguageHi extends Languages {
   String get enterOTP => 'कृपया ओटीपी दर्ज करें';
 
   @override
+  String get otpSentRegisterMobile =>
+      'आपके पंजीकृत मोबाइल नंबर पर ओटीपी भेजा गया है';
+
+  @override
   String get youAreInOffline => 'इन्टरनेट उपलब्ध नहीँ है';
 
   @override
@@ -1134,5 +1138,5 @@ class LanguageHi extends Languages {
   String get loginStatus => 'लॉगिन स्थिति *';
 
   @override
-  String get simplyUpload => 'बस अपलोड करें';
+  String get upload => 'डालना';
 }

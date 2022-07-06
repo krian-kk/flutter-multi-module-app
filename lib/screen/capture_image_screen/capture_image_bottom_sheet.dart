@@ -80,11 +80,11 @@ class _CustomCaptureImageBottomSheetState
           result.paths.map((String? path) => File(path!)).toList();
       AppUtils.showToast(
         StringResource.fileUploadMessage,
-        gravity: ToastGravity.CENTER,
       );
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled,
-          gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+      );
     }
   }
 
@@ -130,7 +130,7 @@ class _CustomCaptureImageBottomSheetState
                               widget.customerLoanUserDetailsWidget,
                               const SizedBox(height: 11),
                               CustomButton(
-                                Languages.of(context)!.uploadFile,
+                                Languages.of(context)!.uploadImage,
                                 fontWeight: FontWeight.w700,
                                 trailingWidget:
                                     SvgPicture.asset(ImageResource.upload),

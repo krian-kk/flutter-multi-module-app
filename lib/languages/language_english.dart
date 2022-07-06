@@ -681,7 +681,7 @@ class LanguageEn extends Languages {
   String get pleaseEnterCurrectUserId => 'Please Enter Currect User ID';
 
   @override
-  String get pleaseSelectOptions => 'Please Select Options';
+  String get pleaseSelectOptions => 'Please update the event';
 
   @override
   String get pleaseSelectPaymentMode => 'Please Select Payment Mode!';
@@ -915,6 +915,10 @@ class LanguageEn extends Languages {
   String get enterOTP => 'Please Enter OTP';
 
   @override
+  String get otpSentRegisterMobile =>
+      'OTP has been sent to your registered mobile number';
+
+  @override
   String get youAreInOffline => 'You are in offline';
 
   @override
@@ -1131,5 +1135,5 @@ class LanguageEn extends Languages {
   String get loginStatus => 'Login Status *';
 
   @override
-  String get simplyUpload => 'Simply Upload';
+  String get upload => 'Upload';
 }

@@ -60,15 +60,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
         await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
-      AppUtils.showToast(
-        StringResource.fileUploadMessage,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 
@@ -218,7 +212,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                               ),
                               const SizedBox(height: 7),
                               CustomButton(
-                                Languages.of(context)!.simplyUpload,
+                                Languages.of(context)!.upload,
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.sixteen,
                                 buttonBackgroundColor:

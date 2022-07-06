@@ -683,7 +683,7 @@ class LanguageTa extends Languages {
   String get pleaseEnterCurrectUserId => 'சரியான பணியாளர் ஐடியை உள்ளிடவும்';
 
   @override
-  String get pleaseSelectOptions => 'விருப்பங்களைத் தேர்ந்தெடுக்கவும்';
+  String get pleaseSelectOptions => 'நிகழ்வை புதுப்பிக்கவும்.';
 
   @override
   String get pleaseSelectPaymentMode => 'கட்டண முறையைத் தேர்ந்தெடுக்கவும்!';
@@ -921,6 +921,10 @@ class LanguageTa extends Languages {
   String get enterOTP => 'OTP ஐ உள்ளிடவும்';
 
   @override
+  String get otpSentRegisterMobile =>
+      'உங்கள் பதிவு செய்யப்பட்ட மொபைல் எண்ணுக்கு OTP அனுப்பப்பட்டுள்ளது';
+
+  @override
   String get youAreInOffline => 'இணைய வசதி இல்லை';
 
   @override
@@ -1138,5 +1142,5 @@ class LanguageTa extends Languages {
   String get loginStatus => 'உள்நுழைவு நிலை *';
 
   @override
-  String get simplyUpload => 'வெறுமனே பதிவேற்றவும்';
+  String get upload => 'பதிவேற்றவும்';
 }

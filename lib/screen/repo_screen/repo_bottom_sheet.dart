@@ -115,15 +115,9 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     if (result != null) {
       uploadFileLists =
           result.paths.map((String? path) => File(path!)).toList();
-      AppUtils.showToast(
-        StringResource.fileUploadMessage,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 

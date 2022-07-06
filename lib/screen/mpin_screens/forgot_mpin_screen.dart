@@ -65,7 +65,7 @@ class _ForgotMpinScreenState extends State<ForgotMpinScreen> {
           Align(
             alignment: Alignment.centerLeft,
             child: CustomText(
-              Languages.of(context)!.enterOTP,
+              '${Languages.of(context)!.otpSentRegisterMobile}\n${Languages.of(context)!.enterOTP}',
               fontSize: FontSize.sixteen,
             ),
           ),

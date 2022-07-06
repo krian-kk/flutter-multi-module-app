@@ -799,11 +799,23 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
+          debugPrint(
+              'cade detail screen 1 ---->  ${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
           return PhoneScreen(
-              bloc: bloc,
-              index: i,
-              isCallFromCaseDetails: isCallFromCaseDetails,
-              callId: callId);
+            bloc: bloc,
+            index: i,
+            isCallFromCaseDetails: isCallFromCaseDetails,
+            callId: callId,
+            customerLoanUserWidget: CustomLoanUserDetails(
+              userName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+              userId:
+                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                      ?.toDouble() ??
+                  0.0,
+            ),
+          );
         });
   }
 

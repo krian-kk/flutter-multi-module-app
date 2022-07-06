@@ -22,6 +22,8 @@ class EventAttr {
     this.reginalText,
     this.translatedText,
     this.audioS3Path,
+    this.disputereasons,
+    this.reasons,
   });
 
   factory EventAttr.fromJson(Map<String, dynamic> json) => EventAttr(
@@ -47,6 +49,8 @@ class EventAttr {
         reginalText: json['reginal_text'] as String?,
         translatedText: json['translated_text'] as String?,
         audioS3Path: json['audioS3Path'] as String?,
+        disputereasons: json['disputereasons'] as String?,
+        reasons: json['reasons'] as String?,
       );
   String? date;
   dynamic time;
@@ -70,6 +74,8 @@ class EventAttr {
   String? reginalText;
   String? translatedText;
   String? audioS3Path;
+  String? disputereasons;
+  String? reasons;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'date': date,
@@ -94,5 +100,7 @@ class EventAttr {
         'reginal_text': reginalText,
         'translated_text': translatedText,
         'audioS3Path': audioS3Path,
+        'disputereasons': disputereasons,
+        'reasons': reasons,
       };
 }

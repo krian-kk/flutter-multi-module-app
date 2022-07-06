@@ -14,6 +14,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -33,7 +34,21 @@ class AutoCalling {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc, index: i);
+          debugPrint(
+              'autocallingScreen ---->  ${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
+          return PhoneScreen(
+            bloc: bloc,
+            index: i,
+            customerLoanUserWidget: CustomLoanUserDetails(
+              userName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+              userId:
+                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                      ?.toDouble() ??
+                  0.0,
+            ),
+          );
         });
   }
 
@@ -67,42 +82,42 @@ class AutoCalling {
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // const SizedBox(height: 10),
-                            // CustomText(
-                            //   Languages.of(context)!.customer.toUpperCase(),
-                            //   color: ColorResource.color23375A,
-                            //   fontSize: FontSize.ten,
-                            //   fontWeight: FontWeight.w700,
-                            // ),
-                            // const SizedBox(height: 5),
-                            // PercentageIndicatorWidget(
-                            //   padding: const EdgeInsets.symmetric(
-                            //       horizontal: 6, vertical: 4),
-                            //   animation: true,
-                            //   lineHeight: 12.0,
-                            //   animationDuration: 2500,
-                            //   percent: (bloc.customerCount / bloc.totalCount),
-                            //   linearStrokeCap: LinearStrokeCap.roundAll,
-                            //   progressColor: ColorResource.colorEA6D48,
-                            //   backgroundColor: ColorResource.colorD3D7DE,
-                            // ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            //   children: <Widget>[
-                            //     CustomText(
-                            //       bloc.customerCount.toString(),
-                            //       fontSize: FontSize.sixteen,
-                            //       fontWeight: FontWeight.w700,
-                            //       color: ColorResource.color23375A,
-                            //     ),
-                            //     CustomText(
-                            //       bloc.totalCount.toString(),
-                            //       fontSize: FontSize.sixteen,
-                            //       fontWeight: FontWeight.w700,
-                            //       color: ColorResource.color23375A,
-                            //     ),
-                            //   ],
-                            // ),
+                            const SizedBox(height: 10),
+                            CustomText(
+                              Languages.of(context)!.customer.toUpperCase(),
+                              color: ColorResource.color23375A,
+                              fontSize: FontSize.ten,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            const SizedBox(height: 5),
+                            PercentageIndicatorWidget(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 6, vertical: 4),
+                              animation: true,
+                              lineHeight: 12.0,
+                              animationDuration: 2500,
+                              percent: (bloc.customerCount / bloc.totalCount),
+                              linearStrokeCap: LinearStrokeCap.roundAll,
+                              progressColor: ColorResource.colorEA6D48,
+                              backgroundColor: ColorResource.colorD3D7DE,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                CustomText(
+                                  bloc.customerCount.toString(),
+                                  fontSize: FontSize.sixteen,
+                                  fontWeight: FontWeight.w700,
+                                  color: ColorResource.color23375A,
+                                ),
+                                CustomText(
+                                  bloc.totalCount.toString(),
+                                  fontSize: FontSize.sixteen,
+                                  fontWeight: FontWeight.w700,
+                                  color: ColorResource.color23375A,
+                                ),
+                              ],
+                            ),
                             const SizedBox(height: 15),
                             CustomText(
                               Languages.of(context)!.customer.toUpperCase(),
