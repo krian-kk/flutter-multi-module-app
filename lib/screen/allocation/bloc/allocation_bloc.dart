@@ -99,6 +99,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   @override
   Stream<AllocationState> mapEventToState(AllocationEvent event) async* {
     if (event is AllocationInitialEvent) {
+      if (event.myValueSetter != null) {
+        event.myValueSetter!(0);
+      }
+      debugPrint('AllocationInitialEvent->');
       // if (!Singleton.instance.isOfflineEnabledContractorBased) {
       yield AllocationLoadingState();
       // }
@@ -120,9 +124,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       });
       isShowSearchPincode = false;
       selectedDistance = Languages.of(event.context)!.all;
-
       // check in office location captured or not
-
       // Here find FIELDAGENT or TELECALLER and set in allocation screen
       if (userType == Constants.fieldagent) {
         selectOptions = [
@@ -149,8 +151,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             Languages.of(event.context)!.noInternetConnection;
         yield AllocationOfflineState(successResponse: 'offlineData');
       } else {
+        debugPrint('AllocationInitialEvent-> internet available');
+
         isNoInternetAndServerError = false;
-        // Now set priority case is a load more event
+        //Now set priority case is a load more event
         isPriorityLoadMore = true;
         bool appDataLoadedFromFirebase = false;
         await PreferenceHelper.getBool(
@@ -184,44 +188,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           }
           if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
             hasNextPage = true;
-            await FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(Singleton.instance.agentRef)
-                .collection(Constants.firebaseCase)
-                .get()
-                .then((value) {
-              for (var element in value.docChanges) {
-                debugPrint('Element--> $element');
-              }
-            });
-            await FirebaseFirestore.instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(Singleton.instance.agentRef)
-                .collection(Constants.firebaseEvent)
-                .get()
-                .then((QuerySnapshot<Map<String, dynamic>> value) {
-              if (value.docs.isNotEmpty) {
-                for (QueryDocumentSnapshot<Map<String, dynamic>> element
-                    in value.docs) {
-                  try {
-                    debugPrint(
-                        'Event details case id--> ${EvnetDetailsResultsModel.fromJson(element.data()).agrRef}');
-                  } catch (e) {
-                    debugPrint(e.toString());
-                  }
-                }
-              }
-            });
             isOfflineTriggered = true;
             totalCases = 0;
-
             await PreferenceHelper.setPreference(
                 Constants.appDataLoadedFromFirebase, true);
             await PreferenceHelper.setPreference(
                 Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
-            AppUtils.showToast('App synced with local');
-            add(AllocationInitialEvent(event.context));
+            yield FirebaseStoredCompletionState();
           } else {
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));

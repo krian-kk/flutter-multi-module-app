@@ -39,6 +39,7 @@ class Singleton {
   bool isOfflineStorageFeatureEnabled = false;
   bool isFirstTime = true;
   String firebaseDatabaseName = 'origaOfflineStorage';
+  String offlineDataSynchronization = 'offlineDataSynchronization';
 
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;

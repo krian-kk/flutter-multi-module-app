@@ -75,6 +75,8 @@ class NoInternetConnectionState extends AllocationState {}
 
 class SearchReturnDataState extends AllocationState {}
 
+class FirebaseStoredCompletionState extends AllocationState {}
+
 class UpdateStaredCaseState extends AllocationState {
   UpdateStaredCaseState(
       {required this.caseId,

@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +35,7 @@ import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/web_view_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../singleton.dart';
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -78,13 +81,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // userId.text = 'DEC_origatest';
       // password.text = 'Origa123';
-      // userId.text = 'MB_fos';s
-      // password.text = 'Asd@123';
+      userId.text = 'MB_vfos';
+      password.text = 'Origa123';
       // userId.text = 'YES_fos';
       // password.text = 'Agent1234';
 
-      userId.text = 'CDE_46';
-      password.text = 'Origa123';
+      // userId.text = 'CDE_46';
+      // password.text = 'Origa123';
     }
     username = FocusNode();
     passwords = FocusNode();
@@ -318,6 +321,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       }
                       if (state is HomeTabState) {
+                        // FirebaseDatabase.instance.setPersistenceEnabled(true);
+                        // FirebaseDatabase.instance.setPersistenceCacheSizeBytes(
+                        //     Settings.CACHE_SIZE_UNLIMITED);
+                        // final DatabaseReference scoresRef = FirebaseDatabase
+                        //     .instance
+                        //     .ref(Singleton.instance.firebaseDatabaseName);
+                        // await scoresRef.keepSynced(true);
                         await Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen,
                             arguments: widget.notificationData);
