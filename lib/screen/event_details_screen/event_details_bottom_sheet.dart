@@ -217,7 +217,7 @@ class _CustomEventDetailsBottomSheetState
                                         color: ColorResource.color666666),
                                     borderRadius: BorderRadius.circular(65.0),
                                   ),
-                                  tileColor: ColorResource.colorF7F8FA,
+                                  tileColor: ColorResource.colorffffff,
                                   selectedTileColor: ColorResource.colorE5E5E5,
                                   selectedColor: ColorResource.colorE5E5E5,
                                   child: Theme(
@@ -242,10 +242,12 @@ class _CustomEventDetailsBottomSheetState
                                               CrossAxisAlignment.start,
                                           expandedAlignment:
                                               Alignment.centerLeft,
-                                          title: CustomText(bloc
-                                              .eventDetailsAPIValues
-                                              .result![monthIndex]
-                                              .month!),
+                                          title: CustomText(
+                                            bloc.eventDetailsAPIValues
+                                                .result![monthIndex].month!,
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 16,
+                                          ),
                                           children: [
                                             // Container(
                                             //     height: 100,
@@ -358,330 +360,645 @@ class _CustomEventDetailsBottomSheetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const SizedBox(
-          height: 10,
-        ),
+        // const SizedBox(
+        //   height: 15,
+        // ),
         Container(
-          margin: const EdgeInsets.only(bottom: 12, left: 8, right: 8),
+          margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             color: ColorResource.colorF4E8E4,
           ),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(12, 3, 14, 15),
-            child: Theme(
-              data: ThemeData().copyWith(dividerColor: Colors.transparent),
-              child: ExpansionTile(
-                key: const ObjectKey('secondExpansionTile'),
-                tilePadding: const EdgeInsetsDirectional.all(0),
-                expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                expandedAlignment: Alignment.centerLeft,
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    if (expandedList[index].createdAt != null)
-                      Row(
-                        children: [
-                          CustomText(
-                            DateFormateUtils.followUpDateFormate(
-                                expandedList[index].createdAt.toString()),
-                            fontSize: FontSize.seventeen,
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          EventDetailsAppStatus.eventDetailAppStatus(
-                              expandedList[index].eventAttr!.appStatus ?? '')
-                        ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (expandedList[index].createdAt != null)
+                  Row(
+                    children: [
+                      CustomText(
+                        DateFormateUtils.followUpDateFormate(
+                            expandedList[index].createdAt.toString()),
+                        fontSize: FontSize.seventeen,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color000000,
                       ),
-                    CustomText(
-                      expandedList[index].eventType.toString().toUpperCase(),
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  ],
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      EventDetailsAppStatus.eventDetailAppStatus(
+                          expandedList[index].eventAttr!.appStatus ?? '')
+                    ],
+                  ),
+                CustomText(
+                  expandedList[index].eventType.toString().toUpperCase(),
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color000000,
                 ),
-                iconColor: ColorResource.color000000,
-                collapsedIconColor: ColorResource.color000000,
-                children: <Widget>[
+                CustomText(
+                  '${expandedList[index].eventModule}',
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color000000,
+                ),
+                if (expandedList[index].createdBy != null)
                   CustomText(
-                    '${expandedList[index].eventModule}',
+                    '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-                  if (expandedList[index].createdBy != null)
-                    CustomText(
-                      '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  // if (expandedList[index].eventType?.toLowerCase() ==
-                  //         Constants.receipt.toLowerCase() &&
-                  //     expandedList[index].eventAttr?.amountCollected != null)
-                  //   CustomText(
-                  //     '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  if (
-                  // expandedList[index].eventType?.toLowerCase() ==
-                  //       Constants.ptp.toLowerCase() &&
-                  expandedList[index].eventAttr?.ptpAmount != null)
-                    CustomText(
-                      '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.date != null)
-                    CustomText(
-                      expandedList[index].eventType == 'RECEIPT' ||
-                              expandedList[index].eventType == 'TC : RECEIPT'
-                          ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
-                          : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.time != null)
-                    CustomText(
-                      '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.mode != null)
-                    CustomText(
-                      '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  // if (expandedList[index].eventType?.toLowerCase() ==
-                  //         Constants.ptp.toLowerCase() ||
-                  //     expandedList[index].eventType?.toLowerCase() ==
-                  //         Constants.tcPtp.toLowerCase())
-                  //   CustomText(
-                  //     '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.ptpType.toString()}',
-                  //     fontSize: FontSize.fourteen,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  if (expandedList[index].eventAttr?.remarks != null)
-                    CustomText(
-                      '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  // if (expandedList[index].eventAttr?.followUpPriority != null)
-                  //   CustomText(
-                  //     '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  // if (expandedList[index].eventAttr?.customerName != null)
-                  //   CustomText(
-                  //     '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  if (expandedList[index].eventAttr?.amountCollected != null)
-                    CustomText(
-                      '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.reminderDate != null)
-                    CustomText(
-                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.chequeRefNo != null)
-                    CustomText(
-                      '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.amntOts != null)
-                    CustomText(
-                      'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.nextActionDate != null)
-                    CustomText(
-                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.actionDate != null)
-                    CustomText(
-                      '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.reasons != null)
-                    CustomText(
-                      '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.disputereasons != null)
-                    CustomText(
-                      '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  if (expandedList[index].eventAttr?.remarkOts != null)
-                    CustomText(
-                      '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color000000,
-                    ),
-                  // if (expandedList[index].createdAt != null)
-                  //   CustomText(
-                  //     'createdAt : ${expandedList[index].createdAt.toString()}',
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  // if (expandedList[index].createdBy != null)
-                  //   CustomText(
-                  //     'createdBy : ${expandedList[index].createdBy.toString()}',
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  // expandedList[index].eventType == 'OTS'
-                  //     ? (expandedList[index].eventAttr?.amntOts != null)
-                  //         ? CustomText(
-                  //             'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
-                  //             fontSize: FontSize.fourteen,
-                  //             fontWeight: FontWeight.w700,
-                  //             color: ColorResource.color000000,
-                  //           )
-                  //         : const SizedBox()
-                  //     : const SizedBox(),
-                  // if (expandedList[index].eventType == 'RECEIPT')
-                  //   Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       if (expandedList[index].eventAttr?.customerName != null)
-                  //         CustomText(
-                  //           expandedList[index].eventAttr?.customerName ?? '-',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //       if (expandedList[index].eventAttr?.amountCollected !=
-                  //           null)
-                  //         CustomText(
-                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
-                  //       (expandedList[index].eventAttr?.chequeRefNo != null)
-                  //           ? CustomText(
-                  //               'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
-                  //               fontSize: FontSize.fourteen,
-                  //               fontWeight: FontWeight.w700,
-                  //               color: ColorResource.color000000,
-                  //             )
-                  //           : const SizedBox(),
-                  //     ],
-                  //   ),
-                  // if (expandedList[index].eventType == 'PTP')
-                  //   Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
+                // if (expandedList[index].eventType?.toLowerCase() ==
+                //         Constants.receipt.toLowerCase() &&
+                //     expandedList[index].eventAttr?.amountCollected != null)
+                //   CustomText(
+                //     '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                if (
+                // expandedList[index].eventType?.toLowerCase() ==
+                //       Constants.ptp.toLowerCase() &&
+                expandedList[index].eventAttr?.ptpAmount != null)
+                  CustomText(
+                    '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.date != null)
+                  CustomText(
+                    expandedList[index].eventType == 'RECEIPT' ||
+                            expandedList[index].eventType == 'TC : RECEIPT'
+                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
+                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.time != null)
+                  CustomText(
+                    '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.mode != null)
+                  CustomText(
+                    '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                // if (expandedList[index].eventType?.toLowerCase() ==
+                //         Constants.ptp.toLowerCase() ||
+                //     expandedList[index].eventType?.toLowerCase() ==
+                //         Constants.tcPtp.toLowerCase())
+                //   CustomText(
+                //     '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.ptpType.toString()}',
+                //     fontSize: FontSize.fourteen,
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                if (expandedList[index].eventAttr?.remarks != null)
+                  CustomText(
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                // if (expandedList[index].eventAttr?.followUpPriority != null)
+                //   CustomText(
+                //     '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                // if (expandedList[index].eventAttr?.customerName != null)
+                //   CustomText(
+                //     '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                if (expandedList[index].eventAttr?.amountCollected != null)
+                  CustomText(
+                    '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.reminderDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.chequeRefNo != null)
+                  CustomText(
+                    '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.amntOts != null)
+                  CustomText(
+                    'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.nextActionDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.actionDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.reasons != null)
+                  CustomText(
+                    '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.disputereasons != null)
+                  CustomText(
+                    '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.remarkOts != null)
+                  CustomText(
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                // if (expandedList[index].createdAt != null)
+                //   CustomText(
+                //     'createdAt : ${expandedList[index].createdAt.toString()}',
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                // if (expandedList[index].createdBy != null)
+                //   CustomText(
+                //     'createdBy : ${expandedList[index].createdBy.toString()}',
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                // expandedList[index].eventType == 'OTS'
+                //     ? (expandedList[index].eventAttr?.amntOts != null)
+                //         ? CustomText(
+                //             'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
+                //             fontSize: FontSize.fourteen,
+                //             fontWeight: FontWeight.w700,
+                //             color: ColorResource.color000000,
+                //           )
+                //         : const SizedBox()
+                //     : const SizedBox(),
+                // if (expandedList[index].eventType == 'RECEIPT')
+                //   Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
+                //       if (expandedList[index].eventAttr?.customerName != null)
+                //         CustomText(
+                //           expandedList[index].eventAttr?.customerName ?? '-',
+                //           fontSize: FontSize.fourteen,
+                //           fontWeight: FontWeight.w700,
+                //           color: ColorResource.color000000,
+                //         ),
+                //       if (expandedList[index].eventAttr?.amountCollected !=
+                //           null)
+                //         CustomText(
+                //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                //           fontSize: FontSize.fourteen,
+                //           fontWeight: FontWeight.w700,
+                //           color: ColorResource.color000000,
+                //         ),
+                //       (expandedList[index].eventAttr?.chequeRefNo != null)
+                //           ? CustomText(
+                //               'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
+                //               fontSize: FontSize.fourteen,
+                //               fontWeight: FontWeight.w700,
+                //               color: ColorResource.color000000,
+                //             )
+                //           : const SizedBox(),
+                //     ],
+                //   ),
+                // if (expandedList[index].eventType == 'PTP')
+                //   Column(
+                //     crossAxisAlignment: CrossAxisAlignment.start,
+                //     children: [
 
-                  //       if (expandedList[index].eventAttr?.amountCollected !=
-                  //           null)
-                  //         CustomText(
-                  //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
-                  //           fontSize: FontSize.fourteen,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: ColorResource.color000000,
-                  //         ),
+                //       if (expandedList[index].eventAttr?.amountCollected !=
+                //           null)
+                //         CustomText(
+                //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+                //           fontSize: FontSize.fourteen,
+                //           fontWeight: FontWeight.w700,
+                //           color: ColorResource.color000000,
+                //         ),
 
-                  //     ],
-                  //   ),
-                  // if (expandedList[index].eventAttr?.mode != null)
-                  //   CustomText(
-                  //     expandedList[index]
-                  //         .eventAttr!
-                  //         .mode
-                  //         .toString()
-                  //         .toUpperCase(),
-                  //     fontSize: FontSize.fourteen,
-                  //     fontWeight: FontWeight.w700,
-                  //     color: ColorResource.color000000,
-                  //   ),
-                  // const SizedBox(height: 8),
-                  if (expandedList[index].eventType == Constants.repo)
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (expandedList[index].eventAttr?.modelMake != null)
-                          CustomText(
-                            '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.registrationNo !=
-                            null)
-                          CustomText(
-                            '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                        if (expandedList[index].eventAttr?.chassisNo != null)
-                          CustomText(
-                            '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
-                            fontWeight: FontWeight.w700,
-                            color: ColorResource.color000000,
-                          ),
-                      ],
-                    ),
-                  // CustomText(
-                  //   Languages.of(context)!
-                  //       .remarks
-                  //       .replaceAll('*', '')
-                  //       .toUpperCase(),
-                  //   fontSize: FontSize.fourteen,
-                  //   fontWeight: FontWeight.w700,
-                  //   color: ColorResource.color000000,
-                  // ),
-                  // CustomText(
-                  //   (expandedList[index].eventAttr?.remarks != null)
-                  //       ? expandedList[index].eventAttr!.remarks.toString()
-                  //       : (expandedList[index].eventAttr?.remarkOts != null)
-                  //           ? expandedList[index]
-                  //               .eventAttr!
-                  //               .remarkOts
-                  //               .toString()
-                  //           : '_',
-                  //   fontSize: FontSize.fourteen,
-                  //   fontWeight: FontWeight.w700,
-                  //   color: ColorResource.color000000,
-                  // ),
-                  if (expandedList[index].eventAttr?.reginalText != null &&
-                      expandedList[index].eventAttr?.translatedText != null &&
-                      expandedList[index].eventAttr?.audioS3Path != null)
-                    remarkS2TaudioWidget(
-                      reginalText: expandedList[index].eventAttr?.reginalText,
-                      translatedText:
-                          expandedList[index].eventAttr?.translatedText,
-                      audioPath: expandedList[index].eventAttr?.audioS3Path,
-                      index: index,
-                    ),
-                  appStatus(expandedList[index].eventAttr!.appStatus ?? '')
-                ],
-              ),
+                //     ],
+                //   ),
+                // if (expandedList[index].eventAttr?.mode != null)
+                //   CustomText(
+                //     expandedList[index]
+                //         .eventAttr!
+                //         .mode
+                //         .toString()
+                //         .toUpperCase(),
+                //     fontSize: FontSize.fourteen,
+                //     fontWeight: FontWeight.w700,
+                //     color: ColorResource.color000000,
+                //   ),
+                // const SizedBox(height: 8),
+                if (expandedList[index].eventType == Constants.repo)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (expandedList[index].eventAttr?.modelMake != null)
+                        CustomText(
+                          '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.registrationNo != null)
+                        CustomText(
+                          '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.chassisNo != null)
+                        CustomText(
+                          '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                    ],
+                  ),
+                // CustomText(
+                //   Languages.of(context)!
+                //       .remarks
+                //       .replaceAll('*', '')
+                //       .toUpperCase(),
+                //   fontSize: FontSize.fourteen,
+                //   fontWeight: FontWeight.w700,
+                //   color: ColorResource.color000000,
+                // ),
+                // CustomText(
+                //   (expandedList[index].eventAttr?.remarks != null)
+                //       ? expandedList[index].eventAttr!.remarks.toString()
+                //       : (expandedList[index].eventAttr?.remarkOts != null)
+                //           ? expandedList[index]
+                //               .eventAttr!
+                //               .remarkOts
+                //               .toString()
+                //           : '_',
+                //   fontSize: FontSize.fourteen,
+                //   fontWeight: FontWeight.w700,
+                //   color: ColorResource.color000000,
+                // ),
+                if (expandedList[index].eventAttr?.reginalText != null &&
+                    expandedList[index].eventAttr?.translatedText != null &&
+                    expandedList[index].eventAttr?.audioS3Path != null)
+                  remarkS2TaudioWidget(
+                    reginalText: expandedList[index].eventAttr?.reginalText,
+                    translatedText:
+                        expandedList[index].eventAttr?.translatedText,
+                    audioPath: expandedList[index].eventAttr?.audioS3Path,
+                    index: index,
+                  ),
+                appStatus(expandedList[index].eventAttr!.appStatus ?? '')
+              ],
             ),
           ),
         ),
       ],
     );
   }
+
+  // expandList(List<EvnetDetailsResultsModel> expandedList, int index) {
+  //   return Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: <Widget>[
+  //       const SizedBox(
+  //         height: 10,
+  //       ),
+  //       Container(
+  //         margin: const EdgeInsets.only(bottom: 12, left: 8, right: 8),
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(5.0),
+  //           color: ColorResource.colorF4E8E4,
+  //         ),
+  //         child: Padding(
+  //           padding: const EdgeInsets.fromLTRB(12, 3, 14, 15),
+  //           child: Theme(
+  //             data: ThemeData().copyWith(dividerColor: Colors.transparent),
+  //             child: ExpansionTile(
+  //               key: const ObjectKey('secondExpansionTile'),
+  //               tilePadding: const EdgeInsetsDirectional.all(0),
+  //               expandedCrossAxisAlignment: CrossAxisAlignment.start,
+  //               expandedAlignment: Alignment.centerLeft,
+  //               title: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: <Widget>[
+  //                   if (expandedList[index].createdAt != null)
+  //                     Row(
+  //                       children: [
+  //                         CustomText(
+  //                           DateFormateUtils.followUpDateFormate(
+  //                               expandedList[index].createdAt.toString()),
+  //                           fontSize: FontSize.seventeen,
+  //                           fontWeight: FontWeight.w700,
+  //                           color: ColorResource.color000000,
+  //                         ),
+  //                         const SizedBox(
+  //                           width: 15,
+  //                         ),
+  //                         EventDetailsAppStatus.eventDetailAppStatus(
+  //                             expandedList[index].eventAttr!.appStatus ?? '')
+  //                       ],
+  //                     ),
+  //                   CustomText(
+  //                     expandedList[index].eventType.toString().toUpperCase(),
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 ],
+  //               ),
+  //               iconColor: ColorResource.color000000,
+  //               collapsedIconColor: ColorResource.color000000,
+  //               children: <Widget>[
+  //                 CustomText(
+  //                   '${expandedList[index].eventModule}',
+  //                   fontWeight: FontWeight.w700,
+  //                   color: ColorResource.color000000,
+  //                 ),
+  //                 if (expandedList[index].createdBy != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 // if (expandedList[index].eventType?.toLowerCase() ==
+  //                 //         Constants.receipt.toLowerCase() &&
+  //                 //     expandedList[index].eventAttr?.amountCollected != null)
+  //                 //   CustomText(
+  //                 //     '${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amountCollected.toString()}',
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 if (
+  //                 // expandedList[index].eventType?.toLowerCase() ==
+  //                 //       Constants.ptp.toLowerCase() &&
+  //                 expandedList[index].eventAttr?.ptpAmount != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.date != null)
+  //                   CustomText(
+  //                     expandedList[index].eventType == 'RECEIPT' ||
+  //                             expandedList[index].eventType == 'TC : RECEIPT'
+  //                         ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
+  //                         : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.time != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.mode != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 // if (expandedList[index].eventType?.toLowerCase() ==
+  //                 //         Constants.ptp.toLowerCase() ||
+  //                 //     expandedList[index].eventType?.toLowerCase() ==
+  //                 //         Constants.tcPtp.toLowerCase())
+  //                 //   CustomText(
+  //                 //     '${Languages.of(context)!.paymentMode} : ${expandedList[index].eventAttr?.ptpType.toString()}',
+  //                 //     fontSize: FontSize.fourteen,
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 if (expandedList[index].eventAttr?.remarks != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 // if (expandedList[index].eventAttr?.followUpPriority != null)
+  //                 //   CustomText(
+  //                 //     '${Languages.of(context)!.followUpPriority} : ${expandedList[index].eventAttr?.followUpPriority.toString()}',
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 // if (expandedList[index].eventAttr?.customerName != null)
+  //                 //   CustomText(
+  //                 //     '${Languages.of(context)!.customerName.replaceAll('*', '')} : ${expandedList[index].eventAttr?.customerName.toString()}',
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 if (expandedList[index].eventAttr?.amountCollected != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.reminderDate != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.chequeRefNo != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.amntOts != null)
+  //                   CustomText(
+  //                     'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.nextActionDate != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.actionDate != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.reasons != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.disputereasons != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 if (expandedList[index].eventAttr?.remarkOts != null)
+  //                   CustomText(
+  //                     '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
+  //                     fontWeight: FontWeight.w700,
+  //                     color: ColorResource.color000000,
+  //                   ),
+  //                 // if (expandedList[index].createdAt != null)
+  //                 //   CustomText(
+  //                 //     'createdAt : ${expandedList[index].createdAt.toString()}',
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 // if (expandedList[index].createdBy != null)
+  //                 //   CustomText(
+  //                 //     'createdBy : ${expandedList[index].createdBy.toString()}',
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 // expandedList[index].eventType == 'OTS'
+  //                 //     ? (expandedList[index].eventAttr?.amntOts != null)
+  //                 //         ? CustomText(
+  //                 //             'OTS Amount: ${expandedList[index].eventAttr?.amntOts}',
+  //                 //             fontSize: FontSize.fourteen,
+  //                 //             fontWeight: FontWeight.w700,
+  //                 //             color: ColorResource.color000000,
+  //                 //           )
+  //                 //         : const SizedBox()
+  //                 //     : const SizedBox(),
+  //                 // if (expandedList[index].eventType == 'RECEIPT')
+  //                 //   Column(
+  //                 //     crossAxisAlignment: CrossAxisAlignment.start,
+  //                 //     children: [
+  //                 //       if (expandedList[index].eventAttr?.customerName != null)
+  //                 //         CustomText(
+  //                 //           expandedList[index].eventAttr?.customerName ?? '-',
+  //                 //           fontSize: FontSize.fourteen,
+  //                 //           fontWeight: FontWeight.w700,
+  //                 //           color: ColorResource.color000000,
+  //                 //         ),
+  //                 //       if (expandedList[index].eventAttr?.amountCollected !=
+  //                 //           null)
+  //                 //         CustomText(
+  //                 //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+  //                 //           fontSize: FontSize.fourteen,
+  //                 //           fontWeight: FontWeight.w700,
+  //                 //           color: ColorResource.color000000,
+  //                 //         ),
+  //                 //       (expandedList[index].eventAttr?.chequeRefNo != null)
+  //                 //           ? CustomText(
+  //                 //               'Cheque RefNo : ${expandedList[index].eventAttr?.chequeRefNo ?? '_'}',
+  //                 //               fontSize: FontSize.fourteen,
+  //                 //               fontWeight: FontWeight.w700,
+  //                 //               color: ColorResource.color000000,
+  //                 //             )
+  //                 //           : const SizedBox(),
+  //                 //     ],
+  //                 //   ),
+  //                 // if (expandedList[index].eventType == 'PTP')
+  //                 //   Column(
+  //                 //     crossAxisAlignment: CrossAxisAlignment.start,
+  //                 //     children: [
+
+  //                 //       if (expandedList[index].eventAttr?.amountCollected !=
+  //                 //           null)
+  //                 //         CustomText(
+  //                 //           'Receipt Amount : ${Constants.inr}${expandedList[index].eventAttr?.amountCollected ?? '-'}',
+  //                 //           fontSize: FontSize.fourteen,
+  //                 //           fontWeight: FontWeight.w700,
+  //                 //           color: ColorResource.color000000,
+  //                 //         ),
+
+  //                 //     ],
+  //                 //   ),
+  //                 // if (expandedList[index].eventAttr?.mode != null)
+  //                 //   CustomText(
+  //                 //     expandedList[index]
+  //                 //         .eventAttr!
+  //                 //         .mode
+  //                 //         .toString()
+  //                 //         .toUpperCase(),
+  //                 //     fontSize: FontSize.fourteen,
+  //                 //     fontWeight: FontWeight.w700,
+  //                 //     color: ColorResource.color000000,
+  //                 //   ),
+  //                 // const SizedBox(height: 8),
+  //                 if (expandedList[index].eventType == Constants.repo)
+  //                   Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       if (expandedList[index].eventAttr?.modelMake != null)
+  //                         CustomText(
+  //                           '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
+  //                           fontWeight: FontWeight.w700,
+  //                           color: ColorResource.color000000,
+  //                         ),
+  //                       if (expandedList[index].eventAttr?.registrationNo !=
+  //                           null)
+  //                         CustomText(
+  //                           '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
+  //                           fontWeight: FontWeight.w700,
+  //                           color: ColorResource.color000000,
+  //                         ),
+  //                       if (expandedList[index].eventAttr?.chassisNo != null)
+  //                         CustomText(
+  //                           '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+  //                           fontWeight: FontWeight.w700,
+  //                           color: ColorResource.color000000,
+  //                         ),
+  //                     ],
+  //                   ),
+  //                 // CustomText(
+  //                 //   Languages.of(context)!
+  //                 //       .remarks
+  //                 //       .replaceAll('*', '')
+  //                 //       .toUpperCase(),
+  //                 //   fontSize: FontSize.fourteen,
+  //                 //   fontWeight: FontWeight.w700,
+  //                 //   color: ColorResource.color000000,
+  //                 // ),
+  //                 // CustomText(
+  //                 //   (expandedList[index].eventAttr?.remarks != null)
+  //                 //       ? expandedList[index].eventAttr!.remarks.toString()
+  //                 //       : (expandedList[index].eventAttr?.remarkOts != null)
+  //                 //           ? expandedList[index]
+  //                 //               .eventAttr!
+  //                 //               .remarkOts
+  //                 //               .toString()
+  //                 //           : '_',
+  //                 //   fontSize: FontSize.fourteen,
+  //                 //   fontWeight: FontWeight.w700,
+  //                 //   color: ColorResource.color000000,
+  //                 // ),
+  //                 if (expandedList[index].eventAttr?.reginalText != null &&
+  //                     expandedList[index].eventAttr?.translatedText != null &&
+  //                     expandedList[index].eventAttr?.audioS3Path != null)
+  //                   remarkS2TaudioWidget(
+  //                     reginalText: expandedList[index].eventAttr?.reginalText,
+  //                     translatedText:
+  //                         expandedList[index].eventAttr?.translatedText,
+  //                     audioPath: expandedList[index].eventAttr?.audioS3Path,
+  //                     index: index,
+  //                   ),
+  //                 appStatus(expandedList[index].eventAttr!.appStatus ?? '')
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   appStatus(status) {
     Widget? returnWidget;
