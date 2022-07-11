@@ -427,10 +427,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                           child: TabBarView(
                               controller: _controller,
                               physics: const NeverScrollableScrollPhysics(),
-                              children: const <Widget>[
-                                AllocationScreen(), //1
-                                DashboardScreen(), //2
-                                ProfileScreen(), //3
+                              children: <Widget>[
+                                AllocationScreen(myValueSetter: (value) {
+                                  indexMethod(value);
+                                }), //1
+                                const DashboardScreen(), //2
+                                const ProfileScreen(), //3
                               ]),
                         )
                       ]),
@@ -444,4 +446,13 @@ class _HomeTabScreenState extends State<HomeTabScreen>
       ),
     );
   }
+   void indexMethod(int value){
+     setState(() {
+       _controller!.animateTo(value);
+
+     });
+     debugPrint('Tab controls-> $value');
+   }
+
+
 }

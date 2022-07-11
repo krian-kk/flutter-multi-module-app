@@ -5,12 +5,15 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
+
+import '../models/profile_api_result_model/profile_api_result_model.dart';
 
 class FirebaseUtils {
   // to get the events history using case id
@@ -163,5 +166,42 @@ class FirebaseUtils {
       }
     }
     return {'events': returnResult};
+  }
+
+  static streaming({required int count}) async {
+    debugPrint('Firebase streaming method--> count-> $count');
+    await FirebaseDatabase.instance.goOnline();
+    FirebaseDatabase.instance.setPersistenceEnabled(true);
+    FirebaseDatabase.instance
+        .setPersistenceCacheSizeBytes(Settings.CACHE_SIZE_UNLIMITED);
+    final DatabaseReference scoresRef =
+        FirebaseDatabase.instance.ref(Singleton.instance.firebaseDatabaseName);
+    await scoresRef.keepSynced(true);
+    await FirebaseFirestore.instance
+        .collection(Singleton.instance.firebaseDatabaseName)
+        .doc(Singleton.instance.agentRef)
+        .collection(Constants.firebaseCase)
+        .limit(100)
+        .get(const GetOptions(source: Source.server))
+        .then((value) {
+      debugPrint('Firebase asStream empty--> ${value.docs.length}');
+    });
+
+    await FirebaseFirestore.instance
+        .collection(Singleton.instance.firebaseDatabaseName)
+        .doc(Singleton.instance.agentRef)
+        .collection(Constants.firebaseCase)
+        .limit(100)
+        .snapshots()
+        .take(5)
+        .forEach((element) {
+      debugPrint('Firebase event empty--> ${element.docs.length}');
+    });
+    // await FirebaseDatabase.instance.goOnline();
+    // FirebaseDatabase.instance.setPersistenceEnabled(true);
+    // FirebaseDatabase.instance
+    //     .setPersistenceCacheSizeBytes(Settings.CACHE_SIZE_UNLIMITED);
+    // await scoresRef.keepSynced(true);
+    debugPrint('Firebase streaming returned-->');
   }
 }

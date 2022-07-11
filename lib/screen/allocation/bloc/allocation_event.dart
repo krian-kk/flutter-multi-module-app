@@ -3,13 +3,16 @@ part of 'allocation_bloc.dart';
 class AllocationEvent extends BaseEquatable {}
 
 class AllocationInitialEvent extends AllocationEvent {
-  AllocationInitialEvent(this.context);
+  AllocationInitialEvent(this.context, {this.myValueSetter});
+
+  final ValueSetter<int>? myValueSetter;
   final BuildContext context;
-  // final bool isOfflineAPI;
+// final bool isOfflineAPI;
 }
 
 class MapViewEvent extends AllocationEvent {
   MapViewEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
@@ -19,6 +22,7 @@ class NavigateSearchPageEvent extends AllocationEvent {}
 
 class NavigateCaseDetailEvent extends AllocationEvent {
   NavigateCaseDetailEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
@@ -30,11 +34,13 @@ class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
 
 class TapBuildRouteEvent extends AllocationEvent {
   TapBuildRouteEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
 class SearchReturnDataEvent extends AllocationEvent {
   SearchReturnDataEvent({this.returnValue});
+
   final dynamic returnValue;
 }
 
@@ -42,6 +48,7 @@ class PriorityLoadMoreEvent extends AllocationEvent {}
 
 class BuildRouteLoadMoreEvent extends AllocationEvent {
   BuildRouteLoadMoreEvent({this.paramValues});
+
   final dynamic paramValues;
 }
 
@@ -52,6 +59,7 @@ class UpdateStaredCaseEvent extends AllocationEvent {
       {required this.selectedStarIndex,
       required this.caseID,
       required this.context});
+
   final int selectedStarIndex;
   final String caseID;
   final BuildContext context;
@@ -65,6 +73,7 @@ class UpdateNewValuesEvent extends AllocationEvent {
     this.selectedClipValue,
     this.followUpDate,
   );
+
   final String paramValue;
   final String selectedClipValue;
   final String? followUpDate;
@@ -79,6 +88,7 @@ class StartCallingEvent extends AllocationEvent {
     this.customerList,
     this.isIncreaseCount = false,
   });
+
   final int? customerIndex;
   final int? phoneIndex;
   final Result? customerList;
@@ -87,6 +97,7 @@ class StartCallingEvent extends AllocationEvent {
 
 class AutoCallContactHealthUpdateEvent extends AllocationEvent {
   AutoCallContactHealthUpdateEvent({this.contactIndex, this.caseIndex});
+
   final int? contactIndex;
   final int? caseIndex;
 }
@@ -95,5 +106,6 @@ class AutoCallingContactSortEvent extends AllocationEvent {}
 
 class ConnectedStopAndSubmitEvent extends AllocationEvent {
   ConnectedStopAndSubmitEvent({required this.customerIndex});
+
   final int customerIndex;
 }
