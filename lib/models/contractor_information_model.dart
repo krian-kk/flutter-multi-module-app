@@ -127,7 +127,7 @@ class ContractorResult {
     appBuildVersion = json['appBuildVersion'];
     hideSendRepaymentInfoWhatsappButton =
         json['hideSendRepaymentInfoWhatsappButton'];
-    enableAgencyManagement = json['enableAgencyManagement'];
+    enableAgencyManagement = json['enableAgencyManagement'] ?? false;
     repaymentWhatsappTemplate = json['repaymentWhatsappTemplate'];
     sendRepaymentInfoWhatsappTemplateName =
         json['sendRepaymentInfoWhatsappTemplateName'];
@@ -174,7 +174,7 @@ class ContractorResult {
   bool? otsEnable;
   String? appBuildVersion;
   bool? hideSendRepaymentInfoWhatsappButton;
-  bool enableAgencyManagement = false;
+  bool? enableAgencyManagement = false;
   String? repaymentWhatsappTemplate;
   String? sendRepaymentInfoWhatsappTemplateName;
 

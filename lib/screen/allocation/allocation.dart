@@ -43,6 +43,7 @@ import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -452,11 +453,27 @@ class _AllocationScreenState extends State<AllocationScreen>
   }
 
   Future<void> phoneBottomSheet(
-      BuildContext buildContext, CaseDetailsBloc bloc, int i) {
+      BuildContext buildContext, CaseDetailsBloc casedetailbloc, int i) {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc, index: i);
+          debugPrint(
+              'allocation 1 ---->  ${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
+          return PhoneScreen(
+            bloc: casedetailbloc,
+            index: i,
+            customerLoanUserWidget: CustomLoanUserDetails(
+              userName: casedetailbloc
+                      .caseDetailsAPIValue.result?.caseDetails?.cust ??
+                  '',
+              userId:
+                  '${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userAmount: casedetailbloc
+                      .caseDetailsAPIValue.result?.caseDetails?.due
+                      ?.toDouble() ??
+                  0.0,
+            ),
+          );
         });
   }
 
@@ -645,6 +662,8 @@ class _AllocationScreenState extends State<AllocationScreen>
                                           },
                                           context: context,
                                         ));
+                                  await Future.delayed(
+                                      const Duration(milliseconds: 1500));
                                   await phoneBottomSheet(
                                       context, caseDetailsloc, 0);
                                 } else {
@@ -922,6 +941,8 @@ class _AllocationScreenState extends State<AllocationScreen>
               isSubmitRUOffice = false;
               bloc.areyouatOffice = false;
               PreferenceHelper.setPreference('areyouatOffice', false);
+              PreferenceHelper.setPreference(
+                  'ruAtOfficeDay', DateTime.now().day.toString());
             });
             AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
           } else {

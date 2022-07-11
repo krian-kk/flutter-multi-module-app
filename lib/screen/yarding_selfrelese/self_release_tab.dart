@@ -19,6 +19,8 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 
+import '../../utils/string_resource.dart';
+
 class SelfReleaseTab extends StatefulWidget {
   const SelfReleaseTab(this.bloc, {Key? key, this.id, this.custname})
       : super(key: key);
@@ -58,11 +60,9 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
         await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 
@@ -212,7 +212,7 @@ class _SelfReleaseTabState extends State<SelfReleaseTab> {
                               ),
                               const SizedBox(height: 7),
                               CustomButton(
-                                Languages.of(context)!.uploadDepositSlip,
+                                Languages.of(context)!.upload,
                                 fontWeight: FontWeight.w700,
                                 fontSize: FontSize.sixteen,
                                 buttonBackgroundColor:

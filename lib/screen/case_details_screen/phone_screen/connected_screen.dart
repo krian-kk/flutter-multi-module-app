@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -33,11 +34,14 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
   @override
   Widget build(BuildContext context) {
-    final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
-        <OptionBottomSheetButtonModel>[
-      OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
-    ];
+    List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [];
+    if (Singleton.instance.contractorInformations!.result!.contractor !=
+        Constants.contractorId) {
+      optionBottomSheetButtonList = <OptionBottomSheetButtonModel>[
+        OptionBottomSheetButtonModel(
+            Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
+      ];
+    }
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
       listener: (BuildContext context, CaseDetailsState state) {},

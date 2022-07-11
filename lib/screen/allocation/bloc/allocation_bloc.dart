@@ -40,6 +40,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int customerCount = 0;
   int totalCount = 0;
   int tempTotalCount = 0;
+  // int autoCallingTotalCaseCount = 0;
 
   String? userType;
   String? agentName;
@@ -119,9 +120,18 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           .then((value) {
         agrRef = value.toString();
       });
-      await PreferenceHelper.getBool(keyPair: 'areyouatOffice').then((value) {
-        areyouatOffice = value ?? false;
+      await PreferenceHelper.getString(keyPair: 'ruAtOfficeDay')
+          .then((value) async {
+        if (value != DateTime.now().day.toString()) {
+          await PreferenceHelper.getBool(keyPair: 'areyouatOffice')
+              .then((value) {
+            areyouatOffice = value ?? false;
+          });
+        } else {
+          areyouatOffice = false;
+        }
       });
+
       isShowSearchPincode = false;
       selectedDistance = Languages.of(event.context)!.all;
       // check in office location captured or not
@@ -645,14 +655,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       );
       autoCallingResultList.clear();
       if (autoCallingListData[Constants.success] == true) {
+        // // here to get autocalling total case count
+        // autoCallingTotalCaseCount = autoCallingListData['data']['totalCases'];
         for (var element in autoCallingListData['data']['result']) {
           autoCallingResultList
               .add(Result.fromJson(jsonDecode(jsonEncode(element))));
         }
       }
-      // autoCallingResultList.clear();
-      // autoCallingResultList = resultList;
-      totalCount = autoCallingResultList.length;
+      // // autoCallingResultList.clear();
+      // // autoCallingResultList = resultList;
+      // totalCount = autoCallingResultList.length;
+
+      // here to get autocalling total case count
+      totalCount = autoCallingListData['data']['totalCases'];
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>
             (element.cType == 'office address' ||

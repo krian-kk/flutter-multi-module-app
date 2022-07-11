@@ -40,6 +40,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
+import '../../utils/string_resource.dart';
 
 class CustomOtsBottomSheet extends StatefulWidget {
   const CustomOtsBottomSheet(
@@ -124,12 +125,10 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       } else {
         uploadFileLists =
             result.paths.map((String? path) => File(path!)).toList();
+        AppUtils.showToast(StringResource.fileUploadMessage);
       }
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 

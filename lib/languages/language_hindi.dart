@@ -683,7 +683,7 @@ class LanguageHi extends Languages {
       'कृपया सही उपयोगकर्ता का पहचान दर्ज करें';
 
   @override
-  String get pleaseSelectOptions => 'कृपया विकल्प चुनें';
+  String get pleaseSelectOptions => 'कृपया घटना को अपडेट करें।';
 
   @override
   String get pleaseSelectPaymentMode => 'कृपया भुगतान का तरीका चुनें!';
@@ -1115,4 +1115,28 @@ class LanguageHi extends Languages {
 
   @override
   String get back => 'पीछे';
+
+  @override
+  String get notInterested => 'रुचि नहीं';
+
+  @override
+  String get notEligible => 'पात्र नहीं है';
+
+  @override
+  String get login => 'लॉग इन करें';
+
+  @override
+  String get feedback => 'अन्य प्रतिक्रिया';
+
+  @override
+  String get reasonForNotEligible => 'पात्र नहीं होने का कारण *';
+
+  @override
+  String get reasonForNotIntrested => 'रुचि नहीं लेने का कारण *';
+
+  @override
+  String get loginStatus => 'लॉगिन स्थिति *';
+
+  @override
+  String get upload => 'डालना';
 }

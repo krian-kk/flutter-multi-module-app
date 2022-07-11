@@ -22,6 +22,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/object_id_widget.dart';
 
+import '../../../utils/string_resource.dart';
+
 class BankTab extends StatefulWidget {
   const BankTab(this.bloc,
       {Key? key,
@@ -77,11 +79,9 @@ class _BankTabState extends State<BankTab> {
         await FilePicker.platform.pickFiles(allowMultiple: true);
     if (result != null) {
       uploadFileLists = result.paths.map((path) => File(path!)).toList();
+      AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 

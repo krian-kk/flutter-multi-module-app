@@ -52,4 +52,9 @@ class ImageResource {
   static const String sms = 'assets/svg/SMS.svg';
   static const String unStar = 'assets/svg/unStar.svg';
   static const String microPhoneImage = 'assets/svg/microphone_img.svg';
+
+  static const String feedbackconnected = 'assets/svg/feedbackconnected.svg';
+  static const String noteligible = 'assets/svg/noteligible.svg';
+  static const String notintrested = 'assets/svg/notintrested.svg';
+  static const String loginconnected = 'assets/svg/loginconnected.svg';
 }

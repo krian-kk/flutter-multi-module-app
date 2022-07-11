@@ -59,6 +59,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
       // OptionBottomSheetButtonModel(
       //     Languages.of(context)!.addNewContact, Constants.addNewContact),
       OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
+      OptionBottomSheetButtonModel(
+          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),

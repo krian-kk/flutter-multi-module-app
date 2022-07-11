@@ -120,7 +120,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   child: Column(
                     children: <Widget>[
                       CustomTextField(
-                        Languages.of(context)!.userName,
+                        Languages.of(context)!.userId,
                         userIdController,
                         keyBoardType: TextInputType.emailAddress,
                         isFill: true,

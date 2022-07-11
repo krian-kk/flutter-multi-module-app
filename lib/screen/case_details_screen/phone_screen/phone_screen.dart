@@ -18,6 +18,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 
@@ -27,12 +28,14 @@ class PhoneScreen extends StatefulWidget {
       required this.bloc,
       required this.index,
       this.isCallFromCaseDetails = false,
-      this.callId})
+      this.callId,
+      this.customerLoanUserWidget})
       : super(key: key);
   final CaseDetailsBloc bloc;
   final bool isCallFromCaseDetails;
   final int index;
   final String? callId;
+  final Widget? customerLoanUserWidget;
 
   @override
   _PhoneScreenState createState() => _PhoneScreenState();
@@ -278,6 +281,20 @@ class _PhoneScreenState extends State<PhoneScreen>
                                     ),
                                   ),
                                 ),
+                                widget.bloc.isAutoCalling
+                                    ? const SizedBox(
+                                        height: 10.0,
+                                      )
+                                    : const SizedBox(),
+                                Visibility(
+                                    visible: widget.bloc.isAutoCalling,
+                                    child: widget.customerLoanUserWidget ??
+                                        const SizedBox()),
+                                widget.bloc.isAutoCalling
+                                    ? const SizedBox(
+                                        height: 10.0,
+                                      )
+                                    : const SizedBox(),
                                 Row(
                                   children: <Widget>[
                                     Expanded(

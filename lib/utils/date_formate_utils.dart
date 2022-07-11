@@ -19,6 +19,14 @@ class DateFormateUtils {
     }
     return convertedDate;
   }
+
+  static String getDate2Month(String date) {
+    final DateTime utcFormate = DateTime.parse(date).toUtc();
+    String? convertedDate = DateFormat.yMMMM()
+        .format(DateTime.parse(utcFormate.toLocal().toString()));
+
+    return convertedDate;
+  }
 }
 
 class DateFormateUtils2 {

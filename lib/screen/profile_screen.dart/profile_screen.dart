@@ -78,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   getAddress() async {
     await PreferenceHelper.getString(keyPair: 'addressValue').then((value) {
-      addressValue = value!;
+      addressValue = value ?? '';
     });
   }
 
@@ -217,7 +217,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
       if (Singleton.instance.contractorInformations != null &&
           Singleton
-              .instance.contractorInformations!.result!.enableAgencyManagement)
+              .instance.contractorInformations!.result!.enableAgencyManagement!)
         ProfileNavigation(
             title: Languages.of(context)!.authorizationLetter,
             isEnable: true,
@@ -226,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             }),
       if (Singleton.instance.contractorInformations != null &&
           Singleton
-              .instance.contractorInformations!.result!.enableAgencyManagement)
+              .instance.contractorInformations!.result!.enableAgencyManagement!)
         ProfileNavigation(
             title: Languages.of(context)!.idCard,
             isEnable: true,

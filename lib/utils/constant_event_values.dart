@@ -83,4 +83,19 @@ class ConstantEventValues {
   static const int otsEventId = 25;
   static const String otsEvenCode = 'EVT02';
   static const String otsHealth = '2';
+
+  // not eligible Post Event
+  static const int notEligibleEventId = 20;
+  static const String notEligibleEvenCode = 'TELEVT013';
+  static const String notEligibleHealth = '2';
+
+  // not interested Post Event
+  static const int notInterestedEventId = 20;
+  static const String notInterestedEvenCode = 'TELEVT012';
+  static const String notInterestedHealth = '2';
+
+  // login post event
+  static const int loginEventId = 20;
+  static const String loginEvenCode = 'TELEVT014';
+  static const String loginHealth = '2';
 }

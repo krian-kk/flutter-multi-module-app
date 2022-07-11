@@ -237,7 +237,8 @@ Widget addAuthBloc(BuildContext context, Widget widget) {
         //   String? mPin = value.getString(Constants.mPin);
         //   String? agentRef = value.getString(Constants.agentRef);
         //   print('Mpin ======= > ${mPin}');
-        if (Singleton.instance.isOfflineEnabledContractorBased) {
+        if (Singleton.instance.isOfflineEnabledContractorBased &&
+            Singleton.instance.usertype == Constants.fieldagent) {
           if (mPin != null) {
             await showMPinDialog(
                 mPin: mPin,

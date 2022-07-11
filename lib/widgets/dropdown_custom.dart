@@ -6,25 +6,27 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class CustomDropDownButton extends StatefulWidget {
-  const CustomDropDownButton(this.labelText, this.listOfItems,
-      {Key? key,
-      this.hintWidget,
-      this.icon,
-      this.underline,
-      this.isExpanded = true,
-      this.style,
-      this.valueTextStyle,
-      this.focusNode,
-      this.underlineColor = ColorResource.colorE5EAF6,
-      this.autoFocus = false,
-      this.onChanged,
-      this.focusColor,
-      this.menuMaxHeight,
-      this.selectedValue})
-      : super(key: key);
+class DropDownButton extends StatefulWidget {
+  const DropDownButton(
+    this.listOfItems, {
+    Key? key,
+    this.hintWidget,
+    this.icon,
+    this.labelText,
+    this.underline,
+    this.isExpanded = true,
+    this.style,
+    this.valueTextStyle,
+    this.focusNode,
+    this.underlineColor = ColorResource.colorE5EAF6,
+    this.autoFocus = false,
+    this.onChanged,
+    this.focusColor,
+    this.menuMaxHeight,
+    this.selectedValue,
+  }) : super(key: key);
   // final String value;
-  final String labelText;
+  final String? labelText;
   final List<String> listOfItems;
   final String? selectedValue;
   final Widget? hintWidget;
@@ -41,10 +43,10 @@ class CustomDropDownButton extends StatefulWidget {
   final double? menuMaxHeight;
 
   @override
-  State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
+  State<DropDownButton> createState() => _DropDownButtonState();
 }
 
-class _CustomDropDownButtonState extends State<CustomDropDownButton> {
+class _DropDownButtonState extends State<DropDownButton> {
   @override
   void initState() {
     super.initState();
@@ -56,9 +58,9 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        widget.labelText != ''
+        widget.labelText != null
             ? CustomText(
-                widget.labelText,
+                widget.labelText!,
                 color: ColorResource.color666666,
                 fontSize: FontSize.twelve,
               )
@@ -69,34 +71,62 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           context: context,
           child: SizedBox(
             // height: 35,
-            child: DropdownButton<String>(
-              value: widget.selectedValue ?? widget.listOfItems[0],
+            child: DropdownButtonFormField<String>(
+              value: widget.selectedValue,
               icon: Padding(
                 padding: const EdgeInsets.only(right: 10, bottom: 3),
                 child: widget.icon ??
-                    SvgPicture.asset(
-                      ImageResource.downArrow,
-                      width: 10,
-                      height: 16,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 3),
+                      child: SvgPicture.asset(
+                        ImageResource.downArrow,
+                        width: 9,
+                        height: 14,
+                      ),
                     ),
               ),
               // iconSize: 24,
               isExpanded: widget.isExpanded,
               style: widget.style ??
-                  TextStyle(
-                      color: (widget.selectedValue == 'select')
-                          ? ColorResource.color666666
-                          : ColorResource.color333333,
+                  const TextStyle(
+                      color: ColorResource.color333333,
                       fontWeight: FontWeight.w700,
                       height: 0.5,
                       fontSize: FontSize.fourteen,
                       fontStyle: FontStyle.normal),
-              underline: Container(
-                height: 1,
-                color: widget.underlineColor,
-              ),
+              // underline: Container(
+              //   height: 1,
+              //   color: widget.underlineColor,
+              // ),
               menuMaxHeight: widget.menuMaxHeight,
               focusNode: widget.focusNode,
+              decoration: const InputDecoration(
+                // enabledBorder:const InputBorder(borderSide: ),
+                errorStyle: TextStyle(
+                    color: Colors.red,
+                    height: 0.7,
+                    fontFamily: 'Lato',
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.normal,
+                    fontSize: 8),
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: ColorResource.colorE5EAF6,
+                )),
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: ColorResource.colorE5EAF6,
+                )),
+                focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: ColorResource.colorE5EAF6,
+                )),
+                // errorBorder: OutlineInputBorder(
+                //   gapPadding: 0.0,
+                //   borderSide: BorderSide(
+                //       color: ColorResource.red, style: BorderStyle.none),
+                // ),
+              ),
               // onChanged: (newValue) {
               //   setState(() {
               //     selectedValue = newValue;
@@ -107,6 +137,11 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               autofocus: widget.autoFocus,
               focusColor: widget.focusColor,
               hint: widget.hintWidget,
+              validator: (value) =>
+                  value == null ? 'This field is required' : null,
+              // disabledHint: widget.disableHint != null
+              //     ? Text(widget.disableHint!)
+              //     : const SizedBox(),
               items: widget.listOfItems
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(

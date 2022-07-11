@@ -113,7 +113,7 @@ class LanguageEn extends Languages {
   String get myCalls => 'MY CALLS';
 
   @override
-  String get myDeposists => 'MY DEPOSISTS';
+  String get myDeposists => 'MY DEPOSITS';
 
   @override
   String get yardingSelfRelease => 'YARDING & SELF- RELEASE';
@@ -681,7 +681,7 @@ class LanguageEn extends Languages {
   String get pleaseEnterCurrectUserId => 'Please Enter Currect User ID';
 
   @override
-  String get pleaseSelectOptions => 'Please Select Options';
+  String get pleaseSelectOptions => 'Please update the event';
 
   @override
   String get pleaseSelectPaymentMode => 'Please Select Payment Mode!';
@@ -809,7 +809,7 @@ class LanguageEn extends Languages {
       'Invalid password, Please enter the correct password';
 
   @override
-  String get notSelectedCase => 'Should be select one case';
+  String get notSelectedCase => 'Please select atleast one case';
 
   @override
   String get pleaseSelectMaximum5MbFile =>
@@ -1112,4 +1112,28 @@ class LanguageEn extends Languages {
 
   @override
   String get back => 'Back';
+
+  @override
+  String get notInterested => 'Not Interested';
+
+  @override
+  String get notEligible => 'Not Eligible';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get feedback => 'Feedback';
+
+  @override
+  String get reasonForNotEligible => 'Reason For Not Eligible *';
+
+  @override
+  String get reasonForNotIntrested => 'Reason For Not Intrested *';
+
+  @override
+  String get loginStatus => 'Login Status *';
+
+  @override
+  String get upload => 'Upload';
 }

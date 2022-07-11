@@ -14,6 +14,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/health_status_widget.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -33,7 +34,21 @@ class AutoCalling {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return PhoneScreen(bloc: bloc, index: i);
+          debugPrint(
+              'autocallingScreen ---->  ${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
+          return PhoneScreen(
+            bloc: bloc,
+            index: i,
+            customerLoanUserWidget: CustomLoanUserDetails(
+              userName:
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+              userId:
+                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+                      ?.toDouble() ??
+                  0.0,
+            ),
+          );
         });
   }
 

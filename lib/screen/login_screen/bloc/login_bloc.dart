@@ -497,9 +497,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
           Singleton.instance.sessionID = loginResponse.data!.sessionState!;
           Singleton.instance.agentRef = event.userId!;
-          Singleton.instance.agentRef =
-              PreferenceHelper.getString(keyPair: Constants.agentRef)
-                  .toString();
+          await PreferenceHelper.getString(keyPair: Constants.agentRef)
+              .then((value) {
+            Singleton.instance.agentRef = value;
+          });
+          // Singleton.instance.agentRef =
+          //     PreferenceHelper.getString(keyPair: Constants.agentRef)
+          //         .toString();
 
           if (loginResponse.data!.accessToken != null) {
             // Here check mpin flow show or not (offline or Online)

@@ -30,6 +30,7 @@ import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -109,11 +110,9 @@ class _CustomCollectionsBottomSheetState
     if (result != null) {
       uploadFileLists =
           result.paths.map((String? path) => File(path!)).toList();
+      AppUtils.showToast(StringResource.imageUploadMessage);
     } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-        gravity: ToastGravity.CENTER,
-      );
+      AppUtils.showToast(Languages.of(context)!.canceled);
     }
   }
 

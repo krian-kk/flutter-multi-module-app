@@ -26,6 +26,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
+import '../../utils/string_resource.dart';
 
 class CustomCaptureImageBottomSheet extends StatefulWidget {
   const CustomCaptureImageBottomSheet(
@@ -77,9 +78,13 @@ class _CustomCaptureImageBottomSheetState
     if (result != null) {
       uploadFileLists =
           result.paths.map((String? path) => File(path!)).toList();
+      AppUtils.showToast(
+        StringResource.fileUploadMessage,
+      );
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled,
-          gravity: ToastGravity.CENTER);
+      AppUtils.showToast(
+        Languages.of(context)!.canceled,
+      );
     }
   }
 
@@ -125,7 +130,7 @@ class _CustomCaptureImageBottomSheetState
                               widget.customerLoanUserDetailsWidget,
                               const SizedBox(height: 11),
                               CustomButton(
-                                Languages.of(context)!.customUpload,
+                                Languages.of(context)!.uploadImage,
                                 fontWeight: FontWeight.w700,
                                 trailingWidget:
                                     SvgPicture.asset(ImageResource.upload),
