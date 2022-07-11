@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -24,7 +25,6 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../widgets/eventdetail_status.dart';
-import 'package:collection/collection.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   const CustomEventDetailsBottomSheet(
@@ -48,6 +48,8 @@ class _CustomEventDetailsBottomSheetState
   late EventDetailsBloc bloc;
 
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+  ScrollController secondlistScrollController = ScrollController();
 
   @override
   void initState() {
@@ -162,16 +164,29 @@ class _CustomEventDetailsBottomSheetState
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            BottomSheetAppbar(
-              title: widget.cardTitle,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
-                  .copyWith(bottom: 5),
+            Container(
+              decoration: const BoxDecoration(
+                color: ColorResource.colorffffff,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
+              ),
+              child: Column(
+                children: [
+                  BottomSheetAppbar(
+                    title: widget.cardTitle,
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 15)
+                            .copyWith(bottom: 5),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                    child: widget.customeLoanUserWidget,
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 18.0),
-              child: widget.customeLoanUserWidget,
-            ),
-            const SizedBox(height: 10),
             BlocListener<EventDetailsBloc, EventDetailsState>(
               bloc: bloc,
               listener: (BuildContext context, EventDetailsState state) {},
@@ -185,16 +200,119 @@ class _CustomEventDetailsBottomSheetState
                       ),
                     );
                   } else {
+                    // return SizedBox();
+
                     return Expanded(
                         child: ListView.builder(
+                            // shrinkWrap: true,
                             itemCount:
                                 bloc.eventDetailsAPIValues.result?.length ?? 0,
-                            itemBuilder: (BuildContext context, int index) {
-                              final dynamic listVal = bloc
-                                  .eventDetailsAPIValues.result!.reversed
-                                  .toList();
-                              return expandList(listVal, index);
+                            itemBuilder:
+                                (BuildContext context, int monthIndex) {
+                              return ListTileTheme(
+                                  contentPadding: const EdgeInsets.all(0),
+                                  minVerticalPadding: 0,
+                                  shape: RoundedRectangleBorder(
+                                    side: const BorderSide(
+                                        color: ColorResource.color666666),
+                                    borderRadius: BorderRadius.circular(65.0),
+                                  ),
+                                  tileColor: ColorResource.colorF7F8FA,
+                                  selectedTileColor: ColorResource.colorE5E5E5,
+                                  selectedColor: ColorResource.colorE5E5E5,
+                                  child: Theme(
+                                    data: Theme.of(context).copyWith(
+                                        dividerColor: Colors.transparent),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 13, vertical: 5),
+                                      child: ExpansionTile(
+                                          key: const ObjectKey(
+                                              'firstExpansionTile'),
+                                          iconColor: ColorResource.color000000,
+                                          collapsedIconColor:
+                                              ColorResource.color000000,
+                                          onExpansionChanged: (e) {
+                                            //Your code
+                                          },
+                                          tilePadding:
+                                              const EdgeInsetsDirectional.only(
+                                                  start: 20, end: 20),
+                                          expandedCrossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          expandedAlignment:
+                                              Alignment.centerLeft,
+                                          title: CustomText(bloc
+                                              .eventDetailsAPIValues
+                                              .result![monthIndex]
+                                              .month!),
+                                          children: [
+                                            // Container(
+                                            //     height: 100,
+                                            //     width: 300,
+                                            //     color: Colors.red,
+                                            //     child: Text('data')),
+                                            // Container(
+                                            //     height: 100,
+                                            //     width: 300,
+                                            //     color: Colors.blue,
+                                            //     child: Text('data')),
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                controller:
+                                                    secondlistScrollController,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                itemCount: bloc
+                                                        .eventDetailsAPIValues
+                                                        .result?[monthIndex]
+                                                        .eventList
+                                                        ?.length ??
+                                                    0,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  // final dynamic listVal = bloc
+                                                  //     .eventDetailsAPIValues
+                                                  //     .result![monthIndex]
+                                                  //     .eventList
+                                                  //     ?.reversed
+                                                  //     .toList();
+
+                                                  bloc
+                                                      .eventDetailsAPIValues
+                                                      .result?[monthIndex]
+                                                      .eventList
+                                                      ?.forEach(
+                                                          (EvnetDetailsResultsModel
+                                                              element) {
+                                                    bloc.eventDetailsPlayAudioModel
+                                                        .add(
+                                                            EventDetailsPlayAudioModel());
+                                                  });
+                                                  final dynamic value = bloc
+                                                      .eventDetailsAPIValues
+                                                      .result![monthIndex]
+                                                      .eventList!;
+                                                  return expandList(
+                                                      value, index);
+                                                }),
+                                          ]),
+                                    ),
+                                  ));
                             }));
+
+                    // return Expanded(
+                    //     child: ListView.builder(
+                    //         itemCount: bloc.eventDetailsAPIValues.result?[0]
+                    //                 .eventList?.length ??
+                    //             0,
+                    //         itemBuilder: (BuildContext context, int index) {
+                    //           final dynamic listVal = bloc.eventDetailsAPIValues
+                    //               .result![0].eventList?.reversed
+                    //               .toList();
+                    //           return expandList(listVal, index);
+                    //         }));
                   }
                 },
               ),
@@ -244,7 +362,7 @@ class _CustomEventDetailsBottomSheetState
           height: 10,
         ),
         Container(
-          margin: const EdgeInsets.only(bottom: 12, left: 18, right: 18),
+          margin: const EdgeInsets.only(bottom: 12, left: 8, right: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
             color: ColorResource.colorF4E8E4,
@@ -254,6 +372,7 @@ class _CustomEventDetailsBottomSheetState
             child: Theme(
               data: ThemeData().copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
+                key: const ObjectKey('secondExpansionTile'),
                 tilePadding: const EdgeInsetsDirectional.all(0),
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 expandedAlignment: Alignment.centerLeft,
