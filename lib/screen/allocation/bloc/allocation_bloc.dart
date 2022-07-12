@@ -103,7 +103,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (event.myValueSetter != null) {
         event.myValueSetter!(0);
       }
-      debugPrint('AllocationInitialEvent->');
       // if (!Singleton.instance.isOfflineEnabledContractorBased) {
       yield AllocationLoadingState();
       // }

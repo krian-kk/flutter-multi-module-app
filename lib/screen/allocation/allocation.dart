@@ -103,6 +103,7 @@ class _AllocationScreenState extends State<AllocationScreen>
   String version = '';
   late Timer _timer;
   String? internetAvailability;
+  bool isToastShow = false;
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -495,6 +496,21 @@ class _AllocationScreenState extends State<AllocationScreen>
               .collection(Singleton.instance.firebaseDatabaseName)
               .doc(Singleton.instance.agentRef)
               .collection(Constants.firebaseCase);
+
+          Future.delayed(const Duration(milliseconds: 60), () {
+            widget.myValueSetter!(0);
+          });
+          Future.delayed(const Duration(seconds: 5), () {
+            widget.myValueSetter!(0);
+            AppUtils.showToast('App synced with local');
+            debugPrint('App synced with local');
+            setState(() {
+              isToastShow = true;
+            });
+            bloc.add(AllocationInitialEvent(context, myValueSetter: (values) {
+              widget.myValueSetter!(values);
+            }));
+          });
         }
         if (state is AllocationOfflineState) {
           if (state.successResponse ==
@@ -982,75 +998,75 @@ class _AllocationScreenState extends State<AllocationScreen>
       child: BlocBuilder<AllocationBloc, AllocationState>(
         bloc: bloc,
         builder: (BuildContext context, AllocationState state) {
-          if (state is AllocationLoadingState) {
+          if (state is AllocationLoadingState ||
+              state is FirebaseStoredCompletionState) {
             return const SkeletonLoading();
           }
-          if (state is FirebaseStoredCompletionState) {
-            return StreamBuilder<QuerySnapshot>(
-              stream: collectionReference!.limit(100).snapshots(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(top: 50, right: 20, left: 20),
-                        child: NoCaseAvailble.buildNoCaseAvailable(
-                            messageContent: 'Something went wrong'),
-                      ),
-                    ],
-                  );
-                } else if (snapshot.connectionState ==
-                    ConnectionState.waiting) {
-                  const CustomLoadingWidget();
-                }
-                if (snapshot.connectionState == ConnectionState.active) {
-                  collectionReference!.limit(100).snapshots().forEach((value) {
-                    debugPrint('Firebase stream data--> $value');
-                    widget.myValueSetter!(2);
-                    Future.delayed(const Duration(milliseconds: 150), () {
-                      widget.myValueSetter!(0);
-                    });
-                    Future.delayed(const Duration(seconds: 5), () {
-                      widget.myValueSetter!(0);
-                      AppUtils.showToast('App synced with local');
-                      bloc.add(AllocationInitialEvent(context,
-                          myValueSetter: (values) {
-                        widget.myValueSetter!(values);
-                      }));
-                    });
-
-                    for (var element in value.docs) {
-                      for (var element in value.docs) {
-                        final tempResult = Result.fromJson(element.data());
-                      }
-                    }
-                  }).asStream();
-                }
-                return resultList.isEmpty
-                    ? Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 50, right: 20, left: 20),
-                            child: NoCaseAvailble.buildNoCaseAvailable(),
-                          ),
-                        ],
-                      )
-                    : Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: CustomCardList.buildListView(
-                            bloc,
-                            resultData: resultList,
-                            listViewController: _controller,
-                          ),
-                        ),
-                      );
-              },
-            );
-          }
+          // if (state is FirebaseStoredCompletionState) {
+          //   return StreamBuilder<QuerySnapshot>(
+          //     stream: collectionReference!.limit(100).snapshots(),
+          //     builder: (BuildContext context,
+          //         AsyncSnapshot<QuerySnapshot> snapshot) {
+          //       if (snapshot.hasError) {
+          //         return Column(
+          //           children: [
+          //             Padding(
+          //               padding:
+          //                   const EdgeInsets.only(top: 50, right: 20, left: 20),
+          //               child: NoCaseAvailble.buildNoCaseAvailable(
+          //                   messageContent: 'Something went wrong'),
+          //             ),
+          //           ],
+          //         );
+          //       } else if (snapshot.connectionState ==
+          //           ConnectionState.waiting) {
+          //         const CustomLoadingWidget();
+          //       }
+          //       if (snapshot.connectionState == ConnectionState.active) {
+          //         // const CustomLoadingWidget();
+          //         // widget.myValueSetter!(2);
+          //         if (!isToastShow) {
+          //           Future.delayed(const Duration(milliseconds: 60), () {
+          //             widget.myValueSetter!(0);
+          //           });
+          //           Future.delayed(const Duration(seconds: 5), () {
+          //             widget.myValueSetter!(0);
+          //             AppUtils.showToast('App synced with local');
+          //             debugPrint('App synced with local');
+          //             setState(() {
+          //               isToastShow = true;
+          //             });
+          //             bloc.add(AllocationInitialEvent(context,
+          //                 myValueSetter: (values) {
+          //               widget.myValueSetter!(values);
+          //             }));
+          //           });
+          //         }
+          //       }
+          //       return const CustomLoadingWidget();
+          //       return resultList.isEmpty
+          //           ? Column(
+          //               children: [
+          //                 Padding(
+          //                   padding: const EdgeInsets.only(
+          //                       top: 50, right: 20, left: 20),
+          //                   child: NoCaseAvailble.buildNoCaseAvailable(),
+          //                 ),
+          //               ],
+          //             )
+          //           : Flexible(
+          //               child: Padding(
+          //                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          //                 child: CustomCardList.buildListView(
+          //                   bloc,
+          //                   resultData: resultList,
+          //                   listViewController: _controller,
+          //                 ),
+          //               ),
+          //             );
+          //     },
+          //   );
+          // }
           if (state is LoadingState) {
             return const CustomLoadingWidget();
           } else {
@@ -1119,7 +1135,6 @@ class _AllocationScreenState extends State<AllocationScreen>
               body: Column(
                 children: [
                   Visibility(
-                    visible: false,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Column(
