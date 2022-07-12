@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
@@ -10,6 +11,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 
 part 'event_details_event.dart';
 
@@ -28,7 +30,10 @@ class EventDetailsPlayAudioModel {
 }
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
+  List<EventModel> eventList = [];
+
   EventDetailsBloc() : super(EventDetailsInitial()) {
+    eventList = [];
     on<EventDetailsEvent>(
         (EventDetailsEvent event, Emitter<EventDetailsState> emit) async {
       if (event is EventDetailsInitialEvent) {
@@ -108,12 +113,32 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             ?.forEach((EvnetDetailsResultsModel element) {
           eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
         });
-        emit.call(EventDetailsLoadedState());
+        eventDetailsAPIValues.result!.sort((a, b) {
+          return a.createdAt
+              .toString()
+              .toLowerCase()
+              .compareTo(b.createdAt.toString().toLowerCase());
+        });
       }
+
+      releaseDateMap =
+          eventDetailsAPIValues.result!.groupBy((m) => m.monthName);
+      releaseDateMap.forEach((key, value) {
+        debugPrint('key--> $key value--> ${value.length}');
+      });
+      emit.call(EventDetailsLoadedState());
     });
   }
 
+  Map releaseDateMap = {};
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];
+}
+
+extension Iterables<E> on Iterable<E> {
+  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) => fold(
+      <K, List<E>>{},
+      (Map<K, List<E>> map, E element) =>
+          map..putIfAbsent(keyFunction(element), () => <E>[]).add(element));
 }

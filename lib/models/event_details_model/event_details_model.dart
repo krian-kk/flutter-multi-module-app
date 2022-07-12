@@ -1,5 +1,12 @@
 import 'result.dart';
 
+class EventModel {
+  EventModel({this.monthName, this.result});
+
+  String? monthName;
+  List<EvnetDetailsResultsModel>? result = <EvnetDetailsResultsModel>[];
+}
+
 class EventDetailsModel {
   EventDetailsModel({this.status, this.message, this.result});
 
@@ -13,6 +20,7 @@ class EventDetailsModel {
           .toList(),
     );
   }
+
   int? status;
   String? message;
   List<EvnetDetailsResultsModel>? result;
