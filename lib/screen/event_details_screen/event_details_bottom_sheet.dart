@@ -244,21 +244,11 @@ class _CustomEventDetailsBottomSheetState
                                               Alignment.centerLeft,
                                           title: CustomText(
                                             bloc.eventDetailsAPIValues
-                                                .result![monthIndex].month!,
+                                                .result![monthIndex].month ?? '',
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16,
                                           ),
                                           children: [
-                                            // Container(
-                                            //     height: 100,
-                                            //     width: 300,
-                                            //     color: Colors.red,
-                                            //     child: Text('data')),
-                                            // Container(
-                                            //     height: 100,
-                                            //     width: 300,
-                                            //     color: Colors.blue,
-                                            //     child: Text('data')),
                                             ListView.builder(
                                                 shrinkWrap: true,
                                                 controller:

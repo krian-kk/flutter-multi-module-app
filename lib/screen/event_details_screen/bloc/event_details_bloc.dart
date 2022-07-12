@@ -55,22 +55,23 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
             if (value.docs.isNotEmpty) {
               //temporaryList for events list
               // ignore: prefer_final_locals
-              List<EvnetDetailsResultsModel>? results =
-                  <EvnetDetailsResultsModel>[];
+              List<Result>? results =
+                  <Result>[];
               for (QueryDocumentSnapshot<Map<String, dynamic>> element
                   in value.docs) {
                 try {
                   results
-                      .add(EvnetDetailsResultsModel.fromJson(element.data()));
+                      .add(Result.fromJson(element.data()));
+                      // debugPrint('-------------> ${element.data().toString()}');
                 } catch (e) {
                   debugPrint(e.toString());
                 }
               }
-              // eventDetailsAPIValues.result = results.reversed.toList();
+              eventDetailsAPIValues.result = results.reversed.toList();
               // // eventDetailsAPIValues.result =
               // //     eventDetailsAPIValues.result!.reversed.toList();
             } else {
-              // eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
+              eventDetailsAPIValues.result = <Result>[];
             }
           });
         } else {
