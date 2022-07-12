@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -12,8 +10,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
-import 'package:collection/collection.dart';
+
 part 'event_details_event.dart';
 
 part 'event_details_state.dart';
@@ -66,11 +63,11 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                   debugPrint(e.toString());
                 }
               }
-              // eventDetailsAPIValues.result = results.reversed.toList();
-              // // eventDetailsAPIValues.result =
-              // //     eventDetailsAPIValues.result!.reversed.toList();
+              eventDetailsAPIValues.result = results.reversed.toList();
+              // eventDetailsAPIValues.result =
+              //     eventDetailsAPIValues.result!.reversed.toList();
             } else {
-              // eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
+              eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
             }
           });
         } else {
@@ -107,17 +104,15 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         //     AppUtils.showToast(getEventDetailsData['data']['message']);
         //   }
         // }
-
-        // eventDetailsAPIValues.result?[0].eventList
-        //     ?.forEach((EvnetDetailsResultsModel element) {
-        //   eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
-        // });
+        eventDetailsAPIValues.result
+            ?.forEach((EvnetDetailsResultsModel element) {
+          eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
+        });
         emit.call(EventDetailsLoadedState());
       }
     });
   }
-  List<Map<dynamic, dynamic>> mothWiseEventResult = [];
-  // late List<dynamic> returnData;
+
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];
