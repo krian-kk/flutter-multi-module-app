@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/models/event_details_model/display_eventdetails_model.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/singleton.dart';
@@ -109,10 +112,12 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         //     AppUtils.showToast(getEventDetailsData['data']['message']);
         //   }
         // }
-        eventDetailsAPIValues.result
-            ?.forEach((EvnetDetailsResultsModel element) {
-          eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
-        });
+
+        //play audio list
+        // eventDetailsAPIValues.result
+        //     ?.forEach((EvnetDetailsResultsModel element) {
+        //   eventDetailsPlayAudioModel.add(EventDetailsPlayAudioModel());
+        // });
         eventDetailsAPIValues.result!.sort((a, b) {
           return a.createdAt
               .toString()
@@ -123,9 +128,18 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
       releaseDateMap =
           eventDetailsAPIValues.result!.groupBy((m) => m.monthName);
-      releaseDateMap.forEach((key, value) {
-        debugPrint('key--> $key value--> ${value.length}');
-      });
+        final List<Map> data = [];
+        releaseDateMap.forEach((key, value) {
+          // debugPrint('key--> $key value--> ${value}');
+          final map = {
+            'month': key,
+            'eventList': value,
+          };
+          data.add(jsonDecode(jsonEncode(map)));
+        });
+         displayEventDetail = data.map((item) =>  Result.fromJson(item as Map<String, dynamic>)).toList().reversed.toList();
+        // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
+ 
       emit.call(EventDetailsLoadedState());
     });
   }
@@ -134,6 +148,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];
+  List<Result> displayEventDetail = [];
 }
 
 extension Iterables<E> on Iterable<E> {
