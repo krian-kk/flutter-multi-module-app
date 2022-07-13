@@ -128,18 +128,22 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
       releaseDateMap =
           eventDetailsAPIValues.result!.groupBy((m) => m.monthName);
-        final List<Map> data = [];
-        releaseDateMap.forEach((key, value) {
-          // debugPrint('key--> $key value--> ${value}');
-          final map = {
-            'month': key,
-            'eventList': value,
-          };
-          data.add(jsonDecode(jsonEncode(map)));
-        });
-         displayEventDetail = data.map((item) =>  Result.fromJson(item as Map<String, dynamic>)).toList().reversed.toList();
-        // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
- 
+      final List<Map> data = [];
+      releaseDateMap.forEach((key, value) {
+        // debugPrint('key--> $key value--> ${value}');
+        final map = {
+          'month': key,
+          'eventList': value,
+        };
+        data.add(jsonDecode(jsonEncode(map)));
+      });
+      displayEventDetail = data
+          .map((item) => Result.fromJson(item as Map<String, dynamic>))
+          .toList()
+          .reversed
+          .toList();
+      // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
+
       emit.call(EventDetailsLoadedState());
     });
   }

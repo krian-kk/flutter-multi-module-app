@@ -49,6 +49,7 @@ class _CustomEventDetailsBottomSheetState
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   ScrollController secondlistScrollController = ScrollController();
+  int selectedMonth = 0;
 
   @override
   void initState() {
@@ -204,8 +205,7 @@ class _CustomEventDetailsBottomSheetState
                     return Expanded(
                         child: ListView.builder(
                             // shrinkWrap: true,
-                            itemCount:
-                                bloc.displayEventDetail.length,
+                            itemCount: bloc.displayEventDetail.length,
                             itemBuilder:
                                 (BuildContext context, int monthIndex) {
                               return ListTileTheme(
@@ -226,6 +226,8 @@ class _CustomEventDetailsBottomSheetState
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 13, vertical: 5),
                                       child: ExpansionTile(
+                                          initiallyExpanded:
+                                              monthIndex == selectedMonth,
                                           key: const ObjectKey(
                                               'firstExpansionTile'),
                                           iconColor: ColorResource.color000000,
@@ -233,6 +235,16 @@ class _CustomEventDetailsBottomSheetState
                                               ColorResource.color000000,
                                           onExpansionChanged: (e) {
                                             //Your code
+                                            if (e) {
+                                              setState(() {
+                                                // Duration(seconds:  20000);
+                                                selectedMonth = monthIndex;
+                                              });
+                                            } else {
+                                              setState(() {
+                                                selectedMonth = -1;
+                                              });
+                                            }
                                           },
                                           tilePadding:
                                               const EdgeInsetsDirectional.only(
@@ -242,7 +254,9 @@ class _CustomEventDetailsBottomSheetState
                                           expandedAlignment:
                                               Alignment.centerLeft,
                                           title: CustomText(
-                                            bloc.displayEventDetail[monthIndex].month ?? '',
+                                            bloc.displayEventDetail[monthIndex]
+                                                    .month ??
+                                                '',
                                             fontWeight: FontWeight.w700,
                                             fontSize: 16,
                                           ),
@@ -254,7 +268,8 @@ class _CustomEventDetailsBottomSheetState
                                                 physics:
                                                     const NeverScrollableScrollPhysics(),
                                                 itemCount: bloc
-                                                       .displayEventDetail[monthIndex]
+                                                        .displayEventDetail[
+                                                            monthIndex]
                                                         .eventList
                                                         ?.length ??
                                                     0,
@@ -269,7 +284,8 @@ class _CustomEventDetailsBottomSheetState
                                                   //     .toList();
 
                                                   bloc
-                                                      .displayEventDetail[monthIndex]
+                                                      .displayEventDetail[
+                                                          monthIndex]
                                                       .eventList
                                                       ?.forEach(
                                                           (EvnetDetailsResultsModel
@@ -279,8 +295,11 @@ class _CustomEventDetailsBottomSheetState
                                                             EventDetailsPlayAudioModel());
                                                   });
                                                   final dynamic value = bloc
-                                                      .displayEventDetail[monthIndex]
-                                                      .eventList!.reversed.toList();
+                                                      .displayEventDetail[
+                                                          monthIndex]
+                                                      .eventList!
+                                                      .reversed
+                                                      .toList();
                                                   return expandList(
                                                       value, index);
                                                 }),
@@ -470,7 +489,6 @@ class _CustomEventDetailsBottomSheetState
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
-              
                 if (expandedList[index].eventType == Constants.repo)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -495,7 +513,6 @@ class _CustomEventDetailsBottomSheetState
                         ),
                     ],
                   ),
-              
                 if (expandedList[index].eventAttr?.reginalText != null &&
                     expandedList[index].eventAttr?.translatedText != null &&
                     expandedList[index].eventAttr?.audioS3Path != null)
@@ -515,7 +532,7 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 
- appStatus(status) {
+  appStatus(status) {
     Widget? returnWidget;
     switch (status) {
       case 'approved':
@@ -674,4 +691,3 @@ class _CustomEventDetailsBottomSheetState
     );
   }
 }
-
