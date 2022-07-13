@@ -612,6 +612,21 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
+          if (Singleton.instance.usertype == Constants.fieldagent &&
+              Singleton.instance.isOfflineEnabledContractorBased) {
+            //do do do do
+            final Map<String, dynamic> firebaseObject =
+                event.postData!.toJson();
+            try {
+              firebaseObject.addAll(
+                  await FirebaseUtils.toPrepareFileStoringModel(
+                      event.fileData!));
+            } catch (e) {
+              debugPrint('Exception while converting base64 ${e.toString()}');
+            }
+            await FirebaseUtils.storeEvents(
+                eventsDetails: firebaseObject, caseId: caseId, bloc: this);
+          }
           Navigator.pop(event.context!);
           yield PostDataApiSuccessState();
         }
@@ -1510,6 +1525,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     if (await postResult[Constants.success]) {
       // here update followUpPriority value.
+      if (Singleton.instance.usertype == Constants.fieldagent) {
+        await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(),
+                caseId: caseId,
+                selectedClipValue: ConvertString.convertLanguageToConstant(
+                    selectedClipValue, context),
+                bloc: this)
+            .then((bool value) {
+          postResult = <String, dynamic>{'success': true};
+        });
+      }
       caseDetailsAPIValue.result!.caseDetails!.followUpPriority =
           requestBodyData.eventAttr.followUpPriority;
       caseDetailsAPIValue.result!.caseDetails!.telSubStatus = newEventType;
@@ -1621,6 +1647,18 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         urlString,
         requestBodydata: jsonEncode(requestBodyData),
       );
+      if (postResult[Constants.success]) {
+        await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(),
+                caseId: caseId,
+                selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+                    ? addressCustomerNotMetSelectedDate
+                    : addressCustomerNotMetNextActionDateController.text,
+                selectedClipValue: ConvertString.convertLanguageToConstant(
+                    selectedClipValue, context),
+                bloc: this)
+            .then((bool value) {});
+      }
     }
     if (await postResult[Constants.success]) {
       submitedEventType = 'Customer Not Met';
@@ -1729,6 +1767,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         urlString,
         requestBodydata: jsonEncode(requestBodyData),
       );
+      if (await postResult[Constants.success]) {
+        await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(),
+                caseId: caseId,
+                selectedClipValue: ConvertString.convertLanguageToConstant(
+                    selectedClipValue, context),
+                bloc: this)
+            .then((bool value) {
+          postResult = <String, dynamic>{'success': true};
+        });
+      }
     }
     if (await postResult[Constants.success]) {
       submitedEventType = 'Address Invalid';
@@ -1819,6 +1868,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         urlString,
         requestBodydata: jsonEncode(requestBodyData),
       );
+      if (await postResult[Constants.success]) {
+        await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(),
+                caseId: caseId,
+                selectedClipValue: ConvertString.convertLanguageToConstant(
+                    selectedClipValue, context),
+                bloc: this)
+            .then((bool value) {
+          postResult = <String, dynamic>{'success': true};
+        });
+      }
     }
 
     if (await postResult[Constants.success]) {

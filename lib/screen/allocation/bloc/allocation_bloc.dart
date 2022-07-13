@@ -40,6 +40,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int customerCount = 0;
   int totalCount = 0;
   int tempTotalCount = 0;
+
   // int autoCallingTotalCaseCount = 0;
 
   String? userType;

@@ -64,6 +64,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                   <EvnetDetailsResultsModel>[];
               for (QueryDocumentSnapshot<Map<String, dynamic>> element
                   in value.docs) {
+                debugPrint('element--> ${element.data()}');
                 try {
                   results
                       .add(EvnetDetailsResultsModel.fromJson(element.data()));
@@ -128,18 +129,25 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
 
       releaseDateMap =
           eventDetailsAPIValues.result!.groupBy((m) => m.monthName);
-        final List<Map> data = [];
-        releaseDateMap.forEach((key, value) {
-          // debugPrint('key--> $key value--> ${value}');
-          final map = {
-            'month': key,
-            'eventList': value,
-          };
-          data.add(jsonDecode(jsonEncode(map)));
-        });
-         displayEventDetail = data.map((item) =>  Result.fromJson(item as Map<String, dynamic>)).toList().reversed.toList();
-        // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
- 
+      final List<Map> data = [];
+      releaseDateMap.forEach((key, value) {
+        // debugPrint('key--> $key value--> ${value}');
+        final map = {
+          'month': key,
+          'eventList': value,
+        };
+        data.add(jsonDecode(jsonEncode(map)));
+      });
+      displayEventDetail = data
+          .map((item) => Result.fromJson(item as Map<String, dynamic>))
+          .toList()
+          .reversed
+          .toList();
+      // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
+
+      eventDetailsAPIValues.result!.forEach((element) {
+        debugPrint('element--> ${element.monthName}');
+      });
       emit.call(EventDetailsLoadedState());
     });
   }

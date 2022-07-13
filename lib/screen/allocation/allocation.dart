@@ -869,12 +869,21 @@ class _AllocationScreenState extends State<AllocationScreen>
                 bloc.resultList.insert(0, removedItem);
                 bloc.starCount++;
               });
-            } else {
-              await FirebaseUtils.updateStarred(
-                  isStarred: true, caseId: state.caseId);
+              if (Singleton.instance.usertype == Constants.fieldagent) {
+                await FirebaseUtils.updateStarred(
+                    isStarred: true, caseId: state.caseId);
+              }
               setState(() {
                 bloc.starCount++;
               });
+            } else {
+              if (Singleton.instance.usertype == Constants.fieldagent) {
+                await FirebaseUtils.updateStarred(
+                    isStarred: true, caseId: state.caseId);
+                setState(() {
+                  bloc.starCount++;
+                });
+              }
             }
           } else {
             final postData =
@@ -886,24 +895,25 @@ class _AllocationScreenState extends State<AllocationScreen>
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
-              // For realod puspose
+              if (Singleton.instance.usertype == Constants.fieldagent &&
+                  Singleton.instance.isOfflineEnabledContractorBased) {
+                await FirebaseUtils.updateStarred(
+                    isStarred: false, caseId: state.caseId);
+                setState(() {
+                  bloc.starCount++;
+                });
+              }
 
-              // final removedItem = bloc.resultList[state.selectedIndex];
-              // bloc.resultList.removeAt(state.selectedIndex);
-              // // To pick and add next starred false case
-              // final firstWhereIndex =
-              //     bloc.resultList.indexWhere((note) => !note.starredCase);
-              // setState(() {
-              //   bloc.resultList.insert(firstWhereIndex, removedItem);
-              //   bloc.starCount--;
-              // });
               bloc.add(TapPriorityEvent());
             } else {
-              await FirebaseUtils.updateStarred(
-                  isStarred: false, caseId: state.caseId);
-              setState(() {
-                bloc.starCount--;
-              });
+              if (Singleton.instance.usertype == Constants.fieldagent &&
+                  Singleton.instance.isOfflineEnabledContractorBased) {
+                await FirebaseUtils.updateStarred(
+                    isStarred: false, caseId: state.caseId);
+                setState(() {
+                  bloc.starCount--;
+                });
+              }
             }
           }
         }

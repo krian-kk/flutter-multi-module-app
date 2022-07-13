@@ -88,6 +88,7 @@ class _CustomNotIntrestedBottomSheetState
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
   String? selectedDropdownValue;
+
   @override
   void initState() {
     remarksControlller = TextEditingController();
@@ -409,6 +410,13 @@ class _CustomNotIntrestedBottomSheetState
               requestBodydata: jsonEncode(requestBodyData),
             );
             if (postResult[Constants.success]) {
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: nextActionDateControlller.text,
+                      selectedClipValue: Constants.remainder,
+                      bloc: widget.bloc)
+                  .whenComplete(() {});
               // // here update followUpPriority value.
               // widget.bloc.caseDetailsAPIValue.result!.caseDetails!
               //         .followUpPriority =

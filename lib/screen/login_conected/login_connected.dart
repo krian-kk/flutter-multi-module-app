@@ -396,6 +396,13 @@ class _CustomLoginConnectedBottomSheetState
               requestBodydata: jsonEncode(requestBodyData),
             );
             if (postResult[Constants.success]) {
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      // selectedFollowUpDate: nextActionDateControlller.text,
+                      selectedClipValue: Constants.login,
+                      bloc: widget.bloc)
+                  .whenComplete(() {});
               // // here update followUpPriority value.
               // widget.bloc.caseDetailsAPIValue.result!.caseDetails!
               //         .followUpPriority =

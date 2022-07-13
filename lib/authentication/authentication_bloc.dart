@@ -102,6 +102,8 @@ class AuthenticationBloc
                 Singleton.instance.agentRef = value;
               });
 
+              debugPrint('AccessToken--> ${Singleton.instance.accessToken}');
+              debugPrint('refreshToken--> ${Singleton.instance.refreshToken}');
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(APIRequestType.get,
                       HttpUrl.agentInformation + 'aRef=$getUserName');
@@ -121,6 +123,13 @@ class AuthenticationBloc
               } else {
                 // if user inactivity means go to login
                 if (agentDetail['data']['status'] == 440) {
+                  final AgentDetailErrorModel agentInactivityError =
+                      AgentDetailErrorModel.fromJson(agentDetail['data']);
+                  yield AuthenticationUnAuthenticated(
+                      notificationData: event.notificationData);
+                  AppUtils.showToast(agentInactivityError.msg!,
+                      backgroundColor: Colors.red);
+                } else if (agentDetail['data']['status'] == 400) {
                   final AgentDetailErrorModel agentInactivityError =
                       AgentDetailErrorModel.fromJson(agentDetail['data']);
                   yield AuthenticationUnAuthenticated(

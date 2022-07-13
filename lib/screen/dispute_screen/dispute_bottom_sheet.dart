@@ -475,6 +475,13 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                         ),
                         requestBodydata: jsonEncode(requestBodyData));
                 if (postResult[Constants.success]) {
+                  await FirebaseUtils.storeEvents(
+                          eventsDetails: requestBodyData.toJson(),
+                          caseId: widget.caseId,
+                          selectedFollowUpDate: nextActionDateControlller.text,
+                          selectedClipValue: Constants.dispute,
+                          bloc: widget.bloc)
+                      .whenComplete(() {});
                   // here update followUpPriority value.
                   widget.bloc.caseDetailsAPIValue.result!.caseDetails!
                           .followUpPriority =

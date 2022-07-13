@@ -615,6 +615,23 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 formDatas: FormData.fromMap(postdata),
               );
               if (postResult[Constants.success]) {
+                final Map<String, dynamic> firebaseObject =
+                    requestBodyData.toJson();
+                try {
+                  firebaseObject.addAll(
+                      await FirebaseUtils.toPrepareFileStoringModel(
+                          uploadFileLists));
+                } catch (e) {
+                  debugPrint(
+                      'Exception while converting base64 ${e.toString()}');
+                }
+                await FirebaseUtils.storeEvents(
+                        eventsDetails: firebaseObject,
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: otsPaymentDateControlller.text,
+                        selectedClipValue: Constants.ots,
+                        bloc: widget.bloc)
+                    .whenComplete(() {});
                 widget.bloc.add(
                   ChangeIsSubmitForMyVisitEvent(
                     Constants.ots,
