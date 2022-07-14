@@ -854,6 +854,23 @@ class _CustomCollectionsBottomSheetState
                     );
                     //postResult[success]
                     if (postResult[Constants.success]) {
+                      final Map<String, dynamic> firebaseObject =
+                          jsonDecode(jsonEncode(requestBodyData.toJson()));
+                      try {
+                        firebaseObject.addAll(
+                            await FirebaseUtils.toPrepareFileStoringModel(
+                                uploadFileLists));
+                      } catch (e) {
+                        debugPrint(
+                            'Exception while converting base64 ${e.toString()}');
+                      }
+                      await FirebaseUtils.storeEvents(
+                          eventsDetails: firebaseObject,
+                          caseId: widget.caseId,
+                          selectedFollowUpDate: dateControlller.text,
+                          selectedClipValue: Constants.collections,
+                          bloc: widget.bloc);
+
                       widget.bloc.add(
                         ChangeIsSubmitForMyVisitEvent(
                           Constants.collections,

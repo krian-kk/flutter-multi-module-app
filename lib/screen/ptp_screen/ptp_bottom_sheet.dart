@@ -668,6 +668,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                 requestBodydata: jsonEncode(requestBodyData),
               );
               if (postResult[Constants.success]) {
+                await FirebaseUtils.storeEvents(
+                        eventsDetails: requestBodyData.toJson(),
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: ptpDateControlller.text,
+                        selectedClipValue: Constants.ptp,
+                        bloc: widget.bloc)
+                    .whenComplete(() {});
                 // here update followUpPriority value.
                 widget.bloc.caseDetailsAPIValue.result!.caseDetails!
                         .followUpPriority =

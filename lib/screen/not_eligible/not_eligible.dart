@@ -405,6 +405,13 @@ class _CustomNotEligibleBottomSheetState
               requestBodydata: jsonEncode(requestBodyData),
             );
             if (postResult[Constants.success]) {
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      // selectedFollowUpDate: nextActionDateControlller.text,
+                      selectedClipValue: Constants.notEligible,
+                      bloc: widget.bloc)
+                  .whenComplete(() {});
               // // here update followUpPriority value.
               // widget.bloc.caseDetailsAPIValue.result!.caseDetails!
               //         .followUpPriority =

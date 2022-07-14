@@ -64,6 +64,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
                   <EvnetDetailsResultsModel>[];
               for (QueryDocumentSnapshot<Map<String, dynamic>> element
                   in value.docs) {
+                debugPrint('element--> ${element.data()}');
                 try {
                   results
                       .add(EvnetDetailsResultsModel.fromJson(element.data()));
@@ -144,6 +145,9 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
           .toList();
       // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
 
+      eventDetailsAPIValues.result!.forEach((element) {
+        debugPrint('element--> ${element.monthName}');
+      });
       emit.call(EventDetailsLoadedState());
     });
   }

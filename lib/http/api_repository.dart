@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
 import 'package:origa/router.dart';
@@ -108,11 +109,17 @@ class APIRepository {
         }
       }
 
-      returnValue = {
-        'success': true,
-        'data': response.data,
-        'statusCode': response.data['status'],
-      };
+      returnValue = (response.data['status'] == 400)
+          ? {
+              'success': false,
+              'data': response.data['message'],
+              'statusCode': response.data['status'],
+            }
+          : {
+              'success': true,
+              'data': response.data,
+              'statusCode': response.data['status'],
+            };
     } on DioError catch (e) {
       dynamic error;
       String? invalidAccessServerError;
@@ -156,11 +163,15 @@ class APIRepository {
                   'Error refreshing access token: Session not active' ||
               invalidAccessServerError == 'Session Expired!') {
             errVal = 'Logout triggered due to inactivity / another';
-
-            await Navigator.pushNamedAndRemoveUntil(
-                Singleton.instance.buildContext!,
-                AppRoutes.loginScreen,
-                (Route<dynamic> route) => false);
+            try {
+              if (Navigator.canPop(Singleton.instance.buildContext!)) {
+                await Navigator.pushReplacementNamed(
+                    Singleton.instance.buildContext!, AppRoutes.loginScreen);
+              } else {
+                await Navigator.pushNamed(
+                    Singleton.instance.buildContext!, AppRoutes.loginScreen);
+              }
+            } on DioError catch (e) {}
           }
           apiErrorStatus(
               errorString: errVal ?? e.response!.data['message'],

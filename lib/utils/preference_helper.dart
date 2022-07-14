@@ -24,7 +24,7 @@ class PreferenceHelper {
     final String? deviceId = await PlatformDeviceId.getDeviceId;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? temporaryValues = prefs.getString(keyPair);
-    return temporaryValues == null
+    return (temporaryValues == '' || temporaryValues == null)
         ? ''
         : Encrypter(AES(Key.fromUtf8(deviceId!)))
             .decrypt16(temporaryValues, iv: IV.fromLength(16))
