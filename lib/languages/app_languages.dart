@@ -753,4 +753,6 @@ abstract class Languages {
   String get loginStatus;
 
   String get upload;
+
+  String get enable;
 }

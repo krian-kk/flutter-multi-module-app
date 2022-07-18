@@ -231,113 +231,126 @@ class _CustomCaptureImageBottomSheetState
                           fontSize: FontSize.sixteen,
                           onTap: isSubmit
                               ? () async {
-                                  if (isRecord == Constants.process) {
-                                    AppUtils.showToast(
-                                        'Stop the Record then Submit');
-                                  } else if (isRecord == Constants.stop) {
-                                    AppUtils.showToast(
-                                        'Please wait audio is converting');
-                                  } else {
-                                    if (isRecord == Constants.submit) {
-                                      setState(() => remarksControlller.text =
-                                          translateText);
-                                      setState(() => isTranslate = false);
-                                    }
-                                    if (_formKey.currentState!.validate()) {
-                                      if (uploadFileLists.isNotEmpty) {
-                                        setState(() => isSubmit = false);
-                                        Position position = Position(
-                                          longitude: 0,
-                                          latitude: 0,
-                                          timestamp: DateTime.now(),
-                                          accuracy: 0,
-                                          altitude: 0,
-                                          heading: 0,
-                                          speed: 0,
-                                          speedAccuracy: 0,
-                                        );
-                                        if (Geolocator.checkPermission()
-                                                .toString() !=
-                                            PermissionStatus.granted
-                                                .toString()) {
-                                          final Position res = await Geolocator
-                                              .getCurrentPosition();
-                                          setState(() {
-                                            position = res;
-                                          });
-                                        }
-                                        final PostImageCapturedModel
-                                            requestBodyData =
-                                            PostImageCapturedModel(
-                                          eventId: ConstantEventValues
-                                              .captureImageEventId,
-                                          eventCode: ConstantEventValues
-                                              .captureImageEvenCode,
-                                          caseId: widget.bloc.caseId.toString(),
-                                          contractor:
-                                              Singleton.instance.contractor ??
-                                                  '',
-                                          voiceCallEventCode:
-                                              ConstantEventValues
-                                                  .voiceCallEventCode,
-                                          // createdAt: (ConnectivityResult.none ==
-                                          //         await Connectivity()
-                                          //             .checkConnectivity())
-                                          //     ? DateTime.now().toString()
-                                          //     : null,
-                                          createdBy:
-                                              Singleton.instance.agentRef ?? '',
-                                          agentName:
-                                              Singleton.instance.agentName ??
-                                                  '',
-                                          agrRef:
-                                              Singleton.instance.agrRef ?? '',
-                                          callerServiceID: Singleton
-                                              .instance.callerServiceID
-                                              .toString(),
-                                          callID: Singleton.instance.callID
-                                              .toString(),
-                                          callingID: Singleton
-                                              .instance.callingID
-                                              .toString(),
-                                          invalidNumber: Singleton
-                                              .instance.invalidNumber
-                                              .toString(),
-                                          eventType: 'IMAGE CAPTURED',
-                                          eventModule: (widget.bloc.userType ==
-                                                  Constants.telecaller)
-                                              ? 'Telecalling'
-                                              : 'Field Allocation',
-                                          eventAttr: EventAttr(
-                                            remarks: remarksControlller.text,
-                                            imageLocation: <String>[],
-                                            longitude: position.longitude,
-                                            latitude: position.latitude,
-                                            accuracy: position.accuracy,
-                                            altitude: position.altitude,
-                                            heading: position.heading,
-                                            speed: position.speed,
-                                            reginalText: returnS2Tdata
-                                                .result?.reginalText,
-                                            translatedText: returnS2Tdata
-                                                .result?.translatedText,
-                                            audioS3Path: returnS2Tdata
-                                                .result?.audioS3Path,
-                                          ),
-                                        );
-
-                                        debugPrint(
-                                            "requestg body data for capture image ----> ${jsonEncode(requestBodyData)}");
-
-                                        widget.bloc.add(PostImageCapturedEvent(
-                                            postData: requestBodyData,
-                                            fileData: uploadFileLists,
-                                            context: context));
-                                      } else {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      if (isRecord == Constants.process) {
                                         AppUtils.showToast(
-                                          Languages.of(context)!.uploadImage,
-                                          gravity: ToastGravity.CENTER,
-                                        );
+                                            'Stop the Record then Submit');
+                                      } else if (isRecord == Constants.stop) {
+                                        AppUtils.showToast(
+                                            'Please wait audio is converting');
+                                      } else {
+                                        if (isRecord == Constants.submit) {
+                                          setState(() => remarksControlller
+                                              .text = translateText);
+                                          setState(() => isTranslate = false);
+                                        }
+                                        if (_formKey.currentState!.validate()) {
+                                          if (uploadFileLists.isNotEmpty) {
+                                            setState(() => isSubmit = false);
+                                            Position position = Position(
+                                              longitude: 0,
+                                              latitude: 0,
+                                              timestamp: DateTime.now(),
+                                              accuracy: 0,
+                                              altitude: 0,
+                                              heading: 0,
+                                              speed: 0,
+                                              speedAccuracy: 0,
+                                            );
+                                            final GeolocatorPlatform
+                                                geolocatorPlatform =
+                                                GeolocatorPlatform.instance;
+
+                                            final Position res =
+                                                await geolocatorPlatform
+                                                    .getCurrentPosition();
+                                            setState(() {
+                                              position = res;
+                                            });
+                                            final PostImageCapturedModel
+                                                requestBodyData =
+                                                PostImageCapturedModel(
+                                              eventId: ConstantEventValues
+                                                  .captureImageEventId,
+                                              eventCode: ConstantEventValues
+                                                  .captureImageEvenCode,
+                                              caseId:
+                                                  widget.bloc.caseId.toString(),
+                                              contractor: Singleton
+                                                      .instance.contractor ??
+                                                  '',
+                                              voiceCallEventCode:
+                                                  ConstantEventValues
+                                                      .voiceCallEventCode,
+                                              // createdAt: (ConnectivityResult.none ==
+                                              //         await Connectivity()
+                                              //             .checkConnectivity())
+                                              //     ? DateTime.now().toString()
+                                              //     : null,
+                                              createdBy:
+                                                  Singleton.instance.agentRef ??
+                                                      '',
+                                              agentName: Singleton
+                                                      .instance.agentName ??
+                                                  '',
+                                              agrRef:
+                                                  Singleton.instance.agrRef ??
+                                                      '',
+                                              callerServiceID: Singleton
+                                                  .instance.callerServiceID
+                                                  .toString(),
+                                              callID: Singleton.instance.callID
+                                                  .toString(),
+                                              callingID: Singleton
+                                                  .instance.callingID
+                                                  .toString(),
+                                              invalidNumber: Singleton
+                                                  .instance.invalidNumber
+                                                  .toString(),
+                                              eventType: 'IMAGE CAPTURED',
+                                              eventModule:
+                                                  (widget.bloc.userType ==
+                                                          Constants.telecaller)
+                                                      ? 'Telecalling'
+                                                      : 'Field Allocation',
+                                              eventAttr: EventAttr(
+                                                remarks:
+                                                    remarksControlller.text,
+                                                imageLocation: <String>[],
+                                                longitude: position.longitude,
+                                                latitude: position.latitude,
+                                                accuracy: position.accuracy,
+                                                altitude: position.altitude,
+                                                heading: position.heading,
+                                                speed: position.speed,
+                                                reginalText: returnS2Tdata
+                                                    .result?.reginalText,
+                                                translatedText: returnS2Tdata
+                                                    .result?.translatedText,
+                                                audioS3Path: returnS2Tdata
+                                                    .result?.audioS3Path,
+                                              ),
+                                            );
+
+                                            debugPrint(
+                                                "requestg body data for capture image ----> ${jsonEncode(requestBodyData)}");
+
+                                            widget.bloc.add(
+                                                PostImageCapturedEvent(
+                                                    postData: requestBodyData,
+                                                    fileData: uploadFileLists,
+                                                    context: context));
+                                          } else {
+                                            AppUtils.showToast(
+                                              Languages.of(context)!
+                                                  .uploadImage,
+                                              gravity: ToastGravity.CENTER,
+                                            );
+                                          }
+                                        }
                                       }
                                     }
                                   }

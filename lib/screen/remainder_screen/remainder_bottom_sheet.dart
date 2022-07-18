@@ -348,7 +348,15 @@ class _CustomRemainderBottomSheetState
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
                                 onTap: isSubmit
-                                    ? () => submitRemainderEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitRemainderEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                               ),
                             )
@@ -371,7 +379,15 @@ class _CustomRemainderBottomSheetState
                           fontSize: FontSize.sixteen,
                           cardShape: 5,
                           onTap: isSubmit
-                              ? () => submitRemainderEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitRemainderEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                         ),
                       ),
@@ -422,14 +438,16 @@ class _CustomRemainderBottomSheetState
             speedAccuracy: 0,
           );
           LatLng latLng = const LatLng(0, 0);
-          if (Geolocator.checkPermission().toString() !=
-              PermissionStatus.granted.toString()) {
-            final Position res = await Geolocator.getCurrentPosition();
-            setState(() {
-              position = res;
-              latLng = LatLng(res.latitude, res.longitude);
-            });
-          }
+
+          final GeolocatorPlatform geolocatorPlatform =
+              GeolocatorPlatform.instance;
+
+          final Position res = await geolocatorPlatform.getCurrentPosition();
+          setState(() {
+            position = res;
+            latLng = LatLng(res.latitude, res.longitude);
+          });
+
           final ReminderPostAPI requestBodyData = ReminderPostAPI(
             eventId: ConstantEventValues.remainderEventId,
             eventType:
@@ -495,11 +513,11 @@ class _CustomRemainderBottomSheetState
             );
             if (postResult[Constants.success]) {
               await FirebaseUtils.storeEvents(
-                  eventsDetails: requestBodyData.toJson(),
-                  caseId: widget.caseId,
-                  selectedFollowUpDate: nextActionDateControlller.text,
-                  selectedClipValue: Constants.remainder,
-                  bloc: widget.bloc)
+                      eventsDetails: requestBodyData.toJson(),
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: nextActionDateControlller.text,
+                      selectedClipValue: Constants.remainder,
+                      bloc: widget.bloc)
                   .whenComplete(() {
                 AppUtils.topSnackBar(context, Constants.successfullySubmitted);
               });

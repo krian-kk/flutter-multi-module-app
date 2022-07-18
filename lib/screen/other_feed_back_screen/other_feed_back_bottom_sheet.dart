@@ -433,7 +433,15 @@ class _CustomOtherFeedBackBottomSheetState
                                 ),
                                 fontSize: FontSize.sixteen,
                                 onTap: isSubmit
-                                    ? () => submitOtherFeedbackEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitOtherFeedbackEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ),
@@ -456,7 +464,15 @@ class _CustomOtherFeedBackBottomSheetState
                           ),
                           fontSize: FontSize.sixteen,
                           onTap: isSubmit
-                              ? () => submitOtherFeedbackEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitOtherFeedbackEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                           cardShape: 5,
                         ),
@@ -529,14 +545,15 @@ class _CustomOtherFeedBackBottomSheetState
             speed: 0,
             speedAccuracy: 0,
           );
-          if (Geolocator.checkPermission().toString() !=
-              PermissionStatus.granted.toString()) {
-            final Position res = await Geolocator.getCurrentPosition();
-            if (mounted) {
-              setState(() {
-                position = res;
-              });
-            }
+
+          final GeolocatorPlatform geolocatorPlatform =
+              GeolocatorPlatform.instance;
+
+          final Position res = await geolocatorPlatform.getCurrentPosition();
+          if (mounted) {
+            setState(() {
+              position = res;
+            });
           }
           final OtherFeedBackPostModel requestBodyData = OtherFeedBackPostModel(
             eventId: ConstantEventValues.otherFeedbackEventId,

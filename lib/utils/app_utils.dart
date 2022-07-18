@@ -1,12 +1,16 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/custom_snackbar/custom_snackbar.dart';
 import 'package:origa/utils/custom_snackbar/top_snack_bar.dart';
 import 'package:origa/widgets/custom_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 // class DebugMode {
@@ -154,5 +158,42 @@ class AppUtils {
       networkConection = true;
     }
     return networkConection;
+  }
+
+  static Future<bool> checkGPSConnection(context) async {
+    bool gpsConnection = false;
+    if (!await Location().serviceEnabled()) {
+      await DialogUtils.showDialog(
+        buildContext: context,
+        title: 'Can not get current location',
+        description: 'Please make sure you enable GPS and try again',
+        okBtnText: Languages.of(context)!.enable.toUpperCase(),
+        cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
+        okBtnFunction: (String val) async {
+          Navigator.pop(context);
+          await Location().requestService().then((value) {
+            debugPrint('------GPS Connection----->>> $value');
+            gpsConnection = value;
+          });
+        },
+      );
+    } else {
+      gpsConnection = true;
+    }
+    return gpsConnection;
+  }
+
+  static Future<bool> checkLocationPermission() async {
+    bool locationAccess = false;
+    final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
+    final LocationPermission permission =
+        await geolocatorPlatform.checkPermission();
+    if (permission == LocationPermission.whileInUse ||
+        permission == LocationPermission.always) {
+      locationAccess = true;
+    } else {
+      await openAppSettings();
+    }
+    return locationAccess;
   }
 }

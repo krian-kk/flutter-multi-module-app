@@ -265,7 +265,15 @@ class _CustomLoginConnectedBottomSheetState
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
                                 onTap: isSubmit
-                                    ? () => submitLoginEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitLoginEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                               ),
                             )
@@ -287,8 +295,17 @@ class _CustomLoginConnectedBottomSheetState
                           ),
                           fontSize: FontSize.sixteen,
                           cardShape: 5,
-                          onTap:
-                              isSubmit ? () => submitLoginEvent(false) : () {},
+                          onTap: isSubmit
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitLoginEvent(false);
+                                    }
+                                  }
+                                }
+                              : () {},
                         ),
                       ),
                     ],
@@ -338,14 +355,14 @@ class _CustomLoginConnectedBottomSheetState
             speedAccuracy: 0,
           );
           LatLng latLng = const LatLng(0, 0);
-          if (Geolocator.checkPermission().toString() !=
-              PermissionStatus.granted.toString()) {
-            final Position res = await Geolocator.getCurrentPosition();
-            setState(() {
-              position = res;
-              latLng = LatLng(res.latitude, res.longitude);
-            });
-          }
+          final GeolocatorPlatform geolocatorPlatform =
+              GeolocatorPlatform.instance;
+
+          final Position res = await geolocatorPlatform.getCurrentPosition();
+          setState(() {
+            position = res;
+            latLng = LatLng(res.latitude, res.longitude);
+          });
           final LoginPostEvent requestBodyData = LoginPostEvent(
             eventId: ConstantEventValues.loginEventId,
             eventType: Constants.login,

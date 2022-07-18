@@ -1143,4 +1143,7 @@ class LanguageTa extends Languages {
 
   @override
   String get upload => 'பதிவேற்றவும்';
+
+  @override
+  String get enable => 'இயக்கு';
 }

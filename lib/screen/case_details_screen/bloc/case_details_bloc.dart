@@ -1578,11 +1578,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       speed: 0,
       speedAccuracy: 0,
     );
-    if (Geolocator.checkPermission().toString() !=
-        PermissionStatus.granted.toString()) {
-      final Position res = await Geolocator.getCurrentPosition();
-      position = res;
-    }
+    final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
+
+    final Position res = await geolocatorPlatform.getCurrentPosition();
+
+    position = res;
     final CustomerNotMetPostModel requestBodyData = CustomerNotMetPostModel(
         eventId: ConstantEventValues.addressCustomerNotMetEventId,
         eventType: eventType,
@@ -1695,12 +1695,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       speed: 0,
       speedAccuracy: 0,
     );
-    if (Geolocator.checkPermission().toString() !=
-        PermissionStatus.granted.toString()) {
-      final Position res = await Geolocator.getCurrentPosition();
+    final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
 
-      position = res;
-    }
+    final Position res = await geolocatorPlatform.getCurrentPosition();
+
+    position = res;
     final AddressInvalidPostModel requestBodyData = AddressInvalidPostModel(
         eventId: ConstantEventValues.addressInvalidEventId,
         callerServiceID: Singleton.instance.callerServiceID,

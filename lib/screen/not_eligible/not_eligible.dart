@@ -273,7 +273,15 @@ class _CustomNotEligibleBottomSheetState
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
                                 onTap: isSubmit
-                                    ? () => submitNotEligibleEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitNotEligibleEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                               ),
                             )
@@ -296,7 +304,15 @@ class _CustomNotEligibleBottomSheetState
                           fontSize: FontSize.sixteen,
                           cardShape: 5,
                           onTap: isSubmit
-                              ? () => submitNotEligibleEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitNotEligibleEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                         ),
                       ),
@@ -347,14 +363,15 @@ class _CustomNotEligibleBottomSheetState
             speedAccuracy: 0,
           );
           LatLng latLng = const LatLng(0, 0);
-          if (Geolocator.checkPermission().toString() !=
-              PermissionStatus.granted.toString()) {
-            final Position res = await Geolocator.getCurrentPosition();
-            setState(() {
-              position = res;
-              latLng = LatLng(res.latitude, res.longitude);
-            });
-          }
+
+          final GeolocatorPlatform geolocatorPlatform =
+              GeolocatorPlatform.instance;
+
+          final Position res = await geolocatorPlatform.getCurrentPosition();
+          setState(() {
+            position = res;
+            latLng = LatLng(res.latitude, res.longitude);
+          });
           final NotEligiblePostEvent requestBodyData = NotEligiblePostEvent(
             eventId: ConstantEventValues.notEligibleEventId,
             eventType: Constants.notEligible,

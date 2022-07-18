@@ -318,7 +318,15 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 ),
                                 fontSize: FontSize.sixteen,
                                 onTap: isSubmit
-                                    ? () => submitDisbuteEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitDisbuteEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ),
@@ -341,7 +349,15 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                           ),
                           fontSize: FontSize.sixteen,
                           onTap: isSubmit
-                              ? () => submitDisbuteEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitDisbuteEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                           cardShape: 5,
                         ),
@@ -395,14 +411,17 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                 speedAccuracy: 0,
               );
               LatLng latLng = const LatLng(0, 0);
-              if (Geolocator.checkPermission().toString() !=
-                  PermissionStatus.granted.toString()) {
-                final Position res = await Geolocator.getCurrentPosition();
-                setState(() {
-                  position = res;
-                  latLng = LatLng(res.latitude, res.longitude);
-                });
-              }
+
+              final GeolocatorPlatform geolocatorPlatform =
+                  GeolocatorPlatform.instance;
+
+              final Position res =
+                  await geolocatorPlatform.getCurrentPosition();
+              setState(() {
+                position = res;
+                latLng = LatLng(res.latitude, res.longitude);
+              });
+
               final DisputePostModel requestBodyData = DisputePostModel(
                 eventId: ConstantEventValues.disputeEventId,
                 eventType:

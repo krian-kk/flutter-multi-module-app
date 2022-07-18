@@ -1139,4 +1139,7 @@ class LanguageHi extends Languages {
 
   @override
   String get upload => 'डालना';
+
+  @override
+  String get enable => 'सक्षम करना';
 }

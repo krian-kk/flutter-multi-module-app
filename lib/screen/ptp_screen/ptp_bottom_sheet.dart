@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:location/location.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -29,6 +30,7 @@ import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -506,7 +508,15 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 fontSize: FontSize.sixteen,
                                 onTap: isSubmit
-                                    ? () => submitPTPEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitPTPEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ),
@@ -528,7 +538,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          onTap: isSubmit ? () => submitPTPEvent(false) : () {},
+                          onTap: isSubmit
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitPTPEvent(false);
+                                    }
+                                  }
+                                }
+                              : () {},
                           cardShape: 5,
                         ),
                       ),
@@ -584,27 +604,10 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
             final GeolocatorPlatform geolocatorPlatform =
                 GeolocatorPlatform.instance;
 
-            bool isLocationServiceEnabled =
-                await Geolocator.isLocationServiceEnabled();
-            LocationPermission permission =
-                await geolocatorPlatform.checkPermission();
-            print(
-                '${permission.toString()} -------- $isLocationServiceEnabled');
-            if (isLocationServiceEnabled) {
-              if (permission == LocationPermission.whileInUse ||
-                  permission == LocationPermission.always) {
-                final Position res =
-                    await geolocatorPlatform.getCurrentPosition();
-                setState(() {
-                  position = res;
-                });
-              } else {
-                await openAppSettings();
-              }
-            } else {
-              await openAppSettings();
-            }
-
+            final Position res = await geolocatorPlatform.getCurrentPosition();
+            setState(() {
+              position = res;
+            });
             final PTPPostModel requestBodyData = PTPPostModel(
               eventId: ConstantEventValues.ptpEventId,
               eventType:

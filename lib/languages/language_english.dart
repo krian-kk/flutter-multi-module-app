@@ -1136,4 +1136,7 @@ class LanguageEn extends Languages {
 
   @override
   String get upload => 'Upload';
+
+  @override
+  String get enable => 'Enable';
 }

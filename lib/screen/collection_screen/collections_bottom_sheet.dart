@@ -493,7 +493,15 @@ class _CustomCollectionsBottomSheetState
                                 fontSize: FontSize.sixteen,
                                 fontWeight: FontWeight.w700,
                                 onTap: isSubmit
-                                    ? () => submitCollectionEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission()) {
+                                            submitCollectionEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ),
@@ -517,7 +525,15 @@ class _CustomCollectionsBottomSheetState
                           fontSize: FontSize.sixteen,
                           fontWeight: FontWeight.w700,
                           onTap: isSubmit
-                              ? () => submitCollectionEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils
+                                        .checkLocationPermission()) {
+                                      submitCollectionEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                           cardShape: 5,
                         ),
@@ -574,13 +590,15 @@ class _CustomCollectionsBottomSheetState
                 speed: 0,
                 speedAccuracy: 0,
               );
-              if (Geolocator.checkPermission().toString() !=
-                  PermissionStatus.granted.toString()) {
-                final Position res = await Geolocator.getCurrentPosition();
-                setState(() {
-                  position = res;
-                });
-              }
+
+              final GeolocatorPlatform geolocatorPlatform =
+                  GeolocatorPlatform.instance;
+
+              final Position res =
+                  await geolocatorPlatform.getCurrentPosition();
+              setState(() {
+                position = res;
+              });
               final CollectionPostModel requestBodyData = CollectionPostModel(
                 eventId: ConstantEventValues.collectionEventId,
                 eventCode: ConstantEventValues.collectionEvenCode,
@@ -737,13 +755,15 @@ class _CustomCollectionsBottomSheetState
                 speed: 0,
                 speedAccuracy: 0,
               );
-              if (Geolocator.checkPermission().toString() !=
-                  PermissionStatus.granted.toString()) {
-                final Position res = await Geolocator.getCurrentPosition();
-                setState(() {
-                  position = res;
-                });
-              }
+
+              final GeolocatorPlatform geolocatorPlatform =
+                  GeolocatorPlatform.instance;
+
+              final Position res =
+                  await geolocatorPlatform.getCurrentPosition();
+              setState(() {
+                position = res;
+              });
               final CollectionPostModel requestBodyData = CollectionPostModel(
                 eventId: ConstantEventValues.collectionEventId,
                 eventCode: ConstantEventValues.collectionEvenCode,
