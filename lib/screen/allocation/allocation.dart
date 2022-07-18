@@ -1012,71 +1012,6 @@ class _AllocationScreenState extends State<AllocationScreen>
               state is FirebaseStoredCompletionState) {
             return const SkeletonLoading();
           }
-          // if (state is FirebaseStoredCompletionState) {
-          //   return StreamBuilder<QuerySnapshot>(
-          //     stream: collectionReference!.limit(100).snapshots(),
-          //     builder: (BuildContext context,
-          //         AsyncSnapshot<QuerySnapshot> snapshot) {
-          //       if (snapshot.hasError) {
-          //         return Column(
-          //           children: [
-          //             Padding(
-          //               padding:
-          //                   const EdgeInsets.only(top: 50, right: 20, left: 20),
-          //               child: NoCaseAvailble.buildNoCaseAvailable(
-          //                   messageContent: 'Something went wrong'),
-          //             ),
-          //           ],
-          //         );
-          //       } else if (snapshot.connectionState ==
-          //           ConnectionState.waiting) {
-          //         const CustomLoadingWidget();
-          //       }
-          //       if (snapshot.connectionState == ConnectionState.active) {
-          //         // const CustomLoadingWidget();
-          //         // widget.myValueSetter!(2);
-          //         if (!isToastShow) {
-          //           Future.delayed(const Duration(milliseconds: 60), () {
-          //             widget.myValueSetter!(0);
-          //           });
-          //           Future.delayed(const Duration(seconds: 5), () {
-          //             widget.myValueSetter!(0);
-          //             AppUtils.showToast('App synced with local');
-          //             debugPrint('App synced with local');
-          //             setState(() {
-          //               isToastShow = true;
-          //             });
-          //             bloc.add(AllocationInitialEvent(context,
-          //                 myValueSetter: (values) {
-          //               widget.myValueSetter!(values);
-          //             }));
-          //           });
-          //         }
-          //       }
-          //       return const CustomLoadingWidget();
-          //       return resultList.isEmpty
-          //           ? Column(
-          //               children: [
-          //                 Padding(
-          //                   padding: const EdgeInsets.only(
-          //                       top: 50, right: 20, left: 20),
-          //                   child: NoCaseAvailble.buildNoCaseAvailable(),
-          //                 ),
-          //               ],
-          //             )
-          //           : Flexible(
-          //               child: Padding(
-          //                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          //                 child: CustomCardList.buildListView(
-          //                   bloc,
-          //                   resultData: resultList,
-          //                   listViewController: _controller,
-          //                 ),
-          //               ),
-          //             );
-          //     },
-          //   );
-          // }
           if (state is LoadingState) {
             return const CustomLoadingWidget();
           } else {
@@ -1443,8 +1378,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                                   .doc(Singleton.instance.agentRef)
                                   .collection(Constants.firebaseCase)
                                   .limit(100)
-                                  .snapshots()
-                                  .take(10),
+                                  .snapshots(),
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
@@ -1480,16 +1414,34 @@ class _AllocationScreenState extends State<AllocationScreen>
                                     bloc.resultList.add(tempResult);
                                     resultList.add(tempResult);
                                     bloc.totalCases++;
-                                    debugPrint(
-                                        'Cases count--> ${resultList.length}');
                                     if (tempResult.starredCase == true) {
                                       bloc.starCount++;
                                     }
                                   }
-                                  resultList.sort((a, b) {
-                                    return b.starredCase ? 1 : -1;
-                                    // });
-                                  });
+                                  // resultList.sort((a, b) {
+                                  //   return b.starredCase ? 1 : -1;
+                                  //   // });
+                                  // });
+                                  // resultList.sort((a, b) {
+                                  //   if (b.starredCase) {
+                                  //     return 1;
+                                  //   }
+                                  //   return -1;
+                                  // });
+
+                                  final List<Result> staredCasesList = [];
+                                  for (var element in resultList) {
+                                    if (element.starredCase) {
+                                      staredCasesList.add(element);
+                                    }
+                                  }
+                                  resultList.removeWhere(
+                                      (element) => element.starredCase);
+                                  resultList.insertAll(0, staredCasesList);
+                                  for (var element in resultList) {
+                                    debugPrint(
+                                        'Cases accNo--> ${element.accNo}');
+                                  }
                                 }
                                 return resultList.isEmpty
                                     ? Column(
