@@ -247,6 +247,17 @@ class FirebaseUtils {
             }
           }
         });
+
+        await FirebaseFirestore.instance
+            .collection(Singleton.instance.firebaseDatabaseName)
+            .doc(Singleton.instance.agentRef)
+            .collection(Constants.firebaseCase)
+            .get()
+            .then((value) {
+          for (var element in value.docChanges) {
+            debugPrint('Element--> $element');
+          }
+        });
       }
     }
   }
