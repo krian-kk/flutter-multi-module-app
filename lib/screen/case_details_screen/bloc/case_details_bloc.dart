@@ -666,18 +666,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseId.toString(),
           HttpUrl.doorLockedUrl('doorLocked', userType.toString()),
           'PTP',
-          <dynamic>[
-            <String, dynamic>{
-              'cType': caseDetailsAPIValue
-                  .result?.addressDetails?[indexValue!]['cType']
-                  .toString(),
-              'value': caseDetailsAPIValue
-                  .result?.addressDetails?[indexValue!]['value']
-                  .toString(),
-              'health': ConstantEventValues.addressCustomerNotMetHealth,
-              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
-            }
-          ],
+          <String, dynamic>{
+            'cType': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['cType']
+                .toString(),
+            'value': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['value']
+                .toString(),
+            'health': ConstantEventValues.addressCustomerNotMetHealth,
+            // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+          },
           addressSelectedCustomerNotMetClip,
           event.context,
         );
@@ -688,18 +686,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           caseId.toString(),
           HttpUrl.entryRestrictedUrl('entryRestricted', userType.toString()),
           'PTP',
-          <dynamic>[
-            <String, dynamic>{
-              'cType': caseDetailsAPIValue
-                  .result?.addressDetails?[indexValue!]['cType']
-                  .toString(),
-              'value': caseDetailsAPIValue
-                  .result?.addressDetails?[indexValue!]['value']
-                  .toString(),
-              'health': ConstantEventValues.addressCustomerNotMetHealth,
-              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
-            }
-          ],
+          <String, dynamic>{
+            'cType': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['cType']
+                .toString(),
+            'value': caseDetailsAPIValue
+                .result?.addressDetails?[indexValue!]['value']
+                .toString(),
+            'health': ConstantEventValues.addressCustomerNotMetHealth,
+            // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+          },
           addressSelectedCustomerNotMetClip,
           event.context,
         );
@@ -1739,16 +1735,18 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           audioS3Path: returnS2TAddressInvalid.result?.audioS3Path,
         ),
         eventModule: 'Field Allocation',
-        contact: <AddressInvalidContact>[
-          AddressInvalidContact(
-            cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]
-                ['cType'],
-            value: caseDetailsAPIValue.result?.addressDetails![indexValue!]
-                ['value'],
-            health: ConstantEventValues.addressInvalidHealth,
-            resAddressId_0: Singleton.instance.resAddressId_0 ?? '',
-          )
-        ]);
+        contact:
+            //  <AddressInvalidContact>[
+            AddressInvalidContact(
+          cType: caseDetailsAPIValue.result?.addressDetails![indexValue!]
+              ['cType'],
+          value: caseDetailsAPIValue.result?.addressDetails![indexValue!]
+              ['value'],
+          health: ConstantEventValues.addressInvalidHealth,
+          resAddressId_0: Singleton.instance.resAddressId_0 ?? '',
+        )
+        // ]
+        );
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(

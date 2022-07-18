@@ -581,14 +581,30 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               speed: 0,
               speedAccuracy: 0,
             );
-            if (Geolocator.checkPermission().toString() !=
-                PermissionStatus.granted.toString()) {
-              final Position res = await Geolocator.getCurrentPosition();
+            final GeolocatorPlatform geolocatorPlatform =
+                GeolocatorPlatform.instance;
 
-              setState(() {
-                position = res;
-              });
+            bool isLocationServiceEnabled =
+                await Geolocator.isLocationServiceEnabled();
+            LocationPermission permission =
+                await geolocatorPlatform.checkPermission();
+            print(
+                '${permission.toString()} -------- $isLocationServiceEnabled');
+            if (isLocationServiceEnabled) {
+              if (permission == LocationPermission.whileInUse ||
+                  permission == LocationPermission.always) {
+                final Position res =
+                    await geolocatorPlatform.getCurrentPosition();
+                setState(() {
+                  position = res;
+                });
+              } else {
+                await openAppSettings();
+              }
+            } else {
+              await openAppSettings();
             }
+
             final PTPPostModel requestBodyData = PTPPostModel(
               eventId: ConstantEventValues.ptpEventId,
               eventType:
