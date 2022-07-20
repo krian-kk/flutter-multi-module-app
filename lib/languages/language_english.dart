@@ -497,6 +497,9 @@ class LanguageEn extends Languages {
   String get eventDetails => 'EVENT DETAILS';
 
   @override
+  String get eventDetailsInfo => 'Event Details';
+
+  @override
   String get pickUp => 'PICK-UP';
 
   @override
@@ -1139,4 +1142,7 @@ class LanguageEn extends Languages {
 
   @override
   String get enable => 'Enable';
+
+  @override
+  String get basicInfo => 'Basic Info';
 }

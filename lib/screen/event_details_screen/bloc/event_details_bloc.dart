@@ -10,6 +10,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/event_details_model/display_eventdetails_model.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
+import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -19,18 +20,6 @@ import 'package:origa/utils/date_formate_utils.dart';
 part 'event_details_event.dart';
 
 part 'event_details_state.dart';
-
-class EventDetailsPlayAudioModel {
-  EventDetailsPlayAudioModel({
-    this.isPlaying = false,
-    this.isPaused = false,
-    this.loadingAudio = false,
-  });
-
-  bool isPlaying;
-  bool isPaused;
-  bool loadingAudio;
-}
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
   List<EventModel> eventList = [];
@@ -139,15 +128,15 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
         data.add(jsonDecode(jsonEncode(map)));
       });
       displayEventDetail = data
-          .map((item) => Result.fromJson(item as Map<String, dynamic>))
+          .map((item) => EventResult.fromJson(item as Map<String, dynamic>))
           .toList()
           .reversed
           .toList();
       // debugPrint('--------> ${jsonEncode(displayEventDetail)}');
 
-      eventDetailsAPIValues.result!.forEach((element) {
-        debugPrint('element--> ${element.monthName}');
-      });
+      // eventDetailsAPIValues.result!.forEach((element) {
+      //   debugPrint('element--> ${element.monthName}');
+      // });
       emit.call(EventDetailsLoadedState());
     });
   }
@@ -156,7 +145,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];
-  List<Result> displayEventDetail = [];
+  List<EventResult> displayEventDetail = [];
 }
 
 extension Iterables<E> on Iterable<E> {

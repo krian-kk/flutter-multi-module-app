@@ -7,16 +7,16 @@ class DisplayEventDetailsModel {
     status = json['status'];
     message = json['message'];
     if (json['result'] != null) {
-      result = <Result>[];
+      result = <EventResult>[];
       json['result'].forEach((v) {
-        result!.add(Result.fromJson(v));
+        result!.add(EventResult.fromJson(v));
       });
     }
   }
 
   int? status;
   String? message;
-  List<Result>? result;
+  List<EventResult>? result;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -29,10 +29,10 @@ class DisplayEventDetailsModel {
   }
 }
 
-class Result {
-  Result({this.month, this.eventList});
+class EventResult {
+  EventResult({this.month, this.eventList});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  EventResult.fromJson(Map<String, dynamic> json) {
     month = json['month'];
     if (json['eventList'] != null) {
       eventList = <EvnetDetailsResultsModel>[];

@@ -73,8 +73,8 @@ class CustomNotIntrestedBottomSheet extends StatefulWidget {
 
 class _CustomNotIntrestedBottomSheetState
     extends State<CustomNotIntrestedBottomSheet> {
-  late TextEditingController nextActionDateControlller;
-  late TextEditingController nextActionTimeControlller;
+  // late TextEditingController nextActionDateControlller;
+  // late TextEditingController nextActionTimeControlller;
   late TextEditingController remarksControlller;
 
   bool isSubmit = true;
@@ -412,7 +412,7 @@ class _CustomNotIntrestedBottomSheetState
             await FirebaseUtils.storeEvents(
                     eventsDetails: requestBodyData.toJson(),
                     caseId: widget.caseId,
-                    selectedFollowUpDate: nextActionDateControlller.text,
+                    // selectedFollowUpDate: nextActionDateControlller.text,
                     selectedClipValue: Constants.remainder,
                     bloc: widget.bloc)
                 .whenComplete(() {
@@ -429,7 +429,7 @@ class _CustomNotIntrestedBottomSheetState
               await FirebaseUtils.storeEvents(
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
-                      selectedFollowUpDate: nextActionDateControlller.text,
+                      // selectedFollowUpDate: nextActionDateControlller.text,
                       selectedClipValue: Constants.remainder,
                       bloc: widget.bloc)
                   .whenComplete(() {});

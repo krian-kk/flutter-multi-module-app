@@ -1,12 +1,21 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/http/api_repository.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
+import 'package:origa/models/event_details_model/result.dart';
+import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/add_address_screen/add_address_screen.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
@@ -34,6 +43,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/date_formate_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/skeleton.dart';
@@ -44,6 +54,8 @@ import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/eventdetail_status.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../widgets/case_detail_expand_list_wiget.dart';
 import 'check_whatsapp_button_enable.dart';
@@ -69,6 +81,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     bloc = CaseDetailsBloc(widget.allocationBloc)
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
+
+    getFileDirectory();
   }
 
   @override
@@ -216,6 +230,93 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           },
                         ),
                       ),
+                      Container(
+                          padding:
+                              const EdgeInsets.fromLTRB(20.0, 0, 20.0, 13.0),
+                          color: ColorResource.colorF7F8FA,
+                          child: caseInfo()),
+                      Container(
+                          padding: const EdgeInsets.fromLTRB(0.0, 0, 0.0, 5.0),
+                          color: ColorResource.colorF7F8FA,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    if (!bloc.isBasicInfo) {
+                                      setState(() {
+                                        bloc.isBasicInfo = !bloc.isBasicInfo;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: bloc.isBasicInfo ? 0 : 3),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: bloc.isBasicInfo
+                                              ? ColorResource.colorD5344C
+                                              : ColorResource.colorC4C4C4,
+                                          width: bloc.isBasicInfo ? 5.0 : 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 13),
+                                      child: CustomText(
+                                        Languages.of(context)!.basicInfo,
+                                        fontWeight: FontWeight.w700,
+                                        color: bloc.isBasicInfo
+                                            ? ColorResource.color23375A
+                                            : ColorResource.colorC4C4C4,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () {
+                                    if (bloc.isBasicInfo) {
+                                      setState(() {
+                                        bloc.isBasicInfo = !bloc.isBasicInfo;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: bloc.isBasicInfo ? 3 : 0),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: bloc.isBasicInfo
+                                              ? ColorResource.colorC4C4C4
+                                              : ColorResource.colorD5344C,
+                                          width: bloc.isBasicInfo ? 1.0 : 5.0,
+                                        ),
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 13),
+                                      child: CustomText(
+                                        Languages.of(context)!.eventDetailsInfo,
+                                        fontWeight: FontWeight.w700,
+                                        color: bloc.isBasicInfo
+                                            ? ColorResource.colorC4C4C4
+                                            : ColorResource.color23375A,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
                       bloc.isNoInternetAndServerError
                           ? Expanded(
                               child: Center(
@@ -239,383 +340,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               ),
                             )
                           : Expanded(
-                              child: SingleChildScrollView(
-                                  child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20.0, 0, 20, 20),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Stack(
-                                            children: <Widget>[
-                                              Align(
-                                                alignment:
-                                                    Alignment.bottomCenter,
-                                                child: CustomLoanUserDetails(
-                                                  userName: bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.caseDetails
-                                                          ?.cust ??
-                                                      '_',
-                                                  userId: bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.caseDetails
-                                                          ?.accNo ??
-                                                      '_',
-                                                  userAmount: bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.caseDetails
-                                                          ?.due
-                                                          ?.toDouble() ??
-                                                      0,
-                                                  isAccountNo: true,
-                                                  color:
-                                                      ColorResource.colorD4F5CF,
-                                                  marginTop: 10,
-                                                ),
-                                              ),
-                                              // Here check userType base on show case status
-                                              if (Singleton.instance.usertype ==
-                                                  Constants.fieldagent)
-                                                bloc
-                                                            .caseDetailsAPIValue
-                                                            .result
-                                                            ?.caseDetails
-                                                            ?.collSubStatus ==
-                                                        'new'
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 10),
-                                                        child: CaseStatusWidget
-                                                            .satusTextWidget(
-                                                          context,
-                                                          text: Languages.of(
-                                                                  context)!
-                                                              .new_,
-                                                          width: 55,
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 10),
-                                                        child: caseStatusWidget(
-                                                            text: bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.caseDetails
-                                                                ?.collSubStatus),
-                                                      ),
-
-                                              if (Singleton.instance.usertype ==
-                                                  Constants.telecaller)
-                                                bloc
-                                                            .caseDetailsAPIValue
-                                                            .result
-                                                            ?.caseDetails
-                                                            ?.telSubStatus ==
-                                                        'new'
-                                                    ? Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 10),
-                                                        child: CaseStatusWidget
-                                                            .satusTextWidget(
-                                                          context,
-                                                          text: Languages.of(
-                                                                  context)!
-                                                              .new_,
-                                                          width: 55,
-                                                        ),
-                                                      )
-                                                    : Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 10),
-                                                        child: caseStatusWidget(
-                                                            text: bloc
-                                                                .caseDetailsAPIValue
-                                                                .result
-                                                                ?.caseDetails
-                                                                ?.telSubStatus),
-                                                      ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isLoanDetails: true,
-                                              isInitialExpand: true,
-                                              title: Languages.of(context)!
-                                                  .loanDetails),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isCustomerDetails: true,
-                                              title: Languages.of(context)!
-                                                  .agentDetails),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isRepaymentDetails: true,
-                                              repaymentDetailsWidget:
-                                                  repaymentInfo(),
-                                              title: Languages.of(context)!
-                                                  .repaymentInformation),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isAttributeDetails: true,
-                                              title: Languages.of(context)!
-                                                  .attributeDetails),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isCustomerContactDetails: true,
-                                              title: Languages.of(context)!
-                                                  .contactDetails),
-                                          const SizedBox(height: 20),
-                                          ListOfCaseDetails.listOfDetails(
-                                              context,
-                                              bloc: bloc,
-                                              isAuditDetails: true,
-                                              title: Languages.of(context)!
-                                                  .auditDetails),
-                                          const SizedBox(height: 27),
-                                          CustomText(
-                                            Languages.of(context)!.otherLoanOf,
-                                            color: ColorResource.color101010,
-                                            fontSize: FontSize.sixteen,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                          ListView.builder(
-                                              physics:
-                                                  const NeverScrollableScrollPhysics(),
-                                              padding: EdgeInsets.zero,
-                                              shrinkWrap: true,
-                                              itemCount: bloc
-                                                      .caseDetailsAPIValue
-                                                      .result
-                                                      ?.otherLoanDetails
-                                                      ?.length ??
-                                                  0,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    const SizedBox(height: 10),
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        if (bloc
-                                                            .caseDetailsAPIValue
-                                                            .result!
-                                                            .otherLoanDetails![
-                                                                index]
-                                                            .canAccess!) {
-                                                          bloc.add(
-                                                              ClickPushAndPOPCaseDetailsEvent(
-                                                                  paramValues: <
-                                                                      String,
-                                                                      dynamic>{
-                                                                'caseID': bloc
-                                                                    .caseDetailsAPIValue
-                                                                    .result
-                                                                    ?.otherLoanDetails![
-                                                                        index]
-                                                                    .caseId,
-                                                                'isAddress':
-                                                                    true
-                                                              }));
-                                                        } else {
-                                                          AppUtils.showErrorToast(
-                                                              Constants
-                                                                  .caseNotAllocated);
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        width: double.infinity,
-                                                        decoration: BoxDecoration(
-                                                            boxShadow: <
-                                                                BoxShadow>[
-                                                              BoxShadow(
-                                                                color: ColorResource
-                                                                    .color000000
-                                                                    .withOpacity(
-                                                                        .25),
-                                                                blurRadius: 2.0,
-                                                                offset:
-                                                                    const Offset(
-                                                                        1.0,
-                                                                        1.0),
-                                                              ),
-                                                            ],
-                                                            border: Border.all(
-                                                                color: ColorResource
-                                                                    .colorDADADA,
-                                                                width: 0.5),
-                                                            color: ColorResource
-                                                                .colorF7F8FA,
-                                                            borderRadius:
-                                                                const BorderRadius
-                                                                        .all(
-                                                                    Radius.circular(
-                                                                        10.0))),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      20,
-                                                                  vertical: 12),
-                                                          child: Column(
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
-                                                            children: <Widget>[
-                                                              CustomText(
-                                                                Languages.of(
-                                                                            context)!
-                                                                        .bankName
-                                                                        .replaceAll(
-                                                                            '*',
-                                                                            '') +
-                                                                    ': ' +
-                                                                    bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .otherLoanDetails![
-                                                                            index]
-                                                                        .bankName!,
-                                                                color: ColorResource
-                                                                    .color666666,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                              ),
-                                                              CustomText(
-                                                                Languages.of(
-                                                                            context)!
-                                                                        .accountNo +
-                                                                    ': ' +
-                                                                    bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .otherLoanDetails![
-                                                                            index]
-                                                                        .accNo!,
-                                                                color: ColorResource
-                                                                    .color666666,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 5),
-                                                              CustomText(
-                                                                bloc
-                                                                            .caseDetailsAPIValue
-                                                                            .result
-                                                                            ?.otherLoanDetails![
-                                                                                index]
-                                                                            .cust !=
-                                                                        null
-                                                                    ? bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .otherLoanDetails![
-                                                                            index]
-                                                                        .cust!
-                                                                        .toUpperCase()
-                                                                    : '_',
-                                                                color: ColorResource
-                                                                    .color333333,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w700,
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 11),
-                                                              CustomText(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .overdueAmount,
-                                                                color: ColorResource
-                                                                    .color666666,
-                                                                fontSize:
-                                                                    FontSize
-                                                                        .twelve,
-                                                              ),
-                                                              const SizedBox(
-                                                                  height: 5),
-                                                              Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .spaceBetween,
-                                                                children: <
-                                                                    Widget>[
-                                                                  CustomText(
-                                                                    bloc
-                                                                            .caseDetailsAPIValue
-                                                                            .result
-                                                                            ?.otherLoanDetails![index]
-                                                                            .due
-                                                                            .toString() ??
-                                                                        '_',
-                                                                    color: ColorResource
-                                                                        .color333333,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                  ),
-                                                                  Row(
-                                                                    children: <
-                                                                        Widget>[
-                                                                      CustomText(
-                                                                        Languages.of(context)!
-                                                                            .view,
-                                                                        color: ColorResource
-                                                                            .color23375A,
-                                                                        fontWeight:
-                                                                            FontWeight.w700,
-                                                                      ),
-                                                                      const SizedBox(
-                                                                          width:
-                                                                              10),
-                                                                      SvgPicture.asset(
-                                                                          ImageResource
-                                                                              .forwardArrow)
-                                                                    ],
-                                                                  )
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 5),
-                                                  ],
-                                                );
-                                              }),
-                                        ],
-                                      ))),
+                              child: bloc.isBasicInfo
+                                  ? basicInfo()
+                                  : eventDetails(),
                             ),
                     ],
                   ),
@@ -775,6 +502,326 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget caseInfo() {
+    return Stack(
+      children: <Widget>[
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: CustomLoanUserDetails(
+            userName: bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '_',
+            userId: bloc.caseDetailsAPIValue.result?.caseDetails?.accNo ?? '_',
+            userAmount:
+                bloc.caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                    0,
+            isAccountNo: true,
+            color: ColorResource.colorD4F5CF,
+            marginTop: 10,
+          ),
+        ),
+        // Here check userType base on show case status
+        if (Singleton.instance.usertype == Constants.fieldagent)
+          bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus == 'new'
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: CaseStatusWidget.satusTextWidget(
+                    context,
+                    text: Languages.of(context)!.new_,
+                    width: 55,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: caseStatusWidget(
+                      text: bloc.caseDetailsAPIValue.result?.caseDetails
+                          ?.collSubStatus),
+                ),
+
+        if (Singleton.instance.usertype == Constants.telecaller)
+          bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus == 'new'
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: CaseStatusWidget.satusTextWidget(
+                    context,
+                    text: Languages.of(context)!.new_,
+                    width: 55,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(left: 10),
+                  child: caseStatusWidget(
+                      text: bloc.caseDetailsAPIValue.result?.caseDetails
+                          ?.telSubStatus),
+                ),
+      ],
+    );
+  }
+
+  Widget basicInfo() {
+    return SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                const SizedBox(height: 15),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isLoanDetails: true,
+                    isInitialExpand: true,
+                    title: Languages.of(context)!.loanDetails),
+                const SizedBox(height: 20),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isCustomerDetails: true,
+                    title: Languages.of(context)!.agentDetails),
+                const SizedBox(height: 20),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isRepaymentDetails: true,
+                    repaymentDetailsWidget: repaymentInfo(),
+                    title: Languages.of(context)!.repaymentInformation),
+                const SizedBox(height: 20),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isAttributeDetails: true,
+                    title: Languages.of(context)!.attributeDetails),
+                const SizedBox(height: 20),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isCustomerContactDetails: true,
+                    title: Languages.of(context)!.contactDetails),
+                const SizedBox(height: 20),
+                ListOfCaseDetails.listOfDetails(context,
+                    bloc: bloc,
+                    isAuditDetails: true,
+                    title: Languages.of(context)!.auditDetails),
+                const SizedBox(height: 27),
+                CustomText(
+                  Languages.of(context)!.otherLoanOf,
+                  color: ColorResource.color101010,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+                ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: bloc.caseDetailsAPIValue.result?.otherLoanDetails
+                            ?.length ??
+                        0,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          GestureDetector(
+                            onTap: () {
+                              if (bloc.caseDetailsAPIValue.result!
+                                  .otherLoanDetails![index].canAccess!) {
+                                bloc.add(ClickPushAndPOPCaseDetailsEvent(
+                                    paramValues: <String, dynamic>{
+                                      'caseID': bloc.caseDetailsAPIValue.result
+                                          ?.otherLoanDetails![index].caseId,
+                                      'isAddress': true
+                                    }));
+                              } else {
+                                AppUtils.showErrorToast(
+                                    Constants.caseNotAllocated);
+                              }
+                            },
+                            child: Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color: ColorResource.color000000
+                                          .withOpacity(.25),
+                                      blurRadius: 2.0,
+                                      offset: const Offset(1.0, 1.0),
+                                    ),
+                                  ],
+                                  border: Border.all(
+                                      color: ColorResource.colorDADADA,
+                                      width: 0.5),
+                                  color: ColorResource.colorF7F8FA,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10.0))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 12),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    CustomText(
+                                      Languages.of(context)!
+                                              .bankName
+                                              .replaceAll('*', '') +
+                                          ': ' +
+                                          bloc
+                                              .caseDetailsAPIValue
+                                              .result!
+                                              .otherLoanDetails![index]
+                                              .bankName!,
+                                      color: ColorResource.color666666,
+                                      fontSize: FontSize.twelve,
+                                    ),
+                                    CustomText(
+                                      Languages.of(context)!.accountNo +
+                                          ': ' +
+                                          bloc.caseDetailsAPIValue.result!
+                                              .otherLoanDetails![index].accNo!,
+                                      color: ColorResource.color666666,
+                                      fontSize: FontSize.twelve,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    CustomText(
+                                      bloc
+                                                  .caseDetailsAPIValue
+                                                  .result
+                                                  ?.otherLoanDetails![index]
+                                                  .cust !=
+                                              null
+                                          ? bloc.caseDetailsAPIValue.result!
+                                              .otherLoanDetails![index].cust!
+                                              .toUpperCase()
+                                          : '_',
+                                      color: ColorResource.color333333,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    const SizedBox(height: 11),
+                                    CustomText(
+                                      Languages.of(context)!.overdueAmount,
+                                      color: ColorResource.color666666,
+                                      fontSize: FontSize.twelve,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        CustomText(
+                                          bloc.caseDetailsAPIValue.result
+                                                  ?.otherLoanDetails![index].due
+                                                  .toString() ??
+                                              '_',
+                                          color: ColorResource.color333333,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        Row(
+                                          children: <Widget>[
+                                            CustomText(
+                                              Languages.of(context)!.view,
+                                              color: ColorResource.color23375A,
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            const SizedBox(width: 10),
+                                            SvgPicture.asset(
+                                                ImageResource.forwardArrow)
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                        ],
+                      );
+                    }),
+              ],
+            )));
+  }
+
+  Widget eventDetails() {
+    return MediaQuery.removeViewPadding(
+      context: context,
+      removeTop: true,
+      child: ListView.builder(
+          // shrinkWrap: true,
+          itemCount: bloc.displayEventDetail.length,
+          itemBuilder: (BuildContext context, int monthIndex) {
+            return ListTileTheme(
+                contentPadding: const EdgeInsets.all(0),
+                minVerticalPadding: 0,
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: ColorResource.color666666),
+                  borderRadius: BorderRadius.circular(65.0),
+                ),
+                tileColor: ColorResource.colorF7F8FA,
+                selectedTileColor: ColorResource.colorE5E5E5,
+                selectedColor: ColorResource.colorE5E5E5,
+                child: Theme(
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(13, 15, 13, 0),
+                    child: ExpansionTile(
+                        initiallyExpanded: monthIndex == selectedMonth,
+                        key: const ObjectKey('firstExpansionTile'),
+                        iconColor: ColorResource.color000000,
+                        collapsedIconColor: ColorResource.color000000,
+                        onExpansionChanged: (e) {
+                          //Your code
+                          if (e) {
+                            setState(() {
+                              // Duration(seconds:  20000);
+                              selectedMonth = monthIndex;
+                            });
+                          } else {
+                            setState(() {
+                              selectedMonth = -1;
+                            });
+                          }
+                        },
+                        tilePadding: const EdgeInsetsDirectional.only(
+                            start: 20, end: 20),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        expandedAlignment: Alignment.centerLeft,
+                        title: CustomText(
+                          bloc.displayEventDetail[monthIndex].month ?? '',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                        children: [
+                          ListView.builder(
+                              shrinkWrap: true,
+                              controller: secondlistScrollController,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: bloc.displayEventDetail[monthIndex]
+                                      .eventList?.length ??
+                                  0,
+                              itemBuilder: (BuildContext context, int index) {
+                                // final dynamic listVal = bloc
+                                //     .eventDetailsAPIValues
+                                //     .result![monthIndex]
+                                //     .eventList
+                                //     ?.reversed
+                                //     .toList();
+
+                                bloc.displayEventDetail[monthIndex].eventList
+                                    ?.forEach(
+                                        (EvnetDetailsResultsModel element) {
+                                  bloc.eventDetailsPlayAudioModel
+                                      .add(EventDetailsPlayAudioModel());
+                                });
+                                final dynamic value = bloc
+                                    .displayEventDetail[monthIndex]
+                                    .eventList!
+                                    .reversed
+                                    .toList();
+                                return expandList(value, index);
+                              }),
+                        ]),
+                  ),
+                ));
+          }),
     );
   }
 
@@ -1586,6 +1633,451 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 ),
               )
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  //Event Details Widgets
+
+  getFileDirectory() async {
+    final String dir = ((await getApplicationDocumentsDirectory()).path) +
+        '/TemporaryAudioFile.wav';
+    setState(() {
+      filePath = dir;
+    });
+  }
+
+  String filePath = '';
+  AudioConvertModel audioConvertyData = AudioConvertModel();
+
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+  ScrollController secondlistScrollController = ScrollController();
+  int selectedMonth = 0;
+
+  playAudio(String? audioPath, int index) async {
+    setState(() {
+      bloc.eventDetailsPlayAudioModel[index].loadingAudio = true;
+    });
+    final Map<String, dynamic> postResult = await APIRepository.apiRequest(
+      APIRequestType.post,
+      HttpUrl.getAudioFile,
+      requestBodydata: <String, dynamic>{'pathOfFile': audioPath},
+    );
+    if (postResult[Constants.success]) {
+      final AudioConvertModel audioConvertyData =
+          AudioConvertModel.fromJson(postResult['data']);
+      final String base64 = const Base64Encoder()
+          .convert(List<int>.from(audioConvertyData.result!.body!.data!));
+
+      final Uint8List audioBytes = const Base64Codec().decode(base64);
+      await File(filePath).writeAsBytes(audioBytes);
+      await platform.invokeMethod('playRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+        if (value) {
+          setState(
+              () => bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
+          setState(() =>
+              bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
+        }
+      });
+      await platform.invokeMethod('completeRecordAudio',
+          <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+        if (value != null) {
+          setState(() {
+            bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+            bloc.eventDetailsPlayAudioModel[index].isPaused = false;
+          });
+        }
+      });
+    } else {
+      AppUtils.showErrorToast("Did't get audio file");
+    }
+    setState(() => bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
+  }
+
+  stopAudio(int index) async {
+    await platform.invokeMethod('stopPlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+      if (value) {
+        setState(() {
+          bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
+        });
+      }
+    });
+  }
+
+  pauseAudio(int index) async {
+    await platform.invokeMethod('pausePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+      if (value) {
+        setState(() {
+          bloc.eventDetailsPlayAudioModel[index].isPaused = true;
+        });
+      }
+    });
+  }
+
+  resumeAudio(int index) async {
+    await platform.invokeMethod('resumePlayingAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+      if (value) {
+        setState(() {
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
+        });
+      }
+    });
+    await platform.invokeMethod('completeRecordAudio',
+        <String, dynamic>{'filePath': filePath}).then((dynamic value) {
+      if (value != null) {
+        setState(() {
+          bloc.eventDetailsPlayAudioModel[index].isPlaying = false;
+          bloc.eventDetailsPlayAudioModel[index].isPaused = false;
+        });
+      }
+    });
+  }
+
+  expandList(List<EvnetDetailsResultsModel> expandedList, int index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // const SizedBox(
+        //   height: 15,
+        // ),
+        Container(
+          margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5.0),
+            color: ColorResource.colorF4E8E4,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(12, 3, 14, 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                if (expandedList[index].createdAt != null)
+                  Row(
+                    children: [
+                      CustomText(
+                        DateFormateUtils.followUpDateFormate(
+                            expandedList[index].createdAt.toString()),
+                        fontSize: FontSize.seventeen,
+                        fontWeight: FontWeight.w700,
+                        color: ColorResource.color000000,
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
+                      EventDetailsAppStatus.eventDetailAppStatus(
+                          expandedList[index].eventAttr!.appStatus ?? '')
+                    ],
+                  ),
+                CustomText(
+                  expandedList[index].eventType.toString().toUpperCase(),
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color000000,
+                ),
+                CustomText(
+                  '${expandedList[index].eventModule}',
+                  fontWeight: FontWeight.w700,
+                  color: ColorResource.color000000,
+                ),
+                if (expandedList[index].createdBy != null)
+                  CustomText(
+                    '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (
+                // expandedList[index].eventType?.toLowerCase() ==
+                //       Constants.ptp.toLowerCase() &&
+                expandedList[index].eventAttr?.ptpAmount != null)
+                  CustomText(
+                    '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.date != null)
+                  CustomText(
+                    expandedList[index].eventType == 'RECEIPT' ||
+                            expandedList[index].eventType == 'TC : RECEIPT'
+                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
+                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.time != null)
+                  CustomText(
+                    '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.mode != null)
+                  CustomText(
+                    '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.remarks != null)
+                  CustomText(
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.amountCollected != null)
+                  CustomText(
+                    '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.reminderDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.chequeRefNo != null)
+                  CustomText(
+                    '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.amntOts != null)
+                  CustomText(
+                    'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.nextActionDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.actionDate != null)
+                  CustomText(
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.reasons != null)
+                  CustomText(
+                    '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.disputereasons != null)
+                  CustomText(
+                    '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventAttr?.remarkOts != null)
+                  CustomText(
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
+                    fontWeight: FontWeight.w700,
+                    color: ColorResource.color000000,
+                  ),
+                if (expandedList[index].eventType == Constants.repo)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (expandedList[index].eventAttr?.modelMake != null)
+                        CustomText(
+                          '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.registrationNo != null)
+                        CustomText(
+                          '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.chassisNo != null)
+                        CustomText(
+                          '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                    ],
+                  ),
+                if (expandedList[index].eventAttr?.reginalText != null &&
+                    expandedList[index].eventAttr?.translatedText != null &&
+                    expandedList[index].eventAttr?.audioS3Path != null)
+                  remarkS2TaudioWidget(
+                    reginalText: expandedList[index].eventAttr?.reginalText,
+                    translatedText:
+                        expandedList[index].eventAttr?.translatedText,
+                    audioPath: expandedList[index].eventAttr?.audioS3Path,
+                    index: index,
+                  ),
+                appStatus(expandedList[index].eventAttr!.appStatus ?? '')
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  appStatus(status) {
+    Widget? returnWidget;
+    switch (status) {
+      case 'approved':
+        returnWidget = appStatusText(ColorResource.green, 'Approved');
+        break;
+      case 'new':
+        returnWidget = appStatusText(ColorResource.orange, 'Awaiting Approval');
+        break;
+      case 'pending':
+        returnWidget = appStatusText(ColorResource.orange, 'Awaiting Approval');
+        break;
+      case 'rejected':
+        returnWidget = appStatusText(ColorResource.red, 'Rejected');
+        break;
+      default:
+        returnWidget = const SizedBox();
+        break;
+    }
+    return returnWidget;
+  }
+
+  Widget appStatusText(Color color, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 13),
+      child: CustomText(
+        value,
+        color: color,
+        fontWeight: FontWeight.w500,
+        fontSize: FontSize.sixteen,
+      ),
+    );
+  }
+
+  remarkS2TaudioWidget({
+    String? reginalText,
+    String? translatedText,
+    String? audioPath,
+    required int index,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        const SizedBox(height: 9),
+        Row(
+          children: <Widget>[
+            Container(
+              decoration: const BoxDecoration(
+                  color: ColorResource.color23375A,
+                  borderRadius: BorderRadius.all(Radius.circular(60.0))),
+              height: 40,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 11,
+                  ),
+                  child: CustomText(
+                    Languages.of(context)!.remarksRecording,
+                    color: ColorResource.colorFFFFFF,
+                    lineHeight: 1,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            GestureDetector(
+              onTap: () {
+                bloc.eventDetailsPlayAudioModel[index].isPlaying
+                    ? stopAudio(index)
+                    : playAudio(audioPath, index);
+              },
+              child: CircleAvatar(
+                backgroundColor: ColorResource.color23375A,
+                radius: 20,
+                child: Center(
+                  child: bloc.eventDetailsPlayAudioModel[index].loadingAudio
+                      ? CustomLoadingWidget(
+                          radius: 11,
+                          strokeWidth: 3.0,
+                          gradientColors: <Color>[
+                            ColorResource.colorFFFFFF,
+                            ColorResource.colorFFFFFF.withOpacity(0.7),
+                          ],
+                        )
+                      : Icon(
+                          bloc.eventDetailsPlayAudioModel[index].isPlaying
+                              ? Icons.stop
+                              : Icons.play_arrow,
+                          color: ColorResource.colorFFFFFF,
+                        ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            if (bloc.eventDetailsPlayAudioModel[index].isPlaying)
+              GestureDetector(
+                onTap: () {
+                  bloc.eventDetailsPlayAudioModel[index].isPaused
+                      ? resumeAudio(index)
+                      : pauseAudio(index);
+                },
+                child: CircleAvatar(
+                  backgroundColor: ColorResource.color23375A,
+                  radius: 20,
+                  child: Center(
+                    child: Icon(
+                      bloc.eventDetailsPlayAudioModel[index].isPaused
+                          ? Icons.play_arrow
+                          : Icons.pause,
+                      color: ColorResource.colorFFFFFF,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 12),
+        const CustomText(
+          Constants.reginalText,
+          fontWeight: FontWeight.w700,
+          color: ColorResource.color000000,
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+          decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          child: CustomText(
+            reginalText!,
+            color: ColorResource.color000000,
+            lineHeight: 1,
+          ),
+        ),
+        const SizedBox(height: 12),
+        const CustomText(
+          Constants.translatedText,
+          fontWeight: FontWeight.w700,
+          color: ColorResource.color000000,
+        ),
+        const SizedBox(height: 10),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 13),
+          decoration: const BoxDecoration(
+              color: ColorResource.colorF7F8FA,
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          child: CustomText(
+            translatedText!,
+            color: ColorResource.color000000,
+            lineHeight: 1,
           ),
         ),
       ],

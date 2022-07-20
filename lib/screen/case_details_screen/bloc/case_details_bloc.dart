@@ -19,10 +19,14 @@ import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
+import 'package:origa/models/event_details_model/display_eventdetails_model.dart';
+import 'package:origa/models/event_details_model/event_details_model.dart';
+import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
 import 'package:origa/models/phone_unreachable_post_model/phone_unreachable_post_model.dart';
+import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
 import 'package:origa/models/speech2text_model.dart';
@@ -53,7 +57,6 @@ import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_loan_user_details.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
@@ -61,7 +64,6 @@ import '../../../models/send_whatsapp_model.dart';
 import '../../../widgets/get_followuppriority_value.dart';
 
 part 'case_details_event.dart';
-
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
@@ -83,6 +85,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   bool isSendWhatsappLoading = false;
 
   BuildContext? caseDetailsContext;
+  bool isBasicInfo = true;
+
+  //Event Detail model
+  List<EventModel> eventList = [];
+  Map releaseDateMap = {};
+  EventDetailsModel eventDetailsAPIValues = EventDetailsModel();
+  List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
+      <EventDetailsPlayAudioModel>[];
+  List<EventResult> displayEventDetail = [];
 
   int? indexValue;
   String? userType;
@@ -367,6 +378,80 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         AppUtils.noInternetSnackbar(event.context!);
       }
 
+      // yield EventDetailsScreenState();
+
+      //Event details API
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        // yield CDNoInternetState();
+        //Getting event details from firebase databse
+        await FirebaseFirestore.instance
+            .collection(Singleton.instance.firebaseDatabaseName)
+            .doc(Singleton.instance.agentRef)
+            .collection(Constants
+                .firebaseEvent) // To get the events from event collection
+            .orderBy('createdAt', descending: true)
+            .where(Constants.caseId,
+                isEqualTo: caseId) //To find respective events of case details
+            .limit(5) // Need to show the last five events only
+            .get()
+            .then((QuerySnapshot<Map<String, dynamic>> value) {
+          if (value.docs.isNotEmpty) {
+            //temporaryList for events list
+            // ignore: prefer_final_locals
+            List<EvnetDetailsResultsModel>? results =
+                <EvnetDetailsResultsModel>[];
+            for (QueryDocumentSnapshot<Map<String, dynamic>> element
+                in value.docs) {
+              debugPrint('element--> ${element.data()}');
+              try {
+                results.add(EvnetDetailsResultsModel.fromJson(element.data()));
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+            }
+            eventDetailsAPIValues.result = results.reversed.toList();
+            // eventDetailsAPIValues.result =
+            //     eventDetailsAPIValues.result!.reversed.toList();
+          } else {
+            eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
+          }
+        });
+      } else {
+        final Map<String, dynamic> getEventDetailsData =
+            await APIRepository.apiRequest(APIRequestType.get,
+                HttpUrl.eventDetailsUrl(caseId: caseId, userType: userType));
+
+        if (getEventDetailsData[Constants.success] == true) {
+          final Map<String, dynamic> jsonData = getEventDetailsData['data'];
+          eventDetailsAPIValues = EventDetailsModel.fromJson(jsonData);
+        } else {
+          AppUtils.showToast(getEventDetailsData['data']['message']);
+        }
+      }
+      eventDetailsAPIValues.result!.sort((a, b) {
+        return a.createdAt
+            .toString()
+            .toLowerCase()
+            .compareTo(b.createdAt.toString().toLowerCase());
+      });
+
+      releaseDateMap =
+          eventDetailsAPIValues.result!.groupBy((m) => m.monthName);
+      final List<Map> data = [];
+      releaseDateMap.forEach((key, value) {
+        // debugPrint('key--> $key value--> ${value}');
+        final map = {
+          'month': key,
+          'eventList': value,
+        };
+        data.add(jsonDecode(jsonEncode(map)));
+      });
+      displayEventDetail = data
+          .map((item) => EventResult.fromJson(item as Map<String, dynamic>))
+          .toList()
+          .reversed
+          .toList();
+
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
@@ -375,6 +460,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         yield PhoneBottomSheetSuccessState();
       }
     }
+
     if (event is PhoneBottomSheetInitialEvent) {
       yield PhoneBottomSheetLoadingState();
       // print('contractor id is ----->  ${Singleton.instance.contractor}');
@@ -1749,7 +1835,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
       await FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(),
+              eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
                   selectedClipValue, context),
@@ -1766,7 +1852,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       );
       if (await postResult[Constants.success]) {
         await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
+                eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
                 caseId: caseId,
                 selectedClipValue: ConvertString.convertLanguageToConstant(
                     selectedClipValue, context),
@@ -1904,4 +1990,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
     return postResult;
   }
+}
+
+extension Iterables<E> on Iterable<E> {
+  Map<K, List<E>> groupBy<K>(K Function(E) keyFunction) => fold(
+      <K, List<E>>{},
+      (Map<K, List<E>> map, E element) =>
+          map..putIfAbsent(keyFunction(element), () => <E>[]).add(element));
 }

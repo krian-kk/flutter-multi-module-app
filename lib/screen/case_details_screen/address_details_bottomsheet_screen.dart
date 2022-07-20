@@ -121,8 +121,8 @@ class _AddressDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfAddressDetails?.length ?? 0,
                             itemBuilder: (BuildContext context, int i) {
-                              debugPrint(
-                                  'List of address ----> ${widget.bloc.listOfAddressDetails}');
+                              // debugPrint(
+                              //     'List of address ----> ${widget.bloc.listOfAddressDetails}');
                               return widget.bloc.listOfAddressDetails?[i]
                                               ['cType'] ==
                                           'residence address' ||

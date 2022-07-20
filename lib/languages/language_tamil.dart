@@ -498,6 +498,9 @@ class LanguageTa extends Languages {
   String get eventDetails => 'நிகழ்வு விவரங்கள்';
 
   @override
+  String get eventDetailsInfo => 'நிகழ்வு விவரங்கள்';
+
+  @override
   String get pickUp => 'எடு';
 
   @override
@@ -1146,4 +1149,7 @@ class LanguageTa extends Languages {
 
   @override
   String get enable => 'இயக்கு';
+
+  @override
+  String get basicInfo => 'அடிப்படை தகவல்';
 }

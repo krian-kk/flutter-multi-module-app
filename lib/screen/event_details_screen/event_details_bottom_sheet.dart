@@ -10,6 +10,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
+import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -203,110 +204,108 @@ class _CustomEventDetailsBottomSheetState
                     // return SizedBox();
 
                     return Expanded(
-                        child: ListView.builder(
-                            // shrinkWrap: true,
-                            itemCount: bloc.displayEventDetail.length,
-                            itemBuilder:
-                                (BuildContext context, int monthIndex) {
-                              return ListTileTheme(
-                                  contentPadding: const EdgeInsets.all(0),
-                                  minVerticalPadding: 0,
-                                  shape: RoundedRectangleBorder(
-                                    side: const BorderSide(
-                                        color: ColorResource.color666666),
-                                    borderRadius: BorderRadius.circular(65.0),
-                                  ),
-                                  tileColor: ColorResource.colorffffff,
-                                  selectedTileColor: ColorResource.colorE5E5E5,
-                                  selectedColor: ColorResource.colorE5E5E5,
-                                  child: Theme(
-                                    data: Theme.of(context).copyWith(
-                                        dividerColor: Colors.transparent),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 13, vertical: 5),
-                                      child: ExpansionTile(
-                                          initiallyExpanded:
-                                              monthIndex == selectedMonth,
-                                          key: const ObjectKey(
-                                              'firstExpansionTile'),
-                                          iconColor: ColorResource.color000000,
-                                          collapsedIconColor:
-                                              ColorResource.color000000,
-                                          onExpansionChanged: (e) {
-                                            //Your code
-                                            if (e) {
-                                              setState(() {
-                                                // Duration(seconds:  20000);
-                                                selectedMonth = monthIndex;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                selectedMonth = -1;
-                                              });
-                                            }
-                                          },
-                                          tilePadding:
-                                              const EdgeInsetsDirectional.only(
-                                                  start: 20, end: 20),
-                                          expandedCrossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          expandedAlignment:
-                                              Alignment.centerLeft,
-                                          title: CustomText(
-                                            bloc.displayEventDetail[monthIndex]
-                                                    .month ??
-                                                '',
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16,
-                                          ),
-                                          children: [
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                controller:
-                                                    secondlistScrollController,
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                itemCount: bloc
-                                                        .displayEventDetail[
-                                                            monthIndex]
-                                                        .eventList
-                                                        ?.length ??
-                                                    0,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  // final dynamic listVal = bloc
-                                                  //     .eventDetailsAPIValues
-                                                  //     .result![monthIndex]
-                                                  //     .eventList
-                                                  //     ?.reversed
-                                                  //     .toList();
-
-                                                  bloc
+                      child: ListView.builder(
+                          // shrinkWrap: true,
+                          itemCount: bloc.displayEventDetail.length,
+                          itemBuilder: (BuildContext context, int monthIndex) {
+                            return ListTileTheme(
+                                contentPadding: const EdgeInsets.all(0),
+                                minVerticalPadding: 0,
+                                shape: RoundedRectangleBorder(
+                                  side: const BorderSide(
+                                      color: ColorResource.color666666),
+                                  borderRadius: BorderRadius.circular(65.0),
+                                ),
+                                tileColor: ColorResource.colorffffff,
+                                selectedTileColor: ColorResource.colorE5E5E5,
+                                selectedColor: ColorResource.colorE5E5E5,
+                                child: Theme(
+                                  data: Theme.of(context).copyWith(
+                                      dividerColor: Colors.transparent),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 13, vertical: 5),
+                                    child: ExpansionTile(
+                                        initiallyExpanded:
+                                            monthIndex == selectedMonth,
+                                        key: const ObjectKey(
+                                            'firstExpansionTile'),
+                                        iconColor: ColorResource.color000000,
+                                        collapsedIconColor:
+                                            ColorResource.color000000,
+                                        onExpansionChanged: (e) {
+                                          //Your code
+                                          if (e) {
+                                            setState(() {
+                                              // Duration(seconds:  20000);
+                                              selectedMonth = monthIndex;
+                                            });
+                                          } else {
+                                            setState(() {
+                                              selectedMonth = -1;
+                                            });
+                                          }
+                                        },
+                                        tilePadding:
+                                            const EdgeInsetsDirectional.only(
+                                                start: 20, end: 20),
+                                        expandedCrossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        expandedAlignment: Alignment.centerLeft,
+                                        title: CustomText(
+                                          bloc.displayEventDetail[monthIndex]
+                                                  .month ??
+                                              '',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 16,
+                                        ),
+                                        children: [
+                                          ListView.builder(
+                                              shrinkWrap: true,
+                                              controller:
+                                                  secondlistScrollController,
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              itemCount: bloc
                                                       .displayEventDetail[
                                                           monthIndex]
                                                       .eventList
-                                                      ?.forEach(
-                                                          (EvnetDetailsResultsModel
-                                                              element) {
-                                                    bloc.eventDetailsPlayAudioModel
-                                                        .add(
-                                                            EventDetailsPlayAudioModel());
-                                                  });
-                                                  final dynamic value = bloc
-                                                      .displayEventDetail[
-                                                          monthIndex]
-                                                      .eventList!
-                                                      .reversed
-                                                      .toList();
-                                                  return expandList(
-                                                      value, index);
-                                                }),
-                                          ]),
-                                    ),
-                                  ));
-                            }));
+                                                      ?.length ??
+                                                  0,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                // final dynamic listVal = bloc
+                                                //     .eventDetailsAPIValues
+                                                //     .result![monthIndex]
+                                                //     .eventList
+                                                //     ?.reversed
+                                                //     .toList();
+
+                                                bloc
+                                                    .displayEventDetail[
+                                                        monthIndex]
+                                                    .eventList
+                                                    ?.forEach(
+                                                        (EvnetDetailsResultsModel
+                                                            element) {
+                                                  bloc.eventDetailsPlayAudioModel
+                                                      .add(
+                                                          EventDetailsPlayAudioModel());
+                                                });
+                                                final dynamic value = bloc
+                                                    .displayEventDetail[
+                                                        monthIndex]
+                                                    .eventList!
+                                                    .reversed
+                                                    .toList();
+                                                return expandList(value, index);
+                                              }),
+                                        ]),
+                                  ),
+                                ));
+                          }),
+                    );
                   }
                 },
               ),
