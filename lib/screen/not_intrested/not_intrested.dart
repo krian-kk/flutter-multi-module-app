@@ -282,7 +282,8 @@ class _CustomNotIntrestedBottomSheetState
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitNotInterestedEvent(true);
                                           }
                                         }
@@ -312,8 +313,8 @@ class _CustomNotIntrestedBottomSheetState
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitNotInterestedEvent(false);
                                     }
                                   }
@@ -357,25 +358,6 @@ class _CustomNotIntrestedBottomSheetState
           });
         }
         if (isNotAutoCalling) {
-          Position position = Position(
-            longitude: 0,
-            latitude: 0,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            heading: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
-          LatLng latLng = const LatLng(0, 0);
-          final GeolocatorPlatform geolocatorPlatform =
-              GeolocatorPlatform.instance;
-
-          final Position res = await geolocatorPlatform.getCurrentPosition();
-          setState(() {
-            position = res;
-            latLng = LatLng(res.latitude, res.longitude);
-          });
           final NotEligiblePostEvent requestBodyData = NotEligiblePostEvent(
             eventId: ConstantEventValues.notInterestedEventId,
             eventType: Constants.notInterested,

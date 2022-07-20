@@ -322,7 +322,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitDisbuteEvent(true);
                                           }
                                         }
@@ -352,8 +353,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitDisbuteEvent(false);
                                     }
                                   }

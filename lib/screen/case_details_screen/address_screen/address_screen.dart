@@ -493,7 +493,8 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .checkGPSConnection(
                                                       context)) {
                                                 if (await AppUtils
-                                                    .checkLocationPermission()) {
+                                                    .checkLocationPermission(
+                                                        context)) {
                                                   if (widget.bloc
                                                           .isRecordCustomerNotMet ==
                                                       Constants.process) {
@@ -563,7 +564,8 @@ class _AddressScreenState extends State<AddressScreen>
                                                   .checkGPSConnection(
                                                       context)) {
                                                 if (await AppUtils
-                                                    .checkLocationPermission()) {
+                                                    .checkLocationPermission(
+                                                        context)) {
                                                   if (widget.bloc
                                                           .isRecordAddressInvaild ==
                                                       Constants.process) {

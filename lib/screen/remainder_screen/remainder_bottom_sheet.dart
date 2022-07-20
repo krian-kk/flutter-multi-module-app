@@ -352,7 +352,8 @@ class _CustomRemainderBottomSheetState
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitRemainderEvent(true);
                                           }
                                         }
@@ -382,8 +383,8 @@ class _CustomRemainderBottomSheetState
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitRemainderEvent(false);
                                     }
                                   }

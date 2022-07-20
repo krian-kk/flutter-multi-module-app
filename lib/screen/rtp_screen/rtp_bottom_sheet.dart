@@ -339,7 +339,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitRTPEvent(stopValue: true);
                                           }
                                         }
@@ -369,7 +370,7 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                     if (await AppUtils.checkGPSConnection(
                                         context)) {
                                       if (await AppUtils
-                                          .checkLocationPermission()) {
+                                          .checkLocationPermission(context)) {
                                         submitRTPEvent(stopValue: false);
                                       }
                                     }

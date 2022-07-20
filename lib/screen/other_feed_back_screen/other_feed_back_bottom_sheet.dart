@@ -437,7 +437,8 @@ class _CustomOtherFeedBackBottomSheetState
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitOtherFeedbackEvent(true);
                                           }
                                         }
@@ -467,8 +468,8 @@ class _CustomOtherFeedBackBottomSheetState
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitOtherFeedbackEvent(false);
                                     }
                                   }

@@ -233,8 +233,8 @@ class _CustomCaptureImageBottomSheetState
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       if (isRecord == Constants.process) {
                                         AppUtils.showToast(
                                             'Stop the Record then Submit');

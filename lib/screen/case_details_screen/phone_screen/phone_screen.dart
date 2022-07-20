@@ -602,7 +602,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                               .checkGPSConnection(
                                                                   context)) {
                                                             if (await AppUtils
-                                                                .checkLocationPermission()) {
+                                                                .checkLocationPermission(
+                                                                    context)) {
                                                               if (widget
                                                                   .bloc
                                                                   .phoneUnreachableFormKey
@@ -657,7 +658,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                               .checkGPSConnection(
                                                                   context)) {
                                                             if (await AppUtils
-                                                                .checkLocationPermission()) {
+                                                                .checkLocationPermission(
+                                                                    context)) {
                                                               widget.bloc.add(
                                                                   ClickPhoneInvalidButtonEvent(
                                                                 context,
@@ -698,7 +700,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         .checkGPSConnection(
                                                             context)) {
                                                       if (await AppUtils
-                                                          .checkLocationPermission()) {
+                                                          .checkLocationPermission(
+                                                              context)) {
                                                         if (widget.bloc
                                                                 .isRecordUnReachable ==
                                                             Constants.process) {
@@ -778,7 +781,8 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                         .checkGPSConnection(
                                                             context)) {
                                                       if (await AppUtils
-                                                          .checkLocationPermission()) {
+                                                          .checkLocationPermission(
+                                                              context)) {
                                                         if (widget.bloc
                                                                 .isRecordPhoneInvalid ==
                                                             Constants.process) {

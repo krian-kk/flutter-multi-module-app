@@ -512,7 +512,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitPTPEvent(true);
                                           }
                                         }
@@ -542,8 +543,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitPTPEvent(false);
                                     }
                                   }

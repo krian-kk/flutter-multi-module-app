@@ -183,17 +183,40 @@ class AppUtils {
     return gpsConnection;
   }
 
-  static Future<bool> checkLocationPermission() async {
+  static Future<bool> checkLocationPermission(BuildContext context) async {
     bool locationAccess = false;
     final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
-    final LocationPermission permission =
-        await geolocatorPlatform.checkPermission();
+    LocationPermission permission = await geolocatorPlatform.checkPermission();
     if (permission == LocationPermission.whileInUse ||
         permission == LocationPermission.always) {
       locationAccess = true;
     } else {
-      await openAppSettings();
+      permission = await geolocatorPlatform.requestPermission();
+      if (permission == LocationPermission.denied) {
+        AppUtils.showErrorToast('Location permissions are denied');
+      }
     }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever.
+      AppUtils.showErrorToast(
+          'Location permissions are permanently denied, we cannot request permissions.');
+      await DialogUtils.showDialog(
+        buildContext: context,
+        // title: 'Can not get current location',
+        title: '',
+        description:
+            'Please make sure you enable Location permissions and try again',
+        okBtnText: Languages.of(context)!.enable.toUpperCase(),
+        cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
+        okBtnFunction: (String val) async {
+          Navigator.pop(context);
+          // await geolocatorPlatform.requestPermission();
+          await openAppSettings();
+        },
+      );
+    }
+
     return locationAccess;
   }
 }

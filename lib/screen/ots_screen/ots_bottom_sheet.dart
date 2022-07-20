@@ -445,7 +445,8 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                           if (await AppUtils.checkGPSConnection(
                                               context)) {
                                             if (await AppUtils
-                                                .checkLocationPermission()) {
+                                                .checkLocationPermission(
+                                                    context)) {
                                               submitOTSEvent(true);
                                             }
                                           }
@@ -476,7 +477,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     if (await AppUtils.checkGPSConnection(
                                         context)) {
                                       if (await AppUtils
-                                          .checkLocationPermission()) {
+                                          .checkLocationPermission(context)) {
                                         submitOTSEvent(false);
                                       }
                                     }

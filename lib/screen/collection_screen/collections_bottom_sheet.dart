@@ -497,7 +497,8 @@ class _CustomCollectionsBottomSheetState
                                         if (await AppUtils.checkGPSConnection(
                                             context)) {
                                           if (await AppUtils
-                                              .checkLocationPermission()) {
+                                              .checkLocationPermission(
+                                                  context)) {
                                             submitCollectionEvent(true);
                                           }
                                         }
@@ -528,8 +529,8 @@ class _CustomCollectionsBottomSheetState
                               ? () async {
                                   if (await AppUtils.checkGPSConnection(
                                       context)) {
-                                    if (await AppUtils
-                                        .checkLocationPermission()) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
                                       submitCollectionEvent(false);
                                     }
                                   }
