@@ -99,7 +99,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
               child: GestureDetector(
                 onTap: () => widget.forgotPasswordFunction(),
                 child: CustomText(
-                  Languages.of(context)!.forgotPin.toUpperCase(),
+                  Languages.of(context)!.forgotPassword.toUpperCase(),
                   fontSize: FontSize.sixteen,
                   fontWeight: FontWeight.w600,
                 ),

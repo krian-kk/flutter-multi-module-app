@@ -759,4 +759,6 @@ abstract class Languages {
   String get enable;
 
   String get basicInfo;
+
+  String get forgotPassword;
 }

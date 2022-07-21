@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
@@ -88,6 +89,8 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                   widget.successFunction();
                 } else {
                   setState(() => isError = true);
+                  AppUtils.showErrorToast(
+                      'mPin is wrong... Please enter the correct pin');
                 }
               },
               textStyle: const TextStyle(

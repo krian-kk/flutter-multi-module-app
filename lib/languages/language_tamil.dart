@@ -1152,4 +1152,7 @@ class LanguageTa extends Languages {
 
   @override
   String get basicInfo => 'அடிப்படை தகவல்';
+
+  @override
+  String get forgotPassword => 'கடவுச்சொல்லை மறந்துவிட்டீர்களா ?';
 }

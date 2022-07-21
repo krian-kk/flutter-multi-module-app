@@ -1145,4 +1145,7 @@ class LanguageEn extends Languages {
 
   @override
   String get basicInfo => 'Basic Info';
+
+  @override
+  String get forgotPassword => 'Forgot Password ?';
 }

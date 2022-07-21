@@ -73,7 +73,7 @@ android {
     defaultConfig {
         applicationId "com.mcollect.origa.ai"
         minSdkVersion 20
-        targetSdkVersion 32
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName getVersionName(majorNumber, minorNumber)
         multiDexEnabled true
@@ -140,10 +140,10 @@ dependencies {
     implementation('io.grpc:grpc-okhttp:1.44.1') {
         exclude group: "com.squareup.okhttp"
     }
-    implementation('com.google.firebase:firebase-firestore:24.2.0') {
+    implementation('com.google.firebase:firebase-firestore:24.2.1') {
         exclude group: "com.squareup.okhttp"
     }
-    implementation "com.google.firebase:firebase-firestore-ktx:24.2.0"
+    implementation "com.google.firebase:firebase-firestore-ktx:24.2.1"
     implementation "com.google.firebase:firebase-database-ktx:20.0.5"
     implementation "com.google.firebase:firebase-storage-ktx:20.0.1"
     implementation "com.firebaseui:firebase-ui-storage:4.3.2"

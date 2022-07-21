@@ -1148,4 +1148,7 @@ class LanguageHi extends Languages {
 
   @override
   String get basicInfo => 'बुनियादी जानकारी';
+
+  @override
+  String get forgotPassword => 'पासवर्ड भूल गए ?';
 }
