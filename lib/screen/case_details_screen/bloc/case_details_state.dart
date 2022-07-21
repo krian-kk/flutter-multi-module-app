@@ -110,3 +110,8 @@ class UpdateRefUrlState extends CaseDetailsState {
 class UpdateHealthStatusState extends CaseDetailsState {
   UpdateHealthStatusState();
 }
+
+class TriggerEventDetailsState extends CaseDetailsState {
+  TriggerEventDetailsState({required this.eventListData});
+  List<EventResult> eventListData;
+}

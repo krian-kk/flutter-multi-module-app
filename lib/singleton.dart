@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
 
@@ -43,6 +44,9 @@ class Singleton {
 
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;
+
+// Agent Information
+  AgentInformation? agentDetailsInfo;
 
   //store update health value
   dynamic updateHealthStatus;

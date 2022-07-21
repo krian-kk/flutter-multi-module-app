@@ -182,6 +182,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc.caseDetailsAPIValue.result?.caseDetails?.repaymentInfo
                   ?.refUrl = state.refUrl;
             }
+
+            if (state is TriggerEventDetailsState) {
+              setState(() {
+                bloc.displayEventDetail = state.eventListData;
+                bloc.isEventDetailLoading = false;
+              });
+            }
           },
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
             bloc: bloc,
@@ -285,6 +292,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       setState(() {
                                         bloc.isBasicInfo = !bloc.isBasicInfo;
                                       });
+                                      bloc.add(TriggerEventDetailsEvent());
                                     }
                                   },
                                   child: Container(
@@ -374,6 +382,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                       const <dynamic>[],
                                                       false),
                                                 );
+                                                if (!bloc.isBasicInfo) {
+                                                  setState(() {
+                                                    bloc.isBasicInfo =
+                                                        !bloc.isBasicInfo;
+                                                  });
+                                                }
                                               },
                                               child: Container(
                                                 height: 50,
@@ -437,10 +451,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                               ? 20
                                               : 0),
                                       GestureDetector(
-                                        onTap: () => bloc.add(EventDetailsEvent(
-                                            Constants.callDetails,
-                                            const <dynamic>[],
-                                            true)),
+                                        onTap: () {
+                                          bloc.add(EventDetailsEvent(
+                                              Constants.callDetails,
+                                              const <dynamic>[],
+                                              true));
+
+                                          if (!bloc.isBasicInfo) {
+                                            setState(() {
+                                              bloc.isBasicInfo =
+                                                  !bloc.isBasicInfo;
+                                            });
+                                          }
+                                        },
                                         child: Container(
                                           height: 50,
                                           width: (MediaQuery.of(context)
@@ -740,6 +763,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   }
 
   Widget eventDetails() {
+    if (bloc.isEventDetailLoading) {
+      return const Center(child: CustomLoadingWidget());
+    }
     return MediaQuery.removeViewPadding(
       context: context,
       removeTop: true,

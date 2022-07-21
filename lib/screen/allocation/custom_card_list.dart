@@ -21,6 +21,8 @@ class CustomCardList {
     return ListView.builder(
         controller: listViewController,
         itemCount: resultData!.length,
+        // shrinkWrap: true,
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           final int listCount = index + 1;
           String? distanceValues;
