@@ -441,7 +441,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   ),
                                   fontSize: FontSize.sixteen,
                                   onTap: isSubmit
-                                      ? () => submitOTSEvent(true)
+                                      ? () async {
+                                          if (await AppUtils.checkGPSConnection(
+                                              context)) {
+                                            if (await AppUtils
+                                                .checkLocationPermission(
+                                                    context)) {
+                                              submitOTSEvent(true);
+                                            }
+                                          }
+                                        }
                                       : () {},
                                   cardShape: 5,
                                 ),
@@ -463,8 +472,17 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               ],
                             ),
                             fontSize: FontSize.sixteen,
-                            onTap:
-                                isSubmit ? () => submitOTSEvent(false) : () {},
+                            onTap: isSubmit
+                                ? () async {
+                                    if (await AppUtils.checkGPSConnection(
+                                        context)) {
+                                      if (await AppUtils
+                                          .checkLocationPermission(context)) {
+                                        submitOTSEvent(false);
+                                      }
+                                    }
+                                  }
+                                : () {},
                             cardShape: 5,
                           ),
                         ),
@@ -518,13 +536,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               speed: 0,
               speedAccuracy: 0,
             );
-            if (Geolocator.checkPermission().toString() !=
-                PermissionStatus.granted.toString()) {
-              final Position res = await Geolocator.getCurrentPosition();
-              setState(() {
-                position = res;
-              });
-            }
+
+            final GeolocatorPlatform geolocatorPlatform =
+                GeolocatorPlatform.instance;
+
+            final Position res = await geolocatorPlatform.getCurrentPosition();
+            setState(() {
+              position = res;
+            });
             final OtsPostModel requestBodyData = OtsPostModel(
               eventId: ConstantEventValues.otsEventId,
               eventType:

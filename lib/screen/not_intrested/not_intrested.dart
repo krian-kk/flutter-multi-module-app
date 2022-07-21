@@ -73,8 +73,8 @@ class CustomNotIntrestedBottomSheet extends StatefulWidget {
 
 class _CustomNotIntrestedBottomSheetState
     extends State<CustomNotIntrestedBottomSheet> {
-  late TextEditingController nextActionDateControlller;
-  late TextEditingController nextActionTimeControlller;
+  // late TextEditingController nextActionDateControlller;
+  // late TextEditingController nextActionTimeControlller;
   late TextEditingController remarksControlller;
 
   bool isSubmit = true;
@@ -278,7 +278,16 @@ class _CustomNotIntrestedBottomSheetState
                                 fontSize: FontSize.sixteen,
                                 cardShape: 5,
                                 onTap: isSubmit
-                                    ? () => submitNotInterestedEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission(
+                                                  context)) {
+                                            submitNotInterestedEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                               ),
                             )
@@ -301,7 +310,15 @@ class _CustomNotIntrestedBottomSheetState
                           fontSize: FontSize.sixteen,
                           cardShape: 5,
                           onTap: isSubmit
-                              ? () => submitNotInterestedEvent(false)
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
+                                      submitNotInterestedEvent(false);
+                                    }
+                                  }
+                                }
                               : () {},
                         ),
                       ),
@@ -341,25 +358,6 @@ class _CustomNotIntrestedBottomSheetState
           });
         }
         if (isNotAutoCalling) {
-          Position position = Position(
-            longitude: 0,
-            latitude: 0,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            heading: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
-          LatLng latLng = const LatLng(0, 0);
-          if (Geolocator.checkPermission().toString() !=
-              PermissionStatus.granted.toString()) {
-            final Position res = await Geolocator.getCurrentPosition();
-            setState(() {
-              position = res;
-              latLng = LatLng(res.latitude, res.longitude);
-            });
-          }
           final NotEligiblePostEvent requestBodyData = NotEligiblePostEvent(
             eventId: ConstantEventValues.notInterestedEventId,
             eventType: Constants.notInterested,
@@ -396,7 +394,7 @@ class _CustomNotIntrestedBottomSheetState
             await FirebaseUtils.storeEvents(
                     eventsDetails: requestBodyData.toJson(),
                     caseId: widget.caseId,
-                    selectedFollowUpDate: nextActionDateControlller.text,
+                    // selectedFollowUpDate: nextActionDateControlller.text,
                     selectedClipValue: Constants.remainder,
                     bloc: widget.bloc)
                 .whenComplete(() {
@@ -413,7 +411,7 @@ class _CustomNotIntrestedBottomSheetState
               await FirebaseUtils.storeEvents(
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
-                      selectedFollowUpDate: nextActionDateControlller.text,
+                      // selectedFollowUpDate: nextActionDateControlller.text,
                       selectedClipValue: Constants.remainder,
                       bloc: widget.bloc)
                   .whenComplete(() {});

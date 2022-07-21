@@ -335,7 +335,16 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                 ),
                                 fontSize: FontSize.sixteen,
                                 onTap: isSubmit
-                                    ? () => submitRTPEvent(stopValue: true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission(
+                                                  context)) {
+                                            submitRTPEvent(stopValue: true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ))
@@ -357,7 +366,15 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                             ),
                             fontSize: FontSize.sixteen,
                             onTap: isSubmit
-                                ? () => submitRTPEvent(stopValue: false)
+                                ? () async {
+                                    if (await AppUtils.checkGPSConnection(
+                                        context)) {
+                                      if (await AppUtils
+                                          .checkLocationPermission(context)) {
+                                        submitRTPEvent(stopValue: false);
+                                      }
+                                    }
+                                  }
                                 : () {},
                             cardShape: 5,
                           )),
@@ -409,15 +426,16 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
               speedAccuracy: 0,
             );
             LatLng latLng = const LatLng(0, 0);
-            final Position res;
-            if (Geolocator.checkPermission().toString() !=
-                PermissionStatus.granted.toString()) {
-              final Position res = await Geolocator.getCurrentPosition();
-              setState(() {
-                position = res;
-                latLng = LatLng(res.latitude, res.longitude);
-              });
-            }
+
+            final GeolocatorPlatform geolocatorPlatform =
+                GeolocatorPlatform.instance;
+
+            final Position res = await geolocatorPlatform.getCurrentPosition();
+            setState(() {
+              position = res;
+              latLng = LatLng(res.latitude, res.longitude);
+            });
+
             final DenialPostModel requestBodyData = DenialPostModel(
               eventId: ConstantEventValues.rtpDenialEventId,
               eventType:

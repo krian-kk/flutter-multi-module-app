@@ -335,6 +335,8 @@ abstract class Languages {
 
   String get eventDetails;
 
+  String get eventDetailsInfo;
+
   String get pickUp;
 
   String get selfPay;
@@ -753,4 +755,8 @@ abstract class Languages {
   String get loginStatus;
 
   String get upload;
+
+  String get enable;
+
+  String get basicInfo;
 }

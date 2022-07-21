@@ -349,242 +349,262 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                     fontSize: FontSize.sixteen,
                     onTap: isSubmit
                         ? () async {
-                            if (isRecord == Constants.process) {
-                              AppUtils.showToast('Stop the Record then Submit');
-                            } else if (isRecord == Constants.stop) {
-                              AppUtils.showToast(
-                                  'Please wait audio is converting');
-                            } else {
-                              if (isRecord == Constants.submit) {
-                                setState(() =>
-                                    remarksControlller.text = translateText);
-                                setState(() => isTranslate = false);
-                              }
-                              if (_formKey.currentState!.validate() &&
-                                  dateControlller.text != '' &&
-                                  timeControlller.text != '') {
-                                if (uploadFileLists.isEmpty) {
+                            if (await AppUtils.checkGPSConnection(context)) {
+                              if (await AppUtils.checkLocationPermission(
+                                  context)) {
+                                if (isRecord == Constants.process) {
                                   AppUtils.showToast(
-                                    Languages.of(context)!.uploadImage,
-                                    gravity: ToastGravity.CENTER,
-                                  );
+                                      'Stop the Record then Submit');
+                                } else if (isRecord == Constants.stop) {
+                                  AppUtils.showToast(
+                                      'Please wait audio is converting');
                                 } else {
-                                  setState(() => isSubmit = false);
-                                  Position position = Position(
-                                    longitude: 0,
-                                    latitude: 0,
-                                    timestamp: DateTime.now(),
-                                    accuracy: 0,
-                                    altitude: 0,
-                                    heading: 0,
-                                    speed: 0,
-                                    speedAccuracy: 0,
-                                  );
-                                  if (Geolocator.checkPermission().toString() !=
-                                      PermissionStatus.granted.toString()) {
-                                    final Position res =
-                                        await Geolocator.getCurrentPosition();
-                                    setState(() {
-                                      position = res;
-                                    });
+                                  if (isRecord == Constants.submit) {
+                                    setState(() => remarksControlller.text =
+                                        translateText);
+                                    setState(() => isTranslate = false);
                                   }
-                                  final RepoPostModel requestBodyData =
-                                      RepoPostModel(
-                                          eventId: ConstantEventValues
-                                              .repoEventId,
-                                          eventType: Constants.repo,
-                                          caseId: widget.caseId,
-                                          eventCode: ConstantEventValues
-                                              .repoEvenCode,
-                                          voiceCallEventCode: ConstantEventValues
-                                              .voiceCallEventCode,
-                                          // createdAt: (ConnectivityResult.none ==
-                                          //         await Connectivity()
-                                          //             .checkConnectivity())
-                                          //     ? DateTime.now().toString()
-                                          //     : null,
-                                          createdBy: Singleton
-                                                  .instance.agentRef ??
-                                              '',
-                                          agentName: Singleton
-                                                  .instance.agentName ??
-                                              '',
-                                          agrRef: Singleton
-                                                  .instance.agrRef ??
-                                              '',
-                                          contractor: Singleton
-                                                  .instance.contractor ??
-                                              '',
-                                          eventModule:
-                                              (widget
-                                                          .userType ==
+                                  if (_formKey.currentState!.validate() &&
+                                      dateControlller.text != '' &&
+                                      timeControlller.text != '') {
+                                    if (uploadFileLists.isEmpty) {
+                                      AppUtils.showToast(
+                                        Languages.of(context)!.uploadImage,
+                                        gravity: ToastGravity.CENTER,
+                                      );
+                                    } else {
+                                      setState(() => isSubmit = false);
+                                      Position position = Position(
+                                        longitude: 0,
+                                        latitude: 0,
+                                        timestamp: DateTime.now(),
+                                        accuracy: 0,
+                                        altitude: 0,
+                                        heading: 0,
+                                        speed: 0,
+                                        speedAccuracy: 0,
+                                      );
+
+                                      final GeolocatorPlatform
+                                          geolocatorPlatform =
+                                          GeolocatorPlatform.instance;
+
+                                      final Position res =
+                                          await geolocatorPlatform
+                                              .getCurrentPosition();
+                                      setState(() {
+                                        position = res;
+                                      });
+                                      final RepoPostModel requestBodyData =
+                                          RepoPostModel(
+                                              eventId: ConstantEventValues
+                                                  .repoEventId,
+                                              eventType: Constants.repo,
+                                              caseId: widget.caseId,
+                                              eventCode: ConstantEventValues
+                                                  .repoEvenCode,
+                                              voiceCallEventCode: ConstantEventValues
+                                                  .voiceCallEventCode,
+                                              // createdAt: (ConnectivityResult.none ==
+                                              //         await Connectivity()
+                                              //             .checkConnectivity())
+                                              //     ? DateTime.now().toString()
+                                              //     : null,
+                                              createdBy:
+                                                  Singleton.instance.agentRef ??
+                                                      '',
+                                              agentName:
+                                                  Singleton.instance.agentName ??
+                                                      '',
+                                              agrRef: Singleton.instance.agrRef ??
+                                                  '',
+                                              contractor:
+                                                  Singleton.instance.contractor ??
+                                                      '',
+                                              eventModule: (widget.userType ==
                                                       Constants.telecaller)
                                                   ? 'Telecalling'
                                                   : 'Field Allocation',
-                                          contact: RepoContact(
-                                            cType: widget.postValue['cType'],
-                                            value: widget.postValue['value'],
-                                            health: widget.health,
-                                          ),
-                                          callID:
-                                              Singleton
-                                                  .instance.callID
+                                              contact: RepoContact(
+                                                cType:
+                                                    widget.postValue['cType'],
+                                                value:
+                                                    widget.postValue['value'],
+                                                health: widget.health,
+                                              ),
+                                              callID: Singleton.instance.callID
                                                   .toString(),
-                                          callingID: Singleton
-                                              .instance.callingID
-                                              .toString(),
-                                          callerServiceID:
-                                              Singleton
+                                              callingID: Singleton
+                                                  .instance.callingID
+                                                  .toString(),
+                                              callerServiceID: Singleton
                                                   .instance.callerServiceID
                                                   .toString(),
-                                          invalidNumber: Singleton
-                                              .instance.invalidNumber
-                                              .toString(),
-                                          eventAttr: EventAttr(
-                                            modelMake:
-                                                modelMakeControlller.text,
-                                            registrationNo:
-                                                registrationNoControlller.text,
-                                            chassisNo:
-                                                chassisNoControlller.text,
-                                            remarks: remarksControlller.text,
-                                            repo: Repo(),
-                                            date: dateControlller.text.trim() +
-                                                'T' +
-                                                timeControlller.text.trim() +
-                                                ':00.000Z',
-                                            imageLocation: <String>[],
-                                            customerName: Singleton.instance
-                                                    .caseCustomerName ??
-                                                '',
-                                            followUpPriority:
-                                                EventFollowUpPriority
-                                                    .connectedFollowUpPriority(
-                                              currentCaseStatus: widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .result!
-                                                  .caseDetails!
-                                                  .telSubStatus!,
-                                              eventType: 'REPO',
-                                              currentFollowUpPriority: widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .result!
-                                                  .caseDetails!
-                                                  .followUpPriority!,
-                                            ),
-                                            longitude: position.longitude,
-                                            latitude: position.latitude,
-                                            accuracy: position.accuracy,
-                                            altitude: position.altitude,
-                                            heading: position.heading,
-                                            speed: position.speed,
-                                            reginalText: returnS2Tdata
-                                                .result?.reginalText,
-                                            translatedText: returnS2Tdata
-                                                .result?.translatedText,
-                                            audioS3Path: returnS2Tdata
-                                                .result?.audioS3Path,
-                                          ));
+                                              invalidNumber: Singleton
+                                                  .instance.invalidNumber
+                                                  .toString(),
+                                              eventAttr: EventAttr(
+                                                modelMake:
+                                                    modelMakeControlller.text,
+                                                registrationNo:
+                                                    registrationNoControlller
+                                                        .text,
+                                                chassisNo:
+                                                    chassisNoControlller.text,
+                                                remarks:
+                                                    remarksControlller.text,
+                                                repo: Repo(),
+                                                date: dateControlller.text
+                                                        .trim() +
+                                                    'T' +
+                                                    timeControlller.text
+                                                        .trim() +
+                                                    ':00.000Z',
+                                                imageLocation: <String>[],
+                                                customerName: Singleton.instance
+                                                        .caseCustomerName ??
+                                                    '',
+                                                followUpPriority:
+                                                    EventFollowUpPriority
+                                                        .connectedFollowUpPriority(
+                                                  currentCaseStatus: widget
+                                                      .bloc
+                                                      .caseDetailsAPIValue
+                                                      .result!
+                                                      .caseDetails!
+                                                      .telSubStatus!,
+                                                  eventType: 'REPO',
+                                                  currentFollowUpPriority:
+                                                      widget
+                                                          .bloc
+                                                          .caseDetailsAPIValue
+                                                          .result!
+                                                          .caseDetails!
+                                                          .followUpPriority!,
+                                                ),
+                                                longitude: position.longitude,
+                                                latitude: position.latitude,
+                                                accuracy: position.accuracy,
+                                                altitude: position.altitude,
+                                                heading: position.heading,
+                                                speed: position.speed,
+                                                reginalText: returnS2Tdata
+                                                    .result?.reginalText,
+                                                translatedText: returnS2Tdata
+                                                    .result?.translatedText,
+                                                audioS3Path: returnS2Tdata
+                                                    .result?.audioS3Path,
+                                              ));
 
-                                  debugPrint(
-                                      "requestg body data for REPO ----> ${jsonEncode(requestBodyData)}");
-
-                                  final Map<String, dynamic> postdata =
-                                      jsonDecode(jsonEncode(
-                                              requestBodyData.toJson()))
-                                          as Map<String, dynamic>;
-                                  final List<dynamic> value = <dynamic>[];
-                                  for (File element in uploadFileLists) {
-                                    value.add(await MultipartFile.fromFile(
-                                        element.path.toString()));
-                                  }
-                                  postdata.addAll(<String, dynamic>{
-                                    'files': value,
-                                  });
-
-                                  if (ConnectivityResult.none ==
-                                      await Connectivity()
-                                          .checkConnectivity()) {
-                                    final Map<String, dynamic> firebaseObject =
-                                        requestBodyData.toJson();
-                                    try {
-                                      firebaseObject.addAll(await FirebaseUtils
-                                          .toPrepareFileStoringModel(
-                                              uploadFileLists));
-                                    } catch (e) {
                                       debugPrint(
-                                          'Exception while converting base64 ${e.toString()}');
-                                    }
-                                    await FirebaseUtils.storeEvents(
-                                            eventsDetails: firebaseObject,
-                                            caseId: widget.caseId,
-                                            selectedFollowUpDate:
-                                                dateControlller.text,
-                                            selectedClipValue: Constants.repo,
-                                            bloc: widget.bloc)
-                                        .whenComplete(() {
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                    });
-                                  } else {
-                                    final Map<String, dynamic> postResult =
-                                        await APIRepository.apiRequest(
-                                      APIRequestType.upload,
-                                      HttpUrl.repoPostUrl(
-                                          'repo', widget.userType),
-                                      formDatas: FormData.fromMap(postdata),
-                                    );
-                                    if (postResult[Constants.success]) {
-                                      final Map<String, dynamic>
-                                          firebaseObject =
-                                          requestBodyData.toJson();
-                                      try {
-                                        firebaseObject.addAll(
-                                            await FirebaseUtils
-                                                .toPrepareFileStoringModel(
-                                                    uploadFileLists));
-                                      } catch (e) {
-                                        debugPrint(
-                                            'Exception while converting base64 ${e.toString()}');
-                                      }
-                                      await FirebaseUtils.storeEvents(
-                                              eventsDetails: firebaseObject,
-                                              caseId: widget.caseId,
-                                              selectedFollowUpDate:
-                                                  dateControlller.text,
-                                              selectedClipValue: Constants.repo,
-                                              bloc: widget.bloc)
-                                          .whenComplete(() {});
-                                      // here update followUpPriority value.
-                                      widget.bloc.caseDetailsAPIValue.result!
-                                              .caseDetails!.followUpPriority =
-                                          requestBodyData
-                                              .eventAttr.followUpPriority;
+                                          "requestg body data for REPO ----> ${jsonEncode(requestBodyData)}");
 
-                                      widget.bloc.add(
-                                        ChangeIsSubmitForMyVisitEvent(
-                                          Constants.repo,
-                                        ),
-                                      );
-                                      // set speech to text data is null
-                                      returnS2Tdata.result?.reginalText = null;
-                                      returnS2Tdata.result?.translatedText =
-                                          null;
-                                      returnS2Tdata.result?.audioS3Path = null;
-                                      AppUtils.topSnackBar(context,
-                                          Constants.successfullySubmitted);
-                                      widget.bloc.add(
-                                        ChangeHealthStatusEvent(),
-                                      );
-                                      Navigator.pop(context);
+                                      final Map<String, dynamic> postdata =
+                                          jsonDecode(jsonEncode(
+                                                  requestBodyData.toJson()))
+                                              as Map<String, dynamic>;
+                                      final List<dynamic> value = <dynamic>[];
+                                      for (File element in uploadFileLists) {
+                                        value.add(await MultipartFile.fromFile(
+                                            element.path.toString()));
+                                      }
+                                      postdata.addAll(<String, dynamic>{
+                                        'files': value,
+                                      });
+
+                                      if (ConnectivityResult.none ==
+                                          await Connectivity()
+                                              .checkConnectivity()) {
+                                        final Map<String, dynamic>
+                                            firebaseObject =
+                                            requestBodyData.toJson();
+                                        try {
+                                          firebaseObject.addAll(
+                                              await FirebaseUtils
+                                                  .toPrepareFileStoringModel(
+                                                      uploadFileLists));
+                                        } catch (e) {
+                                          debugPrint(
+                                              'Exception while converting base64 ${e.toString()}');
+                                        }
+                                        await FirebaseUtils.storeEvents(
+                                                eventsDetails: firebaseObject,
+                                                caseId: widget.caseId,
+                                                selectedFollowUpDate:
+                                                    dateControlller.text,
+                                                selectedClipValue:
+                                                    Constants.repo,
+                                                bloc: widget.bloc)
+                                            .whenComplete(() {
+                                          AppUtils.topSnackBar(context,
+                                              Constants.successfullySubmitted);
+                                        });
+                                      } else {
+                                        final Map<String, dynamic> postResult =
+                                            await APIRepository.apiRequest(
+                                          APIRequestType.upload,
+                                          HttpUrl.repoPostUrl(
+                                              'repo', widget.userType),
+                                          formDatas: FormData.fromMap(postdata),
+                                        );
+                                        if (postResult[Constants.success]) {
+                                          final Map<String, dynamic>
+                                              firebaseObject =
+                                              requestBodyData.toJson();
+                                          try {
+                                            firebaseObject.addAll(
+                                                await FirebaseUtils
+                                                    .toPrepareFileStoringModel(
+                                                        uploadFileLists));
+                                          } catch (e) {
+                                            debugPrint(
+                                                'Exception while converting base64 ${e.toString()}');
+                                          }
+                                          await FirebaseUtils.storeEvents(
+                                                  eventsDetails: firebaseObject,
+                                                  caseId: widget.caseId,
+                                                  selectedFollowUpDate:
+                                                      dateControlller.text,
+                                                  selectedClipValue:
+                                                      Constants.repo,
+                                                  bloc: widget.bloc)
+                                              .whenComplete(() {});
+                                          // here update followUpPriority value.
+                                          widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result!
+                                                  .caseDetails!
+                                                  .followUpPriority =
+                                              requestBodyData
+                                                  .eventAttr.followUpPriority;
+
+                                          widget.bloc.add(
+                                            ChangeIsSubmitForMyVisitEvent(
+                                              Constants.repo,
+                                            ),
+                                          );
+                                          // set speech to text data is null
+                                          returnS2Tdata.result?.reginalText =
+                                              null;
+                                          returnS2Tdata.result?.translatedText =
+                                              null;
+                                          returnS2Tdata.result?.audioS3Path =
+                                              null;
+                                          AppUtils.topSnackBar(context,
+                                              Constants.successfullySubmitted);
+                                          widget.bloc.add(
+                                            ChangeHealthStatusEvent(),
+                                          );
+                                          Navigator.pop(context);
+                                        }
+                                      }
                                     }
                                   }
                                 }
+                                setState(() => isSubmit = true);
                               }
                             }
-                            setState(() => isSubmit = true);
                           }
                         : () {},
                     cardShape: 5,

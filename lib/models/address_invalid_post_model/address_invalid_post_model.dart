@@ -26,9 +26,10 @@ class AddressInvalidPostModel {
     caseId = json['caseId'];
     eventCode = json['eventCode'];
     eventAttr = AddressInvalidEventAttr.fromJson(json['eventAttr']);
-    contact = json['contact'].forEach((dynamic v) {
-      contact.add(v);
-    });
+    contact = json['contact'];
+    // contact = json['contact'].forEach((dynamic v) {
+    //   contact.add(v);
+    // });
     createdAt = json['createdAt'];
     createdBy = json['createdBy'];
     eventModule = json['eventModule'];
@@ -54,8 +55,11 @@ class AddressInvalidPostModel {
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
     data['eventAttr'] = eventAttr.toJson();
-    data['contact'] =
-        contact.map((AddressInvalidContact v) => v.toJson()).toList();
+    if (contact != null) {
+      data['contact'] = contact;
+    }
+    // data['contact'] =
+    //     contact.map((AddressInvalidContact v) => v.toJson()).toList();
     if (isOnline == false) {
       data['createdAt'] = DateTime.now().toString();
     }
@@ -78,7 +82,8 @@ class AddressInvalidPostModel {
   late String caseId;
   late String eventCode;
   late AddressInvalidEventAttr eventAttr;
-  late List<AddressInvalidContact> contact;
+  late dynamic contact;
+  // late List<AddressInvalidContact> contact;
   late String? createdAt;
   late String createdBy;
   late String eventModule;

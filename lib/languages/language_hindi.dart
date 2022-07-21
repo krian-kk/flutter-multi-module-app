@@ -498,6 +498,9 @@ class LanguageHi extends Languages {
   String get eventDetails => 'घटना की जानकारी';
 
   @override
+  String get eventDetailsInfo => 'घटना की जानकारी';
+
+  @override
   String get pickUp => 'पिक-अप';
 
   @override
@@ -1139,4 +1142,10 @@ class LanguageHi extends Languages {
 
   @override
   String get upload => 'डालना';
+
+  @override
+  String get enable => 'सक्षम करना';
+
+  @override
+  String get basicInfo => 'बुनियादी जानकारी';
 }

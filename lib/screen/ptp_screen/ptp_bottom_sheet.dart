@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:location/location.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -29,6 +30,7 @@ import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
+import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -506,7 +508,16 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 fontSize: FontSize.sixteen,
                                 onTap: isSubmit
-                                    ? () => submitPTPEvent(true)
+                                    ? () async {
+                                        if (await AppUtils.checkGPSConnection(
+                                            context)) {
+                                          if (await AppUtils
+                                              .checkLocationPermission(
+                                                  context)) {
+                                            submitPTPEvent(true);
+                                          }
+                                        }
+                                      }
                                     : () {},
                                 cardShape: 5,
                               ),
@@ -528,7 +539,17 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             ],
                           ),
                           fontSize: FontSize.sixteen,
-                          onTap: isSubmit ? () => submitPTPEvent(false) : () {},
+                          onTap: isSubmit
+                              ? () async {
+                                  if (await AppUtils.checkGPSConnection(
+                                      context)) {
+                                    if (await AppUtils.checkLocationPermission(
+                                        context)) {
+                                      submitPTPEvent(false);
+                                    }
+                                  }
+                                }
+                              : () {},
                           cardShape: 5,
                         ),
                       ),
@@ -581,14 +602,13 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               speed: 0,
               speedAccuracy: 0,
             );
-            if (Geolocator.checkPermission().toString() !=
-                PermissionStatus.granted.toString()) {
-              final Position res = await Geolocator.getCurrentPosition();
+            final GeolocatorPlatform geolocatorPlatform =
+                GeolocatorPlatform.instance;
 
-              setState(() {
-                position = res;
-              });
-            }
+            final Position res = await geolocatorPlatform.getCurrentPosition();
+            setState(() {
+              position = res;
+            });
             final PTPPostModel requestBodyData = PTPPostModel(
               eventId: ConstantEventValues.ptpEventId,
               eventType:

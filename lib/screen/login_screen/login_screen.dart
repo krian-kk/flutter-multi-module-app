@@ -83,13 +83,13 @@ class _LoginScreenState extends State<LoginScreen> {
       // password.text = 'Origa123';
       // userId.text = 'MB_vfos';
       // password.text = 'Origa123';
-      userId.text = 'MB_fos';
-      password.text = 'Asd@123';
+      // userId.text = 'MB_fos';
+      // password.text = 'Asd@123';
       // userId.text = 'YES_fos';
       // password.text = 'Agent1234';
       //
-      // userId.text = 'CDE_46';
-      // password.text = 'Origa@123';
+      userId.text = 'CDE_46';
+      password.text = 'Origa@123';
     }
     username = FocusNode();
     passwords = FocusNode();

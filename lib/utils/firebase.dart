@@ -34,6 +34,11 @@ class FirebaseUtils {
     if (Singleton.instance.usertype == Constants.fieldagent &&
         Singleton.instance.isOfflineEnabledContractorBased) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        debugPrint('--------> $eventMap');
+        // if (eventMap['contact'] != null) {
+        //   var eventAddress = eventMap['contact'];
+        //   eventMap['contact'] = Map.of(eventAddress);
+        // }
         FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)

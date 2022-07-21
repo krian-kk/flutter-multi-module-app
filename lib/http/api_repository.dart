@@ -211,13 +211,15 @@ class APIRepository {
   }
 
   static void apiErrorStatus({String? errorString, ToastGravity? position}) {
-    Fluttertoast.showToast(
-        msg: errorString!,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: position ?? ToastGravity.CENTER,
-        timeInSecForIosWeb: 3,
-        backgroundColor: ColorResource.color101010,
-        textColor: ColorResource.colorffffff,
-        fontSize: 14.0);
+    if (errorString != '') {
+      Fluttertoast.showToast(
+          msg: errorString!,
+          toastLength: Toast.LENGTH_LONG,
+          gravity: position ?? ToastGravity.CENTER,
+          timeInSecForIosWeb: 3,
+          backgroundColor: ColorResource.color101010,
+          textColor: ColorResource.colorffffff,
+          fontSize: 14.0);
+    }
   }
 }

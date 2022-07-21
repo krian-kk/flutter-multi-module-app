@@ -597,28 +597,36 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   isRemoveExtraPadding: true,
                                                   fontSize: FontSize.ten,
                                                   onTap: isSubmitFirst
-                                                      ? () {
-                                                          if (widget
-                                                              .bloc
-                                                              .phoneUnreachableFormKey
-                                                              .currentState!
-                                                              .validate()) {
-                                                            if (widget.bloc
-                                                                    .phoneSelectedUnreadableClip !=
-                                                                '') {
-                                                              widget.bloc.add(
-                                                                  ClickPhoneUnreachableSubmitedButtonEvent(
-                                                                context,
-                                                                autoCallingStopAndSubmit:
-                                                                    false,
-                                                              ));
-                                                            } else {
-                                                              AppUtils
-                                                                  .showToast(
-                                                                Languages.of(
-                                                                        context)!
-                                                                    .pleaseSelectOptions,
-                                                              );
+                                                      ? () async {
+                                                          if (await AppUtils
+                                                              .checkGPSConnection(
+                                                                  context)) {
+                                                            if (await AppUtils
+                                                                .checkLocationPermission(
+                                                                    context)) {
+                                                              if (widget
+                                                                  .bloc
+                                                                  .phoneUnreachableFormKey
+                                                                  .currentState!
+                                                                  .validate()) {
+                                                                if (widget.bloc
+                                                                        .phoneSelectedUnreadableClip !=
+                                                                    '') {
+                                                                  widget.bloc.add(
+                                                                      ClickPhoneUnreachableSubmitedButtonEvent(
+                                                                    context,
+                                                                    autoCallingStopAndSubmit:
+                                                                        false,
+                                                                  ));
+                                                                } else {
+                                                                  AppUtils
+                                                                      .showToast(
+                                                                    Languages.of(
+                                                                            context)!
+                                                                        .pleaseSelectOptions,
+                                                                  );
+                                                                }
+                                                              }
                                                             }
                                                           }
                                                         }
@@ -645,13 +653,21 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                     ],
                                                   ),
                                                   onTap: isSubmitSecond
-                                                      ? () {
-                                                          widget.bloc.add(
-                                                              ClickPhoneInvalidButtonEvent(
-                                                            context,
-                                                            autoCallingStopAndSubmit:
-                                                                false,
-                                                          ));
+                                                      ? () async {
+                                                          if (await AppUtils
+                                                              .checkGPSConnection(
+                                                                  context)) {
+                                                            if (await AppUtils
+                                                                .checkLocationPermission(
+                                                                    context)) {
+                                                              widget.bloc.add(
+                                                                  ClickPhoneInvalidButtonEvent(
+                                                                context,
+                                                                autoCallingStopAndSubmit:
+                                                                    false,
+                                                              ));
+                                                            }
+                                                          }
                                                         }
                                                       : () {},
                                                   cardShape: 5,
@@ -679,55 +695,65 @@ class _PhoneScreenState extends State<PhoneScreen>
                                               ],
                                             ),
                                             onTap: isSubmitFirst
-                                                ? () {
-                                                    if (widget.bloc
-                                                            .isRecordUnReachable ==
-                                                        Constants.process) {
-                                                      AppUtils.showToast(
-                                                          'Stop the Record then Submit');
-                                                    } else if (widget.bloc
-                                                            .isRecordUnReachable ==
-                                                        Constants.stop) {
-                                                      AppUtils.showToast(
-                                                          'Please wait audio is converting');
-                                                    } else {
-                                                      if (widget.bloc
-                                                              .isRecordUnReachable ==
-                                                          Constants.submit) {
-                                                        setState(() => widget
-                                                                .bloc
-                                                                .phoneUnreachableRemarksController
-                                                                .text =
-                                                            widget.bloc
-                                                                .translateTextUnReachable);
-                                                        setState(() => widget
-                                                                .bloc
-                                                                .isTranslateUnReachable =
-                                                            false);
-                                                      }
-                                                      if (widget
-                                                          .bloc
-                                                          .phoneUnreachableFormKey
-                                                          .currentState!
-                                                          .validate()) {
+                                                ? () async {
+                                                    if (await AppUtils
+                                                        .checkGPSConnection(
+                                                            context)) {
+                                                      if (await AppUtils
+                                                          .checkLocationPermission(
+                                                              context)) {
                                                         if (widget.bloc
-                                                                .phoneSelectedUnreadableClip !=
-                                                            '') {
-                                                          widget.bloc.add(
-                                                              ClickPhoneUnreachableSubmitedButtonEvent(
-                                                            context,
-                                                            isCallFromCaseDetails:
-                                                                widget
-                                                                    .isCallFromCaseDetails,
-                                                            callId:
-                                                                widget.callId,
-                                                          ));
-                                                        } else {
+                                                                .isRecordUnReachable ==
+                                                            Constants.process) {
                                                           AppUtils.showToast(
-                                                            Languages.of(
-                                                                    context)!
-                                                                .pleaseSelectOptions,
-                                                          );
+                                                              'Stop the Record then Submit');
+                                                        } else if (widget.bloc
+                                                                .isRecordUnReachable ==
+                                                            Constants.stop) {
+                                                          AppUtils.showToast(
+                                                              'Please wait audio is converting');
+                                                        } else {
+                                                          if (widget.bloc
+                                                                  .isRecordUnReachable ==
+                                                              Constants
+                                                                  .submit) {
+                                                            setState(() => widget
+                                                                    .bloc
+                                                                    .phoneUnreachableRemarksController
+                                                                    .text =
+                                                                widget.bloc
+                                                                    .translateTextUnReachable);
+                                                            setState(() => widget
+                                                                    .bloc
+                                                                    .isTranslateUnReachable =
+                                                                false);
+                                                          }
+                                                          if (widget
+                                                              .bloc
+                                                              .phoneUnreachableFormKey
+                                                              .currentState!
+                                                              .validate()) {
+                                                            if (widget.bloc
+                                                                    .phoneSelectedUnreadableClip !=
+                                                                '') {
+                                                              widget.bloc.add(
+                                                                  ClickPhoneUnreachableSubmitedButtonEvent(
+                                                                context,
+                                                                isCallFromCaseDetails:
+                                                                    widget
+                                                                        .isCallFromCaseDetails,
+                                                                callId: widget
+                                                                    .callId,
+                                                              ));
+                                                            } else {
+                                                              AppUtils
+                                                                  .showToast(
+                                                                Languages.of(
+                                                                        context)!
+                                                                    .pleaseSelectOptions,
+                                                              );
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     }
@@ -750,55 +776,65 @@ class _PhoneScreenState extends State<PhoneScreen>
                                               ],
                                             ),
                                             onTap: isSubmitSecond
-                                                ? () {
-                                                    if (widget.bloc
-                                                            .isRecordPhoneInvalid ==
-                                                        Constants.process) {
-                                                      AppUtils.showToast(
-                                                          'Stop the Record then Submit');
-                                                    } else if (widget.bloc
-                                                            .isRecordPhoneInvalid ==
-                                                        Constants.stop) {
-                                                      AppUtils.showToast(
-                                                          'Please wait audio is converting');
-                                                    } else {
-                                                      if (widget.bloc
-                                                              .isRecordPhoneInvalid ==
-                                                          Constants.submit) {
-                                                        setState(() => widget
-                                                                .bloc
-                                                                .phoneInvalidRemarksController
-                                                                .text =
-                                                            widget.bloc
-                                                                .translateTextPhoneInvalid);
-                                                        setState(() => widget
-                                                                .bloc
-                                                                .isTranslatePhoneInvalid =
-                                                            false);
-                                                      }
-                                                      if (widget
-                                                          .bloc
-                                                          .phoneInvalidFormKey
-                                                          .currentState!
-                                                          .validate()) {
+                                                ? () async {
+                                                    if (await AppUtils
+                                                        .checkGPSConnection(
+                                                            context)) {
+                                                      if (await AppUtils
+                                                          .checkLocationPermission(
+                                                              context)) {
                                                         if (widget.bloc
-                                                                .phoneSelectedInvalidClip !=
-                                                            '') {
-                                                          widget.bloc.add(
-                                                              ClickPhoneInvalidButtonEvent(
-                                                            context,
-                                                            isCallFromCaseDetails:
-                                                                widget
-                                                                    .isCallFromCaseDetails,
-                                                            callId:
-                                                                widget.callId,
-                                                          ));
-                                                        } else {
+                                                                .isRecordPhoneInvalid ==
+                                                            Constants.process) {
                                                           AppUtils.showToast(
-                                                            Languages.of(
-                                                                    context)!
-                                                                .pleaseSelectOptions,
-                                                          );
+                                                              'Stop the Record then Submit');
+                                                        } else if (widget.bloc
+                                                                .isRecordPhoneInvalid ==
+                                                            Constants.stop) {
+                                                          AppUtils.showToast(
+                                                              'Please wait audio is converting');
+                                                        } else {
+                                                          if (widget.bloc
+                                                                  .isRecordPhoneInvalid ==
+                                                              Constants
+                                                                  .submit) {
+                                                            setState(() => widget
+                                                                    .bloc
+                                                                    .phoneInvalidRemarksController
+                                                                    .text =
+                                                                widget.bloc
+                                                                    .translateTextPhoneInvalid);
+                                                            setState(() => widget
+                                                                    .bloc
+                                                                    .isTranslatePhoneInvalid =
+                                                                false);
+                                                          }
+                                                          if (widget
+                                                              .bloc
+                                                              .phoneInvalidFormKey
+                                                              .currentState!
+                                                              .validate()) {
+                                                            if (widget.bloc
+                                                                    .phoneSelectedInvalidClip !=
+                                                                '') {
+                                                              widget.bloc.add(
+                                                                  ClickPhoneInvalidButtonEvent(
+                                                                context,
+                                                                isCallFromCaseDetails:
+                                                                    widget
+                                                                        .isCallFromCaseDetails,
+                                                                callId: widget
+                                                                    .callId,
+                                                              ));
+                                                            } else {
+                                                              AppUtils
+                                                                  .showToast(
+                                                                Languages.of(
+                                                                        context)!
+                                                                    .pleaseSelectOptions,
+                                                              );
+                                                            }
+                                                          }
                                                         }
                                                       }
                                                     }
