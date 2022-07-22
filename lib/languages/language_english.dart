@@ -621,7 +621,7 @@ class LanguageEn extends Languages {
   String get resendOTP => 'Resend OTP?';
 
   @override
-  String get submitOTP => 'Submit OTP?';
+  String get submitOTP => 'Submit OTP';
 
   @override
   String get sendOTP => 'SEND OTP';
@@ -1148,4 +1148,7 @@ class LanguageEn extends Languages {
 
   @override
   String get forgotPassword => 'Forgot Password ?';
+
+  @override
+  String get correctMPin => 'Please enter the correct mPin';
 }

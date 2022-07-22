@@ -622,7 +622,7 @@ class LanguageTa extends Languages {
   String get resendOTP => 'OTP ஐ மீண்டும் அனுப்பவா?';
 
   @override
-  String get submitOTP => 'OTPயைச் சமர்ப்பிக்கவா?';
+  String get submitOTP => 'OTPயைச் சமர்ப்பிக்கவா';
 
   @override
   String get sendOTP => 'OTP அனுப்பவும்';
@@ -1155,4 +1155,7 @@ class LanguageTa extends Languages {
 
   @override
   String get forgotPassword => 'கடவுச்சொல்லை மறந்துவிட்டீர்களா ?';
+
+  @override
+  String get correctMPin => 'சரியான mPin ஐ உள்ளிடவும்';
 }

@@ -82,6 +82,7 @@ class _AccountPasswordMpinScreenState extends State<AccountPasswordMpinScreen> {
               isBorder: true,
               isLabel: true,
               keyBoardType: TextInputType.emailAddress,
+              obscureText: true,
               errorborderColor: ColorResource.color23375A,
               borderColor: ColorResource.color23375A,
               validationRules: const <String>['required'],

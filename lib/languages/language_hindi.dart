@@ -622,7 +622,7 @@ class LanguageHi extends Languages {
   String get resendOTP => 'ओटीपी पुनः भेजें?';
 
   @override
-  String get submitOTP => 'ओटीपी सबमिट करें?';
+  String get submitOTP => 'ओटीपी सबमिट करें';
 
   @override
   String get sendOTP => 'OTP भेजें';
@@ -1151,4 +1151,7 @@ class LanguageHi extends Languages {
 
   @override
   String get forgotPassword => 'पासवर्ड भूल गए ?';
+
+  @override
+  String get correctMPin => 'कृपया सही एमपिन दर्ज करें';
 }
