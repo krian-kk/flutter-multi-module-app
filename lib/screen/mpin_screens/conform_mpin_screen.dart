@@ -89,8 +89,7 @@ class _ConformMpinScreenState extends State<ConformMpinScreen> {
                   widget.successFunction();
                 } else {
                   setState(() => isError = true);
-                  AppUtils.showErrorToast(
-                      'mPin is wrong... Please enter the correct pin');
+                  AppUtils.showErrorToast(Languages.of(context)!.correctMPin);
                 }
               },
               textStyle: const TextStyle(

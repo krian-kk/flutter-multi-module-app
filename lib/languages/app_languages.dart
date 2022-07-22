@@ -761,4 +761,6 @@ abstract class Languages {
   String get basicInfo;
 
   String get forgotPassword;
+
+  String get correctMPin;
 }
