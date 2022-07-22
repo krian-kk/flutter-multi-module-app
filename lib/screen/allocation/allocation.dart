@@ -873,9 +873,9 @@ class _AllocationScreenState extends State<AllocationScreen>
                 await FirebaseUtils.updateStarred(
                     isStarred: true, caseId: state.caseId);
               }
-              setState(() {
-                bloc.starCount++;
-              });
+              // setState(() {
+              //   bloc.starCount++;
+              // });
             } else {
               if (Singleton.instance.usertype == Constants.fieldagent) {
                 await FirebaseUtils.updateStarred(
@@ -900,7 +900,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                 await FirebaseUtils.updateStarred(
                     isStarred: false, caseId: state.caseId);
                 setState(() {
-                  bloc.starCount++;
+                  bloc.starCount--;
                 });
               }
 
