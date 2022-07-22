@@ -590,6 +590,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
         // getting Agent Details
         final agentDetails = AgentInformation.fromJson(agentDetail['data']);
+        Singleton.instance.agentDetailsInfo =
+            AgentInformation.fromJson(agentDetail['data']);
         // each agent type COLLECTOR or TELECALLER then store agent-type in local storage
         if (agentDetails.status == 200) {
           if (agentDetails.result!.first.type == 'COLLECTOR') {

@@ -94,6 +94,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   List<EventDetailsPlayAudioModel> eventDetailsPlayAudioModel =
       <EventDetailsPlayAudioModel>[];
   List<EventResult> displayEventDetail = [];
+  bool isEventDetailLoading = false;
 
   int? indexValue;
   String? userType;
@@ -378,8 +379,17 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         AppUtils.noInternetSnackbar(event.context!);
       }
 
-      // yield EventDetailsScreenState();
+      yield CaseDetailsLoadedState();
+      if (event.paramValues['isAutoCalling'] != null) {
+        isAutoCalling = true;
+        indexValue = allocationBloc.indexValue;
+        // yield ClickMainCallBottomSheetState(0);
+        yield PhoneBottomSheetSuccessState();
+      }
+    }
 
+    if (event is TriggerEventDetailsEvent) {
+      isEventDetailLoading = true;
       //Event details API
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         // yield CDNoInternetState();
@@ -446,19 +456,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         };
         data.add(jsonDecode(jsonEncode(map)));
       });
-      displayEventDetail = data
+      final eventList = data
           .map((item) => EventResult.fromJson(item as Map<String, dynamic>))
           .toList()
           .reversed
           .toList();
 
-      yield CaseDetailsLoadedState();
-      if (event.paramValues['isAutoCalling'] != null) {
-        isAutoCalling = true;
-        indexValue = allocationBloc.indexValue;
-        // yield ClickMainCallBottomSheetState(0);
-        yield PhoneBottomSheetSuccessState();
-      }
+      yield TriggerEventDetailsState(eventListData: eventList);
     }
 
     if (event is PhoneBottomSheetInitialEvent) {

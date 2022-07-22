@@ -188,3 +188,5 @@ class GenerateQRcodeEvent extends CaseDetailsEvent {
 class FirebaseStream extends CaseDetailsEvent {
   FirebaseStream();
 }
+
+class TriggerEventDetailsEvent extends CaseDetailsEvent {}

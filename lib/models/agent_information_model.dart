@@ -51,7 +51,8 @@ class Result {
       this.lastOtp,
       this.userAdmin,
       this.failedLoginCounter,
-      this.fcm});
+      this.fcm,
+      this.agencyAgent});
 
   Result.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -82,6 +83,7 @@ class Result {
     userAdmin = json['userAdmin'];
     failedLoginCounter = json['failedLoginCounter'];
     fcm = json['fcm'] != null ? Fcm.fromJson(json['fcm']) : null;
+    agencyAgent = json['agencyAgent'];
   }
 
   String? sId;
@@ -107,6 +109,7 @@ class Result {
   bool? userAdmin;
   int? failedLoginCounter;
   Fcm? fcm;
+  bool? agencyAgent;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -139,6 +142,7 @@ class Result {
     if (fcm != null) {
       data['fcm'] = fcm!.toJson();
     }
+    data['agencyAgent'] = agencyAgent;
     return data;
   }
 }

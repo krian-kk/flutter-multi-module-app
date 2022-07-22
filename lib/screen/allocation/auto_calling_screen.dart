@@ -78,6 +78,7 @@ class AutoCalling {
                     body: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -189,46 +190,50 @@ class AutoCalling {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: <Widget>[
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    CustomText(
-                                                      bloc.resultList[indexs]
-                                                                  .due !=
-                                                              null
-                                                          ? bloc
-                                                              .resultList[
-                                                                  indexs]
-                                                              .due
-                                                              .toString()
-                                                          : '',
-                                                      fontSize:
-                                                          FontSize.eighteen,
-                                                      color: ColorResource
-                                                          .color101010,
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 3.0,
-                                                    ),
-                                                    SizedBox(
-                                                      child: CustomText(
-                                                        bloc
-                                                            .autoCallingResultList[
-                                                                indexs]
-                                                            .cust!,
+                                                Flexible(
+                                                  flex: 4,
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      CustomText(
+                                                        bloc.resultList[indexs]
+                                                                    .due !=
+                                                                null
+                                                            ? bloc
+                                                                .resultList[
+                                                                    indexs]
+                                                                .due
+                                                                .toString()
+                                                            : '',
                                                         fontSize:
-                                                            FontSize.sixteen,
+                                                            FontSize.eighteen,
                                                         color: ColorResource
                                                             .color101010,
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                       ),
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 8.0,
-                                                    ),
-                                                  ],
+                                                      const SizedBox(
+                                                        height: 3.0,
+                                                      ),
+                                                      SizedBox(
+                                                        child: CustomText(
+                                                          bloc
+                                                              .autoCallingResultList[
+                                                                  indexs]
+                                                              .cust!,
+                                                          fontSize:
+                                                              FontSize.sixteen,
+                                                          color: ColorResource
+                                                              .color101010,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 8.0,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
                                                 const Spacer(),
                                                 // bloc.allocationList[index].newlyAdded!

@@ -140,6 +140,9 @@ class AuthenticationBloc
 
                 final agentDetails =
                     AgentInformation.fromJson(agentDetail['data']);
+                // Set agentDetails
+                Singleton.instance.agentDetailsInfo =
+                    AgentInformation.fromJson(agentDetail['data']);
                 if (agentDetails.result!.first.type == 'COLLECTOR') {
                   await PreferenceHelper.setPreference(
                       Constants.userType, Constants.fieldagent);
