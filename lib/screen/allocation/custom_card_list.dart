@@ -278,7 +278,11 @@ class CustomCardList {
                                                                       .cType ==
                                                                   'residence address' ||
                                                               element.cType ==
-                                                                  'office address'))
+                                                                  'office address' ||
+                                                              element.cType ==
+                                                                  'mobile' ||
+                                                              element.cType ==
+                                                                  'email'))
                                                           .value!
                                                       : '-',
                                                   color:

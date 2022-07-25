@@ -557,11 +557,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           floatingActionButton: Visibility(
-                            visible: WidgetsBinding
-                                        .instance.window.viewInsets.bottom >
-                                    0.0
-                                ? false
-                                : true,
+                            visible: false,
+                            // visible: WidgetsBinding
+                            //             .instance.window.viewInsets.bottom >
+                            //         0.0
+                            //     ? false
+                            //     : true,
                             child: GestureDetector(
                               onTap: () {
                                 webViewScreen(context,
