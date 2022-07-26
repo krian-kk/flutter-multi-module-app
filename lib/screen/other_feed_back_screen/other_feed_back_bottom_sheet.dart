@@ -96,6 +96,10 @@ class _CustomOtherFeedBackBottomSheetState
 
   List<dynamic> otherFeedbackContact = <dynamic>[];
 
+  Map<String, dynamic> dynamicEventAttr = {};
+  final List<String> dropDownList = [];
+  // String? selectedDropDownValue;
+
   // check vehicle available or not
   bool isVehicleAvailable = false;
 
@@ -135,11 +139,10 @@ class _CustomOtherFeedBackBottomSheetState
   void initState() {
     dateControlller = TextEditingController();
     remarksController = TextEditingController();
-    if (Singleton.instance.feedbackTemplate?.result!.feedbackTemplate != null) {
-      isVehicleAvailable = Singleton.instance.feedbackTemplate?.result!
-              .feedbackTemplate![0].data![0].value ??
-          false;
-    }
+    Singleton.instance.feedbackTemplate!.result!.feedbackTemplate
+        ?.forEach((element) {
+      dynamicEventAttr.addAll({element.data![0].name!: ''});
+    });
     setState(() {
       dateControlller.text = DateFormat('yyyy-MM-dd')
           .format(DateTime.now().add(const Duration(days: 1)));
@@ -264,12 +267,20 @@ class _CustomOtherFeedBackBottomSheetState
                                 ],
                               ),
                               const SizedBox(height: 20),
-                              expandList(<FeedbackTemplate>[
-                                FeedbackTemplate(
-                                    name: Languages.of(context)!.addNewContact,
-                                    expanded: false,
-                                    data: <Data>[Data(name: 'addNewContact')])
-                              ], 0),
+                              expandList(
+                                  <FeedbackTemplate>[
+                                    FeedbackTemplate(
+                                        name: Languages.of(context)!
+                                            .addNewContact,
+                                        expanded: false,
+                                        label: Languages.of(context)!
+                                            .addNewContact,
+                                        data: <Data>[
+                                          Data(name: 'addNewContact')
+                                        ])
+                                  ],
+                                  0,
+                                  []),
                               ListView.builder(
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
@@ -278,10 +289,31 @@ class _CustomOtherFeedBackBottomSheetState
                                       0,
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                    final List<String> dropList = [];
+                                    if (Singleton
+                                            .instance
+                                            .feedbackTemplate!
+                                            .result!
+                                            .feedbackTemplate![index]
+                                            .data![0]
+                                            .type ==
+                                        Constants.dropdown) {
+                                      Singleton
+                                          .instance
+                                          .feedbackTemplate!
+                                          .result!
+                                          .feedbackTemplate![index]
+                                          .data![0]
+                                          .options
+                                          ?.forEach((element) {
+                                        dropList.add(element.viewValue!);
+                                      });
+                                    }
                                     return expandList(
                                         Singleton.instance.feedbackTemplate!
                                             .result!.feedbackTemplate!,
-                                        index);
+                                        index,
+                                        dropList);
                                   }),
                               const SizedBox(height: 5),
                               Padding(
@@ -556,6 +588,7 @@ class _CustomOtherFeedBackBottomSheetState
               position = res;
             });
           }
+
           final OtherFeedBackPostModel requestBodyData = OtherFeedBackPostModel(
             eventId: ConstantEventValues.otherFeedbackEventId,
             eventType:
@@ -578,34 +611,7 @@ class _CustomOtherFeedBackBottomSheetState
             eventCode: ConstantEventValues.otherFeedbackEvenCode,
             eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
             invalidNumber: Singleton.instance.invalidNumber.toString(),
-            eventAttr: EventAttr(
-              remarks: remarksController.text,
-              vehicleavailable: isVehicleAvailable,
-              collectorfeedback: collectorFeedBackValue ?? '',
-              actionproposed: actionproposedValue ?? '',
-              actionDate: dateControlller.text,
-              imageLocation: <String>[],
-              longitude: position.longitude,
-              latitude: position.latitude,
-              accuracy: position.accuracy,
-              altitude: position.altitude,
-              heading: position.heading,
-              speed: position.speed,
-              altitudeAccuracy: 0,
-              // agentLocation: AgentLocation(),
-              followUpPriority: EventFollowUpPriority.connectedFollowUpPriority(
-                currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                    .caseDetails!.telSubStatus!,
-                eventType: 'Feedback',
-                currentFollowUpPriority: widget.bloc.caseDetailsAPIValue.result!
-                    .caseDetails!.followUpPriority!,
-              ),
-              contact:
-                  otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
-              reginalText: returnS2Tdata.result?.reginalText,
-              translatedText: returnS2Tdata.result?.translatedText,
-              audioS3Path: returnS2Tdata.result?.audioS3Path,
-            ),
+            // eventAttr: eventVal,
             contact: OtherFeedBackContact(
               cType: widget.postValue['cType'],
               health: widget.health,
@@ -614,9 +620,46 @@ class _CustomOtherFeedBackBottomSheetState
               contactId0: widget.postValue['contactId0'] ?? '',
             ),
           );
+
+          final EventAttr eventVal = EventAttr(
+            remarks: remarksController.text,
+            actionDate: dateControlller.text,
+            imageLocation: <String>[],
+            longitude: position.longitude,
+            latitude: position.latitude,
+            accuracy: position.accuracy,
+            altitude: position.altitude,
+            heading: position.heading,
+            speed: position.speed,
+            altitudeAccuracy: 0,
+            followUpPriority: EventFollowUpPriority.connectedFollowUpPriority(
+              currentCaseStatus: widget
+                  .bloc.caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,
+              eventType: 'Feedback',
+              currentFollowUpPriority: widget.bloc.caseDetailsAPIValue.result!
+                  .caseDetails!.followUpPriority!,
+            ),
+            contact:
+                otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
+            reginalText: returnS2Tdata.result?.reginalText,
+            translatedText: returnS2Tdata.result?.translatedText,
+            audioS3Path: returnS2Tdata.result?.audioS3Path,
+          );
+
+          final Map<String, dynamic> eventdata =
+              jsonDecode(jsonEncode(eventVal.toJson())) as Map<String, dynamic>;
+
+          eventdata.addAll(dynamicEventAttr);
+
           final Map<String, dynamic> postdata =
               jsonDecode(jsonEncode(requestBodyData.toJson()))
                   as Map<String, dynamic>;
+
+          postdata.addAll(<String, dynamic>{
+            'eventAttr': eventdata,
+          });
+          print(
+              '------Request bodyes----> ${jsonDecode(jsonEncode(postdata))}');
           final List<dynamic> value = <dynamic>[];
           for (File element in uploadFileLists) {
             value.add(await MultipartFile.fromFile(element.path.toString()));
@@ -650,6 +693,7 @@ class _CustomOtherFeedBackBottomSheetState
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(
               APIRequestType.upload,
+              // HttpUrl.otherFeedBackPostUrl('looo', widget.userType),
               HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
               formDatas: FormData.fromMap(postdata),
             );
@@ -672,8 +716,7 @@ class _CustomOtherFeedBackBottomSheetState
                   .whenComplete(() {});
               // here update followUpPriority value.
               widget.bloc.caseDetailsAPIValue.result!.caseDetails!
-                      .followUpPriority =
-                  requestBodyData.eventAttr.followUpPriority;
+                  .followUpPriority = eventVal.followUpPriority;
 
               widget.bloc.add(
                 ChangeIsSubmitForMyVisitEvent(
@@ -737,7 +780,7 @@ class _CustomOtherFeedBackBottomSheetState
     setState(() => isSubmit = true);
   }
 
-  expandList(List<FeedbackTemplate> list, int index) {
+  expandList(List<FeedbackTemplate> list, int index, List<String> dropList) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -758,54 +801,48 @@ class _CustomOtherFeedBackBottomSheetState
                 expandedCrossAxisAlignment: CrossAxisAlignment.start,
                 expandedAlignment: Alignment.centerLeft,
                 title: CustomText(
-                  list[index].name!,
+                  list[index].label!,
                   fontWeight: FontWeight.w700,
                   color: ColorResource.color000000,
                 ),
                 iconColor: ColorResource.color000000,
                 collapsedIconColor: ColorResource.color000000,
                 children: <Widget>[
-                  if (list[index].data![0].name == 'vehicleavailable')
+                  if (list[index].data![0].type == Constants.toogle)
                     CupertinoSwitch(
-                      value: isVehicleAvailable,
+                      value: list[index].data![0].value!,
                       onChanged: (bool value) {
                         setState(() {
-                          isVehicleAvailable = value;
+                          list[index].data![0].value = value;
+                          dynamicEventAttr
+                              .addAll({list[index].data![0].name!: value});
                         });
                       },
                       // activeColor: CupertinoColors.activeOrange,
                       // trackColor: CupertinoColors.systemBlue,
                     ),
-                  if (list[index].data![0].name == 'collectorfeedback')
+                  if (list[index].data![0].type == Constants.dropdown)
                     CustomDropDownButton(
                       list[index].data![0].label!,
-                      collectorFeedBackValueDropdownList,
+                      dropList,
                       hintWidget: const Text('Select'),
-                      selectedValue: collectorFeedBackValue,
+                      selectedValue: list[index].dropDownValue,
                       underline: Container(
                         height: 1,
                         width: double.infinity,
                         color: ColorResource.colorffffff,
                       ),
-                      onChanged: (String? newValue) => setState(
-                          () => collectorFeedBackValue = newValue.toString()),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          list[index].dropDownValue = newValue.toString();
+                          dynamicEventAttr.addAll({
+                            list[index].data![0].name!:
+                                list[index].dropDownValue
+                          });
+                        });
+                      },
                       icon: SvgPicture.asset(ImageResource.downShape),
                       valueTextStyle: const TextStyle(height: 1),
-                    ),
-                  if (list[index].data![0].name == 'actionproposed')
-                    CustomDropDownButton(
-                      list[index].data![0].label!,
-                      actionproposedDropdownValue,
-                      hintWidget: const Text('Select'),
-                      selectedValue: actionproposedValue,
-                      underline: Container(
-                        height: 1,
-                        width: double.infinity,
-                        color: ColorResource.colorffffff,
-                      ),
-                      onChanged: (String? newValue) => setState(
-                          () => actionproposedValue = newValue.toString()),
-                      icon: SvgPicture.asset(ImageResource.downShape),
                     ),
                   if (list[index].data![0].name == 'addNewContact')
                     Column(
@@ -1021,30 +1058,30 @@ class _CustomOtherFeedBackBottomSheetState
                   )
                 ],
                 onExpansionChanged: (bool status) {
-                  setState(() {
-                    if (list[index].data![0].name == 'actionproposed' &&
-                        status &&
-                        actionproposedDropdownValue.isEmpty) {
-                      Singleton.instance.feedbackTemplate!.result!
-                          .feedbackTemplate![index].data![0].options
-                          ?.forEach((element) {
-                        actionproposedDropdownValue
-                            .add(element.viewValue.toString());
-                      });
-                    } else if (list[index].data![0].name ==
-                            'collectorfeedback' &&
-                        status &&
-                        collectorFeedBackValueDropdownList.isEmpty) {
-                      Singleton.instance.feedbackTemplate!.result!
-                          .feedbackTemplate![index].data![0].options
-                          ?.forEach((element) {
-                        collectorFeedBackValueDropdownList
-                            .add(element.viewValue.toString());
-                      });
-                    }
+                  // setState(() {
+                  //   if (list[index].data![0].name == 'actionproposed' &&
+                  //       status &&
+                  //       actionproposedDropdownValue.isEmpty) {
+                  //     Singleton.instance.feedbackTemplate!.result!
+                  //         .feedbackTemplate![index].data![0].options
+                  //         ?.forEach((element) {
+                  //       actionproposedDropdownValue
+                  //           .add(element.viewValue.toString());
+                  //     });
+                  //   } else if (list[index].data![0].name ==
+                  //           'collectorfeedback' &&
+                  //       status &&
+                  //       collectorFeedBackValueDropdownList.isEmpty) {
+                  //     Singleton.instance.feedbackTemplate!.result!
+                  //         .feedbackTemplate![index].data![0].options
+                  //         ?.forEach((element) {
+                  //       collectorFeedBackValueDropdownList
+                  //           .add(element.viewValue.toString());
+                  //     });
+                  //   }
 
-                    list[index].expanded = !list[index].expanded!;
-                  });
+                  //   list[index].expanded = !list[index].expanded!;
+                  // });
                 },
               ),
             ),

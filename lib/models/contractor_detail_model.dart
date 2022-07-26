@@ -57,7 +57,8 @@ class FeedbackTemplate {
       this.expanded,
       this.label,
       this.reportColumnMerged,
-      this.data});
+      this.data,
+      this.dropDownValue});
 
   FeedbackTemplate.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -80,6 +81,7 @@ class FeedbackTemplate {
   String? label;
   bool? reportColumnMerged;
   List<Data>? data;
+  String? dropDownValue;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
