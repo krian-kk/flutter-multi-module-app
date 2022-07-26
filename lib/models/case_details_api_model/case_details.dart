@@ -218,7 +218,7 @@ class CaseDetails {
   List<dynamic>? gurantor;
   Customer? customer;
   List<Contact>? contact;
-  List<Attr>? attr;
+  List<Attr>? attr = [];
   RepaymentInfo? repaymentInfo;
   Agent? agent;
   Audit? audit;

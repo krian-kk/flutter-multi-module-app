@@ -607,14 +607,21 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     isRepaymentDetails: true,
                     repaymentDetailsWidget: repaymentInfo(),
                     title: Languages.of(context)!.repaymentInformation),
-                if (bloc.caseDetailsAPIValue.result?.caseDetails?.attr != null)
-                  const SizedBox(height: 20),
-                if (bloc.caseDetailsAPIValue.result?.caseDetails?.attr != null)
-                  ListOfCaseDetails.listOfDetails(context,
-                      bloc: bloc,
-                      isAttributeDetails: true,
-                      title: Languages.of(context)!.attributeDetails),
                 const SizedBox(height: 20),
+                if (bloc.caseDetailsAPIValue.result?.caseDetails?.attr !=
+                        null &&
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.attr!
+                            .length !=
+                        0)
+                  Column(
+                    children: [
+                      ListOfCaseDetails.listOfDetails(context,
+                          bloc: bloc,
+                          isAttributeDetails: true,
+                          title: Languages.of(context)!.attributeDetails),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ListOfCaseDetails.listOfDetails(context,
                     bloc: bloc,
                     isCustomerContactDetails: true,
