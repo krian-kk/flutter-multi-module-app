@@ -83,7 +83,7 @@ class Result {
     userAdmin = json['userAdmin'];
     failedLoginCounter = json['failedLoginCounter'];
     fcm = json['fcm'] != null ? Fcm.fromJson(json['fcm']) : null;
-    agencyAgent = json['agencyAgent'];
+    agencyAgent = json['agencyAgent'] ?? false;
   }
 
   String? sId;
