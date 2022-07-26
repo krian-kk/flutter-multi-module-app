@@ -201,4 +201,7 @@ class Constants {
 
   static const String caseNotAllocated = 'This case is not allocated to you';
   static const String contractorId = 'C0001';
+
+  static const String toogle = 'toogle';
+  static const String dropdown = 'dropdown';
 }

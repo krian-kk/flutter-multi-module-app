@@ -6,7 +6,7 @@ class OtherFeedBackPostModel {
     required this.eventType,
     required this.caseId,
     required this.eventCode,
-    required this.eventAttr,
+    // required this.eventAttr,
     required this.contact,
     this.createdAt,
     required this.createdBy,
@@ -26,7 +26,7 @@ class OtherFeedBackPostModel {
     eventType = json['eventType'];
     caseId = json['caseId'];
     eventCode = json['eventCode'];
-    eventAttr = EventAttr.fromJson(json['eventAttr']);
+    // eventAttr = EventAttr.fromJson(json['eventAttr']);
     contact = OtherFeedBackContact.fromJson(json['contact']);
     createdAt = json['createdAt'];
     createdBy = json['createdBy'];
@@ -44,7 +44,7 @@ class OtherFeedBackPostModel {
   late String eventType;
   late String caseId;
   late String eventCode;
-  late EventAttr eventAttr;
+  // late EventAttr eventAttr;
   late OtherFeedBackContact contact;
   late String? createdAt;
   late String createdBy;
@@ -68,7 +68,7 @@ class OtherFeedBackPostModel {
     data['eventType'] = eventType;
     data['caseId'] = caseId;
     data['eventCode'] = eventCode;
-    data['eventAttr'] = eventAttr.toJson();
+    // data['eventAttr'] = eventAttr.toJson();
     data['contact'] = contact.toJson();
     if (isOnline == false) {
       data['createdAt'] = DateTime.now().toString();
@@ -89,10 +89,10 @@ class OtherFeedBackPostModel {
 
 class EventAttr {
   EventAttr({
-    required this.vehicleavailable,
+    // required this.vehicleavailable,
     required this.actionDate,
-    required this.collectorfeedback,
-    required this.actionproposed,
+    // required this.collectorfeedback,
+    // required this.actionproposed,
     required this.remarks,
     required this.imageLocation,
     required this.followUpPriority,
@@ -110,9 +110,9 @@ class EventAttr {
   });
 
   EventAttr.fromJson(Map<String, dynamic> json) {
-    vehicleavailable = json['vehicleavailable'];
-    collectorfeedback = json['collectorfeedback'];
-    actionproposed = json['actionproposed'];
+    // vehicleavailable = json['vehicleavailable'];
+    // collectorfeedback = json['collectorfeedback'];
+    // actionproposed = json['actionproposed'];
     actionDate = json['actionDate'];
     remarks = json['remarks'];
     imageLocation = json['imageLocation'].cast<String>();
@@ -131,9 +131,9 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
-  late bool vehicleavailable;
-  late String collectorfeedback;
-  late String actionproposed;
+  // late bool vehicleavailable;
+  // late String collectorfeedback;
+  // late String actionproposed;
   late String actionDate;
   late String remarks;
   late List<String> imageLocation;
@@ -152,9 +152,9 @@ class EventAttr {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['vehicleavailable'] = vehicleavailable;
-    data['collectorfeedback'] = collectorfeedback;
-    data['actionproposed'] = actionproposed;
+    // data['vehicleavailable'] = vehicleavailable;
+    // data['collectorfeedback'] = collectorfeedback;
+    // data['actionproposed'] = actionproposed;
     data['actionDate'] = actionDate;
     data['remarks'] = remarks;
     data['imageLocation'] = imageLocation;
