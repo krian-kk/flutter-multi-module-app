@@ -130,7 +130,9 @@ class AutoCalling {
                                 shrinkWrap: true,
                                 primary: false,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: bloc.autoCallingResultList.length,
+                                itemCount: bloc.autoCallingResultList.isNotEmpty
+                                    ? bloc.autoCallingResultList.length
+                                    : 0,
                                 itemBuilder:
                                     (BuildContext context, int indexs) {
                                   return Padding(
@@ -198,11 +200,13 @@ class AutoCalling {
                                                             .start,
                                                     children: <Widget>[
                                                       CustomText(
-                                                        bloc.resultList[indexs]
+                                                        bloc
+                                                                    .autoCallingResultList[
+                                                                        indexs]
                                                                     .due !=
                                                                 null
                                                             ? bloc
-                                                                .resultList[
+                                                                .autoCallingResultList[
                                                                     indexs]
                                                                 .due
                                                                 .toString()

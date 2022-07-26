@@ -182,7 +182,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                         Singleton.instance.usertype == Constants.fieldagent
                     ? HttpUrl.priorityCaseListV2
                     : HttpUrl.priorityCaseListV1 +
-                        'pageNo=${22}' +
+                        'pageNo=${Constants.pageNo}' +
                         '&limit=${Constants.limit}');
 
         resultList.clear();
