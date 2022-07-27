@@ -74,7 +74,7 @@ android {
         applicationId "com.mcollect.origa.ai"
         minSdkVersion 20
         targetSdkVersion 33
-        versionCode flutterVersionCode.toInteger()
+        versionCode 27
         versionName getVersionName(majorNumber, minorNumber)
         multiDexEnabled true
         ndk {
