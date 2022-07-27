@@ -3,9 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -240,18 +238,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       });
     });
     super.didChangeDependencies();
-  }
-
-  //Getting firebase remote data for app URL
-  Future<FirebaseRemoteConfig> setupRemoteConfig() async {
-    await Firebase.initializeApp();
-    final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
-    // await remoteConfig.fetchAndActivate();
-    await remoteConfig.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: const Duration(seconds: 10),
-      minimumFetchInterval: const Duration(seconds: 5),
-    ));
-    return remoteConfig;
   }
 
   @override

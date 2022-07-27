@@ -41,13 +41,14 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
 
   getLanguageCode() async {
     await PreferenceHelper.getInt(keyPair: 'mainLanguage').then((value) {
+      print('-------> lang--> $value');
       setState(() {
-        ratioIndex = value as int;
+        ratioIndex = value ?? 0;
       });
     });
     await PreferenceHelper.getString(keyPair: 'mainLanguageCode').then((value) {
       setState(() {
-        setLanguageCode = value.toString();
+        setLanguageCode = value ?? 'en';
       });
     });
     // ratioIndex = PreferenceHelper.getInt(keyPair: 'mainLanguage') as int;
