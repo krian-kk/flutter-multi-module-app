@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -15,9 +14,7 @@ import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/splash_screen/splash_screen.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_theme.dart';
-import 'package:origa/utils/constants.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'authentication/authentication_bloc.dart';
@@ -191,8 +188,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
-    const IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings();
+
+    const DarwinInitializationSettings initializationSettingsIOS =
+        DarwinInitializationSettings();
+
     const InitializationSettings initializationSettings =
         InitializationSettings(
             android: initializationSettingsAndroid,
@@ -200,7 +199,21 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: forgroundOnClickNotification);
+        onDidReceiveNotificationResponse:
+            (NotificationResponse notificationResponse) {
+      switch (notificationResponse.notificationResponseType) {
+        case NotificationResponseType.selectedNotification:
+          bloc!.add(AppStarted(
+              context: context,
+              notificationData: notificationResponse.payload));
+          break;
+        case NotificationResponseType.selectedNotificationAction:
+          bloc!.add(AppStarted(
+              context: context,
+              notificationData: notificationResponse.payload));
+          break;
+      }
+    }, onDidReceiveBackgroundNotificationResponse: notificationTapBackground);
 
     /// Create an Android Notification Channel.
     await flutterLocalNotificationsPlugin
@@ -216,6 +229,23 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       badge: true,
       sound: true,
     );
+  }
+
+  @pragma('vm:entry-point')
+  void notificationTapBackground(NotificationResponse notificationResponse) {
+    // ignore: avoid_print
+    print('notification(${notificationResponse.id}) action tapped: '
+        '${notificationResponse.actionId} with'
+        ' payload: ${notificationResponse.payload}');
+    if (notificationResponse.payload != null) {
+      bloc!.add(AppStarted(
+          context: context, notificationData: notificationResponse.payload));
+    }
+    if (notificationResponse.input?.isNotEmpty ?? false) {
+      // ignore: avoid_print
+      print(
+          'notification action tapped with input: ${notificationResponse.input}');
+    }
   }
 
   Future<dynamic> forgroundOnClickNotification(String? payload) async {

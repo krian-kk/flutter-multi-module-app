@@ -42,7 +42,7 @@ def getSigningFile() {
     return project.property("local.signing");
 }
 
-def apkNamePrefix = "instalmint"
+def apkNamePrefix = "mCollect"
 def majorNumber = "1"
 if (flutterVersionName != null) {
     majorNumber = flutterVersionName
@@ -51,7 +51,7 @@ def minorNumber = "0"
 def sprintNumber = "0"
 
 android {
-    compileSdkVersion 32
+    compileSdkVersion 33
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

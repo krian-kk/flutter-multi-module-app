@@ -1,8 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:origa/utils/app_utils.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewWidget extends StatefulWidget {
   const WebViewWidget({Key? key, required this.urlAddress}) : super(key: key);
@@ -40,26 +39,27 @@ class _WebViewWidgetState extends State<WebViewWidget> {
           children: <Widget>[
             Expanded(
               child: Stack(
-                children: <Widget>[
-                  WebviewScaffold(
-                    url: 'https://origahelpdesk.w3spaces.com',
-                    clearCache: true,
-                    allowFileURLs: true,
-                    displayZoomControls: true,
-                    javascriptChannels: {
-                      JavascriptChannel(
-                        name: 'Print',
-                        onMessageReceived: (JavascriptMessage message) {
-                          debugPrint(
-                              'Java script message--> ${message.message}');
-                        },
-                      ),
-                    },
-                    appCacheEnabled: true,
-                    withLocalUrl: true,
-                    supportMultipleWindows: true,
-                    resizeToAvoidBottomInset: true,
-                    initialChild: const CustomLoadingWidget(),
+                children: const <Widget>[
+                  WebViewWidget(
+                    // url: 'https://origahelpdesk.w3spaces.com',
+                    // clearCache: true,
+                    // allowFileURLs: true,
+                    // displayZoomControls: true,
+                    // javascriptChannels: {
+                    //   JavascriptChannel(
+                    //     name: 'Print',
+                    //     onMessageReceived: (JavascriptMessage message) {
+                    //       debugPrint(
+                    //           'Java script message--> ${message.message}');
+                    //     },
+                    //   ),
+                    // },
+                    // appCacheEnabled: true,
+                    // withLocalUrl: true,
+                    // supportMultipleWindows: true,
+                    // resizeToAvoidBottomInset: true,
+                    // initialChild: const CustomLoadingWidget(),
+                    urlAddress: 'https://origahelpdesk.w3spaces.com',
                   ),
                 ],
               ),

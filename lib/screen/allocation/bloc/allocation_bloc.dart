@@ -125,7 +125,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         if (value != DateTime.now().day.toString()) {
           await PreferenceHelper.getBool(keyPair: 'areyouatOffice')
               .then((value) {
-            areyouatOffice = value ?? false;
+            areyouatOffice = value;
           });
         } else {
           areyouatOffice = false;

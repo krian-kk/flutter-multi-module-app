@@ -1,8 +1,8 @@
 class HttpUrl {
   // 1st - Customer will be reject ->
-  static String url = 'https://collect.origa.ai';
+  // static String url = 'https://collect.origa.ai';
   // static String url = 'https://uat-collect.origa.ai';
-  // static String url = 'https://demo-collect.origa.ai';
+  static String url = 'https://demo-collect.origa.ai';
 
   // static String? url = Singleton.instance.baseUrl;
   static const String version = 'v1/';
