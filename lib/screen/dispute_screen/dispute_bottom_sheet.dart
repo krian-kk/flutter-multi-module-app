@@ -249,6 +249,8 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                     'select',
                                     Languages.of(context)!.disputeWithCharges,
                                     Languages.of(context)!.loanCleared,
+                                    Languages.of(context)!.escalations,
+                                    Languages.of(context)!.confirmationPending,
                                   ],
                                   menuMaxHeight: 200,
                                   selectedValue: disputeDropDownValue,

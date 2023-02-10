@@ -637,6 +637,18 @@ class LanguageHi extends Languages {
   String get financialReason => 'वित्तीय कारण';
 
   @override
+  String get fraud => 'धोखा';
+
+  @override
+  String get legalActions => 'कानूनी कार्यवाही';
+
+  @override
+  String get escalations => 'एस्केलेशन';
+
+  @override
+  String get confirmationPending => 'पुष्टि लंबित';
+
+  @override
   String get incomeLossInTheFamily => 'परिवार में आय में कमी।';
 
   @override

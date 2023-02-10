@@ -265,6 +265,8 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   Languages.of(context)!.jobUncertaintly,
                                   Languages.of(context)!.medicalIssue,
                                   Languages.of(context)!.salaryIssue,
+                                  Languages.of(context)!.fraud,
+                                  Languages.of(context)!.legalActions
                                 ],
                                 selectedValue: selectedDropdownValue,
                                 menuMaxHeight: 200,

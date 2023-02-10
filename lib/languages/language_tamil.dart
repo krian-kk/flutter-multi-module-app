@@ -637,6 +637,18 @@ class LanguageTa extends Languages {
   String get financialReason => 'நிதி காரணம்';
 
   @override
+  String get fraud => 'மோசடி';
+
+  @override
+  String get legalActions => 'சட்ட நடவடிக்கைகள்';
+
+  @override
+  String get escalations => 'அதிகரிப்பு';
+
+  @override
+  String get confirmationPending => 'உறுதிப்படுத்தல் நிலுவையில் உள்ளது';
+
+  @override
   String get incomeLossInTheFamily => 'குடும்பத்தில் வருமான இழப்பு';
 
   @override

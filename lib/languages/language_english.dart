@@ -636,6 +636,18 @@ class LanguageEn extends Languages {
   String get financialReason => 'Financial Reason';
 
   @override
+  String get fraud => 'Fraud';
+
+  @override
+  String get legalActions => 'Legal Actions';
+
+  @override
+  String get escalations => 'Escalations';
+
+  @override
+  String get confirmationPending => 'Confirmation Pending';
+
+  @override
   String get incomeLossInTheFamily => 'Income Loss In The Family';
 
   @override

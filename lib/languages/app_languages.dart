@@ -429,6 +429,14 @@ abstract class Languages {
 
   String get financialReason;
 
+  String get fraud;
+
+  String get legalActions;
+
+  String get escalations;
+
+  String get confirmationPending;
+
   String get incomeLossInTheFamily;
 
   String get intention;

@@ -25,7 +25,7 @@ dependencies:
   image_picker: ^0.8.4+2
   intl: ^0.17.0
   lint: ^1.7.2
-  location_permissions: ^4.0.0
+#  location_permissions: ^4.0.0
   mime: ^1.0.1
   openid_client: ^0.4.3
   path_provider: ^2.0.5

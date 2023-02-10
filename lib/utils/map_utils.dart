@@ -5,6 +5,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/env.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'app_utils.dart';
@@ -67,16 +68,15 @@ class MapUtils {
 
   static Future<Position> getCurrentLocation(BuildContext context) async {
     Position? currentLocation;
-    final LocationPermission permission = await Geolocator.checkPermission();
-
+    // final LocationPermission permission = await Geolocator.checkPermission();
+    PermissionStatus status = await Permission.location.status;
     AppUtils.showToast(Languages.of(context)!.loading);
 
-    if (permission.toString() == LocationPermission.whileInUse.toString()) {
+    if (status == PermissionStatus.granted) {
       currentLocation = await Geolocator.getCurrentPosition();
-    } else if (permission.toString() == LocationPermission.denied.toString()) {
+    } else if (status == PermissionStatus.denied) {
       await Geolocator.requestPermission();
-    } else if (permission.toString() ==
-        LocationPermission.deniedForever.toString()) {
+    } else if (status == PermissionStatus.permanentlyDenied) {
       await Geolocator.openAppSettings();
     } else {
       currentLocation = await Geolocator.getCurrentPosition();
