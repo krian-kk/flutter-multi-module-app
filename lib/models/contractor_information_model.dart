@@ -69,7 +69,8 @@ class ContractorResult {
       this.hideSendRepaymentInfoWhatsappButton,
       this.enableAgencyManagement = false,
       this.repaymentWhatsappTemplate,
-      this.sendRepaymentInfoWhatsappTemplateName});
+      this.sendRepaymentInfoWhatsappTemplateName,
+      this.googleMapsApiKey});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -131,6 +132,7 @@ class ContractorResult {
     repaymentWhatsappTemplate = json['repaymentWhatsappTemplate'];
     sendRepaymentInfoWhatsappTemplateName =
         json['sendRepaymentInfoWhatsappTemplateName'];
+    googleMapsApiKey = json['googleMapsApiKey'];
   }
 
   String? sId;
@@ -177,6 +179,7 @@ class ContractorResult {
   bool? enableAgencyManagement = false;
   String? repaymentWhatsappTemplate;
   String? sendRepaymentInfoWhatsappTemplateName;
+  String? googleMapsApiKey;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -235,6 +238,7 @@ class ContractorResult {
     data['repaymentWhatsappTemplate'] = repaymentWhatsappTemplate;
     data['sendRepaymentInfoWhatsappTemplateName'] =
         sendRepaymentInfoWhatsappTemplateName;
+    data['googleMapsApiKey'] = googleMapsApiKey;
     return data;
   }
 }

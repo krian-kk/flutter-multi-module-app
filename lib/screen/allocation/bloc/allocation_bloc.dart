@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/http/api_repository.dart';
@@ -237,7 +238,17 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
-
+              String? googleMapsApiKey = Singleton
+                  .instance.contractorInformations?.result?.googleMapsApiKey;
+              if (userType == Constants.fieldagent) {
+                if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
+                  selectOptions = [
+                    Languages.of(event.context)!.priority,
+                  ];
+                } else {
+                  await _setGoogleMapApiKey(googleMapsApiKey);
+                }
+              }
               // if cloudTelephone false means don't show autoCalling tab
               if (jsonData['result']['cloudTelephony'] == false) {
                 if (userType == Constants.telecaller) {
@@ -702,5 +713,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       yield AutoCallContactHealthUpdateState(
           contactIndex: event.contactIndex, caseIndex: event.caseIndex);
     }
+  }
+
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+  Future<void> _setGoogleMapApiKey(String mapKey) async {
+    final Map<String, dynamic> requestData = {'mapKey': mapKey};
+    await platform.invokeMethod('setGoogleMapKey', requestData).then((value) {
+      // getLocation();
+      debugPrint("key configured");
+    });
   }
 }

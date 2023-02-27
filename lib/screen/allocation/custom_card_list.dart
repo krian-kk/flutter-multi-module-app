@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -31,6 +32,25 @@ class CustomCardList {
             distanceValues = resultData[index].distanceMeters < 1000
                 ? '${(resultData[index].distanceMeters / 1000).toStringAsFixed(1)} Km'
                 : '${(resultData[index].distanceMeters / 1000).toStringAsFixed(2)} Km';
+          }
+          final List<Address>? address = resultData[index].address;
+          List<String> maskedNumbers = [];
+          debugPrint("length--->" + (address?.length ?? 0).toString());
+          final ContractorResult? informationModel =
+              Singleton.instance.contractorInformations?.result;
+          if (address != null) {
+            for (Address item in address) {
+              String value = item.value ?? '';
+              if (item.cType!.contains('mobile') ||
+                  item.cType!.contains('phone')) {
+                if (informationModel?.cloudTelephony == true &&
+                    informationModel?.contactMasking == true &&
+                    address != null) {
+                  value = value.replaceRange(2, 7, 'XXXXX');
+                }
+                maskedNumbers.add(value);
+              }
+            }
           }
           return (resultData.length >= index)
               ? Column(
@@ -293,37 +313,28 @@ class CustomCardList {
                                           )
                                         : Wrap(
                                             children: [
-                                              for (var item
-                                                  in resultData[index].address!)
-                                                item.cType!.contains(
-                                                            'mobile') ||
-                                                        item.cType!
-                                                            .contains('phone')
-                                                    ? Container(
-                                                        margin: const EdgeInsets
-                                                                .only(
-                                                            top: 8, right: 20),
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .symmetric(
-                                                                horizontal: 17,
-                                                                vertical: 6),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: ColorResource
-                                                              .colorF8F9FB,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                        ),
-                                                        child: CustomText(
-                                                          item.value!,
-                                                          color: ColorResource
-                                                              .color484848,
-                                                          lineHeight: 1.0,
-                                                        ),
-                                                      )
-                                                    : const SizedBox(),
+                                              for (var item in maskedNumbers)
+                                                Container(
+                                                  margin: const EdgeInsets.only(
+                                                      top: 8, right: 20),
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 17,
+                                                      vertical: 6),
+                                                  decoration: BoxDecoration(
+                                                    color: ColorResource
+                                                        .colorF8F9FB,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30),
+                                                  ),
+                                                  child: CustomText(
+                                                    item,
+                                                    color: ColorResource
+                                                        .color484848,
+                                                    lineHeight: 1.0,
+                                                  ),
+                                                )
                                             ],
                                           ),
                                   ),

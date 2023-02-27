@@ -182,6 +182,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         icon: SvgPicture.asset(
                                           ImageResource.downShape,
                                         ),
+                                        maskNumber: true,
                                       ),
                                     ),
                                   ],

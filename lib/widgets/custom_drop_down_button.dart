@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/listener/item_selected_listener.dart';
+import 'package:origa/models/contractor_information_model.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class CustomDropDownButton extends StatefulWidget {
-  const CustomDropDownButton(this.labelText, this.listOfItems,
+  CustomDropDownButton(this.labelText, this.listOfItems,
       {Key? key,
       this.hintWidget,
       this.icon,
@@ -21,8 +23,10 @@ class CustomDropDownButton extends StatefulWidget {
       this.onChanged,
       this.focusColor,
       this.menuMaxHeight,
-      this.selectedValue})
+      this.selectedValue,
+      this.maskNumber})
       : super(key: key);
+
   // final String value;
   final String labelText;
   final List<String> listOfItems;
@@ -39,6 +43,7 @@ class CustomDropDownButton extends StatefulWidget {
   final bool autoFocus;
   final OnChange? onChanged;
   final double? menuMaxHeight;
+  bool? maskNumber = false;
 
   @override
   State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
@@ -109,6 +114,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               hint: widget.hintWidget,
               items: widget.listOfItems
                   .map<DropdownMenuItem<String>>((String value) {
+                debugPrint(value);
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/dashboard_all_models/address.dart';
 import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
@@ -307,7 +308,7 @@ class CaseLists {
                                                                 .circular(30),
                                                       ),
                                                       child: CustomText(
-                                                        item.value!,
+                                                        "value",
                                                         color: ColorResource
                                                             .color484848,
                                                         lineHeight: 1.0,

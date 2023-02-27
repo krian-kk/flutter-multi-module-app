@@ -12,6 +12,9 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
+import android.content.pm.PackageManager
+import android.widget.Toast
+
 class MainActivity : FlutterActivity() {
     private val recordChannel = "recordAudioChannel"
     //recordAudioChannel
@@ -22,10 +25,10 @@ class MainActivity : FlutterActivity() {
     private var isRecord: Boolean? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.window.setFlags(
-            WindowManager.LayoutParams.FLAG_SECURE,
-            WindowManager.LayoutParams.FLAG_SECURE
-        )
+//        this.window.setFlags(
+//            WindowManager.LayoutParams.FLAG_SECURE,
+//            WindowManager.LayoutParams.FLAG_SECURE
+//        )
     }
     @SuppressLint("NewApi")
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -120,6 +123,19 @@ class MainActivity : FlutterActivity() {
                 "disposeRecordAudio" -> {
                     result.success(true)
                 }
+                "setGoogleMapKey" ->{
+                    val mapKey = call.argument<String>("mapKey")
+//                    mapKey?.let { setMapKey(it) }
+                    try {
+                        val applicationInfo =
+                            this.packageManager.getApplicationInfo("com.mcollect.origa.ai", PackageManager.GET_META_DATA)
+                        applicationInfo.metaData.putString("com.google.android.geo.API_KEY", mapKey)
+                        result.success(true)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
+                    }
+                }
+
                 else -> {
                     result.notImplemented()
                 }

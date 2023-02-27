@@ -5,6 +5,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/env.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
+import 'package:origa/singleton.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,7 +51,7 @@ class MapUtils {
     try {
       LocationConverterModel getLocationLatLng = LocationConverterModel();
       final String geocodeURL =
-          'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Env.googleMapAPI}';
+          'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Singleton.instance.contractorInformations?.result?.googleMapsApiKey}';
 
       final Map<String, dynamic> getAddressToLatlng =
           await APIRepository.apiRequest(APIRequestType.get, geocodeURL);

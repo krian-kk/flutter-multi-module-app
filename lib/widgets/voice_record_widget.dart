@@ -256,12 +256,9 @@ class _VoiceRecodingWidgetState extends State<VoiceRecodingWidget>
             AppUtils.noInternetSnackbar(context);
           } else {
             if (!isStartLoading) {
-              String? s2tLangcode;
-              await PreferenceHelper.getString(keyPair: Constants.s2tLangcode)
-                  .then((value) {
-                s2tLangcode = value;
-              });
-              if (s2tLangcode != null) {
+              final String? s2tLangcode = await PreferenceHelper.getString(keyPair: Constants.s2tLangcode);
+              debugPrint("language-----"+s2tLangcode.toString());
+              if (s2tLangcode != null && s2tLangcode.isNotEmpty == true) {
                 if (isRecordOn) {
                   if (mounted) {
                     setState(() {

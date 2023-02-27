@@ -121,6 +121,12 @@ class _AddressDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfAddressDetails?.length ?? 0,
                             itemBuilder: (BuildContext context, int i) {
+                              bool showVisit = false;
+                              String? key = Singleton
+                                  .instance.contractorInformations?.result?.googleMapsApiKey;
+                              if (key?.isEmpty == false) {
+                                showVisit = true;
+                              }
                               // debugPrint(
                               //     'List of address ----> ${widget.bloc.listOfAddressDetails}');
                               return widget.bloc.listOfAddressDetails?[i]
@@ -299,7 +305,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                       BorderRadius.all(
                                                                           Radius.circular(
                                                                               75.0))),
-                                                              child: Row(
+                                                              child: showVisit ? Row(
                                                                 children: <
                                                                     Widget>[
                                                                   CircleAvatar(
@@ -335,7 +341,7 @@ class _AddressDetailsBottomSheetScreenState
                                                                     width: 17,
                                                                   ),
                                                                 ],
-                                                              )),
+                                                              ) : const SizedBox()),
                                                         ),
                                                         const Spacer(),
                                                         const SizedBox(

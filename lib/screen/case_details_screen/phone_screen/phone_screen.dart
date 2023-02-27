@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -176,6 +177,20 @@ class _PhoneScreenState extends State<PhoneScreen>
                   )),
             );
           } else {
+            String cKey = widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![widget.index]['cType']
+                    .toString()??'_';
+            String value = widget.bloc.caseDetailsAPIValue.result
+                    ?.callDetails![widget.index]['value']
+                    .toString() ?? '_';
+            debugPrint(cKey);
+            final ContractorResult? informationModel =
+                Singleton.instance.contractorInformations?.result;
+            if (informationModel?.cloudTelephony == true &&
+                informationModel?.contactMasking == true &&
+                (cKey == 'mobile' || cKey == 'phone')) {
+              value = value.replaceRange(2, 7, "XXXXX");
+            }
             return WillPopScope(
               onWillPop: willPopCallback,
               child: SizedBox(
@@ -269,14 +284,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   .paramValue['phoneIndex']]
                                               .value
                                               .toString()
-                                          : widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .result
-                                                  ?.callDetails![widget.index]
-                                                      ['value']
-                                                  .toString() ??
-                                              '_',
+                                          : value,
                                       color: ColorResource.color23375A,
                                     ),
                                   ),

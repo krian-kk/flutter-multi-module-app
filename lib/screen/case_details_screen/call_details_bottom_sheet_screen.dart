@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -110,6 +111,15 @@ class _CallDetailsBottomSheetScreenState
                             itemCount:
                                 widget.bloc.listOfCallDetails?.length ?? 0,
                             itemBuilder: (BuildContext context, int i) {
+                              String value = widget.bloc.caseDetailsAPIValue
+                                  .result?.callDetails?[i]['value']?.toString() ?? '';
+                              ContractorResult? informationModel = Singleton
+                                  .instance.contractorInformations?.result;
+                              if (informationModel?.cloudTelephony == true &&
+                                  informationModel?.contactMasking == true) {
+                                value = value.replaceRange(2, 7, 'XXXXX');
+                              }
+                              debugPrint("motion kerala dust");
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==
@@ -201,9 +211,7 @@ class _CallDetailsBottomSheetScreenState
                                                           child: Row(
                                                             children: <Widget>[
                                                               CustomText(
-                                                                widget.bloc
-                                                                        .listOfCallDetails?[
-                                                                    i]['value'],
+                                                                value,
                                                                 color: ColorResource
                                                                     .color484848,
                                                               ),

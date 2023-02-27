@@ -113,6 +113,12 @@ class _AddressScreenState extends State<AddressScreen>
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
         bloc: widget.bloc,
         builder: (BuildContext context, CaseDetailsState state) {
+          bool showVisit = false;
+          String? key = Singleton
+              .instance.contractorInformations?.result?.googleMapsApiKey;
+          if (key?.isEmpty == false) {
+            showVisit = true;
+          }
           return MediaQuery.removePadding(
             context: context,
             removeBottom: true,
@@ -242,7 +248,7 @@ class _AddressScreenState extends State<AddressScreen>
                                         AppUtils.noInternetSnackbar(context);
                                       }
                                     },
-                                    child: SizedBox(
+                                    child: showVisit ? SizedBox(
                                       width: 10,
                                       child: Container(
                                         decoration: const BoxDecoration(
@@ -273,7 +279,7 @@ class _AddressScreenState extends State<AddressScreen>
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ): const SizedBox(),
                                   ),
                                 ),
                                 // const SizedBox(width: 30),

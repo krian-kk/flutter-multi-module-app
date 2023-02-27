@@ -5,6 +5,7 @@ import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/image_resource.dart';
 
 class SplashScreen extends StatefulWidget {
+
   const SplashScreen({Key? key}) : super(key: key);
 
   @override

@@ -112,7 +112,7 @@ class APIRepository {
       returnValue = (response.data['status'] == 400)
           ? {
               'success': false,
-              'data': response.data['message'],
+              'data': response.data['msg'],
               'statusCode': response.data['status'],
             }
           : {

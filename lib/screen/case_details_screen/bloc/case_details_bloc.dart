@@ -64,6 +64,7 @@ import '../../../models/send_whatsapp_model.dart';
 import '../../../widgets/get_followuppriority_value.dart';
 
 part 'case_details_event.dart';
+
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
@@ -350,10 +351,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           paymentCofigurationData =
               PaymentConfigurationModel.fromJson(postResult['data']);
 
-          if (paymentCofigurationData.data!.isNotEmpty) {
-            isShowQRcode = paymentCofigurationData.data![0].payment![0].qrCode!;
-            isGeneratePaymentLink =
-                paymentCofigurationData.data![0].payment![0].dynamicLink!;
+          if (paymentCofigurationData.data?.isNotEmpty == true) {
+            final List<Payment>? paymentList =
+                paymentCofigurationData.data?[0].payment;
+            if (paymentList != null && paymentList.isNotEmpty == true) {
+              isShowQRcode = paymentList[0].qrCode ?? false;
+              isGeneratePaymentLink = paymentList[0].dynamicLink ?? false;
+            }
           } else {
             AppUtils.showToast('The payment data is empty');
           }
@@ -1440,7 +1444,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
-              contactNumber: listOfAddress![paramValue['phoneIndex']].value,
+              contactNumber: listOfAddress?[paramValue['phoneIndex']].value,
               caseDetailsBloc: this,
               caseDetailsAPIValue: caseDetailsAPIValue,
             );

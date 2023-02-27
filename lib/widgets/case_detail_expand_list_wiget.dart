@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import '../languages/app_languages.dart';
@@ -374,6 +376,9 @@ class ListOfCaseDetails {
           bloc.caseDetailsAPIValue.result?.caseDetails?.contact?.length ?? 0,
           (index) {
         String ctype;
+        String value = bloc.caseDetailsAPIValue.result?.caseDetails
+                ?.contact?[index].value ??
+            '';
         if (bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
                 .toLowerCase() ==
             'residence address') {
@@ -387,6 +392,12 @@ class ListOfCaseDetails {
                 .caseDetailsAPIValue.result?.caseDetails?.contact?[index].cType!
                 .toLowerCase() ==
             'mobile') {
+          ContractorResult? informationModel =
+              Singleton.instance.contractorInformations?.result;
+          if (informationModel?.cloudTelephony == true &&
+              informationModel?.contactMasking == true) {
+            value = value.replaceRange(2, 7, 'XXXXX');
+          }
           ctype = Languages.of(context)!.mobile;
         } else if (bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
                     .cType!
@@ -403,9 +414,7 @@ class ListOfCaseDetails {
         }
         final Widget widget = ListOfCaseDetails.textFieldView(
             title: ctype,
-            value: bloc.caseDetailsAPIValue.result?.caseDetails?.contact?[index]
-                    .value ??
-                '');
+            value: value);
         return widget;
       }),
     );

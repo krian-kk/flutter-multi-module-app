@@ -193,6 +193,12 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
             bloc: bloc,
             builder: (BuildContext context, CaseDetailsState state) {
+              bool showVisit = false;
+              String? key = Singleton
+                  .instance.contractorInformations?.result?.googleMapsApiKey;
+              if (key?.isEmpty == false) {
+                showVisit = true;
+              }
               if (state is CaseDetailsLoadingState) {
                 return const SkeletonLoading();
                 // ignore: dead_code
@@ -443,8 +449,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                     ],
                                                   ),
                                                 ),
-                                              ),
-                                            )
+                                              ))
                                           : const SizedBox(),
                                       SizedBox(
                                           width: bloc.userType == 'FIELDAGENT'
