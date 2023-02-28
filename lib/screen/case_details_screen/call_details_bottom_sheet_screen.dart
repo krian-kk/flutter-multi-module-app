@@ -119,7 +119,6 @@ class _CallDetailsBottomSheetScreenState
                                   informationModel?.contactMasking == true) {
                                 value = value.replaceRange(2, 7, 'XXXXX');
                               }
-                              debugPrint("motion kerala dust");
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
                               return widget.bloc.listOfCallDetails?[i]
                                               ['cType'] ==

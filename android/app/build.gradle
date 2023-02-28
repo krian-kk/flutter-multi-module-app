@@ -74,8 +74,8 @@ android {
         applicationId "com.mcollect.origa.ai"
         minSdkVersion 20
         targetSdkVersion 33
-        versionCode 27
-        versionName getVersionName(majorNumber, minorNumber)
+        versionCode 28
+        versionName "3.0.14.0"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi", "x86", "armeabi-v7a", "x86_64", "mips",

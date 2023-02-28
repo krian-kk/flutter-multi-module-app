@@ -8,8 +8,8 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-class CustomDropDownButton extends StatefulWidget {
-  const CustomDropDownButton(this.labelText, this.listOfItems,
+class MaskedCustomDropDownButton extends StatefulWidget {
+  MaskedCustomDropDownButton(this.labelText, this.listOfItems,
       {Key? key,
       this.hintWidget,
       this.icon,
@@ -23,8 +23,11 @@ class CustomDropDownButton extends StatefulWidget {
       this.onChanged,
       this.focusColor,
       this.menuMaxHeight,
-      this.selectedValue})
+      this.selectedValue,
+      this.maskNumber,
+      this.numbers})
       : super(key: key);
+
   // final String value;
   final String labelText;
   final List<String> listOfItems;
@@ -41,20 +44,33 @@ class CustomDropDownButton extends StatefulWidget {
   final bool autoFocus;
   final OnChange? onChanged;
   final double? menuMaxHeight;
-  final bool maskNumber = false;
+  bool? maskNumber = false;
+  Map<int, String>? numbers = <int, String>{};
 
   @override
-  State<CustomDropDownButton> createState() => _CustomDropDownButtonState();
+  State<MaskedCustomDropDownButton> createState() =>
+      _MaskedCustomDropDownButtonState();
 }
 
-class _CustomDropDownButtonState extends State<CustomDropDownButton> {
+class _MaskedCustomDropDownButtonState
+    extends State<MaskedCustomDropDownButton> {
   @override
   void initState() {
     super.initState();
+    if (widget.maskNumber == true) {
+      for (var index = 0; index < widget.listOfItems.length; index++) {
+        widget.listOfItems[index].replaceRange(2, 7, 'XXXXX');
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    String selectedItem = widget.selectedValue ?? widget.listOfItems[0];
+    if (widget.maskNumber == true) {
+      selectedItem.replaceRange(2, 7, 'XXXXX');
+    }
+    debugPrint(selectedItem);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
@@ -73,7 +89,7 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
           child: SizedBox(
             // height: 35,
             child: DropdownButton<String>(
-              value: widget.selectedValue ?? widget.listOfItems[0],
+              value: selectedItem,
               icon: Padding(
                 padding: const EdgeInsets.only(right: 10, bottom: 3),
                 child: widget.icon ??
@@ -112,6 +128,9 @@ class _CustomDropDownButtonState extends State<CustomDropDownButton> {
               hint: widget.hintWidget,
               items: widget.listOfItems
                   .map<DropdownMenuItem<String>>((String value) {
+                if (widget.maskNumber == true) {
+                  value = value.replaceRange(2, 7, 'XXXXX');
+                }
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(

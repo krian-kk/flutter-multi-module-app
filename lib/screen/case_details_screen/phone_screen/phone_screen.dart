@@ -277,14 +277,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                                   child: SizedBox(
                                     width: 255,
                                     child: CustomText(
-                                      widget.bloc.isAutoCalling
-                                          ? widget
-                                              .bloc
-                                              .listOfAddress![widget.bloc
-                                                  .paramValue['phoneIndex']]
-                                              .value
-                                              .toString()
-                                          : value,
+                                      value.toString(),
                                       color: ColorResource.color23375A,
                                     ),
                                   ),

@@ -322,17 +322,19 @@ class AutoCalling {
                                                         .instance
                                                         .contractorInformations
                                                         ?.result;
+                                                double fontSizeNumber =
+                                                    FontSize.fourteen;
                                                 if (informationModel
                                                             ?.cloudTelephony ==
                                                         true &&
                                                     informationModel
                                                             ?.contactMasking ==
                                                         true) {
+                                                  fontSizeNumber =
+                                                      FontSize.twelve;
                                                   value = value.replaceRange(
                                                       2, 7, 'XXXXX');
                                                 }
-                                                debugPrint(
-                                                    "motion kerala dust");
                                                 if (bloc
                                                         .autoCallingResultList[
                                                             indexs]
@@ -429,6 +431,8 @@ class AutoCalling {
                                                                   value,
                                                                   color: ColorResource
                                                                       .color484848,
+                                                                  fontSize:
+                                                                      fontSizeNumber,
                                                                 ),
                                                               ),
                                                               const SizedBox(

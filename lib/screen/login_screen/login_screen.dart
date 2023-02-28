@@ -74,21 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
     // WidgetsBinding.instance.addObserver(this);
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
-      // userId.text = 'CDE_chinnaduraitc';
-      // password.text = '9585313659';
-
-      // userId.text = 'CDE_fos1';
-      // password.text = 'Origa123';
-
-      // userId.text = 'DEC_origatest';
-      // password.text = 'Origa123';
-      // userId.text = 'MB_vfos';
-      // password.text = 'Origa123';
-      // userId.text = 'MB_fos';
-      // password.text = 'Asd@123';
-      // userId.text = 'YES_fos';
-      // password.text = 'Agent1234';
-
       userId.text = 'nedfi_abhikfos';
       password.text = 'Agent1234';
     }
