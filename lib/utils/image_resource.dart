@@ -2,6 +2,7 @@ class ImageResource {
   static const String applogo = 'assets/app_logo/applogo.png';
   static const String origa = 'assets/origa.png';
   static const String close = 'assets/svg/close.svg';
+  static const String collectLogo = 'assets/svg/collect_logo.svg';
   static const String checkOn = 'assets/svg/check_on.svg';
   static const String checkOff = 'assets/svg/check_off.svg';
   // static const back1 = 'assets/svg/back.svg';

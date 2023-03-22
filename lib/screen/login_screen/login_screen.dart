@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // WidgetsBinding.instance.addObserver(this);
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
-      userId.text = 'nedfi_abhikfos';
+      userId.text = 'SBIC_testtelecaller';
       password.text = 'Agent1234';
     }
     username = FocusNode();
@@ -369,8 +369,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 35),
-                                            child: Image.asset(
-                                                ImageResource.origa)),
+                                            child: SvgPicture.asset(
+                                                ImageResource.collectLogo)),
                                         const SizedBox(
                                           height: 17,
                                         ),

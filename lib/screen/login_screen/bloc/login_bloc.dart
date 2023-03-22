@@ -486,8 +486,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               Constants.refreshToken, loginResponse.data!.refreshToken!);
           await PreferenceHelper.setPreference(Constants.refreshTokenExpireTime,
               loginResponse.data!.refreshExpiresIn!);
-          await PreferenceHelper.setPreference(
-              Constants.keycloakId, loginResponse.data!.keycloakId!);
+          // await PreferenceHelper.setPreference(
+          //     Constants.keycloakId, loginResponse.data!.keycloakId!);
           await PreferenceHelper.setPreference(
               Constants.sessionId, loginResponse.data!.sessionState!);
           await PreferenceHelper.setPreference(

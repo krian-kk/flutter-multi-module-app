@@ -257,7 +257,6 @@ class _CustomRtpBottomSheetState extends State<CustomRtpBottomSheet> {
                                   'select',
                                   Languages.of(context)!.businessLoss,
                                   Languages.of(context)!.covidImpacted,
-                                  Languages.of(context)!.dropDownDispute,
                                   Languages.of(context)!.financialReason,
                                   Languages.of(context)!.incomeLossInTheFamily,
                                   Languages.of(context)!.intention,
