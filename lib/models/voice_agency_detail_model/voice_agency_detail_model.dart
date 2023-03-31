@@ -7,6 +7,7 @@ class AgencyDetailsModel {
     result =
         json['result'] != null ? AgencyResult.fromJson(json['result']) : null;
   }
+
   int? status;
   String? message;
   AgencyResult? result;
@@ -34,6 +35,7 @@ class AgencyResult {
     }
     agentAgencyContact = json['agentAgencyContact'];
   }
+
   List<VoiceAgencyData>? voiceAgencyData;
   String? agentAgencyContact;
 
@@ -58,7 +60,7 @@ class VoiceAgencyData {
       this.url,
       this.contractor,
       this.smsApiKey,
-      this.voiceApiKey,
+      this.voiceThirdPartyAPIKey,
       this.iV,
       this.roleLevel,
       this.tokenVerified,
@@ -73,12 +75,13 @@ class VoiceAgencyData {
     url = json['url'];
     contractor = json['contractor'];
     smsApiKey = json['smsApiKey'];
-    voiceApiKey = json['voiceApiKey'];
+    voiceThirdPartyAPIKey = json['voiceThirdPartyAPIKey'];
     iV = json['__v'];
     roleLevel = json['roleLevel'];
     tokenVerified = json['tokenVerified'];
     version = json['version'];
   }
+
   String? sId;
   List<String>? callerIds;
   bool? currentlyUsed;
@@ -87,7 +90,7 @@ class VoiceAgencyData {
   String? url;
   String? contractor;
   String? smsApiKey;
-  String? voiceApiKey;
+  String? voiceThirdPartyAPIKey;
   int? iV;
   String? roleLevel;
   bool? tokenVerified;
@@ -103,7 +106,7 @@ class VoiceAgencyData {
     data['url'] = url;
     data['contractor'] = contractor;
     data['smsApiKey'] = smsApiKey;
-    data['voiceApiKey'] = voiceApiKey;
+    data['voiceThirdPartyAPIKey'] = voiceThirdPartyAPIKey;
     data['__v'] = iV;
     data['roleLevel'] = roleLevel;
     data['tokenVerified'] = tokenVerified;

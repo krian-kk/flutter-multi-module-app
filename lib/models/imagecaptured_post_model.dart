@@ -42,6 +42,7 @@ class PostImageCapturedModel {
     agrRef = json['agrRef'];
     // files = json['files'];
   }
+
   late int eventId;
   late String eventType;
   late String caseId;
@@ -58,6 +59,7 @@ class PostImageCapturedModel {
   late String agentName;
   late String contractor;
   late String agrRef;
+
   // List<dynamic>? files;
 
   Map<String, dynamic> toJson() {
@@ -123,6 +125,7 @@ class EventAttr {
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
   }
+
   late String remarks;
   late List<String> imageLocation;
   late double altitude;
@@ -172,6 +175,7 @@ class AgentLocation {
     longitude = json['longitude'];
     missingAgentLocation = json['missingAgentLocation'];
   }
+
   int? latitude;
   int? longitude;
   String? missingAgentLocation;

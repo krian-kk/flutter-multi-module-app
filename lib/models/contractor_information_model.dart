@@ -45,10 +45,10 @@ class ContractorResult {
       this.reportStartDate,
       this.cloudTelephony,
       this.contactMasking,
-      this.hideSendRepaymentInfo,
+      this.showSendRepaymentInfo,
       this.repaymentSmsTemplate,
       this.callTriedSmsTemplate,
-      this.hideCallTriedSmsButton,
+      this.showCallTriedSmsButton,
       this.ptpSms,
       this.ptpSmsTemplate,
       this.disabledTcRecommendFieldCollect,
@@ -92,10 +92,10 @@ class ContractorResult {
     reportStartDate = json['reportStartDate'];
     cloudTelephony = json['cloudTelephony'];
     contactMasking = json['contactMasking'];
-    hideSendRepaymentInfo = json['hideSendRepaymentInfo'];
+    showSendRepaymentInfo = json['showSendRepaymentInfo'];
     repaymentSmsTemplate = json['repaymentSmsTemplate'];
     callTriedSmsTemplate = json['callTriedSmsTemplate'];
-    hideCallTriedSmsButton = json['hideCallTriedSmsButton'];
+    showCallTriedSmsButton = json['showCallTriedSmsButton'];
     ptpSms = json['ptpSms'];
     ptpSmsTemplate = json['ptpSmsTemplate'];
     disabledTcRecommendFieldCollect = json['disabledTcRecommendFieldCollect'];
@@ -154,10 +154,10 @@ class ContractorResult {
   String? reportStartDate;
   bool? cloudTelephony;
   bool? contactMasking;
-  bool? hideSendRepaymentInfo;
+  bool? showSendRepaymentInfo;
   String? repaymentSmsTemplate;
   String? callTriedSmsTemplate;
-  bool? hideCallTriedSmsButton;
+  bool? showCallTriedSmsButton;
   bool? ptpSms;
   String? ptpSmsTemplate;
   bool? disabledTcRecommendFieldCollect;
@@ -202,10 +202,10 @@ class ContractorResult {
     data['reportStartDate'] = reportStartDate;
     data['cloudTelephony'] = cloudTelephony;
     data['contactMasking'] = contactMasking;
-    data['hideSendRepaymentInfo'] = hideSendRepaymentInfo;
+    data['showSendRepaymentInfo'] = showSendRepaymentInfo;
     data['repaymentSmsTemplate'] = repaymentSmsTemplate;
     data['callTriedSmsTemplate'] = callTriedSmsTemplate;
-    data['hideCallTriedSmsButton'] = hideCallTriedSmsButton;
+    data['showCallTriedSmsButton'] = showCallTriedSmsButton;
     data['ptpSms'] = ptpSms;
     data['ptpSmsTemplate'] = ptpSmsTemplate;
     data['disabledTcRecommendFieldCollect'] = disabledTcRecommendFieldCollect;

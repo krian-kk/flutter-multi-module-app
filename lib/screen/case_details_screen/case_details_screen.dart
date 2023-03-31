@@ -1403,7 +1403,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Singleton.instance.contractorInformations?.result
-                                    ?.hideSendRepaymentInfo ??
+                                    ?.showSendRepaymentInfo ==
                                 false
                             ? const SizedBox()
                             : bloc.isSendSMSloading

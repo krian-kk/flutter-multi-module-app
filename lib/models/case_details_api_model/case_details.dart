@@ -102,7 +102,7 @@ class CaseDetails {
         due: json['due'],
         originalDue: json['original_due'],
         odVal: json['odVal'],
-        cust: json['cust'] as String?,
+        cust: json['cust'],
         accNo: json['accNo'] as String?,
         agrRef: json['agrRef'] as String?,
         collSubStatus:
@@ -120,7 +120,7 @@ class CaseDetails {
         fatherSpouseName: json['fatherSpouseName'] as String?,
         lastPaymentMode: json['lastPaymentMode'] as String?,
         zone: json['zone'] as String?,
-        // dpd: json['dpd'] as String?,
+        dpd: json['dpd'],
         language: json['language'] as String?,
         bankName: json['bankName'] as String?,
         batchNo: json['batchNo'] as String?,
@@ -130,7 +130,7 @@ class CaseDetails {
         pincode: json['pincode'] as String?,
         emiStartDate: json['emiStartDate'] as String?,
         schemeCode: json['schemeCode'] as String?,
-        odInt: json['odInt'] as String?,
+        odInt: json['odInt'],
         assetDetails: json['assetDetails'] as String?,
         coLender: json['coLender'] as String?,
         empBusEntity: json['empBusEntity'] as String?,
@@ -142,15 +142,15 @@ class CaseDetails {
         riskBucket: json['riskBucket'] as String?,
         chassisNo: json['chassisNo'] as String?,
         modelMake: json['modelMake'] as String?,
-        customerId: json['customerId'] as String?,
-        // loanDuration: json['loanDuration'] as String?,
+        customerId: json['customerId'],
+        loanDuration: json['loanDuration'],
         loanDisbDate: json['loanDisbDate'] as String?,
-        // emiAmt: json['emiAmt'] as String?,
-        // pendingEmi: json['pendingEMI'] as String?,
-        // amtPenalty: json['amtPenalty'] as String?,
+        emiAmt: json['emiAmt'],
+        pendingEmi: json['pendingEMI'],
+        amtPenalty: json['amtPenalty'],
         loanAmt: json['loanAmt'],
-        // minDueAmt: json['minDueAmt'] as String?,
-        // cardOs: json['cardOs'] as String?,
+        minDueAmt: json['minDueAmt'],
+        cardOs: json['cardOs'],
         statementDate: json['statementDate'] as String?,
         dueDate: json['dueDate'] as String?,
         cardStatus: json['cardStatus'] as String?,
@@ -205,14 +205,14 @@ class CaseDetails {
   String? fatherSpouseName;
   String? lastPaymentMode;
   String? zone;
-  String? dpd;
+  int? dpd;
   String? language;
   String? bankName;
   String? batchNo;
   String? product;
   String? emiStartDate;
   String? schemeCode;
-  String? loanDuration;
+  int? loanDuration;
   dynamic loanAmt;
   String? pincode;
   List<dynamic>? gurantor;
@@ -234,7 +234,7 @@ class CaseDetails {
   dynamic originalDue;
   String? agency;
   String? location;
-  String? odInt;
+  int? odInt;
   String? assetDetails;
   String? coLender;
   String? empBusEntity;
@@ -248,11 +248,11 @@ class CaseDetails {
   String? modelMake;
   String? customerId;
   String? loanDisbDate;
-  String? emiAmt;
-  String? pendingEmi;
-  String? amtPenalty;
-  String? minDueAmt;
-  String? cardOs;
+  int? emiAmt;
+  int? pendingEmi;
+  int? amtPenalty;
+  int? minDueAmt;
+  int? cardOs;
   String? statementDate;
   String? dueDate;
   String? cardStatus;

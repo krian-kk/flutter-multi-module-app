@@ -257,7 +257,7 @@ class HttpUrl {
       baseUrl + fieldAgent + 'case-details-events/campaignConfig';
 
   //chat count update
-  static final String updateChatSeen = '$url/backend/api/updateFCMMessage';
+  static const String updateChatSeen = 'https://uat-sbic-collect.m2pfintech.com/backend/api/updateFCMMessage';
 
   static final String authorizationLetter =
       baseUrl + fieldAgent + 'profile/getAuthorizationLetter';

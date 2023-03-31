@@ -36,6 +36,7 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/web_view_widget.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'authorization_letter.dart';
 import 'id_card.dart';
@@ -773,6 +774,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  _loadHtmlFromAssets() async {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return HelpScreen();
+        });
+  }
+
   profileImageShowBottomSheet() {
     showModalBottomSheet(
         context: context,
@@ -1029,5 +1038,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     });
                   },
                 )));
+  }
+}
+
+class HelpScreen extends StatefulWidget {
+  @override
+  HelpScreenState createState() {
+    return HelpScreenState();
+  }
+}
+
+class HelpScreenState extends State<HelpScreen> {
+  late WebViewController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Help')),
+      body: WebView(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: 'about:blank',
+        onWebViewCreated: (WebViewController webViewController) {
+          _controller = webViewController;
+          _loadHtmlFromAssets();
+        },
+      ),
+    );
+  }
+
+  _loadHtmlFromAssets() async {
+    String fileText = await rootBundle.loadString('assets/help.html');
+    _controller.loadUrl(Uri.dataFromString(fileText,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 }

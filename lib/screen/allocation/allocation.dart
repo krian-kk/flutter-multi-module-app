@@ -1151,6 +1151,8 @@ class _AllocationScreenState extends State<AllocationScreen>
                                                           .yes,
                                                       fontSize: FontSize.twelve,
                                                       cardShape: 5,
+                                                      borderColor: ColorResource.color23375A,
+                                                      buttonBackgroundColor: ColorResource.color23375A,
                                                       isRemoveExtraPadding:
                                                           true,
                                                       onTap: () {

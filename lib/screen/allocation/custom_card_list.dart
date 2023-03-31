@@ -192,9 +192,7 @@ class CustomCardList {
                                             horizontal: 24, vertical: 2)
                                         .copyWith(bottom: 0),
                                     child: CustomText(
-                                      resultData[index].bankName! +
-                                          ' / ' +
-                                          resultData[index].agrRef!,
+                                      resultData[index].agrRef!,
                                       fontSize: FontSize.twelve,
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w500,

@@ -17,7 +17,7 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="Origa"
+        android:label="Collect"
         android:usesCleartextTraffic="true">
 
         <activity

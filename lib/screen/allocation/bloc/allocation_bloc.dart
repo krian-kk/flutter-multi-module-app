@@ -246,6 +246,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     Languages.of(event.context)!.priority,
                   ];
                 } else {
+                  debugPrint("into the google key");
                   await _setGoogleMapApiKey(googleMapsApiKey);
                 }
               }

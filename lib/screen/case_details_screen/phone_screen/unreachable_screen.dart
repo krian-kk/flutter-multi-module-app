@@ -167,8 +167,8 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                         )),
                         const SizedBox(height: 20),
                         Singleton.instance.contractorInformations?.result
-                                    ?.hideCallTriedSmsButton ??
-                                true
+                                    ?.showCallTriedSmsButton ==
+                                false
                             ? const SizedBox()
                             : GestureDetector(
                                 onTap: () {
