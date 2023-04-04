@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dynamic_themes/dynamic_themes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -35,7 +36,9 @@ Future<void> main() async {
     requestNotificationPermission();
   }
   Bloc.observer = EchoBlocDelegate();
-
+  if (kReleaseMode || kDebugMode) {
+    // debugPrint = (String? message, {int? wrapWidth}) {};
+  }
   runApp(
     BlocProvider<AuthenticationBloc>(
       create: (BuildContext context) {
@@ -233,18 +236,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @pragma('vm:entry-point')
   void notificationTapBackground(NotificationResponse notificationResponse) {
-    // ignore: avoid_print
-    print('notification(${notificationResponse.id}) action tapped: '
-        '${notificationResponse.actionId} with'
-        ' payload: ${notificationResponse.payload}');
     if (notificationResponse.payload != null) {
       bloc!.add(AppStarted(
           context: context, notificationData: notificationResponse.payload));
     }
     if (notificationResponse.input?.isNotEmpty ?? false) {
       // ignore: avoid_print
-      print(
-          'notification action tapped with input: ${notificationResponse.input}');
+
     }
   }
 

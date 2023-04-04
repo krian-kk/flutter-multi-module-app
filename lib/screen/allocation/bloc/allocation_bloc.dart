@@ -231,22 +231,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.contractorDetail);
             // Get Contractor Details and stored in Singleton
-            final Map<String, dynamic> getCommunicationChannels =
-                await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.communicationChannel);
-
             if (getContractorDetails[Constants.success] == true) {
               final Map<String, dynamic> jsonData =
                   getContractorDetails['data'];
               // check and store cloudTelephony true or false
+              final Map<String, dynamic> getCommunicationChannels =
+                  await APIRepository.apiRequest(
+                      APIRequestType.get, HttpUrl.communicationChannel);
               Singleton.instance.cloudTelephony =
                   jsonData['result']['cloudTelephony'] ?? false;
               Singleton.instance.feedbackTemplate =
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
-              final communicationData =
-                  CommunicationChannelModel.fromJson(getCommunicationChannels);
+              CommunicationChannelModel communicationChannelModel =
+                  CommunicationChannelModel.fromJson(
+                      getCommunicationChannels['data']);
               String? googleMapsApiKey = Singleton
                   .instance.contractorInformations?.result?.googleMapsApiKey;
               if (userType == Constants.fieldagent) {
@@ -260,9 +260,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 }
               }
               // if cloudTelephone false means don't show autoCalling tab
+              debugPrint('cloudTelephone');
               if (jsonData['result']['cloudTelephony'] == false &&
-                  communicationData.result?.voiceApiKeyAvailable == false) {
+                  communicationChannelModel.result?.voiceApiKeyAvailable ==
+                      false) {
+                debugPrint('cloudTelephone inside');
                 if (userType == Constants.telecaller) {
+                  debugPrint('cloudTelephone done');
                   selectOptions = [
                     Languages.of(event.context)!.priority,
                     // Languages.of(event.context)!.autoCalling,

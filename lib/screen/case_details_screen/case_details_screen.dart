@@ -603,13 +603,13 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       if (keyData.isNotEmpty) {
         switch (key) {
           case 'attributeDetails':
-            title = 'Attribute Details';
+            title = Languages.of(context)?.attributeDetails ?? '';
             break;
           case 'customerDetails':
             title = 'Customer Details';
             break;
           case 'loanDetails':
-            title = 'Loan Details';
+            title = Languages.of(context)?.loanDetails ?? '';
             break;
           case 'customerContactDetails':
             title = 'Customer Contact Details';
@@ -618,10 +618,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             title = 'Allocation Details';
             break;
           case 'repaymentDetails':
-            title = 'Repayment Details';
+            title = Languages.of(context)?.repaymentInformation ?? '';
             break;
           case 'assetDetails':
-            title = 'Asset Details';
+            title = Languages.of(context)?.assetDetails ?? '';
             break;
           default:
             {}
