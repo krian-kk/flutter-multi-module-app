@@ -37,7 +37,7 @@ Future<void> main() async {
   }
   Bloc.observer = EchoBlocDelegate();
   if (kReleaseMode || kDebugMode) {
-    // debugPrint = (String? message, {int? wrapWidth}) {};
+    debugPrint = (String? message, {int? wrapWidth}) {};
   }
   runApp(
     BlocProvider<AuthenticationBloc>(
@@ -242,7 +242,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
     if (notificationResponse.input?.isNotEmpty ?? false) {
       // ignore: avoid_print
-
     }
   }
 
