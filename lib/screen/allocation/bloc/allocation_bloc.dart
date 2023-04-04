@@ -20,6 +20,7 @@ import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';
+import 'package:origa/models/voice_agency_detail_model/communication_channel_model.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -229,6 +230,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             final Map<String, dynamic> getContractorDetails =
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.contractorDetail);
+            // Get Contractor Details and stored in Singleton
+            final Map<String, dynamic> getCommunicationChannels =
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.communicationChannel);
+
             if (getContractorDetails[Constants.success] == true) {
               final Map<String, dynamic> jsonData =
                   getContractorDetails['data'];
@@ -239,12 +245,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
-
-              var fdfd = Singleton.instance.allocationTemplateConfig =
-                  ContractorAllInformationModel.fromJson(jsonData)
-                          .result
-                          ?.allocationTemplateConfig ??
-                      AllocationTemplateConfig();
+              final communicationData =
+                  CommunicationChannelModel.fromJson(getCommunicationChannels);
               String? googleMapsApiKey = Singleton
                   .instance.contractorInformations?.result?.googleMapsApiKey;
               if (userType == Constants.fieldagent) {
@@ -258,7 +260,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 }
               }
               // if cloudTelephone false means don't show autoCalling tab
-              if (jsonData['result']['cloudTelephony'] == false) {
+              if (jsonData['result']['cloudTelephony'] == false &&
+                  communicationData.result?.voiceApiKeyAvailable == false) {
                 if (userType == Constants.telecaller) {
                   selectOptions = [
                     Languages.of(event.context)!.priority,

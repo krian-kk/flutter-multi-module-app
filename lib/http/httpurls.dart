@@ -3,6 +3,7 @@ class HttpUrl {
   // static String url = 'https://collect.origa.ai';
   // static String url = 'https://uat-collect.origa.ai';
   static String url = 'https://uat-sbic-collect.m2pfintech.com/mobile-backend';
+
   // static String url = 'https://demo-collect.origa.ai';
 
   // static String? url = Singleton.instance.baseUrl;
@@ -11,8 +12,10 @@ class HttpUrl {
   static const String fieldAgent = 'agent/';
   static String baseUrl = '$url/$version';
 
-  static final String loginUrl = 'https://uat-sbic-collect.m2pfintech.com/backend/api/user/loginApi';
-  static final String agentDetailUrl = 'https://uat-sbic-collect.m2pfintech.com/backend/field-allocation/agents/';
+  static final String loginUrl =
+      'https://uat-sbic-collect.m2pfintech.com/backend/api/user/loginApi';
+  static final String agentDetailUrl =
+      'https://uat-sbic-collect.m2pfintech.com/backend/field-allocation/agents/';
 
   // Get Agent Secure Pin Code
   static final String agentSecurePinUrl = '$baseUrl/profile/userDetailsAPI';
@@ -21,8 +24,10 @@ class HttpUrl {
   static String resetPasswordCheckUrl(String agentName) =>
       'https://uat-sbic-collect.m2pfintech.com/backend/field-allocation/agents/info/$agentName';
 
-  static String sendSMSurl = 'https://uat-sbic-collect.m2pfintech.com/backend/api/v2/notification/sendNotification';
-  static final String chatHistory2 = 'https://uat-sbic-collect.m2pfintech.com/backend/api/getChatHistory/';
+  static String sendSMSurl =
+      'https://uat-sbic-collect.m2pfintech.com/backend/api/v2/notification/sendNotification';
+  static final String chatHistory2 =
+      'https://uat-sbic-collect.m2pfintech.com/backend/api/getChatHistory/';
 
   //Get API
   // For AutoCalling API
@@ -81,6 +86,10 @@ class HttpUrl {
   // Contractor detail api for FeedBack page
   static String contractorDetail =
       baseUrl + fieldAgent + 'case-details-events/contractorDetails';
+
+  //Communication Channels
+  static String communicationChannel =
+      baseUrl + fieldAgent + 'case-details-events/communicationChannels';
 
   // Are You At Office?
   static String areYouAtOfficeUrl() =>
@@ -257,7 +266,8 @@ class HttpUrl {
       baseUrl + fieldAgent + 'case-details-events/campaignConfig';
 
   //chat count update
-  static const String updateChatSeen = 'https://uat-sbic-collect.m2pfintech.com/backend/api/updateFCMMessage';
+  static const String updateChatSeen =
+      'https://uat-sbic-collect.m2pfintech.com/backend/api/updateFCMMessage';
 
   static final String authorizationLetter =
       baseUrl + fieldAgent + 'profile/getAuthorizationLetter';
@@ -267,6 +277,7 @@ class HttpUrl {
 
   static final String idCardBack =
       baseUrl + fieldAgent + 'profile/getIdCardBack';
+
   // Get Agent Secure Pin Code
   static final String updateDeviceLocation =
       baseUrl + fieldAgent + 'profile/updateDeviceLocation?';
