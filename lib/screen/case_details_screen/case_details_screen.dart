@@ -12,6 +12,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
@@ -588,192 +589,437 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   }
 
   Widget basicInfo() {
+    Map<String, dynamic>? caseResult =
+        bloc.caseDetailsAPIValue.result?.bucketedCaseData?.toJson();
+    // Map<String?, Map<String, String>> caseFieldMap =
+    //     <String?, Map<String, String>>{};
+    List<Widget> widgetlist = [];
+    AllocationTemplateConfig allocationTemplateConfig =
+        Singleton.instance.allocationTemplateConfig;
+
+    caseResult?.forEach((key, value) {
+      Map<String, dynamic> keyData = caseResult[key];
+      String title = '';
+      if (keyData.isNotEmpty) {
+        switch (key) {
+          case 'attributeDetails':
+            title = 'Attribute Details';
+            break;
+          case 'customerDetails':
+            title = 'Customer Details';
+            break;
+          case 'loanDetails':
+            title = 'Loan Details';
+            break;
+          case 'customerContactDetails':
+            title = 'Customer Contact Details';
+            break;
+          case 'allocationDetails':
+            title = 'Allocation Details';
+            break;
+          case 'repaymentDetails':
+            title = 'Repayment Details';
+            break;
+          case 'assetDetails':
+            title = 'Asset Details';
+            break;
+          default:
+            {}
+            break;
+        }
+        List<Widget> childs = [];
+
+        keyData.forEach((key, value) {
+          String keyName = '';
+          allocationTemplateConfig.fields?.forEach((template) {
+            if (template.key == key) {
+              keyName = template.csvName.toString();
+              if (template.key == 'repayment.ref_url') {
+                keyName = 'REFERENCE URL';
+              }
+            }
+          });
+          if (keyName.isEmpty) {
+            keyName = key.toUpperCase().toString();
+          }
+          childs.add(ListOfCaseDetails.textFieldView(
+              title: keyName.toString(), value: value.toString()));
+        });
+        if (key == 'repaymentDetails') {
+          childs.add(getSmsButton());
+        }
+        widgetlist.add(ListOfCaseDetails.listOfDetails(context,
+            title: title, bloc: bloc, child: childs));
+        widgetlist
+            .add(const Padding(padding: EdgeInsets.symmetric(vertical: 4)));
+      }
+    });
+
     return SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                const SizedBox(height: 15),
-                ListOfCaseDetails.listOfDetails(context,
-                    bloc: bloc,
-                    isLoanDetails: true,
-                    isInitialExpand: true,
-                    title: Languages.of(context)!.loanDetails),
-                const SizedBox(height: 20),
-                ListOfCaseDetails.listOfDetails(context,
-                    bloc: bloc,
-                    isCustomerDetails: true,
-                    title: Languages.of(context)!.agentDetails),
-                const SizedBox(height: 20),
-                ListOfCaseDetails.listOfDetails(context,
-                    bloc: bloc,
-                    isRepaymentDetails: true,
-                    repaymentDetailsWidget: repaymentInfo(),
-                    title: Languages.of(context)!.repaymentInformation),
-                const SizedBox(height: 20),
-                if (bloc.caseDetailsAPIValue.result?.caseDetails?.attr !=
-                        null &&
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.attr!
-                            .length !=
-                        0)
-                  Column(
-                    children: [
-                      ListOfCaseDetails.listOfDetails(context,
-                          bloc: bloc,
-                          isAttributeDetails: true,
-                          title: Languages.of(context)!.attributeDetails),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ListOfCaseDetails.listOfDetails(context,
-                    bloc: bloc,
-                    isCustomerContactDetails: true,
-                    title: Languages.of(context)!.contactDetails),
-                const SizedBox(height: 20),
-                ListOfCaseDetails.listOfDetails(context,
-                    bloc: bloc,
-                    isAuditDetails: true,
-                    title: Languages.of(context)!.auditDetails),
-                const SizedBox(height: 27),
-                CustomText(
-                  Languages.of(context)!.otherLoanOf,
-                  color: ColorResource.color101010,
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                ),
-                ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: bloc.caseDetailsAPIValue.result?.otherLoanDetails
-                            ?.length ??
-                        0,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Column(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: widgetlist,
+        ),
+      ),
+    );
+    // return SingleChildScrollView(
+    //     child: Padding(
+    //         padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
+    //         child: Column(
+    //           mainAxisSize: MainAxisSize.min,
+    //           crossAxisAlignment: CrossAxisAlignment.start,
+    //           children: <Widget>[
+    //             const SizedBox(height: 15),
+    //             ListOfCaseDetails.listOfDetails(context,
+    //                 bloc: bloc,
+    //                 isLoanDetails: true,
+    //                 isInitialExpand: true,
+    //                 title: Languages.of(context)!.loanDetails),
+    //             const SizedBox(height: 20),
+    //             ListOfCaseDetails.listOfDetails(context,
+    //                 bloc: bloc,
+    //                 isCustomerDetails: true,
+    //                 title: Languages.of(context)!.agentDetails),
+    //             const SizedBox(height: 20),
+    //             ListOfCaseDetails.listOfDetails(context,
+    //                 bloc: bloc,
+    //                 isRepaymentDetails: true,
+    //                 repaymentDetailsWidget: repaymentInfo(),
+    //                 title: Languages.of(context)!.repaymentInformation),
+    //             const SizedBox(height: 20),
+    //             if (bloc.caseDetailsAPIValue.result?.caseDetails?.attr !=
+    //                     null &&
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.attr!
+    //                         .length !=
+    //                     0)
+    //               Column(
+    //                 children: [
+    //                   ListOfCaseDetails.listOfDetails(context,
+    //                       bloc: bloc,
+    //                       isAttributeDetails: true,
+    //                       title: Languages.of(context)!.attributeDetails),
+    //                   const SizedBox(height: 20),
+    //                 ],
+    //               ),
+    //             ListOfCaseDetails.listOfDetails(context,
+    //                 bloc: bloc,
+    //                 isCustomerContactDetails: true,
+    //                 title: Languages.of(context)!.contactDetails),
+    //             const SizedBox(height: 20),
+    //             ListOfCaseDetails.listOfDetails(context,
+    //                 bloc: bloc,
+    //                 isAuditDetails: true,
+    //                 title: Languages.of(context)!.auditDetails),
+    //             const SizedBox(height: 27),
+    //             CustomText(
+    //               Languages.of(context)!.otherLoanOf,
+    //               color: ColorResource.color101010,
+    //               fontSize: FontSize.sixteen,
+    //               fontWeight: FontWeight.w700,
+    //             ),
+    //             ListView.builder(
+    //                 physics: const NeverScrollableScrollPhysics(),
+    //                 padding: EdgeInsets.zero,
+    //                 shrinkWrap: true,
+    //                 itemCount: bloc.caseDetailsAPIValue.result?.otherLoanDetails
+    //                         ?.length ??
+    //                     0,
+    //                 itemBuilder: (BuildContext context, int index) {
+    //                   return Column(
+    //                     mainAxisSize: MainAxisSize.min,
+    //                     children: <Widget>[
+    //                       const SizedBox(height: 10),
+    //                       GestureDetector(
+    //                         onTap: () {
+    //                           if (bloc.caseDetailsAPIValue.result!
+    //                               .otherLoanDetails![index].canAccess!) {
+    //                             bloc.add(ClickPushAndPOPCaseDetailsEvent(
+    //                                 paramValues: <String, dynamic>{
+    //                                   'caseID': bloc.caseDetailsAPIValue.result
+    //                                       ?.otherLoanDetails![index].caseId,
+    //                                   'isAddress': true
+    //                                 }));
+    //                           } else {
+    //                             AppUtils.showErrorToast(
+    //                                 Constants.caseNotAllocated);
+    //                           }
+    //                         },
+    //                         child: Container(
+    //                           width: double.infinity,
+    //                           decoration: BoxDecoration(
+    //                               boxShadow: <BoxShadow>[
+    //                                 BoxShadow(
+    //                                   color: ColorResource.color000000
+    //                                       .withOpacity(.25),
+    //                                   blurRadius: 2.0,
+    //                                   offset: const Offset(1.0, 1.0),
+    //                                 ),
+    //                               ],
+    //                               border: Border.all(
+    //                                   color: ColorResource.colorDADADA,
+    //                                   width: 0.5),
+    //                               color: ColorResource.colorF7F8FA,
+    //                               borderRadius: const BorderRadius.all(
+    //                                   Radius.circular(10.0))),
+    //                           child: Padding(
+    //                             padding: const EdgeInsets.symmetric(
+    //                                 horizontal: 20, vertical: 12),
+    //                             child: Column(
+    //                               mainAxisSize: MainAxisSize.min,
+    //                               crossAxisAlignment: CrossAxisAlignment.start,
+    //                               children: <Widget>[
+    //                                 CustomText(
+    //                                   Languages.of(context)!
+    //                                           .bankName
+    //                                           .replaceAll('*', '') +
+    //                                       ': ' +
+    //                                       bloc
+    //                                           .caseDetailsAPIValue
+    //                                           .result!
+    //                                           .otherLoanDetails![index]
+    //                                           .bankName!,
+    //                                   color: ColorResource.color666666,
+    //                                   fontSize: FontSize.twelve,
+    //                                 ),
+    //                                 CustomText(
+    //                                   Languages.of(context)!.accountNo +
+    //                                       ': ' +
+    //                                       bloc.caseDetailsAPIValue.result!
+    //                                           .otherLoanDetails![index].accNo!,
+    //                                   color: ColorResource.color666666,
+    //                                   fontSize: FontSize.twelve,
+    //                                 ),
+    //                                 const SizedBox(height: 5),
+    //                                 CustomText(
+    //                                   bloc
+    //                                               .caseDetailsAPIValue
+    //                                               .result
+    //                                               ?.otherLoanDetails![index]
+    //                                               .cust !=
+    //                                           null
+    //                                       ? bloc.caseDetailsAPIValue.result!
+    //                                           .otherLoanDetails![index].cust!
+    //                                           .toUpperCase()
+    //                                       : '_',
+    //                                   color: ColorResource.color333333,
+    //                                   fontWeight: FontWeight.w700,
+    //                                 ),
+    //                                 const SizedBox(height: 11),
+    //                                 CustomText(
+    //                                   Languages.of(context)!.overdueAmount,
+    //                                   color: ColorResource.color666666,
+    //                                   fontSize: FontSize.twelve,
+    //                                 ),
+    //                                 const SizedBox(height: 5),
+    //                                 Row(
+    //                                   mainAxisAlignment:
+    //                                       MainAxisAlignment.spaceBetween,
+    //                                   children: <Widget>[
+    //                                     CustomText(
+    //                                       bloc.caseDetailsAPIValue.result
+    //                                               ?.otherLoanDetails![index].due
+    //                                               .toString() ??
+    //                                           '_',
+    //                                       color: ColorResource.color333333,
+    //                                       fontWeight: FontWeight.w700,
+    //                                     ),
+    //                                     Row(
+    //                                       children: <Widget>[
+    //                                         CustomText(
+    //                                           Languages.of(context)!.view,
+    //                                           color: ColorResource.color23375A,
+    //                                           fontWeight: FontWeight.w700,
+    //                                         ),
+    //                                         const SizedBox(width: 10),
+    //                                         SvgPicture.asset(
+    //                                             ImageResource.forwardArrow)
+    //                                       ],
+    //                                     )
+    //                                   ],
+    //                                 ),
+    //                               ],
+    //                             ),
+    //                           ),
+    //                         ),
+    //                       ),
+    //                       const SizedBox(height: 5),
+    //                     ],
+    //                   );
+    //                 }),
+    //           ],
+    //         )));
+  }
+
+  Widget getSmsButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Singleton.instance.contractorInformations?.result
+                    ?.showSendRepaymentInfo ==
+                false
+            ? const SizedBox()
+            : bloc.isSendSMSloading
+                ? Container(
+                    margin: const EdgeInsets.only(left: 50),
+                    height: 37,
+                    width: 37,
+                    decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const CustomLoadingWidget(
+                      radius: 11,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () async {
+                      if (ConnectivityResult.none !=
+                          await Connectivity().checkConnectivity()) {
+                        if (!bloc.isSendSMSloading) {
+                          bloc.add(SendSMSEvent(context,
+                              type: Constants.repaymentInfoType));
+                        }
+                      } else {
+                        AppUtils.noInternetSnackbar(context);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 11.2),
+                      decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: ColorResource.colorECECEC),
+                      ),
+                      child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          const SizedBox(height: 10),
-                          GestureDetector(
-                            onTap: () {
-                              if (bloc.caseDetailsAPIValue.result!
-                                  .otherLoanDetails![index].canAccess!) {
-                                bloc.add(ClickPushAndPOPCaseDetailsEvent(
-                                    paramValues: <String, dynamic>{
-                                      'caseID': bloc.caseDetailsAPIValue.result
-                                          ?.otherLoanDetails![index].caseId,
-                                      'isAddress': true
-                                    }));
-                              } else {
-                                AppUtils.showErrorToast(
-                                    Constants.caseNotAllocated);
-                              }
-                            },
-                            child: Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                      color: ColorResource.color000000
-                                          .withOpacity(.25),
-                                      blurRadius: 2.0,
-                                      offset: const Offset(1.0, 1.0),
-                                    ),
-                                  ],
-                                  border: Border.all(
-                                      color: ColorResource.colorDADADA,
-                                      width: 0.5),
-                                  color: ColorResource.colorF7F8FA,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10.0))),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 12),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    CustomText(
-                                      Languages.of(context)!
-                                              .bankName
-                                              .replaceAll('*', '') +
-                                          ': ' +
-                                          bloc
-                                              .caseDetailsAPIValue
-                                              .result!
-                                              .otherLoanDetails![index]
-                                              .bankName!,
-                                      color: ColorResource.color666666,
-                                      fontSize: FontSize.twelve,
-                                    ),
-                                    CustomText(
-                                      Languages.of(context)!.accountNo +
-                                          ': ' +
-                                          bloc.caseDetailsAPIValue.result!
-                                              .otherLoanDetails![index].accNo!,
-                                      color: ColorResource.color666666,
-                                      fontSize: FontSize.twelve,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    CustomText(
-                                      bloc
-                                                  .caseDetailsAPIValue
-                                                  .result
-                                                  ?.otherLoanDetails![index]
-                                                  .cust !=
-                                              null
-                                          ? bloc.caseDetailsAPIValue.result!
-                                              .otherLoanDetails![index].cust!
-                                              .toUpperCase()
-                                          : '_',
-                                      color: ColorResource.color333333,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                    const SizedBox(height: 11),
-                                    CustomText(
-                                      Languages.of(context)!.overdueAmount,
-                                      color: ColorResource.color666666,
-                                      fontSize: FontSize.twelve,
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        CustomText(
-                                          bloc.caseDetailsAPIValue.result
-                                                  ?.otherLoanDetails![index].due
-                                                  .toString() ??
-                                              '_',
-                                          color: ColorResource.color333333,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            CustomText(
-                                              Languages.of(context)!.view,
-                                              color: ColorResource.color23375A,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                            const SizedBox(width: 10),
-                                            SvgPicture.asset(
-                                                ImageResource.forwardArrow)
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 5),
+                          SvgPicture.asset(ImageResource.sms),
+                          const SizedBox(width: 7),
+                          CustomText(Languages.of(context)!.sendSMS,
+                              fontSize: FontSize.eleven,
+                              fontWeight: FontWeight.w700,
+                              lineHeight: 1.3,
+                              color: ColorResource.colorffffff),
                         ],
-                      );
-                    }),
-              ],
-            )));
+                      ),
+                    ),
+                  ),
+        const SizedBox(width: 30),
+        CheckWhatsappButtonEnable.checkWAbutton(
+                whatsappTemplate: Singleton.instance.contractorInformations
+                    ?.result?.repaymentWhatsappTemplate,
+                whatsappTemplateName: Singleton.instance.contractorInformations
+                    ?.result?.sendRepaymentInfoWhatsappTemplateName,
+                whatsappKey: bloc.campaingnConfigModel.result?.whatsappApiKey)
+            // Singleton.instance.contractorInformations?.result
+            //             ?.hideSendRepaymentInfoWhatsappButton ==
+            //         false
+            ? bloc.isSendWhatsappLoading
+                ? Container(
+                    margin: const EdgeInsets.only(right: 50),
+                    height: 37,
+                    width: 37,
+                    decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const CustomLoadingWidget(
+                      radius: 11,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        bloc.add(SendWhatsAppEvent(context,
+                            caseID: bloc.caseDetailsAPIValue.result!
+                                .caseDetails!.caseId!));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 11.2),
+                        decoration: BoxDecoration(
+                          color: ColorResource.color23375A,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: ColorResource.colorECECEC),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              ImageResource.whatsApp,
+                              height: 17,
+                            ),
+                            const SizedBox(width: 7),
+                            Expanded(
+                              child: CustomText(
+                                  Languages.of(context)!.sendWhatsapp,
+                                  fontSize: FontSize.eleven,
+                                  fontWeight: FontWeight.w700,
+                                  lineHeight: 1.3,
+                                  color: ColorResource.colorffffff),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+            : bloc.isGeneratePaymentLink
+                ? bloc.isGeneratePaymentLinkLoading
+                    ? Container(
+                        margin: const EdgeInsets.only(right: 50),
+                        height: 37,
+                        width: 37,
+                        decoration: BoxDecoration(
+                            color: ColorResource.color23375A,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const CustomLoadingWidget(
+                          radius: 11,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Flexible(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (await Connectivity().checkConnectivity() !=
+                                ConnectivityResult.none) {
+                              setState(() {
+                                bloc.isGeneratePaymentLinkLoading = true;
+                              });
+                            } else {
+                              AppUtils.noInternetSnackbar(context);
+                            }
+                            bloc.add(GeneratePaymenLinktEvent(context,
+                                caseID: bloc.caseDetailsAPIValue.result!
+                                    .caseDetails!.caseId!));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 13),
+                            decoration: BoxDecoration(
+                              color: ColorResource.color23375A,
+                              borderRadius: BorderRadius.circular(8),
+                              border:
+                                  Border.all(color: ColorResource.colorECECEC),
+                            ),
+                            child: CustomText(
+                                Languages.of(context)!
+                                    .generatePaymentLink
+                                    .toUpperCase(),
+                                fontSize: FontSize.eleven,
+                                fontWeight: FontWeight.w700,
+                                // isSingleLine: true,
+                                lineHeight: 1.3,
+                                color: ColorResource.colorffffff),
+                          ),
+                        ),
+                      )
+                : const SizedBox(),
+      ],
+    );
   }
 
   Widget eventDetails() {

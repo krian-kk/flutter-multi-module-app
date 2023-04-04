@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:origa/models/agent_information_model.dart';
+import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
 
@@ -41,6 +42,8 @@ class Singleton {
   bool isFirstTime = true;
   String firebaseDatabaseName = 'origaOfflineStorage';
   String offlineDataSynchronization = 'offlineDataSynchronization';
+  AllocationTemplateConfig allocationTemplateConfig =
+      AllocationTemplateConfig();
 
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;

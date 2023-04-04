@@ -12,6 +12,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_model.dart';
+import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
@@ -96,7 +97,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   List<Result> resultList = <Result>[];
   List<Result> autoCallingResultList = <Result>[];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
-
+  AllocationTemplateConfig? allocationTemplateConfig;
   int? selectedStar;
 
   @override
@@ -238,6 +239,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
+
+              var fdfd = Singleton.instance.allocationTemplateConfig =
+                  ContractorAllInformationModel.fromJson(jsonData)
+                          .result
+                          ?.allocationTemplateConfig ??
+                      AllocationTemplateConfig();
               String? googleMapsApiKey = Singleton
                   .instance.contractorInformations?.result?.googleMapsApiKey;
               if (userType == Constants.fieldagent) {
@@ -246,7 +253,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     Languages.of(event.context)!.priority,
                   ];
                 } else {
-                  debugPrint("into the google key");
+                  debugPrint('into the google key');
                   await _setGoogleMapApiKey(googleMapsApiKey);
                 }
               }

@@ -1,3 +1,5 @@
+import 'package:origa/models/allocation_templates/allocation_templates.dart';
+
 class ContractorAllInformationModel {
   ContractorAllInformationModel({this.status, this.message, this.result});
 
@@ -70,7 +72,8 @@ class ContractorResult {
       this.enableAgencyManagement = false,
       this.repaymentWhatsappTemplate,
       this.sendRepaymentInfoWhatsappTemplateName,
-      this.googleMapsApiKey});
+      this.googleMapsApiKey,
+      this.allocationTemplateConfig});
 
   ContractorResult.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -133,6 +136,8 @@ class ContractorResult {
     sendRepaymentInfoWhatsappTemplateName =
         json['sendRepaymentInfoWhatsappTemplateName'];
     googleMapsApiKey = json['googleMapsApiKey'];
+    allocationTemplateConfig =
+        AllocationTemplateConfig.fromJson(json["allocationTemplateConfig"]);
   }
 
   String? sId;
@@ -180,6 +185,7 @@ class ContractorResult {
   String? repaymentWhatsappTemplate;
   String? sendRepaymentInfoWhatsappTemplateName;
   String? googleMapsApiKey;
+  AllocationTemplateConfig? allocationTemplateConfig;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -212,6 +218,7 @@ class ContractorResult {
     data['reportTime'] = reportTime;
     data['roleLevel'] = roleLevel;
     data['tokenVerified'] = tokenVerified;
+    data['allocationTemplateConfig'] = allocationTemplateConfig?.toJson() ?? {};
     data['version'] = version;
     if (myCasesQueue != null) {
       data['myCasesQueue'] = myCasesQueue!.toJson();

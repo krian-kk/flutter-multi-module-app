@@ -11,19 +11,18 @@ import '../utils/date_formate_utils.dart';
 import '../utils/font.dart';
 
 class ListOfCaseDetails {
-  static Widget listOfDetails(
-    BuildContext context, {
-    required String title,
-    required CaseDetailsBloc bloc,
-    Widget? repaymentDetailsWidget,
-    bool isInitialExpand = false,
-    bool isLoanDetails = false,
-    bool isAttributeDetails = false,
-    bool isCustomerDetails = false,
-    bool isCustomerContactDetails = false,
-    bool isAuditDetails = false,
-    bool isRepaymentDetails = false,
-  }) {
+  static Widget listOfDetails(BuildContext context,
+      {required String title,
+      required CaseDetailsBloc bloc,
+      Widget? repaymentDetailsWidget,
+      bool isInitialExpand = false,
+      bool isLoanDetails = false,
+      bool isAttributeDetails = false,
+      bool isCustomerDetails = false,
+      bool isCustomerContactDetails = false,
+      bool isAuditDetails = false,
+      bool isRepaymentDetails = false,
+      required List<Widget> child}) {
     return ListTileTheme(
       contentPadding: const EdgeInsets.all(0),
       minVerticalPadding: 0,
@@ -52,18 +51,26 @@ class ListOfCaseDetails {
           ),
           iconColor: ColorResource.color000000,
           collapsedIconColor: ColorResource.color000000,
-          children: [
-            isRepaymentDetails ? repaymentDetailsWidget! : const SizedBox(),
-            isLoanDetails ? loanDetails(bloc, context) : const SizedBox(),
-            isCustomerDetails ? agentDetails(bloc, context) : const SizedBox(),
-            isAttributeDetails
-                ? attributeDetails(bloc, context)
-                : const SizedBox(),
-            isCustomerContactDetails
-                ? contactDetails(bloc, context)
-                : const SizedBox(),
-            isAuditDetails ? auditDetails(bloc, context) : const SizedBox(),
-          ],
+          children: child.isEmpty
+              ? [
+                  isRepaymentDetails
+                      ? repaymentDetailsWidget!
+                      : const SizedBox(),
+                  isLoanDetails ? loanDetails(bloc, context) : const SizedBox(),
+                  isCustomerDetails
+                      ? agentDetails(bloc, context)
+                      : const SizedBox(),
+                  isAttributeDetails
+                      ? attributeDetails(bloc, context)
+                      : const SizedBox(),
+                  isCustomerContactDetails
+                      ? contactDetails(bloc, context)
+                      : const SizedBox(),
+                  isAuditDetails
+                      ? auditDetails(bloc, context)
+                      : const SizedBox(),
+                ]
+              : child,
         ),
       ),
     );
@@ -412,9 +419,8 @@ class ListOfCaseDetails {
                   .cType ??
               '';
         }
-        final Widget widget = ListOfCaseDetails.textFieldView(
-            title: ctype,
-            value: value);
+        final Widget widget =
+            ListOfCaseDetails.textFieldView(title: ctype, value: value);
         return widget;
       }),
     );
