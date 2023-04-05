@@ -114,6 +114,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         body: BlocListener<CaseDetailsBloc, CaseDetailsState>(
           bloc: bloc,
           listener: (BuildContext context, CaseDetailsState state) {
+            debugPrint(state.toString());
             if (state is PostDataApiSuccessState) {
               bloc.translateTextAddressInvalid = '';
               bloc.translateTextCustomerNotMet = '';
@@ -383,6 +384,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                       bloc.userType == 'FIELDAGENT'
                                           ? GestureDetector(
                                               onTap: () {
+                                                debugPrint("");
                                                 bloc.add(
                                                   EventDetailsEvent(
                                                       Constants.addressDetails,
@@ -654,7 +656,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             .add(const Padding(padding: EdgeInsets.symmetric(vertical: 4)));
       }
     });
-
+    widgetlist.add(getOtherLoanDetails());
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
@@ -851,6 +853,130 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     //                 }),
     //           ],
     //         )));
+  }
+
+  Widget getOtherLoanDetails() {
+    return Column(
+      children: [
+        ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            itemCount:
+                bloc.caseDetailsAPIValue.result?.otherLoanDetails?.length ?? 0,
+            itemBuilder: (BuildContext context, int index) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      if (bloc.caseDetailsAPIValue.result!
+                          .otherLoanDetails![index].canAccess!) {
+                        bloc.add(ClickPushAndPOPCaseDetailsEvent(
+                            paramValues: <String, dynamic>{
+                              'caseID': bloc.caseDetailsAPIValue.result
+                                  ?.otherLoanDetails![index].caseId,
+                              'isAddress': true
+                            }));
+                      } else {
+                        AppUtils.showErrorToast(Constants.caseNotAllocated);
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(
+                              color: ColorResource.color000000.withOpacity(.25),
+                              blurRadius: 2.0,
+                              offset: const Offset(1.0, 1.0),
+                            ),
+                          ],
+                          border: Border.all(
+                              color: ColorResource.colorDADADA, width: 0.5),
+                          color: ColorResource.colorF7F8FA,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0))),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 12),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            CustomText(
+                              Languages.of(context)!
+                                      .bankName
+                                      .replaceAll('*', '') +
+                                  ': ' +
+                                  bloc.caseDetailsAPIValue.result!
+                                      .otherLoanDetails![index].bankName!,
+                              color: ColorResource.color666666,
+                              fontSize: FontSize.twelve,
+                            ),
+                            CustomText(
+                              Languages.of(context)!.accountNo +
+                                  ': ' +
+                                  bloc.caseDetailsAPIValue.result!
+                                      .otherLoanDetails![index].accNo!,
+                              color: ColorResource.color666666,
+                              fontSize: FontSize.twelve,
+                            ),
+                            const SizedBox(height: 5),
+                            CustomText(
+                              bloc.caseDetailsAPIValue.result
+                                          ?.otherLoanDetails![index].cust !=
+                                      null
+                                  ? bloc.caseDetailsAPIValue.result!
+                                      .otherLoanDetails![index].cust!
+                                      .toUpperCase()
+                                  : '_',
+                              color: ColorResource.color333333,
+                              fontWeight: FontWeight.w700,
+                            ),
+                            const SizedBox(height: 11),
+                            CustomText(
+                              Languages.of(context)!.overdueAmount,
+                              color: ColorResource.color666666,
+                              fontSize: FontSize.twelve,
+                            ),
+                            const SizedBox(height: 5),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                CustomText(
+                                  bloc.caseDetailsAPIValue.result
+                                          ?.otherLoanDetails![index].due
+                                          .toString() ??
+                                      '_',
+                                  color: ColorResource.color333333,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    CustomText(
+                                      Languages.of(context)!.view,
+                                      color: ColorResource.color23375A,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                    const SizedBox(width: 10),
+                                    SvgPicture.asset(ImageResource.forwardArrow)
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                ],
+              );
+            }),
+      ],
+    );
   }
 
   Widget getSmsButton() {
@@ -1174,6 +1300,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       String? selectedContact,
       required bool isCallFromCallDetails,
       String? callId}) {
+    debugPrint('callTitle---->$cardTitle');
     showModalBottomSheet(
       isScrollControlled: true,
       isDismissible: false,
