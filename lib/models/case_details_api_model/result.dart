@@ -19,10 +19,7 @@ class CaseDetailsResultModel {
                 Map<String, dynamic>.from(json['caseDetails'])),
         addressDetails: json['addressDetails'] as List<dynamic>?,
         callDetails: json['callDetails'] as List<dynamic>?,
-        bucketedCaseData: json['bucketedCaseData'] == null
-            ? null
-            : CaseDetailModels.fromJson(
-                Map<String, dynamic>.from(json['bucketedCaseData'])),
+        bucketedCaseData: json['bucketedCaseData'],
         otherLoanDetails: json['otherLoanDetails'] != null
             ? (json['otherLoanDetails'] as List<dynamic>?)
                 ?.map((dynamic e) =>
@@ -32,7 +29,7 @@ class CaseDetailsResultModel {
             : <OtherLoanDetail>[],
       );
   CaseDetails? caseDetails;
-  CaseDetailModels? bucketedCaseData;
+  Map<String, dynamic>? bucketedCaseData;
   List<dynamic>? addressDetails;
   List<dynamic>? callDetails;
   List<OtherLoanDetail>? otherLoanDetails = <OtherLoanDetail>[];
@@ -41,7 +38,7 @@ class CaseDetailsResultModel {
         'caseDetails': caseDetails?.toJson(),
         'addressDetails': addressDetails,
         'callDetails': callDetails,
-        'bucketedCaseData': bucketedCaseData?.toJson(),
+        'bucketedCaseData': bucketedCaseData,
         'otherLoanDetails':
             otherLoanDetails?.map((OtherLoanDetail e) => e.toJson()).toList(),
       };

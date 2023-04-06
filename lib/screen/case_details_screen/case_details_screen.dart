@@ -592,18 +592,23 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
   Widget basicInfo() {
     Map<String, dynamic>? caseResult =
-        bloc.caseDetailsAPIValue.result?.bucketedCaseData?.toJson();
+        bloc.caseDetailsAPIValue.result?.bucketedCaseData ?? {};
     // Map<String?, Map<String, String>> caseFieldMap =
     //     <String?, Map<String, String>>{};
     List<Widget> widgetlist = [];
-    AllocationTemplateConfig allocationTemplateConfig =
+    AllocationTemplateConfig? allocationTemplateConfig =
         Singleton.instance.allocationTemplateConfig;
 
-    caseResult?.forEach((key, value) {
-      Map<String, dynamic> keyData = caseResult[key];
+    caseResult.forEach((caseResultKey, caseResultValue) {
+      Map<String, dynamic> keyData = caseResult[caseResultKey];
       String title = '';
+      // caseResult.keys.forEach((element) {
+      //   if (element == 'attributeDetails') {
+      //     title = element.toString();
+      //   }
+      // });
       if (keyData.isNotEmpty) {
-        switch (key) {
+        switch (caseResultKey) {
           case 'attributeDetails':
             title = Languages.of(context)?.attributeDetails ?? '';
             break;
@@ -629,34 +634,43 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             {}
             break;
         }
-        List<Widget> childs = [];
-
+        List<Widget> childWidgets;
+        childWidgets = [];
+        bool shouldShowSection = false;
         keyData.forEach((key, value) {
           String keyName = '';
-          allocationTemplateConfig.fields?.forEach((template) {
-            if (template.key == key) {
+          allocationTemplateConfig?.fields?.forEach((template) {
+            String? templateKey = template.key;
+            if (templateKey?.contains('repayment.') == true) {
+              templateKey = templateKey?.replaceAll('repayment.', '');
+            }
+            if (templateKey == key) {
               keyName = template.csvName.toString();
-              if (template.key == 'repayment.ref_url') {
-                keyName = 'REFERENCE URL';
-              }
             }
           });
           if (keyName.isEmpty) {
             keyName = key.toUpperCase().toString();
           }
-          childs.add(ListOfCaseDetails.textFieldView(
+          if (value.toString().isNotEmpty && shouldShowSection == false) {
+            shouldShowSection = true;
+          }
+          childWidgets.add(ListOfCaseDetails.textFieldView(
               title: keyName.toString(), value: value.toString()));
         });
-        if (key == 'repaymentDetails') {
-          childs.add(getSmsButton());
+        if (caseResultKey == 'repaymentDetails') {
+          childWidgets.add(getSmsButton());
         }
-        widgetlist.add(ListOfCaseDetails.listOfDetails(context,
-            title: title, bloc: bloc, child: childs));
+        if (shouldShowSection) {
+          widgetlist.add(ListOfCaseDetails.listOfDetails(context,
+              title: title, bloc: bloc, child: childWidgets));
+        }
         widgetlist
             .add(const Padding(padding: EdgeInsets.symmetric(vertical: 4)));
       }
     });
-    widgetlist.add(getOtherLoanDetails());
+    if (bloc.caseDetailsAPIValue.result?.otherLoanDetails?.isNotEmpty == true) {
+      widgetlist.add(getOtherLoanDetails());
+    }
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 20),
@@ -857,7 +871,15 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
   Widget getOtherLoanDetails() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        CustomText(
+          Languages.of(context)!.otherLoanOf,
+          color: ColorResource.color101010,
+          fontSize: FontSize.sixteen,
+          fontWeight: FontWeight.w700,
+        ),
         ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             padding: EdgeInsets.zero,

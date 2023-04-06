@@ -474,7 +474,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       // here
       // print('contractor id is ----->  ${Singleton.instance.contractor}');
       // print(
-          'contractor id 2 is ----->  ${Singleton.instance.contractorInformations!.result!.contractor}');
+      //     'contractor id 2 is ----->  ${Singleton.instance.contractorInformations!.result!.contractor}');
       phoneCustomerMetGridList.clear();
       // if (Singleton.instance.contractorInformations!.result!.contractor !=
       //     Constants.contractorId) {

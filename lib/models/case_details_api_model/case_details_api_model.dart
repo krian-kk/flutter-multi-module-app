@@ -27,12 +27,12 @@ class CaseDetailsApiModel {
 
 class CaseDetailModels {
   Map<String, dynamic>? attributeDetails;
-  CustomerDetails? customerDetails;
-  LoanDetails? loanDetails;
-  CustomerContactDetails? customerContactDetails;
-  AllocationDetails? allocationDetails;
-  RepaymentDetails? repaymentDetails;
-  AssetDetails? assetDetails;
+  Map<String, dynamic>? customerDetails;
+  Map<String, dynamic>? loanDetails;
+  Map<String, dynamic>? customerContactDetails;
+  Map<String, dynamic>? allocationDetails;
+  Map<String, dynamic>? repaymentDetails;
+  Map<String, dynamic>? assetDetails;
 
   CaseDetailModels(
       {this.attributeDetails,
@@ -45,24 +45,12 @@ class CaseDetailModels {
 
   CaseDetailModels.fromJson(Map<String, dynamic> json) {
     attributeDetails = json['attributeDetails'];
-    customerDetails = json['customerDetails'] != null
-        ? new CustomerDetails.fromJson(json['customerDetails'])
-        : null;
-    loanDetails = json['loanDetails'] != null
-        ? new LoanDetails.fromJson(json['loanDetails'])
-        : null;
-    customerContactDetails = json['customerContactDetails'] != null
-        ? new CustomerContactDetails.fromJson(json['customerContactDetails'])
-        : null;
-    allocationDetails = json['allocationDetails'] != null
-        ? new AllocationDetails.fromJson(json['allocationDetails'])
-        : null;
-    repaymentDetails = json['repaymentDetails'] != null
-        ? new RepaymentDetails.fromJson(json['repaymentDetails'])
-        : null;
-    assetDetails = json['assetDetails'] != null
-        ? new AssetDetails.fromJson(json['assetDetails'])
-        : null;
+    customerDetails = json['customerDetails'];
+    loanDetails = json['loanDetails'];
+    customerContactDetails = json['customerContactDetails'];
+    allocationDetails = json['allocationDetails'];
+    repaymentDetails = json['repaymentDetails'];
+    assetDetails = json['assetDetails'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,22 +59,22 @@ class CaseDetailModels {
       data['attributeDetails'] = this.attributeDetails;
     }
     if (this.customerDetails != null) {
-      data['customerDetails'] = this.customerDetails!.toJson();
+      data['customerDetails'] = this.customerDetails;
     }
     if (this.loanDetails != null) {
-      data['loanDetails'] = this.loanDetails!.toJson();
+      data['loanDetails'] = this.loanDetails;
     }
     if (this.customerContactDetails != null) {
-      data['customerContactDetails'] = this.customerContactDetails!.toJson();
+      data['customerContactDetails'] = this.customerContactDetails;
     }
     if (this.allocationDetails != null) {
-      data['allocationDetails'] = this.allocationDetails!.toJson();
+      data['allocationDetails'] = this.allocationDetails;
     }
     if (this.repaymentDetails != null) {
-      data['repaymentDetails'] = this.repaymentDetails!.toJson();
+      data['repaymentDetails'] = this.repaymentDetails;
     }
     if (this.assetDetails != null) {
-      data['assetDetails'] = this.assetDetails!.toJson();
+      data['assetDetails'] = this.assetDetails;
     }
     return data;
   }

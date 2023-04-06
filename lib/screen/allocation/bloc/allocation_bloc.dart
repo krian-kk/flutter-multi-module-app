@@ -244,6 +244,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   ContractorDetailsModel.fromJson(jsonData);
               Singleton.instance.contractorInformations =
                   ContractorAllInformationModel.fromJson(jsonData);
+              Singleton.instance.allocationTemplateConfig =
+                  ContractorAllInformationModel.fromJson(jsonData)
+                      .result
+                      ?.allocationTemplateConfig;
               CommunicationChannelModel communicationChannelModel =
                   CommunicationChannelModel.fromJson(
                       getCommunicationChannels['data']);

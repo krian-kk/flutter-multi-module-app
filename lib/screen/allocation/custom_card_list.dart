@@ -35,7 +35,6 @@ class CustomCardList {
           }
           final List<Address>? address = resultData[index].address;
           List<String> maskedNumbers = [];
-          debugPrint("length--->" + (address?.length ?? 0).toString());
           final ContractorResult? informationModel =
               Singleton.instance.contractorInformations?.result;
           if (address != null) {
@@ -50,6 +49,31 @@ class CustomCardList {
                 }
                 maskedNumbers.add(value);
               }
+            }
+          }
+          String? addressValue = '';
+          if (bloc.userType == Constants.fieldagent && resultData.isNotEmpty) {
+            addressValue = resultData[index]
+                    .address!
+                    .firstWhere(
+                        (element) => (element.cType == 'residence address'))
+                    .value ??
+                '';
+            if (addressValue.isEmpty) {
+              addressValue = resultData[index]
+                      .address!
+                      .firstWhere(
+                          (element) => (element.cType == 'office address'))
+                      .value ??
+                  '';
+            }
+            if (addressValue.isEmpty) {
+              addressValue = resultData[index]
+                      .address!
+                      .firstWhere((element) => (element.cType == 'mobile' ||
+                          element.cType == 'email'))
+                      .value ??
+                  '';
             }
           }
           return (resultData.length >= index)
@@ -288,21 +312,7 @@ class CustomCardList {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                  resultData[index].address !=
-                                                          null
-                                                      ? resultData[index]
-                                                          .address!
-                                                          .firstWhere((element) => (element
-                                                                      .cType ==
-                                                                  'residence address' ||
-                                                              element.cType ==
-                                                                  'office address' ||
-                                                              element.cType ==
-                                                                  'mobile' ||
-                                                              element.cType ==
-                                                                  'email'))
-                                                          .value!
-                                                      : '-',
+                                                  addressValue,
                                                   color:
                                                       ColorResource.color484848,
                                                 ),

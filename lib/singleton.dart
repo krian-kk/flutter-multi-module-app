@@ -42,7 +42,7 @@ class Singleton {
   bool isFirstTime = true;
   String firebaseDatabaseName = 'origaOfflineStorage';
   String offlineDataSynchronization = 'offlineDataSynchronization';
-  AllocationTemplateConfig allocationTemplateConfig =
+  AllocationTemplateConfig? allocationTemplateConfig =
       AllocationTemplateConfig();
 
 // Contractor All Information
