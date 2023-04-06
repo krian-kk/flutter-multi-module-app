@@ -663,16 +663,22 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         openBottomSheet(caseDetailsContext!, event.title,
             event.list ?? <dynamic>[], event.isCall);
       } else {
-        debugPrint("line 664------->");
-        yield ClickOpenBottomSheetState(
-          event.title,
-          event.list!,
-          event.isCall,
-          health: event.health,
-          selectedContactNumber: event.seleectedContactNumber,
-          isCallFromCallDetails: event.isCallFromCallDetails,
-          callId: event.callId,
-        );
+        debugPrint("line 664------->${event.isCall}");
+        if (event.title == Constants.callCustomer &&
+            Singleton.instance.cloudTelephony == false) {
+          await AppUtils.makePhoneCall(event.seleectedContactNumber.toString());
+          yield CaseDetailsLoadedState();
+        } else {
+          yield ClickOpenBottomSheetState(
+            event.title,
+            event.list!,
+            event.isCall,
+            health: event.health,
+            selectedContactNumber: event.seleectedContactNumber,
+            isCallFromCallDetails: event.isCallFromCallDetails,
+            callId: event.callId,
+          );
+        }
       }
     }
     if (event is ChangeFollowUpDateEvent) {

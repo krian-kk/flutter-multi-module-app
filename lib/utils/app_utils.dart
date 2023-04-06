@@ -37,6 +37,7 @@ class AppUtils {
   }
 
   static Future<void> makePhoneCall(String value) async {
+    value = 'tel:' + value;
     if (await canLaunch(value)) {
       await launch(value);
     } else {

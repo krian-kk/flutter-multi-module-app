@@ -344,8 +344,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     }
                                   }
                                 } else {
-                                  await AppUtils.makePhoneCall(
-                                      'tel:' + selectedCustomerNumberValue);
+                                  await AppUtils.makePhoneCall(selectedCustomerNumberValue);
                                 }
                               }
                               if (mounted) {
