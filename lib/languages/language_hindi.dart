@@ -1166,4 +1166,13 @@ class LanguageHi extends Languages {
 
   @override
   String get correctMPin => 'कृपया सही एमपिन दर्ज करें';
+
+  @override
+  String get allocationDetails => 'आवंटन विवरण';
+
+  @override
+  String get customerContactDetails => 'ग्राहक संपर्क विवरण';
+
+  @override
+  String get customerDetails => 'ग्राहक विवरण';
 }

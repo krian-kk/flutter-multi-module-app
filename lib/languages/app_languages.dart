@@ -771,4 +771,10 @@ abstract class Languages {
   String get forgotPassword;
 
   String get correctMPin;
+
+  String get customerDetails;
+
+  String get customerContactDetails;
+
+  String get allocationDetails;
 }

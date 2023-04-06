@@ -1163,4 +1163,15 @@ class LanguageEn extends Languages {
 
   @override
   String get correctMPin => 'Please enter the correct mPin';
+
+  @override
+  String get allocationDetails => 'Allocation Details';
+
+  @override
+  String get customerContactDetails => 'Customer Contact Details';
+
+  @override
+  String get customerDetails => 'Customer Details';
+
+
 }

@@ -1170,4 +1170,13 @@ class LanguageTa extends Languages {
 
   @override
   String get correctMPin => 'சரியான mPin ஐ உள்ளிடவும்';
+
+  @override
+  String get allocationDetails => 'ஒதுக்கீடு விவரங்கள்';
+
+  @override
+  String get customerContactDetails => 'வாடிக்கையாளர் தொடர்பு விவரங்கள்';
+
+  @override
+  String get customerDetails => 'வாடிக்கையாளர் விவரங்கள்';
 }

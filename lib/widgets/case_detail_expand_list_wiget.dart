@@ -170,10 +170,10 @@ class ListOfCaseDetails {
             ),
           ],
         ),
-        ListOfCaseDetails.textFieldView(
-            title: Languages.of(context)!.bankName.replaceAll('*', ''),
-            value: bloc.caseDetailsAPIValue.result?.caseDetails?.bankName
-                .toString()),
+        // ListOfCaseDetails.textFieldView(
+        //     title: Languages.of(context)!.bankName.replaceAll('*', ''),
+        //     value: bloc.caseDetailsAPIValue.result?.caseDetails?.bankName
+        //         .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.product,
             value: bloc.caseDetailsAPIValue.result?.caseDetails?.product

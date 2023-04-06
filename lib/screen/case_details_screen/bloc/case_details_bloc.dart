@@ -1267,7 +1267,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1289,7 +1289,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1311,7 +1311,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1333,7 +1333,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1355,7 +1355,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,

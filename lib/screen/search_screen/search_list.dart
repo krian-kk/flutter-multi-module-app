@@ -62,9 +62,7 @@ class SearchCaseList {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 22, vertical: 2),
                           child: CustomText(
-                            resultData[index].bankName! +
-                                ' / ' +
-                                resultData[index].agrRef!,
+                            resultData[index]?.agrRef ?? '',
                             fontSize: FontSize.twelve,
                             fontWeight: FontWeight.w500,
                             color: ColorResource.color101010,

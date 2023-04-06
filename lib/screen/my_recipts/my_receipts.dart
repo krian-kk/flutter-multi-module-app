@@ -441,9 +441,7 @@ class _MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    caseLists.cases![index].bankName! +
-                                        ' / ' +
-                                        caseLists.cases![index].agrRef!,
+                                    caseLists.cases?[index].agrRef ?? '',
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,

@@ -458,8 +458,6 @@ class _AllocationScreenState extends State<AllocationScreen>
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          debugPrint(
-              'allocation 1 ---->  ${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
           return PhoneScreen(
             bloc: casedetailbloc,
             index: i,
@@ -468,7 +466,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                       .caseDetailsAPIValue.result?.caseDetails?.cust ??
                   '',
               userId:
-                  '${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                  '${casedetailbloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
               userAmount: casedetailbloc
                       .caseDetailsAPIValue.result?.caseDetails?.due
                       ?.toDouble() ??

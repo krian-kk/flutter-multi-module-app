@@ -613,16 +613,16 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             title = Languages.of(context)?.attributeDetails ?? '';
             break;
           case 'customerDetails':
-            title = 'Customer Details';
+            title = Languages.of(context)?.customerDetails ?? '';
             break;
           case 'loanDetails':
             title = Languages.of(context)?.loanDetails ?? '';
             break;
           case 'customerContactDetails':
-            title = 'Customer Contact Details';
+            title = Languages.of(context)?.customerContactDetails ?? '';
             break;
           case 'allocationDetails':
-            title = 'Allocation Details';
+            title = Languages.of(context)?.allocationDetails ?? '';
             break;
           case 'repaymentDetails':
             title = Languages.of(context)?.repaymentInformation ?? '';
@@ -1280,8 +1280,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          debugPrint(
-              'cade detail screen 1 ---->  ${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
           return PhoneScreen(
             bloc: bloc,
             index: i,
@@ -1290,8 +1288,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             customerLoanUserWidget: CustomLoanUserDetails(
               userName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              userId:
-                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userId: '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
               userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                       ?.toDouble() ??
                   0.0,
@@ -1344,7 +1341,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1364,7 +1361,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1384,7 +1381,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1404,7 +1401,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1424,7 +1421,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,
@@ -1445,7 +1442,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 userName:
                     bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                         ?.toDouble() ??
                     0.0,

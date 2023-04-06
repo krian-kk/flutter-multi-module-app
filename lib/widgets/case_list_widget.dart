@@ -139,9 +139,7 @@ class CaseLists {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    listData.result!.cases![index].bankName! +
-                                        ' / ' +
-                                        listData.result!.cases![index].agrRef!,
+                                    listData.result?.cases?[index].agrRef ?? '',
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,
@@ -308,7 +306,7 @@ class CaseLists {
                                                                 .circular(30),
                                                       ),
                                                       child: CustomText(
-                                                        "value",
+                                                        item.value ?? '',
                                                         color: ColorResource
                                                             .color484848,
                                                         lineHeight: 1.0,

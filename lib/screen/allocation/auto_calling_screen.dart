@@ -35,8 +35,6 @@ class AutoCalling {
     return showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          debugPrint(
-              'autocallingScreen ---->  ${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName}');
           return PhoneScreen(
             bloc: bloc,
             index: i,
@@ -44,7 +42,7 @@ class AutoCalling {
               userName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               userId:
-                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
               userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                       ?.toDouble() ??
                   0.0,
