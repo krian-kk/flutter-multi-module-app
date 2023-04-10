@@ -54,27 +54,23 @@ class CustomCardList {
           String? addressValue = '';
           if (bloc.userType == Constants.fieldagent && resultData.isNotEmpty) {
             if (resultData[index].address?.isNotEmpty == true) {
-              addressValue = resultData[index]
-                      .address
-                      ?.firstWhere(
-                          (element) => (element.cType == 'residence address'))
-                      .value ??
-                  '';
-              if (addressValue.isEmpty) {
-                addressValue = resultData[index]
-                        .address
-                        ?.firstWhere(
-                            (element) => (element.cType == 'office address'))
-                        .value ??
-                    '';
-              }
-              if (addressValue.isEmpty) {
-                addressValue = resultData[index]
-                        .address
-                        ?.firstWhere((element) => (element.cType == 'mobile' ||
-                            element.cType == 'email'))
-                        .value ??
-                    '';
+              final addressList = resultData[index].address;
+              for (var item in addressList!) {
+                final value = item.value ?? '';
+                switch (item.cType) {
+                  case 'residence address':
+                    addressValue = value;
+                    break;
+                  case 'office address':
+                    addressValue = value;
+                    break;
+                  default:
+                    addressValue = value;
+                    break;
+                }
+                if (addressValue.isNotEmpty) {
+                  break;
+                }
               }
             }
           }
@@ -314,7 +310,7 @@ class CustomCardList {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 CustomText(
-                                                  addressValue,
+                                                  addressValue ?? '',
                                                   color:
                                                       ColorResource.color484848,
                                                 ),

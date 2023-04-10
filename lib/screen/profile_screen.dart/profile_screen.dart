@@ -674,45 +674,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    bottomNavigationBar: Container(
-                      width: double.infinity,
-                      color: ColorResource.colorFFFFFF,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 11.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 200,
-                              child: CustomButton(
-                                Languages.of(context)!.chat.toUpperCase(),
-                                onTap: () => bloc.add(ClickMessageEvent(
-                                  fromId: bloc.profileAPIValue.result![0].aRef,
-                                  toId: bloc.profileAPIValue.result![0].parent,
-                                )),
-                                fontSize: FontSize.twenty,
-                                cardShape: 5,
-                                isTrailing:
-                                    bloc.newMsgCount != 0 ? true : false,
-                                leadingWidget: CircleAvatar(
-                                  radius: 13,
-                                  backgroundColor: ColorResource.colorFFFFFF,
-                                  child: CustomText(
-                                    bloc.newMsgCount >= 100
-                                        ? '100+'
-                                        : bloc.newMsgCount.toString(),
-                                    fontSize: FontSize.twelve,
-                                    lineHeight: 1,
-                                    color: ColorResource.colorEA6D48,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                    // bottomNavigationBar: Container(
+                    //   width: double.infinity,
+                    //   color: ColorResource.colorFFFFFF,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.symmetric(vertical: 11.0),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         SizedBox(
+                    //           width: 200,
+                    //           child: CustomButton(
+                    //             Languages.of(context)!.chat.toUpperCase(),
+                    //             onTap: () => bloc.add(ClickMessageEvent(
+                    //               fromId: bloc.profileAPIValue.result![0].aRef,
+                    //               toId: bloc.profileAPIValue.result![0].parent,
+                    //             )),
+                    //             fontSize: FontSize.twenty,
+                    //             cardShape: 5,
+                    //             isTrailing:
+                    //                 bloc.newMsgCount != 0 ? true : false,
+                    //             leadingWidget: CircleAvatar(
+                    //               radius: 13,
+                    //               backgroundColor: ColorResource.colorFFFFFF,
+                    //               child: CustomText(
+                    //                 bloc.newMsgCount >= 100
+                    //                     ? '100+'
+                    //                     : bloc.newMsgCount.toString(),
+                    //                 fontSize: FontSize.twelve,
+                    //                 lineHeight: 1,
+                    //                 color: ColorResource.colorEA6D48,
+                    //                 fontWeight: FontWeight.w700,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     floatingActionButton: Visibility(
                       visible: false,
                       child: GestureDetector(

@@ -37,7 +37,7 @@ Future<void> main() async {
   }
   Bloc.observer = EchoBlocDelegate();
   if (kReleaseMode || kDebugMode) {
-    // debugPrint = (String? message, {int? wrapWidth}) {};
+    debugPrint = (String? message, {int? wrapWidth}) {};
   }
   runApp(
     BlocProvider<AuthenticationBloc>(
