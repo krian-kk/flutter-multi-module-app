@@ -229,7 +229,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             // Get Contractor Details and stored in Singleton
             final Map<String, dynamic> getContractorDetails =
                 await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.contractorDetail);
+                    APIRequestType.get, HttpUrl.contractorDetail,
+                    requestBodydata: {"contractor": "C0085"});
             // Get Contractor Details and stored in Singleton
             if (getContractorDetails[Constants.success] == true) {
               final Map<String, dynamic> jsonData =

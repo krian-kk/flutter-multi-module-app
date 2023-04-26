@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -32,6 +34,14 @@ class APIRepository {
     }
   }
 
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+  Future<void> encryptRequest(dynamic requestBodydata) async {
+    final Map<String, dynamic> requestData = {'data': jsonEncode(requestBodydata)};
+    String text = await platform.invokeMethod('sendEncryptedData', requestData);
+    debugPrint(text);
+  }
+
   static Future<Map<String, dynamic>> apiRequest(
       APIRequestType requestType, String urlString,
       {dynamic requestBodydata,
@@ -44,7 +54,9 @@ class APIRepository {
 
     debugPrint(
         'Before Request --> urlString-->$urlString \n  requestBodydata-->$requestBodydata //Completed');
+    if(requestBodydata!=null && urlString==HttpUrl.contractorDetail){
 
+    }
     try {
       Response<dynamic>? response;
       switch (requestType) {

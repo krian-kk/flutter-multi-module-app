@@ -14,7 +14,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 import android.content.pm.PackageManager
 import android.widget.Toast
-
+import CryptLib
 class MainActivity : FlutterActivity() {
     private val recordChannel = "recordAudioChannel"
     //recordAudioChannel
@@ -23,6 +23,8 @@ class MainActivity : FlutterActivity() {
     private var output: String? = null
     private var length: Int = 0
     private var isRecord: Boolean? = null
+    private val cryptLib = CryptLib()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         this.window.setFlags(
@@ -135,7 +137,40 @@ class MainActivity : FlutterActivity() {
                         e.printStackTrace()
                     }
                 }
-
+                "getDecryptedData" ->{
+                    val data = call.argument<String>("data")
+//                    mapKey?.let { setMapKey(it) }
+                    try {
+                        val cryptLib = CryptLib()
+                        val key = "No9jZYSWanhTRoaUkiAYfosn4jukH0wJ"
+                        val decryptedString = data?.let {
+                            cryptLib.decryptCipherTextWithRandomIV(
+                                it,
+                                key
+                            )
+                        }
+                        result.success(decryptedString)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
+                    }
+                }
+                "sendEncryptedData" ->{
+                    val data = call.argument<String>("data")
+                    print(data)
+//                    mapKey?.let { setMapKey(it) }
+                    try {
+                        val key = "No9jZYSWanhTRoaUkiAYfosn4jukH0wJ"
+                        val decryptedString = data?.let {
+                            cryptLib.encryptPlainTextWithRandomIV(
+                                it,
+                                key
+                            )
+                        }
+                        result.success(decryptedString)
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
+                    }
+                }
                 else -> {
                     result.notImplemented()
                 }

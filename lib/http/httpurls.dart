@@ -85,7 +85,7 @@ class HttpUrl {
 
   // Contractor detail api for FeedBack page
   static String contractorDetail =
-      baseUrl + fieldAgent + 'case-details-events/contractorDetails';
+      baseUrl + fieldAgent + 'case-details-events/contractorDetailsDummy';
 
   //Communication Channels
   static String communicationChannel =
