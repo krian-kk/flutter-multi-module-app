@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:freerasp/talsec_app.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
@@ -94,10 +95,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    initMobSecurity();
     WidgetsBinding.instance.addObserver(this);
 
     bloc = BlocProvider.of<AuthenticationBloc>(context);
-    androidAndIOSNotification();
+    // androidAndIOSNotification();
     //
     // final scoresRef =
     //     FirebaseDatabase.instance.ref(Singleton.instance.firebaseDatabaseName);
@@ -167,7 +169,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       }
     });
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       final RemoteNotification? notification = message.notification;
@@ -309,4 +311,41 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       },
     );
   }
+
+  Future<void> initMobSecurity() async {
+    TalsecConfig config = TalsecConfig(
+      // For Android
+      androidConfig: AndroidConfig(
+        expectedPackageName: 'com.mcollect.origa.ai',
+        expectedSigningCertificateHashes: ['42xeQ2AAn7kEjb29pG2YTblfOqbWdkEmumnnknVtB0k='],
+      ),
+
+      // For iOS
+      // iosConfig: IOSconfig(
+      //   appBundleId: 'YOUR_APP_BUNDLE_ID',
+      //   appTeamId: 'YOUR_APP_TEAM_ID',
+      // ),
+
+      // Common email for Alerts and Reports
+      watcherMail: 'krishnakant.chouhan@m2pfintech.com',
+    );
+    TalsecCallback callback = TalsecCallback(
+      // For Android
+      androidCallback: AndroidCallback(
+        onRootDetected: () => print('root'),
+        onEmulatorDetected: () => print('emulator'),
+        onHookDetected: () => print('hook'),
+        onTamperDetected: () => print('tamper'),
+        onDeviceBindingDetected: () => print('device binding'),
+        onUntrustedInstallationDetected: () => print('untrusted install'),
+      ),
+      onDebuggerDetected: () => print('debugger'),
+    );
+    TalsecApp app = TalsecApp(
+      config: config,
+      callback: callback,
+    );
+    app.start();
+  }
+
 }
