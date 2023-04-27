@@ -43,11 +43,6 @@ def getSigningFile() {
 }
 
 def apkNamePrefix = "mCollect"
-def majorNumber = "1"
-if (flutterVersionName != null) {
-    majorNumber = flutterVersionName
-}
-def minorNumber = "0"
 def sprintNumber = "0"
 
 android {
@@ -72,7 +67,7 @@ android {
 
     defaultConfig {
         applicationId "com.mcollect.origa.ai"
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdkVersion 33
         versionCode 29
         versionName "3.0.15.0"
@@ -107,7 +102,7 @@ android {
         debug {
 //            applicationIdSuffix ".debug"
             signingConfig signingConfigs.debug
-            useProguard true
+//            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -133,20 +128,5 @@ static def getDate() {
 dependencies {
     //noinspection GradleDependency
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation platform('com.google.firebase:firebase-bom:29.0.4')
-    implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation group: 'com.google.guava', name: 'guava', version: '28.1-android'
-    implementation('io.grpc:grpc-okhttp:1.44.1') {
-        exclude group: "com.squareup.okhttp"
-    }
-    implementation('com.google.firebase:firebase-firestore:24.2.1') {
-        exclude group: "com.squareup.okhttp"
-    }
-    implementation "com.google.firebase:firebase-firestore-ktx:24.2.1"
-    implementation "com.google.firebase:firebase-database-ktx:20.0.5"
-    implementation "com.google.firebase:firebase-storage-ktx:20.0.1"
-    implementation "com.firebaseui:firebase-ui-storage:4.3.2"
 }
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'

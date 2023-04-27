@@ -320,7 +320,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           changePasswordBottomSheet(context);
         }
         if (state is ClickMarkAsHomeState) {
-          markAsHomeShowBottomSheet(context);
+          // markAsHomeShowBottomSheet(context);
         }
         if (state is LoginState) {
           await Navigator.pushNamedAndRemoveUntil(
@@ -505,82 +505,82 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               //   color:
                                               //       ColorResource.color101010,
                                               // ),
-                                              GestureDetector(
-                                                onTap: () => bloc.add(
-                                                    ClickMarkAsHomeEvent()),
-                                                child: SizedBox(
-                                                  child: CustomText(
-                                                    Languages.of(context)!
-                                                        .markAsHome,
-                                                    fontSize: FontSize.twelve,
-                                                    isUnderLine: true,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: ColorResource
-                                                        .color101010,
-                                                  ),
-                                                ),
-                                              ),
+                                              // GestureDetector(
+                                              //   onTap: () => bloc.add(
+                                              //       ClickMarkAsHomeEvent()),
+                                              //   child: SizedBox(
+                                              //     child: CustomText(
+                                              //       Languages.of(context)!
+                                              //           .markAsHome,
+                                              //       fontSize: FontSize.twelve,
+                                              //       isUnderLine: true,
+                                              //       fontWeight: FontWeight.w700,
+                                              //       color: ColorResource
+                                              //           .color101010,
+                                              //     ),
+                                              //   ),
+                                              // ),
                                             ],
                                           )
-                                        : const SizedBox(),
-                                    const SizedBox(height: 5),
-                                    Singleton.instance.usertype ==
-                                            Constants.fieldagent
-                                        ? Container(
-                                            width: double.infinity,
-                                            margin: const EdgeInsets.symmetric(
-                                                vertical: 5.0),
-                                            decoration: const BoxDecoration(
-                                                color:
-                                                    ColorResource.colorF8F9FB,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10.0))),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 20,
-                                                vertical: 16.0,
-                                              ),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      CustomText(
-                                                        Languages.of(context)!
-                                                            .homeAddress
-                                                            .toUpperCase(),
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: ColorResource
-                                                            .color101010,
-                                                      ),
-                                                      const SizedBox(width: 8),
-                                                      SvgPicture.asset(
-                                                          ImageResource
-                                                              .location),
-                                                    ],
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  CustomText(
-                                                    addressValue != ''
-                                                        ? addressValue
-                                                        : bloc
-                                                                .profileAPIValue
-                                                                .result
-                                                                ?.first
-                                                                .homeAddress ??
-                                                            Languages.of(
-                                                                    context)!
-                                                                .homeAddressNotAvailable,
-                                                    color: ColorResource
-                                                        .color484848,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
+                                        //     : const SizedBox(),
+                                        // const SizedBox(height: 5),
+                                        // Singleton.instance.usertype ==
+                                        //         Constants.fieldagent
+                                        //     ? Container(
+                                        //         width: double.infinity,
+                                        //         margin: const EdgeInsets.symmetric(
+                                        //             vertical: 5.0),
+                                        //         decoration: const BoxDecoration(
+                                        //             color:
+                                        //                 ColorResource.colorF8F9FB,
+                                        //             borderRadius: BorderRadius.all(
+                                        //                 Radius.circular(10.0))),
+                                        //         child: Padding(
+                                        //           padding:
+                                        //               const EdgeInsets.symmetric(
+                                        //             horizontal: 20,
+                                        //             vertical: 16.0,
+                                        //           ),
+                                        //           child: Column(
+                                        //             crossAxisAlignment:
+                                        //                 CrossAxisAlignment.start,
+                                        //             children: <Widget>[
+                                        //               Row(
+                                        //                 children: <Widget>[
+                                        //                   CustomText(
+                                        //                     Languages.of(context)!
+                                        //                         .homeAddress
+                                        //                         .toUpperCase(),
+                                        //                     fontWeight:
+                                        //                         FontWeight.w700,
+                                        //                     color: ColorResource
+                                        //                         .color101010,
+                                        //                   ),
+                                        //                   const SizedBox(width: 8),
+                                        //                   SvgPicture.asset(
+                                        //                       ImageResource
+                                        //                           .location),
+                                        //                 ],
+                                        //               ),
+                                        //               const SizedBox(height: 5),
+                                        //               CustomText(
+                                        //                 addressValue != ''
+                                        //                     ? addressValue
+                                        //                     : bloc
+                                        //                             .profileAPIValue
+                                        //                             .result
+                                        //                             ?.first
+                                        //                             .homeAddress ??
+                                        //                         Languages.of(
+                                        //                                 context)!
+                                        //                             .homeAddressNotAvailable,
+                                        //                 color: ColorResource
+                                        //                     .color484848,
+                                        //               ),
+                                        //             ],
+                                        //           ),
+                                        //         ),
+                                        //       )
                                         : const SizedBox(),
                                     ListView.builder(
                                         physics:
@@ -1014,31 +1014,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 NotificationBottomSheetScreen(bloc: bloc)));
   }
 
-  markAsHomeShowBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => LayoutBuilder(
-            builder: (BuildContext buildContext, BoxConstraints settate) =>
-                MapViewBottomSheetScreen(
-                  title: Languages.of(context)!.markAsHome,
-                  onClose: (dynamic value) async {
-                    setState(() {
-                      addressValue = value;
-                      PreferenceHelper.setPreference('addressValue', value);
-                    });
-                  },
-                )));
-  }
+  /// Removed For now as api needs API key for google maps.
+// markAsHomeShowBottomSheet(BuildContext context) {
+//   showModalBottomSheet(
+//       context: context,
+//       isDismissible: false,
+//       enableDrag: false,
+//       isScrollControlled: true,
+//       backgroundColor: ColorResource.colorFFFFFF,
+//       shape: const RoundedRectangleBorder(
+//         borderRadius: BorderRadius.vertical(
+//           top: Radius.circular(20),
+//         ),
+//       ),
+//       clipBehavior: Clip.antiAliasWithSaveLayer,
+//       builder: (BuildContext context) => LayoutBuilder(
+//           builder: (BuildContext buildContext, BoxConstraints settate) =>
+//               MapViewBottomSheetScreen(
+//                 title: Languages.of(context)!.markAsHome,
+//                 onClose: (dynamic value) async {
+//                   setState(() {
+//                     addressValue = value;
+//                     PreferenceHelper.setPreference('addressValue', value);
+//                   });
+//                 },
+//               )));
+// }
 }
 
 class HelpScreen extends StatefulWidget {
@@ -1060,16 +1061,8 @@ class HelpScreenState extends State<HelpScreen> {
         initialUrl: 'about:blank',
         onWebViewCreated: (WebViewController webViewController) {
           _controller = webViewController;
-          _loadHtmlFromAssets();
         },
       ),
     );
-  }
-
-  _loadHtmlFromAssets() async {
-    String fileText = await rootBundle.loadString('assets/help.html');
-    _controller.loadUrl(Uri.dataFromString(fileText,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
   }
 }
