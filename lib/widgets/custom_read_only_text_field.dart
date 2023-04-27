@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -15,10 +14,9 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/voice_record_widget.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../singleton.dart';
 
 class CustomReadOnlyTextField extends StatefulWidget {
-  CustomReadOnlyTextField(
+  const CustomReadOnlyTextField(
     this.hintText,
     this.controller, {
     Key? key,
@@ -92,7 +90,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final Function? validatorCallBack;
   final double height;
   final TextCapitalization? textCapitalization;
-  bool isVoiceRecordWidget;
+  final bool isVoiceRecordWidget;
   final bool isNumberOnly;
   final String? caseId;
   final String? agrRef;
@@ -286,7 +284,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
               // maxLines: 1,
 
               focusNode: widget.focusNode,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color:
                       (widget.focusNode != null && widget.focusNode!.hasFocus)
                           ? widget.focusTextColor
@@ -314,7 +312,7 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
                                   setState(() {
                                     getTranslatedData = values;
                                     translateTextController.text =
-                                        values.result!.translatedText!;
+                                        values.result!.translatedText ?? '';
                                     isActiveSpeaker = true;
                                     if (widget.editStringCallBack != null) {
                                       widget.editStringCallBack!(

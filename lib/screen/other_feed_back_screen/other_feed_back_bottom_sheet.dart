@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +19,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -31,6 +33,7 @@ import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
@@ -38,12 +41,8 @@ import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/get_followuppriority_value.dart';
 import 'package:origa/widgets/ios_keyboard_actions.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../models/speech2text_model.dart';
-import '../../utils/string_resource.dart';
-import '../../widgets/get_followuppriority_value.dart';
 
 class CustomOtherFeedBackBottomSheet extends StatefulWidget {
   const CustomOtherFeedBackBottomSheet(
@@ -98,6 +97,7 @@ class _CustomOtherFeedBackBottomSheetState
 
   Map<String, dynamic> dynamicEventAttr = {};
   final List<String> dropDownList = [];
+
   // String? selectedDropDownValue;
 
   // check vehicle available or not
@@ -329,7 +329,7 @@ class _CustomOtherFeedBackBottomSheetState
                                     setState(() {
                                       this.returnS2Tdata = returnS2Tdata;
                                       this.isRecord = isRecord;
-                                      translateText = text!;
+                                      translateText = text ?? '';
                                       isTranslate = true;
                                     });
                                   },
@@ -543,8 +543,9 @@ class _CustomOtherFeedBackBottomSheetState
       AppUtils.showToast('Please wait audio is converting');
     } else {
       if (isRecord == Constants.submit) {
-        setState(() => remarksController.text = translateText);
-        setState(() => isTranslate = false);
+        setState(() => remarksController.text =
+            translateText.isEmpty ? remarksController.text : translateText);
+        setState(() => isTranslate = translateText.isEmpty ? true : false);
       }
       if (_formKey.currentState!.validate()) {
         // if (uploadFileLists.isEmpty) {
@@ -658,8 +659,10 @@ class _CustomOtherFeedBackBottomSheetState
           postdata.addAll(<String, dynamic>{
             'eventAttr': eventdata,
           });
-          print(
-              '------Request bodyes----> ${jsonDecode(jsonEncode(postdata))}');
+          if (kDebugMode) {
+            print(
+                '------Request bodyes----> ${jsonDecode(jsonEncode(postdata))}');
+          }
           final List<dynamic> value = <dynamic>[];
           for (File element in uploadFileLists) {
             value.add(await MultipartFile.fromFile(element.path.toString()));
@@ -694,7 +697,7 @@ class _CustomOtherFeedBackBottomSheetState
                 await APIRepository.apiRequest(
               APIRequestType.upload,
               // HttpUrl.otherFeedBackPostUrl('looo', widget.userType),
-                  //here
+              //here
               HttpUrl.otherFeedBackPostUrl('feedback', widget.userType),
               formDatas: FormData.fromMap(postdata),
             );
@@ -1035,9 +1038,7 @@ class _CustomOtherFeedBackBottomSheetState
                               height: 45,
                               decoration: BoxDecoration(
                                   color: ColorResource.colorFFFFFF,
-                                  border: Border.all(
-                                      color: ColorResource.color23375A,
-                                      width: 0.5),
+                                  border: Border.all(width: 0.5),
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(50.0))),
                               child: Padding(
