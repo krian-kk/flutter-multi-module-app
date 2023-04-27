@@ -317,7 +317,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       // For Android
       androidConfig: AndroidConfig(
         expectedPackageName: 'com.mcollect.origa.ai',
-        expectedSigningCertificateHashes: ['42xeQ2AAn7kEjb29pG2YTblfOqbWdkEmumnnknVtB0k='],
+        expectedSigningCertificateHashes: [
+          '42xeQ2AAn7kEjb29pG2YTblfOqbWdkEmumnnknVtB0k='
+        ],
       ),
 
       // For iOS
@@ -347,5 +349,4 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
     app.start();
   }
-
 }

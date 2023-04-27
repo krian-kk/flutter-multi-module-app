@@ -1,0 +1,22 @@
+{
+    "onRepoLoadShowCheckedOutBranch": true,
+    "onRepoLoadShowSpecificBranches": [
+        "api_level_encryption_decryption",
+        "RD-695-app-improvements-to-optimise-the-overall-performance",
+        "app_migration_to_clean_architecture",
+        "apple_update",
+        "case_detail_changes",
+        "cryptography",
+        "dev",
+        "dev2",
+        "flutterfire_firebase_integration",
+        "gfl_change",
+        "master",
+        "mobsf_integration",
+        "root_detection",
+        "sbic_change_new",
+        "sbic_changes",
+        "setup_over_master"
+    ],
+    "exportedAt": 1682625576393
+}
