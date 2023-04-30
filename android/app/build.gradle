@@ -106,6 +106,25 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        uat {
+            dimension "default"
+            resValue "string", "app_name", "M2P Collect UAT"
+            applicationIdSuffix ".uat"
+        }
+        uat-sbi {
+            dimension "default"
+            resValue "string", "app_name", "M2P Collect UAT SBI"
+            applicationIdSuffix ".uat.sbic"
+        }
+        prod {
+            dimension "default"
+            resValue "string", "app_name", "M2P Collect"
+            applicationIdSuffix ".prod"
+        }
+    }
 }
 
 flutter {
