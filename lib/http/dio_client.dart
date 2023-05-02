@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/http/logging.dart';
@@ -14,9 +14,9 @@ class DioClient {
     final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 60000,
+        connectTimeout: const Duration(seconds: 60000),
         //60s
-        receiveTimeout: 60000,
+        receiveTimeout: const Duration(seconds: 60000),
         //60s
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
@@ -33,7 +33,7 @@ class DioClient {
       ),
     )..interceptors.add(Logging());
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -46,10 +46,8 @@ class DioClient {
     final Dio dio = Dio(
       BaseOptions(
         baseUrl: HttpUrl.baseUrl,
-        connectTimeout: 60000,
-        //60s
-        receiveTimeout: 60000,
-        //60s
+        connectTimeout: const Duration(seconds: 60000),
+        receiveTimeout: const Duration(seconds: 60000),
         followRedirects: true,
         headers: (Singleton.instance.accessToken != null ||
                 '' != Singleton.instance.accessToken)
@@ -61,7 +59,7 @@ class DioClient {
       ),
     )..interceptors.add(Logging());
 
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+    (dio.httpClientAdapter as IOHttpClientAdapter).onHttpClientCreate =
         (HttpClient client) {
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
@@ -72,16 +70,16 @@ class DioClient {
 
   static dynamic errorHandling(DioError e) {
     /// When the server response, but with a incorrect status, such as 404, 503
-    if (e.type == DioErrorType.response) {
-      return DioErrorType.response;
+    if (e.type == DioErrorType.badResponse) {
+      return DioErrorType.badResponse;
     }
-    if (e.type == DioErrorType.connectTimeout) {
+    if (e.type == DioErrorType.connectionTimeout) {
       return 'Please check your internet connection';
     }
     if (e.type == DioErrorType.receiveTimeout) {
       return 'Unable to connect to the server';
     }
-    if (e.type == DioErrorType.other) {
+    if (e.type == DioErrorType.unknown) {
       return 'Something went wrong';
     }
 

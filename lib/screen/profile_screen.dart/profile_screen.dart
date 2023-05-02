@@ -873,7 +873,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (BuildContext context) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.9,
-          child: WebViewWidget(urlAddress: urlAddress),
+          // child: WebViewWidget(urlAddress: urlAddress),
         );
       },
     );
@@ -1056,13 +1056,13 @@ class HelpScreenState extends State<HelpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Help')),
-      body: WebView(
-        javascriptMode: JavascriptMode.unrestricted,
-        initialUrl: 'about:blank',
-        onWebViewCreated: (WebViewController webViewController) {
-          _controller = webViewController;
-        },
-      ),
+      // body: WebView(
+      //   javascriptMode: JavascriptMode.unrestricted,
+      //   initialUrl: 'about:blank',
+      //   onWebViewCreated: (WebViewController webViewController) {
+      //     _controller = webViewController;
+      //   },
+      // ),
     );
   }
 }
