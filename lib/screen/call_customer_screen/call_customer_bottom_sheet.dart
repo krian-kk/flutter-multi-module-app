@@ -83,10 +83,11 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
       customerContactNoDropDownValue = value.replaceRange(2, 7, 'XXXXX');
     }
     debugPrint(customerContactNoDropDownValue);
-    for( var index = 0 ; index < widget.listOfMobileNo.length; index++ ) {
+    for (var index = 0; index < widget.listOfMobileNo.length; index++) {
       String element = widget.listOfMobileNo[index];
       customerContactNoDropdownList.add(element);
-      customerContactNoDropdownListMap[element.replaceRange(2, 7, 'XXXXX')] = element;
+      customerContactNoDropdownListMap[element.replaceRange(2, 7, 'XXXXX')] =
+          element;
     }
   }
 
@@ -186,22 +187,22 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     const SizedBox(width: 5),
                                     Flexible(
                                       child: MaskedCustomDropDownButton(
-                                        Languages.of(context)!
-                                            .customerContactNo,
-                                        customerContactNoDropdownList,
-                                        selectedValue:
-                                            customerContactNoDropDownValue,
-                                        onChanged: (String? newValue) =>
-                                            setState(() {
-                                          debugPrint("new value---->" +
-                                              newValue.toString());
-                                          customerContactNoDropDownValue = newValue.toString();
-                                        }),
-                                        icon: SvgPicture.asset(
-                                          ImageResource.downShape,
-                                        ),
-                                        maskNumber: isMaskingEnabled
-                                      ),
+                                          Languages.of(context)!
+                                              .customerContactNo,
+                                          customerContactNoDropdownList,
+                                          selectedValue:
+                                              customerContactNoDropDownValue,
+                                          onChanged: (String? newValue) =>
+                                              setState(() {
+                                                debugPrint("new value---->" +
+                                                    newValue.toString());
+                                                customerContactNoDropDownValue =
+                                                    newValue.toString();
+                                              }),
+                                          icon: SvgPicture.asset(
+                                            ImageResource.downShape,
+                                          ),
+                                          maskNumber: isMaskingEnabled),
                                     ),
                                   ],
                                 ),
@@ -290,12 +291,17 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 });
                               }
                               if (_formKey.currentState!.validate()) {
-                                String selectedCustomerNumberValue = customerContactNoDropDownValue ?? '';
+                                String selectedCustomerNumberValue =
+                                    customerContactNoDropDownValue;
                                 final ContractorResult? informationModel =
-                                    Singleton.instance.contractorInformations?.result;
+                                    Singleton.instance.contractorInformations
+                                        ?.result;
                                 if (informationModel?.cloudTelephony == true &&
                                     informationModel?.contactMasking == true) {
-                                  selectedCustomerNumberValue = customerContactNoDropdownListMap[selectedCustomerNumberValue] ?? '';
+                                  selectedCustomerNumberValue =
+                                      customerContactNoDropdownListMap[
+                                              selectedCustomerNumberValue] ??
+                                          '';
                                 }
                                 debugPrint(selectedCustomerNumberValue);
                                 if (Singleton.instance.cloudTelephony! &&
@@ -344,7 +350,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     }
                                   }
                                 } else {
-                                  await AppUtils.makePhoneCall(selectedCustomerNumberValue);
+                                  await AppUtils.makePhoneCall(
+                                      selectedCustomerNumberValue);
                                 }
                               }
                               if (mounted) {

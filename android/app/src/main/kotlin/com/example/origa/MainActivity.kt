@@ -122,9 +122,6 @@ class MainActivity : FlutterActivity() {
                     mediaPlayer?.release()
                     mediaPlayer = null
                 }
-                "disposeRecordAudio" -> {
-                    result.success(true)
-                }
                 "setGoogleMapKey" ->{
                     val mapKey = call.argument<String>("mapKey")
 //                    mapKey?.let { setMapKey(it) }

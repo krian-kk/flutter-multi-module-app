@@ -334,7 +334,6 @@
 // }
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -347,7 +346,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
-import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
@@ -678,7 +676,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   await APIRepository.apiRequest(
                     APIRequestType.post,
                     HttpUrl.mobileInfoUrl,
-                    requestBodydata: jsonEncode(requestBodyData.toJson()),
+                    requestBodydata: requestBodyData,
                   );
                 } else if (Platform.isIOS) {
                   final requestBodyData = IOSDeviceInfoModel(
@@ -701,7 +699,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                   await APIRepository.apiRequest(
                     APIRequestType.post,
                     HttpUrl.mobileInfoUrl,
-                    requestBodydata: jsonEncode(requestBodyData.toJson()),
+                    requestBodydata: requestBodyData,
                   );
                 }
                 // AppUtils.showErrorToast('Success Getting devide info');
