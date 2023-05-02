@@ -259,32 +259,32 @@ class _IdCardBottomSheetScreenState extends State<IdCardBottomSheetScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: WebView(
-              javascriptMode: JavascriptMode.unrestricted,
-              // backgroundColor: Colors.amber,
-              initialUrl: '',
-              onWebViewCreated: (WebViewController webViewController) async {
-                controller = webViewController;
-                await controller.loadUrl(Uri.dataFromString(htmlValue!,
-                        mimeType: 'text/html',
-                        encoding: Encoding.getByName('utf-8'))
-                    .toString());
-              },
-              onPageStarted: (String val) {
-                //_loadHTML(controller: controller);
-              },
-              javascriptChannels: {
-                JavascriptChannel(
-                    name: 'JavascriptChannel',
-                    onMessageReceived: (JavascriptMessage message) {
-                      // debugPrint(
-                      //     'JavascriptMessage message ----> ${message.message}');
-                    })
-              },
-              onPageFinished: (String finish) {
-                setState(() => isLoading = false);
-              },
-            ),
+            // child: WebView(
+            //   javascriptMode: JavascriptMode.unrestricted,
+            //   // backgroundColor: Colors.amber,
+            //   initialUrl: '',
+            //   onWebViewCreated: (WebViewController webViewController) async {
+            //     controller = webViewController;
+            //     await controller.loadUrl(Uri.dataFromString(htmlValue!,
+            //             mimeType: 'text/html',
+            //             encoding: Encoding.getByName('utf-8'))
+            //         .toString());
+            //   },
+            //   onPageStarted: (String val) {
+            //     //_loadHTML(controller: controller);
+            //   },
+            //   javascriptChannels: {
+            //     JavascriptChannel(
+            //         name: 'JavascriptChannel',
+            //         onMessageReceived: (JavascriptMessage message) {
+            //           // debugPrint(
+            //           //     'JavascriptMessage message ----> ${message.message}');
+            //         })
+            //   },
+            //   onPageFinished: (String finish) {
+            //     setState(() => isLoading = false);
+            //   },
+            // ),
           ),
           isLoading ? const CustomLoadingWidget() : const SizedBox(),
         ],

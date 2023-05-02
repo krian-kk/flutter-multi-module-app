@@ -114,10 +114,10 @@ android {
             resValue "string", "app_name", "M2P Collect UAT"
             applicationIdSuffix ".uat"
         }
-        uat-sbi {
+        uatSbi {
             dimension "default"
             resValue "string", "app_name", "M2P Collect UAT SBI"
-            applicationIdSuffix ".uat.sbic"
+            applicationIdSuffix ".uat"
         }
         prod {
             dimension "default"

@@ -71,32 +71,33 @@ class _AuthorizationLetterBottomSheetScreenState
                             children: [
                               Padding(
                                 padding: const EdgeInsets.all(20.0),
-                                child: WebView(
-                                  javascriptMode: JavascriptMode.unrestricted,
-                                  initialUrl: '',
-                                  onWebViewCreated: (WebViewController
-                                      webViewController) async {
-                                    controller = webViewController;
-                                    await controller.loadUrl(Uri.dataFromString(
-                                            widget.bloc.authorizationLetter!,
-                                            mimeType: 'text/html',
-                                            encoding:
-                                                Encoding.getByName('utf-8'))
-                                        .toString());
-                                  },
-                                  onPageStarted: (String val) {
-                                    //_loadHTML(controller: controller);
-                                  },
-                                  javascriptChannels: {
-                                    JavascriptChannel(
-                                        name: 'JavascriptChannel',
-                                        onMessageReceived:
-                                            (JavascriptMessage message) {})
-                                  },
-                                  onPageFinished: (String finish) {
-                                    setState(() => isLoading = false);
-                                  },
-                                ),
+                                child: WebViewWidget(controller: controller)
+                                // child: WebView(
+                                //   javascriptMode: JavascriptMode.unrestricted,
+                                //   initialUrl: '',
+                                //   onWebViewCreated: (WebViewController
+                                //       webViewController) async {
+                                //     controller = webViewController;
+                                //     await controller.loadUrl(Uri.dataFromString(
+                                //             widget.bloc.authorizationLetter!,
+                                //             mimeType: 'text/html',
+                                //             encoding:
+                                //                 Encoding.getByName('utf-8'))
+                                //         .toString());
+                                //   },
+                                //   onPageStarted: (String val) {
+                                //     //_loadHTML(controller: controller);
+                                //   },
+                                //   javascriptChannels: {
+                                //     JavascriptChannel(
+                                //         name: 'JavascriptChannel',
+                                //         onMessageReceived:
+                                //             (JavascriptMessage message) {})
+                                //   },
+                                //   onPageFinished: (String finish) {
+                                //     setState(() => isLoading = false);
+                                //   },
+                                // ),
                               ),
                               isLoading
                                   ? const CustomLoadingWidget()

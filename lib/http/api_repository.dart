@@ -37,7 +37,9 @@ class APIRepository {
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   Future<void> encryptRequest(dynamic requestBodydata) async {
-    final Map<String, dynamic> requestData = {'data': jsonEncode(requestBodydata)};
+    final Map<String, dynamic> requestData = {
+      'data': jsonEncode(requestBodydata)
+    };
     String text = await platform.invokeMethod('sendEncryptedData', requestData);
     debugPrint(text);
   }
@@ -54,9 +56,7 @@ class APIRepository {
 
     debugPrint(
         'Before Request --> urlString-->$urlString \n  requestBodydata-->$requestBodydata //Completed');
-    if(requestBodydata!=null && urlString==HttpUrl.contractorDetail){
-
-    }
+    if (requestBodydata != null && urlString == HttpUrl.contractorDetail) {}
     try {
       Response<dynamic>? response;
       switch (requestType) {
@@ -103,7 +103,7 @@ class APIRepository {
         default:
           {
             response = await DioClient.dioConfig()
-                .post(urlString, data: requestBodydata);
+                .post(urlString, data: jsonEncode(requestBodydata));
           }
       }
       debugPrint(
