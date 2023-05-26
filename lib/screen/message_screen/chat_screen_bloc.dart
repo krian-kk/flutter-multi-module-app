@@ -44,7 +44,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
           debugPrint('get toAref data from profile api ');
           final Map<String, dynamic> getProfileData =
               await APIRepository.apiRequest(
-                  APIRequestType.get, HttpUrl.profileUrl);
+                  APIRequestType.get, HttpUrl.profileUrl, encrypt: true);
 
           if (getProfileData['success']) {
             final Map<String, dynamic> jsonData = getProfileData['data'];
@@ -61,7 +61,7 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
             await APIRepository.apiRequest(
                 APIRequestType.get,
                 HttpUrl.agentInformation +
-                    'aRef=${event.toAref ?? profileAPIValue.result![0].parent}');
+                    'aRef=${event.toAref ?? profileAPIValue.result![0].parent}', encrypt: true);
 
         if (agentInformation[Constants.success]) {
           final Map<String, dynamic> jsonData = agentInformation['data'];

@@ -60,9 +60,18 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   late TextEditingController dateControlller;
   late TextEditingController timeControlller;
   late TextEditingController modelMakeControlller;
-  late TextEditingController registrationNoControlller;
   late TextEditingController chassisNoControlller;
   late TextEditingController remarksControlller;
+
+  late TextEditingController vehicleRegistrationNoController;
+  late TextEditingController dealerNameController;
+  late TextEditingController dealerAddressController;
+  late TextEditingController referenceOneNameController;
+  late TextEditingController referenceTwoNameController;
+  late TextEditingController referenceOneNoController;
+  late TextEditingController referenceTwoNoController;
+  late TextEditingController batterIdController;
+  late TextEditingController vehicleIdentificationNoController;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -77,6 +86,15 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
   late FocusNode modelMakeFocusNode;
   late FocusNode registraionNoFocusNode;
   late FocusNode chassisNoFocusNode;
+  late FocusNode vehicleRegistrationNoNode;
+  late FocusNode dealerNameNode;
+  late FocusNode dealerAddressNode;
+  late FocusNode referenceOneNameNode;
+  late FocusNode referenceTwoNameNode;
+  late FocusNode referenceOneNoNode;
+  late FocusNode referenceTwoNoNode;
+  late FocusNode batterIdNode;
+  late FocusNode vehicleIdentificationNoNode;
 
   //Returned speech to text AAPI data
   Speech2TextModel returnS2Tdata = Speech2TextModel();
@@ -86,12 +104,53 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     dateControlller = TextEditingController();
     timeControlller = TextEditingController();
     modelMakeControlller = TextEditingController();
-    registrationNoControlller = TextEditingController();
     chassisNoControlller = TextEditingController();
     remarksControlller = TextEditingController();
     modelMakeFocusNode = FocusNode();
     registraionNoFocusNode = FocusNode();
     chassisNoFocusNode = FocusNode();
+    vehicleRegistrationNoNode = FocusNode();
+    dealerNameNode = FocusNode();
+    dealerAddressNode = FocusNode();
+    referenceOneNameNode = FocusNode();
+    referenceTwoNameNode = FocusNode();
+    referenceOneNoNode = FocusNode();
+    referenceTwoNoNode = FocusNode();
+    batterIdNode = FocusNode();
+    vehicleIdentificationNoNode = FocusNode();
+
+    vehicleRegistrationNoController = TextEditingController();
+    dealerNameController = TextEditingController();
+    dealerAddressController = TextEditingController();
+    referenceOneNameController = TextEditingController();
+    referenceTwoNameController = TextEditingController();
+    referenceOneNoController = TextEditingController();
+    referenceTwoNoController = TextEditingController();
+    batterIdController = TextEditingController();
+    vehicleIdentificationNoController = TextEditingController();
+
+    modelMakeControlller.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.modelMake ?? '';
+    vehicleRegistrationNoController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.vehicleRegNo ?? '';
+    dealerNameController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.dealerName ?? '';
+    dealerAddressController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.dealerAddress ??
+            '';
+    referenceOneNameController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref1 ?? '';
+    referenceTwoNameController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref2 ?? '';
+    referenceOneNoController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref1No ?? '';
+    referenceTwoNoController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref2No ?? '';
+    batterIdController.text =
+        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.batteryID ?? '';
+    vehicleIdentificationNoController.text = widget.bloc.caseDetailsAPIValue
+            .result?.caseDetails?.vehicleIdentificationNo ??
+        '';
     super.initState();
   }
 
@@ -100,12 +159,30 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     dateControlller.dispose();
     timeControlller.dispose();
     modelMakeControlller.dispose();
-    registrationNoControlller.dispose();
     chassisNoControlller.dispose();
     remarksControlller.dispose();
     modelMakeFocusNode.dispose();
-    registraionNoFocusNode.dispose();
     chassisNoFocusNode.dispose();
+
+    vehicleRegistrationNoNode.dispose();
+    dealerNameNode.dispose();
+    dealerAddressNode.dispose();
+    referenceOneNameNode.dispose();
+    referenceTwoNameNode.dispose();
+    referenceOneNoNode.dispose();
+    referenceTwoNoNode.dispose();
+    batterIdNode.dispose();
+    vehicleIdentificationNoNode.dispose();
+
+    vehicleRegistrationNoController.dispose();
+    dealerNameController.dispose();
+    dealerAddressController.dispose();
+    referenceOneNameController.dispose();
+    referenceTwoNameController.dispose();
+    referenceOneNoController.dispose();
+    referenceTwoNoController.dispose();
+    batterIdController.dispose();
+    vehicleIdentificationNoController.dispose();
     super.dispose();
   }
 
@@ -239,28 +316,86 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           focusNode: modelMakeFocusNode,
                           validationRules: const <String>['required'],
                           isLabel: true,
-                          onEditing: () =>
-                              registraionNoFocusNode.requestFocus(),
                         )),
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.registrationNo,
-                          registrationNoControlller,
-                          focusNode: registraionNoFocusNode,
-                          validationRules: const <String>['required'],
+                                Languages.of(context)!.chassisNo,
+                                chassisNoControlller,
+                                focusNode: chassisNoFocusNode,
+                                validationRules: const <String>['required'],
+                                isLabel: true)),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.vehicleRegistrationNo,
+                          vehicleRegistrationNoController,
+                          focusNode: vehicleRegistrationNoNode,
                           isLabel: true,
-                          onEditing: () => chassisNoFocusNode.requestFocus(),
                         )),
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.chassisNo,
-                          chassisNoControlller,
-                          focusNode: chassisNoFocusNode,
-                          validationRules: const <String>['required'],
+                          Languages.of(context)!.dealerName,
+                          dealerNameController,
+                          focusNode: dealerNameNode,
                           isLabel: true,
-                          onEditing: () => chassisNoFocusNode.unfocus(),
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.dealerAddress,
+                          dealerAddressController,
+                          focusNode: dealerAddressNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.referenceOneName,
+                          referenceOneNameController,
+                          focusNode: referenceOneNameNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.referenceOneNo,
+                          referenceOneNoController,
+                          focusNode: referenceOneNoNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.referenceTwoName,
+                          referenceTwoNameController,
+                          focusNode: referenceTwoNameNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.referenceTwoNo,
+                          referenceTwoNoController,
+                          focusNode: referenceTwoNoNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.batterId,
+                          batterIdController,
+                          focusNode: batterIdNode,
+                          isLabel: true,
+                        )),
+                        const SizedBox(height: 17),
+                        Flexible(
+                            child: CustomReadOnlyTextField(
+                          Languages.of(context)!.vehicleIdentificationNo,
+                          vehicleIdentificationNoController,
+                          focusNode: vehicleIdentificationNoNode,
+                          isLabel: true,
                         )),
                         const SizedBox(height: 21),
                         CustomButton(
@@ -446,13 +581,31 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                               eventAttr: EventAttr(
                                                 modelMake:
                                                     modelMakeControlller.text,
-                                                registrationNo:
-                                                    registrationNoControlller
-                                                        .text,
                                                 chassisNo:
                                                     chassisNoControlller.text,
                                                 remarks:
                                                     remarksControlller.text,
+                                                vehicleRegNo:
+                                                    vehicleRegistrationNoController
+                                                        .text,
+                                                vehicleIdentificationNo:
+                                                    vehicleIdentificationNoController
+                                                        .text,
+                                                ref1: referenceOneNameController
+                                                    .text,
+                                                ref2: referenceTwoNameController
+                                                    .text,
+                                                ref2No: referenceTwoNoController
+                                                    .text,
+                                                ref1No: referenceOneNoController
+                                                    .text,
+                                                batteryID:
+                                                    batterIdController.text,
+                                                dealerName:
+                                                    dealerNameController.text,
+                                                dealerAddress:
+                                                    dealerAddressController
+                                                        .text,
                                                 repo: Repo(),
                                                 date: dateControlller.text
                                                         .trim() +

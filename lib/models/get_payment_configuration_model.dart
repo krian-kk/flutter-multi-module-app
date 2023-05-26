@@ -2,8 +2,8 @@ class PaymentConfigurationModel {
   PaymentConfigurationModel({this.status, this.msg, this.data});
 
   PaymentConfigurationModel.fromJson(Map<String, dynamic> json) {
-    status = json['status'];
-    msg = json['msg'];
+    // status = json['status'];
+    msg = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((dynamic v) {
@@ -17,8 +17,8 @@ class PaymentConfigurationModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['status'] = status;
-    data['msg'] = msg;
+    // data['status'] = status;
+    data['message'] = msg;
     if (this.data != null) {
       data['data'] = this.data!.map((Data v) => v.toJson()).toList();
     }

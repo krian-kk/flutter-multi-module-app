@@ -186,7 +186,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     ? HttpUrl.priorityCaseListV2
                     : HttpUrl.priorityCaseListV1 +
                         'pageNo=${Constants.pageNo}' +
-                        '&limit=${Constants.limit}');
+                        '&limit=${Constants.limit}',encrypt: true);
 
         resultList.clear();
         starCount = 0;
@@ -230,7 +230,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             final Map<String, dynamic> getContractorDetails =
                 await APIRepository.apiRequest(
                     APIRequestType.get, HttpUrl.contractorDetail,
-                    requestBodydata: {"contractor": "C0085"});
+                    encrypt: true);
             // Get Contractor Details and stored in Singleton
             if (getContractorDetails[Constants.success] == true) {
               final Map<String, dynamic> jsonData =
@@ -346,7 +346,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 APIRequestType.get,
                 HttpUrl.priorityCaseListV1 +
                     'pageNo=${Constants.pageNo}' +
-                    '&limit=${Constants.limit}');
+                    '&limit=${Constants.limit}',encrypt: true);
 
         resultList.clear();
         starCount = 0;
@@ -399,7 +399,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 APIRequestType.get,
                 HttpUrl.priorityCaseListV1 +
                     'pageNo=$page' +
-                    '&limit=${Constants.limit}');
+                    '&limit=${Constants.limit}',encrypt: true);
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(priorityListData['data']);
         if (priorityListData['data']['result'] != null) {
@@ -467,7 +467,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'lng=${event.paramValues.long}&' +
                     'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=${Constants.pageNo}&' +
-                    'limit=${Constants.limit}');
+                    'limit=${Constants.limit}',encrypt: true);
 
         resultList.clear();
         multipleLatLong.clear();
@@ -508,7 +508,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'lng=${event.paramValues.long}&' +
                     'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=$page&' +
-                    'limit=${Constants.limit}');
+                    'limit=${Constants.limit}',encrypt: true);
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(buildRouteListData['data']);
         buildRouteListData['data']['result']['cases'].forEach((element) {
@@ -568,7 +568,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'lng=${event.paramValues.long}&' +
                     'maxDistMeters=${event.paramValues.maxDistMeters}&' +
                     'page=${Constants.pageNo}&' +
-                    'limit=${Constants.limit}');
+                    'limit=${Constants.limit}',encrypt: true);
 
         buildRouteListData['data']['result']['cases'].forEach((element) {
           final Result listOfCases =
@@ -621,7 +621,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   'dpdStr=${data.dpdBucket}&' +
                   'customerId=${data.customerID}&' +
                   'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}');
+                  'collSubStatus=${data.status}',encrypt: true);
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
@@ -632,7 +632,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   'dpdStr=${data.dpdBucket}&' +
                   'customerId=${data.customerID}&' +
                   'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}');
+                  'collSubStatus=${data.status}',encrypt: true);
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
@@ -643,7 +643,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   'dpdStr=${data.dpdBucket}&' +
                   'customerId=${data.customerID}&' +
                   'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}');
+                  'collSubStatus=${data.status}',encrypt: true);
         } else {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
@@ -653,7 +653,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                   'dpdStr=${data.dpdBucket}&' +
                   'customerId=${data.customerID}&' +
                   'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}');
+                  'collSubStatus=${data.status}',encrypt: true);
         }
 
         resultList.clear();

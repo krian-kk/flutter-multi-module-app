@@ -8,10 +8,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/utils/app_config.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -72,20 +75,85 @@ class _CustomCaptureImageBottomSheetState
     super.dispose();
   }
 
-  getFiles() async {
-    final FilePickerResult? result =
-        await FilePicker.platform.pickFiles(allowMultiple: true);
-    if (result != null) {
-      uploadFileLists =
-          result.paths.map((String? path) => File(path!)).toList();
-      AppUtils.showToast(
-        StringResource.fileUploadMessage,
+  final ImagePicker _picker = ImagePicker();
+
+  _onImageButtonPressed(ImageSource source, String appFlavor) async {
+    try {
+      final XFile? result = await _picker.pickImage(
+        source: source,
       );
-    } else {
-      AppUtils.showToast(
-        Languages.of(context)!.canceled,
-      );
-    }
+      if (result != null) {
+        uploadFileLists = [];
+        uploadFileLists.add(File(result.path));
+        AppUtils.showToast(
+          StringResource.fileUploadMessage,
+        );
+        if (appFlavor.contains('sbic')) {
+          Navigator.pop(context);
+        }
+      } else {
+        AppUtils.showToast(
+          Languages.of(context)!.canceled,
+        );
+      }
+      setState(() {});
+    } catch (e) {}
+  }
+
+  getImageFiles(String appFlavor) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Wrap(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(padding: EdgeInsets.symmetric(vertical: 16)),
+                const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Text('Choose Image from:')),
+                GestureDetector(
+                  onTap: () {
+                    _onImageButtonPressed(ImageSource.camera, appFlavor);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('Camera'),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    _onImageButtonPressed(ImageSource.gallery, appFlavor);
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Text('Gallery'),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.symmetric(vertical: 16)),
+              ],
+            ),
+          ]);
+        });
+  }
+
+  getFiles(String appFlavor) async {
+    _onImageButtonPressed(ImageSource.camera, appFlavor);
+
+    // final FilePickerResult? result =
+    //     await FilePicker.platform.pickFiles(allowMultiple: true);
+    // if (result != null) {
+    //   uploadFileLists =
+    //       result.paths.map((String? path) => File(path!)).toList();
+    //   AppUtils.showToast(
+    //     StringResource.fileUploadMessage,
+    //   );
+    // } else {
+    //   AppUtils.showToast(
+    //     Languages.of(context)!.canceled,
+    //   );
+    // }
   }
 
   @override
@@ -142,7 +210,11 @@ class _CustomCaptureImageBottomSheetState
                                 cardElevation: 1,
                                 isLeading: true,
                                 onTap: () async {
-                                  getFiles();
+                                  if (HttpUrl.appFlavor.contains('sbic')) {
+                                    getImageFiles(HttpUrl.appFlavor);
+                                  } else {
+                                    getFiles(HttpUrl.appFlavor);
+                                  }
                                 },
                               ),
                               const SizedBox(height: 15),
@@ -336,7 +408,7 @@ class _CustomCaptureImageBottomSheetState
                                             );
 
                                             debugPrint(
-                                                "requestg body data for capture image ----> ${jsonEncode(requestBodyData)}");
+                                                'requestg body data for capture image ----> ${jsonEncode(requestBodyData)}');
 
                                             widget.bloc.add(
                                                 PostImageCapturedEvent(

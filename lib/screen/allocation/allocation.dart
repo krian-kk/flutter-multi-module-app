@@ -576,7 +576,7 @@ class _AllocationScreenState extends State<AllocationScreen>
           if (bloc.customerCount < bloc.totalCount) {
             final Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl);
+                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl, encrypt: true);
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
                 final Map<String, dynamic> jsonData =

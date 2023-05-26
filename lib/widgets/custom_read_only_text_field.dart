@@ -58,6 +58,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
     this.checkRecord,
     this.editStringCallBack,
     this.isSubmit = true,
+        this.initialValue = ''
   }) : super(key: key);
   final String hintText;
   final bool obscureText;
@@ -99,6 +100,7 @@ class CustomReadOnlyTextField extends StatefulWidget {
   final OnChangeCheckRecord? checkRecord;
   final bool isSubmit;
   final Function? editStringCallBack;
+  final String? initialValue;
 
   @override
   _CustomReadOnlyTextFieldState createState() =>
@@ -218,7 +220,6 @@ class _CustomReadOnlyTextFieldState extends State<CustomReadOnlyTextField> {
             height: widget.isLabel ? null : widget.height,
             child: TextFormField(
               textInputAction: TextInputAction.done,
-
               cursorHeight: 17,
               validator: (String? value) {
                 if (widget.validationRules.isNotEmpty) {

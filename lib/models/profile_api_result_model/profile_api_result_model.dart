@@ -10,6 +10,7 @@ class ProfileApiModel {
     }
     if (json['result'] != null) {
       result = <Result>[];
+      print("incosefsdfsdf---> $result");
       json['result'].forEach((dynamic v) {
         result!.add(Result.fromJson(v));
       });

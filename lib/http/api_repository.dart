@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:origa/http/dio_client.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -36,14 +35,6 @@ class APIRepository {
 
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
-  Future<void> encryptRequest(dynamic requestBodydata) async {
-    final Map<String, dynamic> requestData = {
-      'data': jsonEncode(requestBodydata)
-    };
-    String text = await platform.invokeMethod('sendEncryptedData', requestData);
-    debugPrint(text);
-  }
-
   static Future<Map<String, dynamic>> apiRequest(
       APIRequestType requestType, String urlString,
       {dynamic requestBodydata,
@@ -51,12 +42,10 @@ class APIRepository {
       File? imageFile,
       FormData? formDatas,
       String? savePath,
-      bool isPop = false}) async {
+      bool isPop = false,
+      bool encrypt = false}) async {
     Map<String, dynamic> returnValue;
 
-    debugPrint(
-        'Before Request --> urlString-->$urlString \n  requestBodydata-->$requestBodydata //Completed');
-    if (requestBodydata != null && urlString == HttpUrl.contractorDetail) {}
     try {
       Response<dynamic>? response;
       switch (requestType) {
@@ -103,15 +92,10 @@ class APIRepository {
         default:
           {
             response = await DioClient.dioConfig()
-                .post(urlString, data: jsonEncode(requestBodydata));
+                .post(urlString, data: requestBodydata);
           }
       }
-      debugPrint(
-          'After Request --> urlString-->$urlString \n  requestBodyData-->$requestBodydata'
-          '\n  response-->${jsonDecode(response.toString())} //Completed');
-
       if (response!.headers['access-token'] != null) {
-        debugPrint('Access Token is => ${response.headers['access-token']}');
         // Here get New Access Token for every API call then store
         if (response.headers['access-token']![0].toString() != 'false') {
           await PreferenceHelper.setPreference(Constants.accessToken,
@@ -120,7 +104,19 @@ class APIRepository {
               response.headers['access-token']![0].toString();
         }
       }
+      if (encrypt && response.data['status'] == 200) {
+        final Map<String, dynamic> requestData = {
+          'data': response.data['result']
+        };
+        String text = await platform.invokeMethod('getDecryptedData', requestData);
+        response.data['result'] = json.decode(text);
 
+        return {
+          'success': true,
+          'data': response.data,
+          'statusCode': response.data['status'],
+        };
+      }
       returnValue = (response.data['status'] == 400)
           ? {
               'success': false,
@@ -144,17 +140,13 @@ class APIRepository {
             .connectionTimeout; // connection timeout sometime will come
       }
 
-      debugPrint(
-          'Error Status :  urlString-->$urlString \n  requestBodydata-->$requestBodydata'
-          '\n  response-->${e.response}');
-
       if (error.toString() != 'DioErrorType.response') {
         // isPop is used for if i load new api then get any error then pop the back screen
         if (isPop == true) {
           Navigator.pop(Singleton.instance.buildContext!);
         }
-        apiErrorStatus(
-            errorString: error.toString(), position: ToastGravity.CENTER);
+        // apiErrorStatus(
+        //     errorString: error.toString(), position: ToastGravity.CENTER);
       }
 
       if (e.response != null) {

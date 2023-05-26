@@ -264,7 +264,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         final Map<String, dynamic> caseDetailsData =
             await APIRepository.apiRequest(
                 APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-                isPop: true);
+                isPop: true, encrypt: false);
         if (caseDetailsData[Constants.success] == true) {
           final Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
@@ -344,9 +344,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         PaymentConfigurationModel paymentCofigurationData =
             PaymentConfigurationModel();
         final Map<String, dynamic> postResult = await APIRepository.apiRequest(
-          APIRequestType.get,
-          HttpUrl.getPaymentConfiguration,
-        );
+            APIRequestType.get, HttpUrl.getPaymentConfiguration,
+            encrypt: false);
         if (postResult[Constants.success]) {
           paymentCofigurationData =
               PaymentConfigurationModel.fromJson(postResult['data']);
@@ -368,7 +367,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
         final Map<String, dynamic> getCampaignConfig =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.campaignConfig);
+                APIRequestType.get, HttpUrl.campaignConfig,
+                encrypt: true);
         if (getCampaignConfig[Constants.success] == true) {
           try {
             campaingnConfigModel =
@@ -1266,8 +1266,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1288,8 +1287,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1310,8 +1308,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1332,8 +1329,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,
@@ -1354,8 +1350,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               caseId: caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount:
                     caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
                         0.0,

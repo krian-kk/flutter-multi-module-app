@@ -3,14 +3,14 @@ import 'package:origa/utils/app_config.dart';
 class HttpUrl {
   static Future<void> loadValue(String env) async {
     final config = await AppConfig.forEnvironment(env);
+    appFlavor = env;
     url = config.baseUrl;
+    webUrl = config.webUrl;
   }
 
-  // 1st - Customer will be reject ->
-  // static String url = 'https://collect.origa.ai';
-  // static String url = 'https://uat-collect.origa.ai';
   static String url = '';
-
+  static String webUrl = '';
+  static String appFlavor = '';
   // static String url = 'https://demo-collect.origa.ai';
 
   // static String? url = Singleton.instance.baseUrl;
@@ -19,19 +19,19 @@ class HttpUrl {
   static const String fieldAgent = 'agent/';
   static String baseUrl = '$url/$apiType$version';
 
-  static final String loginUrl = '$url/backend/api/user/loginApi';
-  static final String agentDetailUrl = '$url/backend/field-allocation/agents/';
+  static final String loginUrl = '$webUrl/backend/api/user/loginApi';
+  static final String agentDetailUrl = '$webUrl/backend/field-allocation/agents/';
 
   // Get Agent Secure Pin Code
   static final String agentSecurePinUrl = '$baseUrl/profile/userDetailsAPI';
 
   // Get agent detail for Reset password screen
-  static String resetPasswordCheckUrl(String agentName) =>
-      '$url/backend/field-allocation/agents/info/$agentName';
+  static String resetPasswordCheckUrl(String agentName, String id) =>
+      '$webUrl/backend/field-allocation/agents/info/$agentName?id=$id';
 
   static String sendSMSurl =
-      '$url/backend/api/v2/notification/sendNotification';
-  static final String chatHistory2 = '$url/backend/api/getChatHistory/';
+      '$webUrl/backend/api/v2/notification/sendNotification';
+  static final String chatHistory2 = '$webUrl/backend/api/getChatHistory/';
 
   //Get API
   // For AutoCalling API
@@ -74,7 +74,7 @@ class HttpUrl {
 
   // Collection Post API
   static String collectionPostUrl(String selectValue, String userTypeValue) =>
-      '$baseUrl${fieldAgent}case-details-events/z$selectValue?userType=$userTypeValue';
+      '$baseUrl${fieldAgent}case-details-events/$selectValue?userType=$userTypeValue';
   static final String otsPostUrl =
       '$baseUrl${fieldAgent}case-details-events/ots';
 
@@ -234,7 +234,7 @@ class HttpUrl {
       '$baseUrl${fieldAgent}case-details-events/campaignConfig';
 
   //chat count update
-  static final String updateChatSeen = '$url/backend/api/updateFCMMessage';
+  static final String updateChatSeen = '$webUrl/backend/api/updateFCMMessage';
 
   static final String authorizationLetter =
       '$baseUrl${fieldAgent}profile/getAuthorizationLetter';

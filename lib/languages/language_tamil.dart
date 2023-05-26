@@ -1179,4 +1179,31 @@ class LanguageTa extends Languages {
 
   @override
   String get customerDetails => 'வாடிக்கையாளர் விவரங்கள்';
+
+  @override
+  String get batterId => 'பேட்டரி ஐடி';
+
+  @override
+  String get dealerAddress => 'வியாபாரி முகவரி';
+
+  @override
+  String get dealerName => 'वவியாபாரி பெயர்';
+
+  @override
+  String get referenceOneName => 'குறிப்பு பெயர் ஒன்று';
+
+  @override
+  String get referenceOneNo => 'குறிப்பு எண் ஒன்று';
+
+  @override
+  String get referenceTwoName => 'குறிப்பு பெயர் இரண்டு';
+
+  @override
+  String get referenceTwoNo => 'குறிப்பு எண் இரண்டு';
+
+  @override
+  String get vehicleIdentificationNo => 'வாகன அடையாள எண்';
+
+  @override
+  String get vehicleRegistrationNo => 'வாகன பதிவு எண்';
 }

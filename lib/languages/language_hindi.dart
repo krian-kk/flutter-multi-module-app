@@ -1175,4 +1175,31 @@ class LanguageHi extends Languages {
 
   @override
   String get customerDetails => 'ग्राहक विवरण';
+
+  @override
+  String get batterId => 'बैटरी आईडी';
+
+  @override
+  String get dealerAddress => 'डीलर का पता';
+
+  @override
+  String get dealerName => 'विक्रेता का नाम';
+
+  @override
+  String get referenceOneName => 'संदर्भ नाम एक';
+
+  @override
+  String get referenceOneNo => 'संदर्भ संख्या एक';
+
+  @override
+  String get referenceTwoName => 'संदर्भ नाम दो';
+
+  @override
+  String get referenceTwoNo => 'संदर्भ संख्या दो';
+
+  @override
+  String get vehicleIdentificationNo => 'वाहन पहचान संख्या';
+
+  @override
+  String get vehicleRegistrationNo => 'वाहन पंजीकरण संख्या';
 }

@@ -777,4 +777,22 @@ abstract class Languages {
   String get customerContactDetails;
 
   String get allocationDetails;
+
+  String get vehicleRegistrationNo;
+
+  String get dealerName;
+
+  String get dealerAddress;
+
+  String get referenceOneName;
+
+  String get referenceOneNo;
+
+  String get referenceTwoName;
+
+  String get referenceTwoNo;
+
+  String get batterId;
+
+  String get vehicleIdentificationNo;
 }

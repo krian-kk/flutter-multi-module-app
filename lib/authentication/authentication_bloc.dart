@@ -104,7 +104,7 @@ class AuthenticationBloc
               debugPrint('refreshToken--> ${Singleton.instance.refreshToken}');
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(APIRequestType.get,
-                      HttpUrl.agentInformation + 'aRef=$getUserName');
+                      HttpUrl.agentInformation + 'aRef=$getUserName', encrypt: true);
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(

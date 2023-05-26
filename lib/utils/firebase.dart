@@ -223,7 +223,7 @@ class FirebaseUtils {
   static Future<void> priority() async {
     final Map<String, dynamic> priorityListData =
         await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.priorityCaseListV2);
+            APIRequestType.get, HttpUrl.priorityCaseListV2,encrypt: true);
     if (priorityListData['success']) {
       dynamic offlinePriorityResponseModel;
       try {

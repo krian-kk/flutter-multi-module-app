@@ -105,13 +105,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
   Future<bool> requestOTP(String aRef) async {
     bool returnValue = false;
+    final object = <String, dynamic>{
+      'aRef': aRef
+    };
+    final Map<String, dynamic> requestData = {
+      'data': jsonEncode(object)
+    };
+    String text = await platform.invokeMethod(
+        'sendEncryptedData', requestData);
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
       requestBodydata: <String, dynamic>{
-        'aRef': aRef,
+        'encryptedData': text,
       },
     );
     if (await postResult[Constants.success]) {

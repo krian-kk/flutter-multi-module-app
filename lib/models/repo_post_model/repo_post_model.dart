@@ -40,6 +40,7 @@ class RepoPostModel {
     invalidNumber = json['invalidNumber'];
     agrRef = json['agrRef'];
   }
+
   late int eventId;
   late String eventType;
   late String caseId;
@@ -90,31 +91,37 @@ class RepoPostModel {
 }
 
 class EventAttr {
-  EventAttr({
-    required this.modelMake,
-    required this.registrationNo,
-    required this.chassisNo,
-    required this.remarks,
-    required this.repo,
-    required this.date,
-    required this.followUpPriority,
-    required this.imageLocation,
-    required this.customerName,
-    this.altitude,
-    required this.accuracy,
-    this.altitudeAccuracy = 0.0,
-    this.heading,
-    this.speed,
-    required this.latitude,
-    required this.longitude,
-    this.reginalText,
-    this.translatedText,
-    this.audioS3Path,
-  });
+  EventAttr(
+      {required this.modelMake,
+      required this.chassisNo,
+      required this.remarks,
+      required this.repo,
+      required this.date,
+      required this.followUpPriority,
+      required this.imageLocation,
+      required this.customerName,
+      this.altitude,
+      required this.accuracy,
+      this.altitudeAccuracy = 0.0,
+      this.heading,
+      this.speed,
+      required this.latitude,
+      required this.longitude,
+      this.reginalText,
+      this.translatedText,
+      this.audioS3Path,
+      this.vehicleRegNo,
+      this.vehicleIdentificationNo,
+      this.ref1,
+      this.ref2,
+      this.ref2No,
+      this.ref1No,
+      this.batteryID,
+      this.dealerAddress,
+      this.dealerName});
 
   EventAttr.fromJson(Map<String, dynamic> json) {
     modelMake = json['modelMake'];
-    registrationNo = json['registrationNo'];
     chassisNo = json['chassisNo'];
     remarks = json['remarks'];
     repo = Repo.fromJson(json['repo']);
@@ -132,9 +139,19 @@ class EventAttr {
     reginalText = json['reginal_text'];
     translatedText = json['translated_text'];
     audioS3Path = json['audioS3Path'];
+
+    vehicleRegNo = json['vehicleRegNo'];
+    vehicleIdentificationNo = json['vehicleIdentificationNo'];
+    ref1 = json['ref1'];
+    ref2 = json['ref2'];
+    ref1No = json['ref1No'];
+    ref2No = json['ref2No'];
+    dealerName = json['dealerName'];
+    dealerAddress = json['dealerAddress'];
+    batteryID = json['batteryID'];
   }
+
   late String modelMake;
-  late String registrationNo;
   late String chassisNo;
   late String remarks;
   late Repo repo;
@@ -153,10 +170,19 @@ class EventAttr {
   late String? translatedText;
   late String? audioS3Path;
 
+  late String? vehicleRegNo;
+  late String? vehicleIdentificationNo;
+  late String? ref1;
+  late String? ref2;
+  late String? ref1No;
+  late String? ref2No;
+  late String? dealerName;
+  late String? dealerAddress;
+  late String? batteryID;
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['modelMake'] = modelMake;
-    data['registrationNo'] = registrationNo;
     data['chassisNo'] = chassisNo;
     data['remarks'] = remarks;
     data['repo'] = repo.toJson();
@@ -171,6 +197,34 @@ class EventAttr {
     data['speed'] = speed;
     data['Latitude'] = latitude;
     data['Longitude'] = longitude;
+
+    if (vehicleRegNo?.isNotEmpty == true) {
+      data['vehicleRegNo'] = vehicleRegNo;
+    }
+    if (vehicleIdentificationNo?.isNotEmpty == true) {
+      data['vehicleIdentificationNo'] = vehicleIdentificationNo;
+    }
+    if (ref1?.isNotEmpty == true) {
+      data['ref1'] = ref1;
+    }
+    if (ref2?.isNotEmpty == true) {
+      data['ref2'] = ref2;
+    }
+    if (ref1No?.isNotEmpty == true) {
+      data['ref1No'] = ref1No;
+    }
+    if (ref1No?.isNotEmpty == true) {
+      data['ref2No'] = ref2No;
+    }
+    if (ref1No?.isNotEmpty == true) {
+      data['dealerName'] = dealerName;
+    }
+    if (ref1No?.isNotEmpty == true) {
+      data['dealerAddress'] = dealerAddress;
+    }
+    if (ref1No?.isNotEmpty == true) {
+      data['batteryID'] = batteryID;
+    }
     if (reginalText != null && translatedText != null && audioS3Path != null) {
       data['reginal_text'] = reginalText;
       data['translated_text'] = translatedText;
@@ -186,6 +240,7 @@ class Repo {
   Repo.fromJson(Map<String, dynamic> json) {
     status = json['status'];
   }
+
   late String status;
 
   Map<String, dynamic> toJson() {
@@ -207,13 +262,17 @@ class RepoContact {
   RepoContact.fromJson(Map<String, dynamic> json) {
     cType = json['cType'];
     health = json['health'];
-    value = json['value'];
+    if (value.isNotEmpty) {
+      value = json['value'];
+    }
     // resAddressId0 = json['resAddressId_0'];
     // contactId0 = json['contactId_0'];
   }
+
   late String cType;
   late String health;
   late String value;
+
   // late String resAddressId0;
   // late String contactId0;
 
@@ -221,7 +280,9 @@ class RepoContact {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['cType'] = cType;
     data['health'] = health;
-    data['value'] = value;
+    if (value.isNotEmpty) {
+      data['value'] = value;
+    }
     // data['resAddressId_0'] = resAddressId0;
     // data['contactId_0'] = contactId0;
     return data;

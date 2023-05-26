@@ -35,12 +35,8 @@ Future<void> main({String? env = 'uat'}) async {
   // bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  final config = await AppConfig.forEnvironment(env ?? '');
   await HttpUrl.loadValue(env ?? '');
-  if (kDebugMode) {
-    print(config.baseUrl.toString());
-  }
-  await Firebase.initializeApp();
+  // await Firebase.initializeApp();
   // Requesting Push Notification Permission
   if (Platform.isIOS) {
     requestNotificationPermission();
@@ -96,7 +92,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       }
     } catch (error) {
       debugPrint(
-        'LifecycleManager | didChangeAppLifecycleState | ' + error.toString(),
+        'LifecycleManager | didChangeAppLifecycleState | $error',
       );
     }
   }
@@ -104,7 +100,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    initMobSecurity();
+    // initMobSecurity();
     WidgetsBinding.instance.addObserver(this);
 
     bloc = BlocProvider.of<AuthenticationBloc>(context);
@@ -117,10 +113,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage? message) {
-      debugPrint('Receiving notification messsage ---> $message');
+      debugPrint('Receiving notification message ---> $message');
 
       if (message != null) {
-        debugPrint('Receiving notification messsage ---> ${message.data}');
+        debugPrint('Receiving notification message ---> ${message.data}');
         NotificationDataModel notificationData = NotificationDataModel();
         try {
           notificationData = NotificationDataModel.fromJson(message.data);
@@ -320,42 +316,5 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       },
     );
   }
-
-  Future<void> initMobSecurity() async {
-    TalsecConfig config = TalsecConfig(
-      // For Android
-      androidConfig: AndroidConfig(
-        expectedPackageName: 'com.mcollect.origa.ai',
-        expectedSigningCertificateHashes: [
-          '42xeQ2AAn7kEjb29pG2YTblfOqbWdkEmumnnknVtB0k='
-        ],
-      ),
-
-      // For iOS
-      // iosConfig: IOSconfig(
-      //   appBundleId: 'YOUR_APP_BUNDLE_ID',
-      //   appTeamId: 'YOUR_APP_TEAM_ID',
-      // ),
-
-      // Common email for Alerts and Reports
-      watcherMail: 'krishnakant.chouhan@m2pfintech.com',
-    );
-    TalsecCallback callback = TalsecCallback(
-      // For Android
-      androidCallback: AndroidCallback(
-        onRootDetected: () => print('root'),
-        onEmulatorDetected: () => print('emulator'),
-        onHookDetected: () => print('hook'),
-        onTamperDetected: () => print('tamper'),
-        onDeviceBindingDetected: () => print('device binding'),
-        onUntrustedInstallationDetected: () => print('untrusted install'),
-      ),
-      onDebuggerDetected: () => print('debugger'),
-    );
-    TalsecApp app = TalsecApp(
-      config: config,
-      callback: callback,
-    );
-    app.start();
-  }
 }
+

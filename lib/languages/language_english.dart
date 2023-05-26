@@ -1173,5 +1173,32 @@ class LanguageEn extends Languages {
   @override
   String get customerDetails => 'Customer Details';
 
+  @override
+  String get batterId => 'Battery Id';
+
+  @override
+  String get dealerAddress => 'Dealer Address';
+
+  @override
+  String get dealerName => 'Dealer Name';
+
+  @override
+  String get referenceOneName => 'Reference One Name';
+
+  @override
+  String get referenceOneNo => 'Reference One Number';
+
+  @override
+  String get referenceTwoName => 'Reference Two Name';
+
+  @override
+  String get referenceTwoNo => 'Reference Two Number';
+
+  @override
+  String get vehicleIdentificationNo => 'Vehicle Identification Number';
+
+  @override
+  String get vehicleRegistrationNo => 'Vehicle Registration Number';
+
 
 }

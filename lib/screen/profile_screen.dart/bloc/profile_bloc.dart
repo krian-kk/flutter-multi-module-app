@@ -60,7 +60,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         isNoInternetAndServerError = false;
         final Map<String, dynamic> getProfileData =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.profileUrl);
+                APIRequestType.get, HttpUrl.profileUrl,encrypt: true);
 
         if (getProfileData['success']) {
           final Map<String, dynamic> jsonData = getProfileData['data'];
@@ -125,7 +125,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         final Map<String, dynamic> getAuthorizationLetter =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.authorizationLetter);
+                APIRequestType.get, HttpUrl.authorizationLetter,encrypt: true);
         if (getAuthorizationLetter[Constants.success]) {
           final Map<String, dynamic> jsonData = getAuthorizationLetter['data'];
           authorizationLetter = jsonData['result'].toString();
@@ -144,7 +144,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         final Map<String, dynamic> getIdCardFront =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.idCardFront);
+                APIRequestType.get, HttpUrl.idCardFront,encrypt: true);
         if (getIdCardFront[Constants.success]) {
           final Map<String, dynamic> idCardFrontData = getIdCardFront['data'];
           // AppUtils.showErrorToast(idCardFrontData['result']['message']);
@@ -153,7 +153,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         final Map<String, dynamic> getIdCardBack =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.idCardBack);
+                APIRequestType.get, HttpUrl.idCardBack,encrypt: true);
         if (getIdCardBack[Constants.success]) {
           final Map<String, dynamic> idCardBackData = getIdCardBack['data'];
           idCardBack = idCardBackData['result'].toString();

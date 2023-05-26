@@ -6,88 +6,94 @@ import 'customer.dart';
 import 'repayment_info.dart';
 
 class CaseDetails {
-  CaseDetails({
-    this.id,
-    this.pos,
-    this.tos,
-    this.caseStage,
-    this.supportAllocatedTo,
-    this.allocId,
-    this.agrId,
-    this.isActive,
-    this.collStatus,
-    this.due,
-    this.originalDue,
-    this.odVal,
-    this.cust,
-    this.accNo,
-    this.agrRef,
-    this.collSubStatus,
-    this.telSubStatus,
-    this.telStatus,
-    this.repoStatus,
-    this.repoSubStatus,
-    this.followUpDate,
-    this.fieldfollowUpDate,
-    this.followUpPriority,
-    this.fieldfollowUpPriority,
-    this.additionalInfo,
-    this.module,
-    this.fatherSpouseName,
-    this.lastPaymentMode,
-    this.zone,
-    this.dpd,
-    this.language,
-    this.bankName,
-    this.batchNo,
-    this.product,
-    this.agency,
-    this.location,
-    this.pincode,
-    this.emiStartDate,
-    this.schemeCode,
-    this.odInt,
-    this.assetDetails,
-    this.coLender,
-    this.empBusEntity,
-    this.lastPaymentDate,
-    this.sourcingRmName,
-    this.lastPaidAmount,
-    this.riskRanking,
-    this.reviewFlag,
-    this.riskBucket,
-    this.chassisNo,
-    this.modelMake,
-    this.customerId,
-    this.loanDuration,
-    this.loanDisbDate,
-    this.emiAmt,
-    this.pendingEmi,
-    this.amtPenalty,
-    this.loanAmt,
-    this.minDueAmt,
-    this.cardOs,
-    this.statementDate,
-    this.dueDate,
-    this.cardStatus,
-    this.lastBilledAmt,
-    this.ref1,
-    this.ref2,
-    this.gurantor,
-    this.customer,
-    this.contact,
-    this.attr,
-    this.repaymentInfo,
-    this.agent,
-    this.audit,
-    this.caseId,
-    this.starredCase,
-    this.lastEvent,
-    this.telecallingIntensity,
-    this.fieldIntensity,
-    this.totalReceiptAmount,
-    this.contractor,
-  });
+  CaseDetails(
+      {this.id,
+      this.pos,
+      this.tos,
+      this.caseStage,
+      this.supportAllocatedTo,
+      this.allocId,
+      this.agrId,
+      this.isActive,
+      this.collStatus,
+      this.due,
+      this.originalDue,
+      this.odVal,
+      this.cust,
+      this.accNo,
+      this.agrRef,
+      this.collSubStatus,
+      this.telSubStatus,
+      this.telStatus,
+      this.repoStatus,
+      this.repoSubStatus,
+      this.followUpDate,
+      this.fieldfollowUpDate,
+      this.followUpPriority,
+      this.fieldfollowUpPriority,
+      this.additionalInfo,
+      this.module,
+      this.fatherSpouseName,
+      this.lastPaymentMode,
+      this.zone,
+      this.dpd,
+      this.language,
+      this.bankName,
+      this.batchNo,
+      this.product,
+      this.agency,
+      this.location,
+      this.pincode,
+      this.emiStartDate,
+      this.schemeCode,
+      this.odInt,
+      this.assetDetails,
+      this.coLender,
+      this.empBusEntity,
+      this.lastPaymentDate,
+      this.sourcingRmName,
+      this.lastPaidAmount,
+      this.riskRanking,
+      this.reviewFlag,
+      this.riskBucket,
+      this.chassisNo,
+      this.modelMake,
+      this.customerId,
+      this.loanDuration,
+      this.loanDisbDate,
+      this.emiAmt,
+      this.pendingEmi,
+      this.amtPenalty,
+      this.loanAmt,
+      this.minDueAmt,
+      this.cardOs,
+      this.statementDate,
+      this.dueDate,
+      this.cardStatus,
+      this.lastBilledAmt,
+      this.ref1,
+      this.ref2,
+      this.gurantor,
+      this.customer,
+      this.contact,
+      this.attr,
+      this.repaymentInfo,
+      this.agent,
+      this.audit,
+      this.caseId,
+      this.starredCase,
+      this.lastEvent,
+      this.telecallingIntensity,
+      this.fieldIntensity,
+      this.totalReceiptAmount,
+      this.contractor,
+      this.vehicleRegNo,
+      this.vehicleIdentificationNo,
+      this.ref1No,
+      this.ref2No,
+      this.dealerName,
+      this.dealerAddress,
+      this.batteryID});
 
   factory CaseDetails.fromJson(Map<String, dynamic> json) => CaseDetails(
         id: json['_id'] as String?,
@@ -136,7 +142,7 @@ class CaseDetails {
         empBusEntity: json['empBusEntity'] as String?,
         lastPaymentDate: json['lastPaymentDate'] as String?,
         sourcingRmName: json['sourcingRmName'] as String?,
-        lastPaidAmount: json['lastPaidAmount'] as String?,
+        lastPaidAmount: json['lastPaidAmount'],
         riskRanking: json['riskRanking'] as String?,
         reviewFlag: json['reviewFlag'] as String?,
         riskBucket: json['riskBucket'] as String?,
@@ -184,6 +190,13 @@ class CaseDetails {
         fieldIntensity: json['fieldIntensity'] as int?,
         totalReceiptAmount: json['totalReceiptAmount'] as int?,
         contractor: json['contractor'] as String?,
+        vehicleRegNo: json['vehicleRegNo'],
+        vehicleIdentificationNo: json['vehicleIdentificationNo'],
+        ref1No: json['ref1No'],
+        ref2No: json['ref2No'],
+        dealerName: json['dealerName'],
+        dealerAddress: json['dealerAddress'],
+        batteryID: json['batteryID'],
       );
   String? id;
   dynamic pos;
@@ -212,7 +225,7 @@ class CaseDetails {
   String? product;
   String? emiStartDate;
   String? schemeCode;
-  int? loanDuration;
+  dynamic loanDuration;
   dynamic loanAmt;
   String? pincode;
   List<dynamic>? gurantor;
@@ -240,7 +253,7 @@ class CaseDetails {
   String? empBusEntity;
   String? lastPaymentDate;
   String? sourcingRmName;
-  String? lastPaidAmount;
+  dynamic lastPaidAmount;
   String? riskRanking;
   String? reviewFlag;
   String? riskBucket;
@@ -265,6 +278,13 @@ class CaseDetails {
   int? fieldIntensity;
   int? totalReceiptAmount;
   String? contractor;
+  String? vehicleRegNo;
+  String? vehicleIdentificationNo;
+  String? ref1No;
+  String? ref2No;
+  String? dealerName;
+  String? dealerAddress;
+  String? batteryID;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
@@ -347,5 +367,12 @@ class CaseDetails {
         'fieldIntensity': fieldIntensity,
         'totalReceiptAmount': totalReceiptAmount,
         'contractor': contractor,
+        'vehicleRegNo': vehicleRegNo,
+        'vehicleIdentificationNo': vehicleIdentificationNo,
+        'ref1No': ref1No,
+        'ref2No': ref2No,
+        'dealerName': dealerName,
+        'dealerAddress': dealerAddress,
+        'batteryID': batteryID,
       };
 }

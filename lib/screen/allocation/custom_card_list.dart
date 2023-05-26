@@ -368,7 +368,7 @@ class CustomCardList {
                                               CustomText(
                                                 resultData[index]
                                                             .fieldfollowUpDate !=
-                                                        null
+                                                        null && (resultData[index].fieldfollowUpDate?.isNotEmpty == true)
                                                     ? DateFormateUtils
                                                         .followUpDateFormate(
                                                             resultData[index]

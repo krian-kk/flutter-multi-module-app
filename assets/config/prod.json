@@ -1,4 +1,5 @@
 {
-  "base_url":"https://collect.origa.ai",
+  "base_url":"https://collect-api.finflux.io",
+  "web_url":"https://collect.finflux.io",
   "api_type":""
 }

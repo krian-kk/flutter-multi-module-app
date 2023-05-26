@@ -346,6 +346,7 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
+import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/models/device_info_model/android_device_info.dart';
 import 'package:origa/models/device_info_model/ios_device_model.dart';
@@ -442,10 +443,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // started the sign in loading
       yield SignInLoadingState();
       // final SharedPreferences _prefs = await SharedPreferences.getInstance();
-
+      debugPrint(event.paramValue);
       final Map<String, dynamic> response = await APIRepository.apiRequest(
           APIRequestType.post, HttpUrl.loginUrl,
-          requestBodydata: event.paramValue);
+          requestBodydata: {
+            'encryptedData':event.paramValue
+          });
 
       if (response['success'] == false) {
         yield SignInLoadedState();
@@ -508,10 +511,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
             final Map<String, dynamic> getProfileData =
                 await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.profileUrl);
+                    APIRequestType.get, HttpUrl.profileUrl, encrypt: true);
             if (getProfileData['success']) {
               yield SignInCompletedState();
               final Map<String, dynamic> jsonData = getProfileData['data'];
+              print(jsonData);
               final profileAPIValue = ProfileApiModel.fromJson(jsonData);
               Singleton.instance.usertype = Constants.telecaller;
               if (profileAPIValue.result!.first.type == 'COLLECTOR') {
@@ -571,7 +575,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
           APIRequestType.get,
-          HttpUrl.agentInformation + 'aRef=${event.userId}');
+          HttpUrl.agentInformation + 'aRef=${event.userId}',encrypt: true);
 
       if (agentDetail['success'] == false) {
         // Here facing error so close the loading

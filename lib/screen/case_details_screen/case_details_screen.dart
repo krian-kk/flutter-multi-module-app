@@ -183,6 +183,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc.isGeneratePaymentLinkLoading = false;
               bloc.caseDetailsAPIValue.result?.caseDetails?.repaymentInfo
                   ?.refUrl = state.refUrl;
+              setState(() {});
             }
 
             if (state is TriggerEventDetailsState) {
@@ -2324,15 +2325,66 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
-                      if (expandedList[index].eventAttr?.registrationNo != null)
-                        CustomText(
-                          '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
-                          fontWeight: FontWeight.w700,
-                          color: ColorResource.color000000,
-                        ),
                       if (expandedList[index].eventAttr?.chassisNo != null)
                         CustomText(
                           '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.vehicleRegNo != null)
+                        CustomText(
+                          '${Languages.of(context)!.vehicleRegistrationNo} : ${expandedList[index].eventAttr!.vehicleRegNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.dealerName != null)
+                        CustomText(
+                          '${Languages.of(context)!.dealerName} : ${expandedList[index].eventAttr!.dealerName}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.dealerAddress != null)
+                        CustomText(
+                          '${Languages.of(context)!.dealerAddress} : ${expandedList[index].eventAttr!.dealerAddress}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref1 != null)
+                        CustomText(
+                          '${Languages.of(context)!.referenceOneName} ${expandedList[index].eventAttr!.ref1}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref1No != null)
+                        CustomText(
+                          '${Languages.of(context)!.referenceOneNo}: ${expandedList[index].eventAttr!.ref1No}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref2 != null)
+                        CustomText(
+                          '${Languages.of(context)!.referenceTwoName}: ${expandedList[index].eventAttr!.ref2}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref2No != null)
+                        CustomText(
+                          '${Languages.of(context)!.referenceTwoNo}: ${expandedList[index].eventAttr!.ref2No}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index]
+                              .eventAttr
+                              ?.vehicleIdentificationNo !=
+                          null)
+                        CustomText(
+                          '${Languages.of(context)!.vehicleIdentificationNo}: ${expandedList[index].eventAttr!.vehicleIdentificationNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.batteryID != null)
+                        CustomText(
+                          '${Languages.of(context)!.batterId}: ${expandedList[index].eventAttr!.batteryID}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
@@ -2348,7 +2400,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     audioPath: expandedList[index].eventAttr?.audioS3Path,
                     index: index,
                   ),
-                appStatus(expandedList[index].eventAttr!.appStatus ?? '')
+                appStatus(expandedList[index].eventAttr!.appStatus ?? ''),
+                if (expandedList[index].eventAttr?.imageLocation?.isEmpty ==
+                    false)
+                  SizedBox(
+                    height: 200,
+                    child: Image.memory(
+                      base64Decode(
+                          expandedList[index].eventAttr?.imageLocation?[0] ??
+                              ''),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
               ],
             ),
           ),

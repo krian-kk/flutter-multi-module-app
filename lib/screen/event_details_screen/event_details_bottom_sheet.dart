@@ -36,6 +36,7 @@ class CustomEventDetailsBottomSheet extends StatefulWidget {
   final CaseDetailsBloc bloc;
   final String cardTitle;
   final Widget customeLoanUserWidget;
+
   @override
   State<CustomEventDetailsBottomSheet> createState() =>
       _CustomEventDetailsBottomSheetState();
@@ -510,6 +511,63 @@ class _CustomEventDetailsBottomSheetState
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
+                      if (expandedList[index].eventAttr?.vehicleRegNo != null)
+                        CustomText(
+                          'Vehicle Reg No : ${expandedList[index].eventAttr!.vehicleRegNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.dealerName != null)
+                        CustomText(
+                          'Dealer Name : ${expandedList[index].eventAttr!.dealerName}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.dealerAddress != null)
+                        CustomText(
+                          'Dealer Address : ${expandedList[index].eventAttr!.dealerAddress}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref1 != null)
+                        CustomText(
+                          'Ref 1: ${expandedList[index].eventAttr!.ref1}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref1No != null)
+                        CustomText(
+                          'Ref 1 No: ${expandedList[index].eventAttr!.ref1No}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref2 != null)
+                        CustomText(
+                          'Ref 2: ${expandedList[index].eventAttr!.ref2}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.ref2No != null)
+                        CustomText(
+                          'Ref 2 No: ${expandedList[index].eventAttr!.ref2No}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index]
+                              .eventAttr
+                              ?.vehicleIdentificationNo !=
+                          null)
+                        CustomText(
+                          'Vehicle Identification No: ${expandedList[index].eventAttr!.vehicleIdentificationNo}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
+                      if (expandedList[index].eventAttr?.batteryID != null)
+                        CustomText(
+                          'Battery ID: ${expandedList[index].eventAttr!.batteryID}',
+                          fontWeight: FontWeight.w700,
+                          color: ColorResource.color000000,
+                        ),
                     ],
                   ),
                 if (expandedList[index].eventAttr?.reginalText != null &&
@@ -522,7 +580,18 @@ class _CustomEventDetailsBottomSheetState
                     audioPath: expandedList[index].eventAttr?.audioS3Path,
                     index: index,
                   ),
-                appStatus(expandedList[index].eventAttr!.appStatus ?? '')
+                appStatus(expandedList[index].eventAttr!.appStatus ?? ''),
+                if (expandedList[index].eventAttr?.imageLocation?.isEmpty ==
+                    false)
+                  SizedBox(
+                    height: 200,
+                    child: Image.memory(
+                      base64Decode(
+                          expandedList[index].eventAttr?.imageLocation?[0] ??
+                              ''),
+                      fit: BoxFit.fitWidth,
+                    ),
+                  )
               ],
             ),
           ),

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -20,6 +21,7 @@ import 'package:origa/widgets/pin_code_text_field_widget.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
+
   @override
   State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
 }
@@ -172,12 +174,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       mobileNumberController.clear();
                                       userNameController.clear();
                                       emailController.clear();
+                                      final Map<String, dynamic> requestData = {
+                                        'data':
+                                            'fbce52ca-6c50-4408-99b3-d117bf690fe0'
+                                      };
+                                      String headerAuthKey =
+                                          await platform.invokeMethod(
+                                              'sendEncryptedData', requestData);
+                                      debugPrint(headerAuthKey);
                                       final Map<String, dynamic>
                                           getAgentDetail =
                                           await APIRepository.apiRequest(
-                                              APIRequestType.get,
-                                              HttpUrl.resetPasswordCheckUrl(
-                                                  userIdController.text));
+                                        APIRequestType.get,
+                                        HttpUrl.resetPasswordCheckUrl(
+                                            userIdController.text,
+                                            headerAuthKey),
+                                      );
 
                                       if (getAgentDetail['success'] == false) {
                                         final AgentDetailErrorModel
@@ -359,15 +371,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       onTap: isTime
                                           ? () {}
                                           : () async {
+                                              final object = <String, dynamic>{
+                                                'aRef': userIdController.text
+                                              };
+                                              final Map<String, dynamic>
+                                                  requestData = {
+                                                'data': jsonEncode(object)
+                                              };
+                                              String text =
+                                                  await platform.invokeMethod(
+                                                      'sendEncryptedData',
+                                                      requestData);
+                                              print(text);
                                               final Map<String, dynamic>
                                                   postResult =
                                                   await APIRepository
                                                       .apiRequest(
                                                 APIRequestType.post,
                                                 HttpUrl.resendOTPUrl(),
-                                                requestBodydata: <String,
-                                                    dynamic>{
-                                                  'aRef': userIdController.text
+                                                requestBodydata: {
+                                                  'encryptedData': text
                                                 },
                                               );
                                               if (postResult[
@@ -446,12 +469,20 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   // emailController.text.isNotEmpty
                                   )
                                   ? () async {
+                                      final object = <String, dynamic>{
+                                        'aRef': userIdController.text
+                                      };
+                                      final Map<String, dynamic> requestData = {
+                                        'data': jsonEncode(object)
+                                      };
+                                      String text = await platform.invokeMethod(
+                                          'sendEncryptedData', requestData);
                                       final Map<String, dynamic> postResult =
                                           await APIRepository.apiRequest(
                                         APIRequestType.post,
                                         HttpUrl.requestOTPUrl(),
                                         requestBodydata: <String, dynamic>{
-                                          'aRef': userIdController.text
+                                          'encryptedData': text
                                         },
                                       );
                                       if (await postResult[Constants.success]) {
@@ -548,6 +579,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       ),
     );
   }
+
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   resetPasswordShowBottomSheet(String name) {
     final TextEditingController newPasswordController = TextEditingController();
@@ -675,15 +708,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                             newPasswordController
                                                                 .text);
                                                 final Map<String, dynamic>
+                                                    requestData = {
+                                                  'data': jsonEncode(
+                                                      requestBodyData)
+                                                };
+                                                String text =
+                                                    await platform.invokeMethod(
+                                                        'sendEncryptedData',
+                                                        requestData);
+                                                final Map<String, dynamic>
                                                     postResult =
                                                     await APIRepository.apiRequest(
                                                         APIRequestType.post,
                                                         HttpUrl
                                                             .resetPasswordUrl(),
-                                                        requestBodydata:
-                                                            jsonEncode(
-                                                                requestBodyData
-                                                                    .toJson()));
+                                                        requestBodydata: {
+                                                      "encryptedData": text
+                                                    });
                                                 if (postResult[
                                                     Constants.success]) {
                                                   AppUtils.topSnackBar(
