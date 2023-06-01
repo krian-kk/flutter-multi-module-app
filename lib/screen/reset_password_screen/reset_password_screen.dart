@@ -188,7 +188,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         APIRequestType.get,
                                         HttpUrl.resetPasswordCheckUrl(
                                             userIdController.text,
-                                            headerAuthKey),
+                                            Uri.encodeComponent(headerAuthKey)),
                                       );
 
                                       if (getAgentDetail['success'] == false) {

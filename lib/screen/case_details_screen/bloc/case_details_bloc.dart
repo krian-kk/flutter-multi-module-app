@@ -349,6 +349,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (postResult[Constants.success]) {
           paymentCofigurationData =
               PaymentConfigurationModel.fromJson(postResult['data']);
+          debugPrint(jsonEncode(paymentCofigurationData));
 
           if (paymentCofigurationData.data?.isNotEmpty == true) {
             final List<Payment>? paymentList =
@@ -1157,9 +1158,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (postResult[Constants.success]) {
           generatePaymentLink =
               GeneratePaymentLinkModel.fromJson(postResult['data']);
+          AppUtils.showToast(generatePaymentLink.message.toString());
 
           yield UpdateRefUrlState(
-              refUrl: generatePaymentLink.data!.data!.paymentLink);
+              refUrl: generatePaymentLink.data?.paymentLink);
         } else {
           AppUtils.showToast('Error while generating Payment Link');
         }
@@ -1186,7 +1188,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           generatePaymentLink =
               GeneratePaymentLinkModel.fromJson(postResult['data']);
           yield GenerateQRcodeState(
-              qrUrl: generatePaymentLink.data!.data!.qrLink);
+              qrUrl: generatePaymentLink.data?.paymentLink);
         } else {
           AppUtils.showToast('Error while generating QR coxde');
         }

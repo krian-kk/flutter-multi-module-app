@@ -247,7 +247,7 @@ class CaseDetails {
   dynamic originalDue;
   String? agency;
   String? location;
-  int? odInt;
+  dynamic odInt;
   String? assetDetails;
   String? coLender;
   String? empBusEntity;
@@ -262,12 +262,12 @@ class CaseDetails {
   String? customerId;
   String? loanDisbDate;
   int? emiAmt;
-  int? pendingEmi;
-  int? amtPenalty;
-  int? minDueAmt;
-  int? cardOs;
+  dynamic pendingEmi;
+  dynamic amtPenalty;
+  dynamic minDueAmt;
+  dynamic cardOs;
   String? statementDate;
-  String? dueDate;
+  dynamic dueDate;
   String? cardStatus;
   String? lastBilledAmt;
   String? ref1;

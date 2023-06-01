@@ -660,6 +660,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         });
         if (caseResultKey == 'repaymentDetails') {
           childWidgets.add(getSmsButton());
+          if(Singleton.instance.contractorInformations?.result
+              ?.showSendRepaymentInfo == true){
+            shouldShowSection = true;
+          }
         }
         if (shouldShowSection) {
           widgetlist.add(ListOfCaseDetails.listOfDetails(context,
