@@ -28,6 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   late TextEditingController accountNoController = TextEditingController();
   late TextEditingController customerNameController = TextEditingController();
+  late TextEditingController bankNameController = TextEditingController();
   late TextEditingController bucketController = TextEditingController();
   late TextEditingController statusController = TextEditingController();
   late TextEditingController pincodeController = TextEditingController();
@@ -56,6 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     accountNumber: accountNoController.text,
                     customerID: customerIDController.text,
                     customerName: customerNameController.text,
+                    bankName: bankNameController.text,
                     dpdBucket: bucketController.text,
                     pincode: pincodeController.text,
                     status: statusController.text,
@@ -103,6 +105,13 @@ class _SearchScreenState extends State<SearchScreen> {
                                     CustomTextField(
                                       Languages.of(context)!.customerName,
                                       customerNameController,
+                                      isFill: true,
+                                      isBorder: true,
+                                    ),
+                                    const SizedBox(height: 19),
+                                    CustomTextField(
+                                      Languages.of(context)!.bankName,
+                                      bankNameController,
                                       isFill: true,
                                       isBorder: true,
                                     ),
@@ -211,6 +220,7 @@ class _SearchScreenState extends State<SearchScreen> {
             onTap: () {
               if (accountNoController.text.isNotEmpty ||
                   customerNameController.text.isNotEmpty ||
+                  bankNameController.text.isNotEmpty ||
                   bucketController.text.isNotEmpty ||
                   statusController.text.isNotEmpty ||
                   pincodeController.text.isNotEmpty ||

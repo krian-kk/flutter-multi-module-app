@@ -139,6 +139,8 @@ abstract class Languages {
 
   String get customerName;
 
+  String get lender;
+
   String get dpdBucket;
 
   String get status;

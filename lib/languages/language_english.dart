@@ -1200,5 +1200,7 @@ class LanguageEn extends Languages {
   @override
   String get vehicleRegistrationNo => 'Vehicle Registration Number';
 
+  @override
+  String get lender => 'Lender';
 
 }

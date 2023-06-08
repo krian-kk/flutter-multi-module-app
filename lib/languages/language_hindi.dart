@@ -1202,4 +1202,7 @@ class LanguageHi extends Languages {
 
   @override
   String get vehicleRegistrationNo => 'वाहन पंजीकरण संख्या';
+
+  @override
+  String get lender => 'ऋणदाता';
 }

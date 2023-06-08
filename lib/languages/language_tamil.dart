@@ -1206,4 +1206,7 @@ class LanguageTa extends Languages {
 
   @override
   String get vehicleRegistrationNo => 'வாகன பதிவு எண்';
+
+  @override
+  String get lender => 'கடன் கொடுத்தவர்';
 }

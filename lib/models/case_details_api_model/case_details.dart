@@ -160,9 +160,9 @@ class CaseDetails {
         statementDate: json['statementDate'] as String?,
         dueDate: json['dueDate'] as String?,
         cardStatus: json['cardStatus'] as String?,
-        lastBilledAmt: json['lastBilledAmt'] as String?,
-        ref1: json['ref1'] as String?,
-        ref2: json['ref2'] as String?,
+        lastBilledAmt: json['lastBilledAmt'],
+        ref1: json['ref1'] ,
+        ref2: json['ref2'] ,
         gurantor: json['gurantor'] as List<dynamic>?,
         customer: json['customer'] == null
             ? null
@@ -218,7 +218,7 @@ class CaseDetails {
   String? fatherSpouseName;
   String? lastPaymentMode;
   String? zone;
-  int? dpd;
+  dynamic dpd;
   String? language;
   String? bankName;
   String? batchNo;
@@ -261,7 +261,7 @@ class CaseDetails {
   String? modelMake;
   String? customerId;
   String? loanDisbDate;
-  int? emiAmt;
+  dynamic emiAmt;
   dynamic pendingEmi;
   dynamic amtPenalty;
   dynamic minDueAmt;
@@ -269,9 +269,9 @@ class CaseDetails {
   String? statementDate;
   dynamic dueDate;
   String? cardStatus;
-  String? lastBilledAmt;
-  String? ref1;
-  String? ref2;
+  dynamic lastBilledAmt;
+  dynamic ref1;
+  dynamic ref2;
   bool? starredCase;
   String? lastEvent;
   int? telecallingIntensity;

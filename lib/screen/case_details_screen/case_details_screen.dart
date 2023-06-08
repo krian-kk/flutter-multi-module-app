@@ -655,13 +655,17 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (value.toString().isNotEmpty && shouldShowSection == false) {
             shouldShowSection = true;
           }
-          childWidgets.add(ListOfCaseDetails.textFieldView(
-              title: keyName.toString(), value: value.toString()));
+          if (keyName.contains('REF_URL') == false) {
+            childWidgets.add(ListOfCaseDetails.textFieldView(
+                title: keyName.toString(), value: value.toString()));
+          }
         });
         if (caseResultKey == 'repaymentDetails') {
-          childWidgets.add(getSmsButton());
-          if(Singleton.instance.contractorInformations?.result
-              ?.showSendRepaymentInfo == true){
+          // childWidgets.add(getSmsButton());
+          childWidgets.add(repaymentInfo());
+          if (Singleton.instance.contractorInformations?.result
+                  ?.showSendRepaymentInfo ==
+              true) {
             shouldShowSection = true;
           }
         }
@@ -1682,318 +1686,88 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(
-          height: 10,
-        ),
-        Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              color: ColorResource.colorFFFFFF,
-              border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
-              borderRadius: const BorderRadius.all(Radius.circular(10.0))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: const EdgeInsets.all(6.0),
-                width: double.infinity,
-                height: 97,
-                decoration: const BoxDecoration(
-                    color: ColorResource.colorF7F8FA,
-                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      CustomText(
-                        Languages.of(context)!.beneficiaryDetails,
-                        fontSize: FontSize.twelve,
-                        color: ColorResource.color666666,
-                      ),
-                      const SizedBox(height: 9),
-                      CustomText(
-                        bloc.caseDetailsAPIValue.result?.caseDetails
-                                ?.repaymentInfo?.benefeciaryAccName ??
-                            '-',
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color333333,
-                      ),
-                      const SizedBox(height: 7),
-                      CustomText(
-                        bloc.caseDetailsAPIValue.result?.caseDetails
-                                ?.repaymentInfo?.repaymentIfscCode ??
-                            '-',
-                        fontWeight: FontWeight.w700,
-                        color: ColorResource.color333333,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0, vertical: 12.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CustomText(
-                      Languages.of(context)!.repaymentBankName,
-                      fontSize: FontSize.twelve,
-                      color: ColorResource.color666666,
-                    ),
-                    const SizedBox(height: 4),
-                    CustomText(
-                      bloc.caseDetailsAPIValue.result?.caseDetails
-                              ?.repaymentInfo?.repayBankName ??
-                          '-',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color333333,
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      Languages.of(context)!.referenceLender,
-                      fontSize: FontSize.twelve,
-                      color: ColorResource.color666666,
-                    ),
-                    const SizedBox(height: 4),
-                    CustomText(
-                      bloc.caseDetailsAPIValue.result?.caseDetails
-                              ?.repaymentInfo?.refLender ??
-                          '-',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color333333,
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      Languages.of(context)!.beneficiaryAccountNumber,
-                      fontSize: FontSize.twelve,
-                      color: ColorResource.color666666,
-                    ),
-                    const SizedBox(height: 4),
-                    CustomText(
-                      bloc.caseDetailsAPIValue.result?.caseDetails
-                              ?.repaymentInfo?.benefeciaryAccNo ??
-                          '-',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color333333,
-                    ),
-                    const SizedBox(height: 10),
-                    CustomText(
-                      Languages.of(context)!.referenceUrl,
-                      fontSize: FontSize.twelve,
-                      color: ColorResource.color666666,
-                    ),
-                    const SizedBox(height: 4),
-                    CustomText(
-                      bloc.caseDetailsAPIValue.result?.caseDetails
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () async {
+                    String urlValue = bloc.caseDetailsAPIValue.result
+                            ?.caseDetails?.repaymentInfo?.refUrl ??
+                        '';
+                    await Clipboard.setData(ClipboardData(text: urlValue))
+                        .then((_) {
+                      AppUtils.showToast('Payment Link copied to clipboard');
+                    });
+                  },
+                  child: ListOfCaseDetails.textFieldView(
+                      title: Languages.of(context)!.referenceUrl,
+                      value: bloc.caseDetailsAPIValue.result?.caseDetails
                               ?.repaymentInfo?.refUrl ??
-                          '-',
-                      fontWeight: FontWeight.w700,
-                      color: ColorResource.color333333,
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Singleton.instance.contractorInformations?.result
-                                    ?.showSendRepaymentInfo ==
-                                false
-                            ? const SizedBox()
-                            : bloc.isSendSMSloading
-                                ? Container(
-                                    margin: const EdgeInsets.only(left: 50),
-                                    height: 37,
-                                    width: 37,
-                                    decoration: BoxDecoration(
-                                        color: ColorResource.color23375A,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: const CustomLoadingWidget(
-                                      radius: 11,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : GestureDetector(
-                                    onTap: () async {
-                                      if (ConnectivityResult.none !=
-                                          await Connectivity()
-                                              .checkConnectivity()) {
-                                        if (!bloc.isSendSMSloading) {
-                                          bloc.add(SendSMSEvent(context,
-                                              type:
-                                                  Constants.repaymentInfoType));
-                                        }
-                                      } else {
-                                        AppUtils.noInternetSnackbar(context);
-                                      }
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 15, vertical: 11.2),
-                                      decoration: BoxDecoration(
-                                        color: ColorResource.color23375A,
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(
-                                            color: ColorResource.colorECECEC),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          SvgPicture.asset(ImageResource.sms),
-                                          const SizedBox(width: 7),
-                                          CustomText(
-                                              Languages.of(context)!.sendSMS,
-                                              fontSize: FontSize.eleven,
-                                              fontWeight: FontWeight.w700,
-                                              lineHeight: 1.3,
-                                              color: ColorResource.colorffffff),
-                                        ],
-                                      ),
-                                    ),
+                          '-'),
+                ),
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Singleton.instance.contractorInformations?.result
+                                ?.showSendRepaymentInfo ==
+                            false
+                        ? const SizedBox()
+                        : bloc.isSendSMSloading
+                            ? Container(
+                                margin: const EdgeInsets.only(left: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () async {
+                                  if (ConnectivityResult.none !=
+                                      await Connectivity()
+                                          .checkConnectivity()) {
+                                    if (!bloc.isSendSMSloading) {
+                                      bloc.add(SendSMSEvent(context,
+                                          type: Constants.repaymentInfoType));
+                                    }
+                                  } else {
+                                    AppUtils.noInternetSnackbar(context);
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 11.2),
+                                  decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: ColorResource.colorECECEC),
                                   ),
-                        const SizedBox(width: 30),
-                        CheckWhatsappButtonEnable.checkWAbutton(
-                                whatsappTemplate: Singleton
-                                    .instance
-                                    .contractorInformations
-                                    ?.result
-                                    ?.repaymentWhatsappTemplate,
-                                whatsappTemplateName: Singleton
-                                    .instance
-                                    .contractorInformations
-                                    ?.result
-                                    ?.sendRepaymentInfoWhatsappTemplateName,
-                                whatsappKey: bloc.campaingnConfigModel.result
-                                    ?.whatsappApiKey)
-                            // Singleton.instance.contractorInformations?.result
-                            //             ?.hideSendRepaymentInfoWhatsappButton ==
-                            //         false
-                            ? bloc.isSendWhatsappLoading
-                                ? Container(
-                                    margin: const EdgeInsets.only(right: 50),
-                                    height: 37,
-                                    width: 37,
-                                    decoration: BoxDecoration(
-                                        color: ColorResource.color23375A,
-                                        borderRadius:
-                                            BorderRadius.circular(25)),
-                                    child: const CustomLoadingWidget(
-                                      radius: 11,
-                                      strokeWidth: 2,
-                                    ),
-                                  )
-                                : Flexible(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        bloc.add(SendWhatsAppEvent(context,
-                                            caseID: bloc.caseDetailsAPIValue
-                                                .result!.caseDetails!.caseId!));
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 11.2),
-                                        decoration: BoxDecoration(
-                                          color: ColorResource.color23375A,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: ColorResource.colorECECEC),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            SvgPicture.asset(
-                                              ImageResource.whatsApp,
-                                              height: 17,
-                                            ),
-                                            const SizedBox(width: 7),
-                                            Expanded(
-                                              child: CustomText(
-                                                  Languages.of(context)!
-                                                      .sendWhatsapp,
-                                                  fontSize: FontSize.eleven,
-                                                  fontWeight: FontWeight.w700,
-                                                  lineHeight: 1.3,
-                                                  color: ColorResource
-                                                      .colorffffff),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                            : bloc.isGeneratePaymentLink
-                                ? bloc.isGeneratePaymentLinkLoading
-                                    ? Container(
-                                        margin:
-                                            const EdgeInsets.only(right: 50),
-                                        height: 37,
-                                        width: 37,
-                                        decoration: BoxDecoration(
-                                            color: ColorResource.color23375A,
-                                            borderRadius:
-                                                BorderRadius.circular(25)),
-                                        child: const CustomLoadingWidget(
-                                          radius: 11,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : Flexible(
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            if (await Connectivity()
-                                                    .checkConnectivity() !=
-                                                ConnectivityResult.none) {
-                                              setState(() {
-                                                bloc.isGeneratePaymentLinkLoading =
-                                                    true;
-                                              });
-                                            } else {
-                                              AppUtils.noInternetSnackbar(
-                                                  context);
-                                            }
-                                            bloc.add(GeneratePaymenLinktEvent(
-                                                context,
-                                                caseID: bloc
-                                                    .caseDetailsAPIValue
-                                                    .result!
-                                                    .caseDetails!
-                                                    .caseId!));
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 15, vertical: 13),
-                                            decoration: BoxDecoration(
-                                              color: ColorResource.color23375A,
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                              border: Border.all(
-                                                  color: ColorResource
-                                                      .colorECECEC),
-                                            ),
-                                            child: CustomText(
-                                                Languages.of(context)!
-                                                    .generatePaymentLink
-                                                    .toUpperCase(),
-                                                fontSize: FontSize.eleven,
-                                                fontWeight: FontWeight.w700,
-                                                // isSingleLine: true,
-                                                lineHeight: 1.3,
-                                                color:
-                                                    ColorResource.colorffffff),
-                                          ),
-                                        ),
-                                      )
-                                : const SizedBox(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      SvgPicture.asset(ImageResource.sms),
+                                      const SizedBox(width: 7),
+                                      CustomText(Languages.of(context)!.sendSMS,
+                                          fontSize: FontSize.eleven,
+                                          fontWeight: FontWeight.w700,
+                                          lineHeight: 1.3,
+                                          color: ColorResource.colorffffff),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                    const SizedBox(width: 30),
                     CheckWhatsappButtonEnable.checkWAbutton(
                             whatsappTemplate: Singleton
                                 .instance
@@ -2010,7 +1784,58 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                         // Singleton.instance.contractorInformations?.result
                         //             ?.hideSendRepaymentInfoWhatsappButton ==
                         //         false
-                        ? bloc.isGeneratePaymentLink
+                        ? bloc.isSendWhatsappLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    bloc.add(SendWhatsAppEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 11.2),
+                                    decoration: BoxDecoration(
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SvgPicture.asset(
+                                          ImageResource.whatsApp,
+                                          height: 17,
+                                        ),
+                                        const SizedBox(width: 7),
+                                        Expanded(
+                                          child: CustomText(
+                                              Languages.of(context)!
+                                                  .sendWhatsapp,
+                                              fontSize: FontSize.eleven,
+                                              fontWeight: FontWeight.w700,
+                                              lineHeight: 1.3,
+                                              color: ColorResource.colorffffff),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                        : bloc.isGeneratePaymentLink
                             ? bloc.isGeneratePaymentLinkLoading
                                 ? Container(
                                     margin: const EdgeInsets.only(right: 50),
@@ -2059,18 +1884,90 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                                 .toUpperCase(),
                                             fontSize: FontSize.eleven,
                                             fontWeight: FontWeight.w700,
+                                            // isSingleLine: true,
                                             lineHeight: 1.3,
                                             color: ColorResource.colorffffff),
                                       ),
                                     ),
                                   )
-                            : const SizedBox()
-                        : const SizedBox(),
+                            : const SizedBox(),
                   ],
                 ),
-              )
-            ],
-          ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CheckWhatsappButtonEnable.checkWAbutton(
+                        whatsappTemplate: Singleton
+                            .instance
+                            .contractorInformations
+                            ?.result
+                            ?.repaymentWhatsappTemplate,
+                        whatsappTemplateName: Singleton
+                            .instance
+                            .contractorInformations
+                            ?.result
+                            ?.sendRepaymentInfoWhatsappTemplateName,
+                        whatsappKey:
+                            bloc.campaingnConfigModel.result?.whatsappApiKey)
+                    // Singleton.instance.contractorInformations?.result
+                    //             ?.hideSendRepaymentInfoWhatsappButton ==
+                    //         false
+                    ? bloc.isGeneratePaymentLink
+                        ? bloc.isGeneratePaymentLinkLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (await Connectivity()
+                                            .checkConnectivity() !=
+                                        ConnectivityResult.none) {
+                                      setState(() {
+                                        bloc.isGeneratePaymentLinkLoading =
+                                            true;
+                                      });
+                                    } else {
+                                      AppUtils.noInternetSnackbar(context);
+                                    }
+                                    bloc.add(GeneratePaymenLinktEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 13),
+                                    decoration: BoxDecoration(
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
+                                    ),
+                                    child: CustomText(
+                                        Languages.of(context)!
+                                            .generatePaymentLink
+                                            .toUpperCase(),
+                                        fontSize: FontSize.eleven,
+                                        fontWeight: FontWeight.w700,
+                                        lineHeight: 1.3,
+                                        color: ColorResource.colorffffff),
+                                  ),
+                                ),
+                              )
+                        : const SizedBox()
+                    : const SizedBox(),
+              ],
+            )
+          ],
         ),
       ],
     );

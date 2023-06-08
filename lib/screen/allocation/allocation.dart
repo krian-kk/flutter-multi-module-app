@@ -779,7 +779,9 @@ class _AllocationScreenState extends State<AllocationScreen>
               searchBasedOnValue = 'Account Number: ' + data.accountNumber!;
             } else if (data.customerName!.isNotEmpty) {
               searchBasedOnValue = 'Customer Name: ' + data.customerName!;
-            } else if (data.dpdBucket!.isNotEmpty) {
+            } else if(data.bankName!.isNotEmpty) {
+              searchBasedOnValue = 'Bank Name : ' + data.bankName!;
+            }else if (data.dpdBucket!.isNotEmpty) {
               searchBasedOnValue = 'DPD/Bucket: ' + data.dpdBucket!;
             } else if (data.status!.isNotEmpty) {
               searchBasedOnValue = 'Status: ' + data.status!;
