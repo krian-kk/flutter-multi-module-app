@@ -76,24 +76,24 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           .then((value) {
         Singleton.instance.agentRef = value;
       });
-      final String? history =
-          HttpUrl.chatHistory2 + Singleton.instance.agentRef! + '/';
-      final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
-          APIRequestType.get, '$history${profileAPIValue.result![0].parent}');
+      // final String? history =
+      //     HttpUrl.chatHistory2 + Singleton.instance.agentRef! + '/';
+      // final Map<String, dynamic> chatHistory = await APIRepository.apiRequest(
+      //     APIRequestType.get, '$history${profileAPIValue.result![0].parent}');
 
-      if (chatHistory[Constants.success]) {
-        // print('chat history in profile ----> ${chatHistory['data']}');
-        final Map<String, dynamic> jsonData = chatHistory['data'];
-        chatHistoryData = ChatHistoryModel.fromJson(jsonData);
-
-        chatHistoryData.result?.forEach((element) {
-          if (element.dateSeen == null &&
-              element.fromId != profileAPIValue.result![0].aRef) {
-            // print('chat date seen ----> ${element.dateSeen}');
-            newMsgCount++;
-          }
-        });
-      }
+      // if (chatHistory[Constants.success]) {
+      //   // print('chat history in profile ----> ${chatHistory['data']}');
+      //   final Map<String, dynamic> jsonData = chatHistory['data'];
+      //   chatHistoryData = ChatHistoryModel.fromJson(jsonData);
+      //
+      //   chatHistoryData.result?.forEach((element) {
+      //     if (element.dateSeen == null &&
+      //         element.fromId != profileAPIValue.result![0].aRef) {
+      //       // print('chat date seen ----> ${element.dateSeen}');
+      //       newMsgCount++;
+      //     }
+      //   });
+      // }
 
       // notificationList.addAll([
       //   NotificationMainModel('Today Sep 15   7:04 PM', [

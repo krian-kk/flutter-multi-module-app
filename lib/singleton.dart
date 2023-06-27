@@ -44,7 +44,7 @@ class Singleton {
   String offlineDataSynchronization = 'offlineDataSynchronization';
   AllocationTemplateConfig? allocationTemplateConfig =
       AllocationTemplateConfig();
-
+  List<String> availableAddContacts = [];
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;
 

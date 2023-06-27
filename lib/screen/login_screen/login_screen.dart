@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // WidgetsBinding.instance.addObserver(this);
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
-      userId.text = 'GFL_collector';
+      userId.text = 'gfldev_suvodeepcollector';
       password.text = 'Agent1234';
     }
     username = FocusNode();

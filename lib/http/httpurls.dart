@@ -19,19 +19,19 @@ class HttpUrl {
   static const String fieldAgent = 'agent/';
   static String baseUrl = '$url/$apiType$version';
 
-  static final String loginUrl = '$webUrl/backend/api/user/loginApi';
-  static final String agentDetailUrl = '$webUrl/backend/field-allocation/agents/';
+  static final String loginUrl = '$webUrl/mobile-backend/v1/agent/login';
+  static final String agentDetailUrl = '$webUrl/mobile-backend/field-allocation/agents/';
 
   // Get Agent Secure Pin Code
   static final String agentSecurePinUrl = '$baseUrl/profile/userDetailsAPI';
 
   // Get agent detail for Reset password screen
   static String resetPasswordCheckUrl(String agentName, String id) =>
-      '$webUrl/backend/field-allocation/agents/info/$agentName?id=$id';
+      '$webUrl/mobile-backend/field-allocation/agents/info/$agentName?id=$id';
 
   static String sendSMSurl =
-      '$webUrl/backend/api/v2/notification/sendNotification';
-  static final String chatHistory2 = '$webUrl/backend/api/getChatHistory/';
+      '$webUrl/mobile-backend/api/v2/notification/sendNotification';
+  static final String chatHistory2 = '$webUrl/mobile-backend/api/getChatHistory/';
 
   //Get API
   // For AutoCalling API
@@ -43,7 +43,7 @@ class HttpUrl {
   static final String telDashboardUrl =
       '$baseUrl${fieldAgent}profile/telDashboard?';
   static final String caseDetailsUrl =
-      '$baseUrl${fieldAgent}case-details/caseDetails?';
+      '$baseUrl${fieldAgent}case-details/caseDetails';
   static final String voiceAgencyDetailsUrl =
       '$baseUrl${fieldAgent}profile/voiceAgencyDetails';
   static final String agentInformation =
@@ -106,6 +106,8 @@ class HttpUrl {
   static String resetPasswordUrl() => '$url/${apiType}public/resetPassword';
 
   static String verifyOTP() => '$url/${apiType}public/verifyOtp';
+
+  static String getPublicAgentInfo() => '$url/${apiType}public/agentDetails';
 
   static final String createMpin = '$baseUrl${fieldAgent}profile/updateMPIN';
 

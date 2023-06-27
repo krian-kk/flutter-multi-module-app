@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:origa/http/api_repository.dart';
@@ -190,6 +191,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 // its used to GeneratePaymentLink button in Case detail screen
   bool isGeneratePaymentLink = false;
   bool isGeneratePaymentLinkLoading = false;
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
   @override
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
@@ -261,10 +263,21 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         });
       } else {
         isNoInternetAndServerError = false;
+        debugPrint(caseId);
+        final object = <String, dynamic>{'caseId': caseId};
+        final Map<String, dynamic> requestData = {'data': jsonEncode(object)};
+        String text =
+            await platform.invokeMethod('sendEncryptedData', requestData);
         final Map<String, dynamic> caseDetailsData =
             await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.caseDetailsUrl + 'caseId=$caseId',
-                isPop: true, encrypt: false);
+                APIRequestType.post, HttpUrl.caseDetailsUrl,
+                isPop: true,
+                encrypt: true,
+                requestBodydata: {
+              'encryptedData': text,
+            });
+        debugPrint(text);
+
         if (caseDetailsData[Constants.success] == true) {
           final Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
@@ -1245,7 +1258,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     }
   }
 
-  // Open the Bottom Sheet Only in Auto Calling Feature
+// Open the Bottom Sheet Only in Auto Calling Feature
   openBottomSheet(BuildContext buildContext, String cardTitle,
       List<dynamic> list, bool? isCall,
       {String? health}) {
@@ -1774,7 +1787,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     return postResult;
   }
 
-  //user via from address details -> only for collector
+//user via from address details -> only for collector
   Future<Map<String, dynamic>> addressInvalidButtonClick(
     String eventType,
     String caseId,
@@ -1892,7 +1905,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     return postResult;
   }
 
-  // user via from call details
+// user via from call details
   Future<Map<String, dynamic>> phoneInvalidButtonClick(
     String eventType,
     String caseId,

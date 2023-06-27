@@ -9,7 +9,8 @@ class CaseDetailsResultModel {
       this.addressDetails,
       this.callDetails,
       this.otherLoanDetails,
-      this.bucketedCaseData});
+      this.bucketedCaseData,
+      this.availableAddContacts});
 
   factory CaseDetailsResultModel.fromJson(Map<String, dynamic> json) =>
       CaseDetailsResultModel(
@@ -27,12 +28,19 @@ class CaseDetailsResultModel {
                 .take(25)
                 .toList()
             : <OtherLoanDetail>[],
+        availableAddContacts: json['availableAddContacts'] != null
+            ? (json['availableAddContacts'] as List<dynamic>?)
+                ?.map((dynamic e) =>
+                    AvailableAddContacts.fromJson(Map<String, dynamic>.from(e)))
+                .toList()
+            : <AvailableAddContacts>[],
       );
   CaseDetails? caseDetails;
   Map<String, dynamic>? bucketedCaseData;
   List<dynamic>? addressDetails;
   List<dynamic>? callDetails;
   List<OtherLoanDetail>? otherLoanDetails = <OtherLoanDetail>[];
+  List<AvailableAddContacts>? availableAddContacts = <AvailableAddContacts>[];
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'caseDetails': caseDetails?.toJson(),
@@ -42,4 +50,26 @@ class CaseDetailsResultModel {
         'otherLoanDetails':
             otherLoanDetails?.map((OtherLoanDetail e) => e.toJson()).toList(),
       };
+}
+
+class AvailableAddContacts {
+  String? cType;
+  String? cName;
+  String? type;
+
+  AvailableAddContacts({this.cType, this.cName, this.type});
+
+  AvailableAddContacts.fromJson(Map<String, dynamic> json) {
+    cType = json['cType'];
+    cName = json['cName'];
+    type = json['type'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['cType'] = this.cType;
+    data['cName'] = this.cName;
+    data['type'] = this.type;
+    return data;
+  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/agentInfoPublic/agent_info.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/reset_password_model/reset_password_model.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -174,23 +175,25 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                       mobileNumberController.clear();
                                       userNameController.clear();
                                       emailController.clear();
-                                      final Map<String, dynamic> requestData = {
-                                        'data':
-                                            'fbce52ca-6c50-4408-99b3-d117bf690fe0'
+                                      final object = <String, dynamic>{
+                                        'aRef': userIdController.text
                                       };
-                                      String headerAuthKey =
-                                          await platform.invokeMethod(
-                                              'sendEncryptedData', requestData);
-                                      debugPrint(headerAuthKey);
+                                      final Map<String, dynamic> requestData = {
+                                        'data': jsonEncode(object)
+                                      };
+                                      String text = await platform.invokeMethod(
+                                          'sendEncryptedData', requestData);
+                                      print(text);
                                       final Map<String, dynamic>
                                           getAgentDetail =
                                           await APIRepository.apiRequest(
-                                        APIRequestType.get,
-                                        HttpUrl.resetPasswordCheckUrl(
-                                            userIdController.text,
-                                            Uri.encodeComponent(headerAuthKey)),
-                                      );
-
+                                              APIRequestType.post,
+                                              HttpUrl.getPublicAgentInfo(),
+                                              encrypt: true,
+                                              requestBodydata: {
+                                            'encryptedData': text
+                                          });
+                                      print(getAgentDetail);
                                       if (getAgentDetail['success'] == false) {
                                         final AgentDetailErrorModel
                                             agentDetailError =
@@ -201,25 +204,23 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                             backgroundColor: Colors.red);
                                       } else {
                                         setState(() {
-                                          mobileNumberController.text =
-                                              getAgentDetail['data']['data'][0]
-                                                  ['mobileNumber'];
-                                          userNameController.text =
-                                              getAgentDetail['data']['data'][0]
-                                                  ['Agent_name'];
-                                          if (getAgentDetail['data']['data'][0]
-                                                  ['email'] !=
-                                              '') {
-                                            emailController.text =
-                                                getAgentDetail['data']['data']
-                                                    [0]['email'];
-                                          } else {
-                                            AppUtils.showToast(
-                                              Languages.of(context)!
-                                                  .emailNotAvailable,
-                                              backgroundColor: Colors.red,
-                                            );
-                                          }
+                                          PublicAgentInfoModel agentInfo =
+                                              PublicAgentInfoModel.fromJson(
+                                                  getAgentDetail['data']['result']);
+                                          print(getAgentDetail['data']);
+                                          String? phoneNumber = '';
+                                          String? email = '';
+                                          agentInfo.contact?.forEach((element) {
+                                            if (element.cType == 'mobile') {
+                                              phoneNumber = element.value;
+                                            }
+                                            if (element.cType == 'email') {
+                                              email = element.value;
+                                            }
+                                          });
+                                          mobileNumberController.text = phoneNumber.toString();
+                                          emailController.text = email.toString();
+                                          userNameController.text = agentInfo.name.toString();
                                         });
                                       }
                                       setState(() => isCheck = true);
@@ -723,7 +724,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                         HttpUrl
                                                             .resetPasswordUrl(),
                                                         requestBodydata: {
-                                                      "encryptedData": text
+                                                      'encryptedData': text
                                                     });
                                                 if (postResult[
                                                     Constants.success]) {

@@ -785,6 +785,9 @@ class _CustomOtherFeedBackBottomSheetState
   }
 
   expandList(List<FeedbackTemplate> list, int index, List<String> dropList) {
+    List<String> contactTypeList = [];
+    contactTypeList.add('');
+    contactTypeList.addAll(Singleton.instance.availableAddContacts);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -869,15 +872,7 @@ class _CustomOtherFeedBackBottomSheetState
                                         child: CustomDropDownButton(
                                       Languages.of(context)!
                                           .customerContactType,
-                                      const <String>[
-                                        '',
-                                        'Residence Address',
-                                        'Mobile',
-                                        'Office Address',
-                                        'Office Contact No.',
-                                        'Email Id',
-                                        'Residence Contact No.'
-                                      ],
+                                      contactTypeList,
                                       underlineColor: ColorResource.color000000,
                                       selectedValue:
                                           listOfContact[index].formValue,
@@ -933,23 +928,7 @@ class _CustomOtherFeedBackBottomSheetState
                                         child: CustomReadOnlyTextField(
                                           (listOfContact[index].formValue == '')
                                               ? Languages.of(context)!.contact
-                                              : (listOfContact[index]
-                                                              .formValue ==
-                                                          'Mobile' ||
-                                                      listOfContact[index]
-                                                              .formValue ==
-                                                          'Office Contact No.' ||
-                                                      listOfContact[index]
-                                                              .formValue ==
-                                                          'Residence Contact No.')
-                                                  ? Languages.of(context)!
-                                                      .contact
-                                                  : (listOfContact[index]
-                                                              .formValue ==
-                                                          'Email Id')
-                                                      ? Languages.of(context)!
-                                                          .email
-                                                      : 'Address',
+                                              : 'Enter ${listOfContact[index].formValue}',
                                           listOfContact[index].controller,
                                           isLabel: true,
                                           focusNode:
@@ -959,56 +938,50 @@ class _CustomOtherFeedBackBottomSheetState
                                                   ''),
                                           borderColor:
                                               ColorResource.color000000,
-                                          keyBoardType: (listOfContact[index]
-                                                          .formValue ==
-                                                      'Mobile' ||
-                                                  listOfContact[index]
-                                                          .formValue ==
-                                                      'Office Contact No.' ||
-                                                  listOfContact[index]
-                                                          .formValue ==
-                                                      'Residence Contact No.')
-                                              ? TextInputType.number
-                                              : (listOfContact[index]
-                                                          .formValue ==
-                                                      'Email Id')
-                                                  ? TextInputType.emailAddress
-                                                  : TextInputType.name,
-                                          inputformaters: (listOfContact[index]
-                                                          .formValue ==
-                                                      'Mobile' ||
-                                                  listOfContact[index]
-                                                          .formValue ==
-                                                      'Office Contact No.' ||
-                                                  listOfContact[index]
-                                                          .formValue ==
-                                                      'Residence Contact No.')
-                                              ? <TextInputFormatter>[
-                                                  LengthLimitingTextInputFormatter(
-                                                      10),
-                                                  FilteringTextInputFormatter
-                                                      .digitsOnly,
-                                                  FilteringTextInputFormatter
-                                                      .deny(
-                                                          Constants.rEGEXEMOJI),
-                                                  if (listOfContact[index]
-                                                      .controller
-                                                      .text
-                                                      .isEmpty)
-                                                    FilteringTextInputFormatter
-                                                        .deny(' '),
-                                                ]
-                                              : <TextInputFormatter>[
-                                                  FilteringTextInputFormatter
-                                                      .deny(
-                                                          Constants.rEGEXEMOJI),
-                                                  // if (listOfContact[index]
-                                                  //     .controller
-                                                  //     .text
-                                                  //     .isEmpty)
-                                                  //   FilteringTextInputFormatter
-                                                  //       .deny(' ')
-                                                ],
+                                          // keyBoardType: (listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Mobile' ||
+                                          //         listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Office Contact No.' ||
+                                          //         listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Residence Contact No.')
+                                          //     ? TextInputType.number
+                                          //     : (listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Email Id')
+                                          //         ? TextInputType.emailAddress
+                                          //         : TextInputType.name,
+                                          // inputformaters: (listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Mobile' ||
+                                          //         listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Office Contact No.' ||
+                                          //         listOfContact[index]
+                                          //                 .formValue ==
+                                          //             'Residence Contact No.')
+                                          //     ? <TextInputFormatter>[
+                                          //         LengthLimitingTextInputFormatter(
+                                          //             10),
+                                          //         FilteringTextInputFormatter
+                                          //             .digitsOnly,
+                                          //         FilteringTextInputFormatter
+                                          //             .deny(
+                                          //                 Constants.rEGEXEMOJI),
+                                          //         if (listOfContact[index]
+                                          //             .controller
+                                          //             .text
+                                          //             .isEmpty)
+                                          //           FilteringTextInputFormatter
+                                          //               .deny(' '),
+                                          //       ]
+                                          //     : <TextInputFormatter>[
+                                          //         FilteringTextInputFormatter
+                                          //             .deny(
+                                          //                 Constants.rEGEXEMOJI),
+                                          //       ],
                                         ),
                                       ),
                                     ),

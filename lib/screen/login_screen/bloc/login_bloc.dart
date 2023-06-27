@@ -334,6 +334,7 @@
 // }
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -446,9 +447,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       debugPrint(event.paramValue);
       final Map<String, dynamic> response = await APIRepository.apiRequest(
           APIRequestType.post, HttpUrl.loginUrl,
-          requestBodydata: {
-            'encryptedData':event.paramValue
-          });
+          requestBodydata: {'encryptedData': event.paramValue});
 
       if (response['success'] == false) {
         yield SignInLoadedState();
@@ -474,29 +473,31 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               backgroundColor: Colors.red);
         }
       } else {
-        if (response['data']['data'] != null) {
+        if (response['data']['result'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
           // Store the access-token in local storage
           // await _prefs.setString(
           //     Constants.accessToken, loginResponse.data!.accessToken!);
           await PreferenceHelper.setPreference(
-              Constants.accessToken, loginResponse.data!.accessToken!);
+              Constants.accessToken, loginResponse.data?.accessToken ?? '');
+          await PreferenceHelper.setPreference(Constants.accessTokenExpireTime,
+              loginResponse.data?.expiresIn ?? '');
           await PreferenceHelper.setPreference(
-              Constants.accessTokenExpireTime, loginResponse.data!.expiresIn!);
-          await PreferenceHelper.setPreference(
-              Constants.refreshToken, loginResponse.data!.refreshToken!);
+              Constants.refreshToken, loginResponse.data?.refreshToken ?? '');
           await PreferenceHelper.setPreference(Constants.refreshTokenExpireTime,
-              loginResponse.data!.refreshExpiresIn!);
+              loginResponse.data?.refreshExpiresIn ?? '');
           // await PreferenceHelper.setPreference(
           //     Constants.keycloakId, loginResponse.data!.keycloakId!);
           await PreferenceHelper.setPreference(
-              Constants.sessionId, loginResponse.data!.sessionState!);
+              Constants.sessionId, loginResponse.data?.sessionState ?? '');
           await PreferenceHelper.setPreference(
               Constants.agentRef, event.userId!);
           await PreferenceHelper.setPreference(Constants.userId, event.userId!);
-          Singleton.instance.accessToken = loginResponse.data!.accessToken!;
-          Singleton.instance.refreshToken = loginResponse.data!.refreshToken!;
-          Singleton.instance.sessionID = loginResponse.data!.sessionState!;
+          Singleton.instance.accessToken =
+              loginResponse.data?.accessToken ?? '';
+          Singleton.instance.refreshToken =
+              loginResponse.data?.refreshToken ?? '';
+          Singleton.instance.sessionID = loginResponse.data?.sessionState ?? '';
           Singleton.instance.agentRef = event.userId!;
           await PreferenceHelper.getString(keyPair: Constants.agentRef)
               .then((value) {
@@ -506,12 +507,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           //     PreferenceHelper.getString(keyPair: Constants.agentRef)
           //         .toString();
 
-          if (loginResponse.data!.accessToken != null) {
+          if (loginResponse.data?.accessToken != null) {
             // Here check mpin flow show or not (offline or Online)
 
             final Map<String, dynamic> getProfileData =
                 await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.profileUrl, encrypt: true);
+                    APIRequestType.get, HttpUrl.profileUrl,
+                    encrypt: true);
             if (getProfileData['success']) {
               yield SignInCompletedState();
               final Map<String, dynamic> jsonData = getProfileData['data'];
