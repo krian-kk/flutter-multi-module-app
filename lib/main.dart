@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:freerasp/talsec_app.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/firebase_options.dart';
 import 'package:origa/http/httpurls.dart';
