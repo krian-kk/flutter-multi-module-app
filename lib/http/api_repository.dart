@@ -43,7 +43,8 @@ class APIRepository {
       FormData? formDatas,
       String? savePath,
       bool isPop = false,
-      bool encrypt = false}) async {
+      bool encrypt = false,
+      bool decryptResponse = true}) async {
     Map<String, dynamic> returnValue;
 
     try {
@@ -108,8 +109,10 @@ class APIRepository {
         final Map<String, dynamic> requestData = {
           'data': response.data['result']
         };
-        String text = await platform.invokeMethod('getDecryptedData', requestData);
-        response.data['result'] = json.decode(text);
+        if(decryptResponse){
+          String text = await platform.invokeMethod('getDecryptedData', requestData);
+          response.data['result'] = json.decode(text);
+        }
 
         return {
           'success': true,

@@ -599,11 +599,6 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         bloc.caseDetailsAPIValue.result?.bucketedCaseData ?? {};
     // Map<String?, Map<String, String>> caseFieldMap =
     //     <String?, Map<String, String>>{};
-    List<String> contactTemplate = [];
-    bloc.caseDetailsAPIValue.result?.availableAddContacts?.forEach((element) {
-      contactTemplate.add(element.cName ?? '');
-    });
-    Singleton.instance.availableAddContacts = contactTemplate;
     List<Widget> widgetlist = [];
     AllocationTemplateConfig? allocationTemplateConfig =
         Singleton.instance.allocationTemplateConfig;

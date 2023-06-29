@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/authentication/authentication_state.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/models/agentInfoPublic/agent_info.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/agent_information_model.dart';
@@ -102,9 +106,28 @@ class AuthenticationBloc
 
               debugPrint('AccessToken--> ${Singleton.instance.accessToken}');
               debugPrint('refreshToken--> ${Singleton.instance.refreshToken}');
-              final Map<String, dynamic> agentDetail =
-                  await APIRepository.apiRequest(APIRequestType.get,
-                      HttpUrl.agentInformation + 'aRef=$getUserName', encrypt: true);
+              // final Map<String, dynamic> agentDetail =
+              //     await APIRepository.apiRequest(APIRequestType.get,
+              //         HttpUrl.agentInformation + 'aRef=$getUserName', encrypt: true);
+              const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+              final object = <String, dynamic>{
+                'aRef': getUserName
+              };
+              final Map<String, dynamic> requestData = {
+                'data': jsonEncode(object)
+              };
+              String text = await platform.invokeMethod(
+                  'sendEncryptedData', requestData);
+              final Map<String, dynamic>
+              agentDetail =
+              await APIRepository.apiRequest(
+                  APIRequestType.post,
+                  HttpUrl.getPublicAgentInfo(),
+                  encrypt: true,
+                  requestBodydata: {
+                    'encryptedData': text
+                  });
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(
@@ -136,12 +159,13 @@ class AuthenticationBloc
                       backgroundColor: Colors.red);
                 }
 
-                final agentDetails =
-                    AgentInformation.fromJson(agentDetail['data']);
+                PublicAgentInfoModel agentInfo = PublicAgentInfoModel.fromJson(
+                    agentDetail['data']['result']);
                 // Set agentDetails
-                Singleton.instance.agentDetailsInfo =
-                    AgentInformation.fromJson(agentDetail['data']);
-                if (agentDetails.result!.first.type == 'COLLECTOR') {
+
+                // Singleton.instance.agentDetailsInfo =
+                //     AgentInformation.fromJson(agentDetail['data']);
+                if (agentInfo.type == 'COLLECTOR') {
                   await PreferenceHelper.setPreference(
                       Constants.userType, Constants.fieldagent);
                   Singleton.instance.usertype = Constants.fieldagent;
@@ -151,25 +175,25 @@ class AuthenticationBloc
                   Singleton.instance.usertype = Constants.telecaller;
                 }
 
-                if (agentDetails.result!.first.type != null) {
+                if (agentInfo.type != null) {
                   Singleton.instance.agentName =
-                      agentDetails.result!.first.name!;
+                      agentInfo.name;
                   await PreferenceHelper.setPreference(
-                      Constants.agentName, agentDetails.result!.first.name!);
+                      Constants.agentName, agentInfo.name);
                   // await PreferenceHelper.setPreference(
                   //     Constants.mobileNo, agentDetails.result!.first.mobNo!);
                   // await PreferenceHelper.setPreference(
                   //     Constants.email, agentDetails.data![0].email!);
                   await PreferenceHelper.setPreference(Constants.contractor,
-                      agentDetails.result!.first.contractor!);
+                      agentInfo.contractor);
                   Singleton.instance.contractor =
-                      agentDetails.result!.first.contractor!;
+                      agentInfo.contractor;
                   await PreferenceHelper.setPreference(
-                      Constants.status, agentDetails.result!.first.status!);
+                      Constants.status, agentInfo.status);
                   // await PreferenceHelper.setPreference(
                   //     Constants.code, agentDetails.code!);
                   await PreferenceHelper.setPreference(Constants.userAdmin,
-                      agentDetails.result!.first.userAdmin!);
+                      agentInfo.userAdmin);
                   yield AuthenticationAuthenticated(
                       notificationData: event.notificationData);
                 } else {

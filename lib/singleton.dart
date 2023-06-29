@@ -44,7 +44,8 @@ class Singleton {
   String offlineDataSynchronization = 'offlineDataSynchronization';
   AllocationTemplateConfig? allocationTemplateConfig =
       AllocationTemplateConfig();
-  List<String> availableAddContacts = [];
+  List<ContactType> availableAddContacts = [];
+
 // Contractor All Information
   ContractorAllInformationModel? contractorInformations;
 
@@ -57,4 +58,11 @@ class Singleton {
   bool isOfflineEnabledContractorBased = false;
 
   static final Singleton instance = Singleton.internal();
+}
+
+class ContactType {
+  ContactType({required this.cType, required this.name});
+
+  String? cType;
+  String? name;
 }

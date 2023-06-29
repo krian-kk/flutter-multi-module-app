@@ -475,6 +475,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         if (response['data']['result'] != null) {
           loginResponse = LoginResponseModel.fromJson(response['data']);
+          if(loginResponse.data?.setPassword == true){
+            yield SetPasswordState(name: event.userId);
+          }
           // Store the access-token in local storage
           // await _prefs.setString(
           //     Constants.accessToken, loginResponse.data!.accessToken!);
@@ -554,7 +557,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
     }
-
     if (event is ResendOTPEvent) {
       yield ResendOTPState();
     }

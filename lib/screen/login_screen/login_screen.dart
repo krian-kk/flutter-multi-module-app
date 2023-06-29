@@ -16,6 +16,7 @@ import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/models/reset_password_model/reset_password_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/mpin_screens/account_password_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/conform_mpin_screen.dart';
@@ -30,6 +31,7 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
+import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -62,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
   FocusNode passwords = FocusNode();
   bool _obscureText = true;
   bool _isChecked = false;
+  bool isSaveNewPasswordLoad = true;
 
   //
   // @override
@@ -315,17 +318,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       }
                       if (state is HomeTabState) {
-                        // FirebaseDatabase.instance.setPersistenceEnabled(true);
-                        // FirebaseDatabase.instance.setPersistenceCacheSizeBytes(
-                        //     Settings.CACHE_SIZE_UNLIMITED);
-                        // final DatabaseReference scoresRef = FirebaseDatabase
-                        //     .instance
-                        //     .ref(Singleton.instance.firebaseDatabaseName);
-                        // await scoresRef.keepSynced(true);
                         await Navigator.pushReplacementNamed(
                             context, AppRoutes.homeTabScreen,
                             arguments: widget.notificationData);
+
                       }
+                      if(state is SetPasswordState){
+                        setPasswordBottomSheet(context,state.name.toString());
+                      }
+
                       if (state is ResendOTPState) {
                         resendOTPBottomSheet(context);
                       }
@@ -663,6 +664,189 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  setPasswordBottomSheet(BuildContext buildContext, String name) {
+    resetPasswordShowBottomSheet(name);
+  }
+
+  resetPasswordShowBottomSheet(String name) {
+    final TextEditingController newPasswordController = TextEditingController();
+    final TextEditingController confirmPasswordController =
+        TextEditingController();
+    final FocusNode newPasswordFocusNode = FocusNode();
+    final FocusNode confirmPasswordFocusNode = FocusNode();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    showModalBottomSheet(
+        context: context,
+        isDismissible: false,
+        enableDrag: false,
+        isScrollControlled: true,
+        backgroundColor: ColorResource.colorF8F9FB,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) => Form(
+                  key: formKey,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.89,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        BottomSheetAppbar(
+                          title: Languages.of(context)!
+                              .resetPassword
+                              .toUpperCase(),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 24,
+                            vertical: 12,
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                CustomTextField(
+                                  Languages.of(context)!.enterNewPassword,
+                                  newPasswordController,
+                                  obscureText: true,
+                                  isFill: true,
+                                  isBorder: true,
+                                  isLabel: true,
+                                  errorMaxLine: 5,
+                                  borderColor: ColorResource.colorFFFFFF,
+                                  validationRules: const <String>['password'],
+                                  // maximumWordCount: 10,
+                                  focusNode: newPasswordFocusNode,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validatorCallBack: (bool values) {},
+                                ),
+                                const SizedBox(height: 20),
+                                CustomTextField(
+                                  Languages.of(context)!
+                                      .enterConfirmNewPassword,
+                                  confirmPasswordController,
+                                  obscureText: true,
+                                  isFill: true,
+                                  isBorder: true,
+                                  isLabel: true,
+                                  borderColor: ColorResource.colorFFFFFF,
+                                  validationRules: const <String>['required'],
+                                  maximumWordCount: 10,
+                                  focusNode: confirmPasswordFocusNode,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validatorCallBack: (bool values) {},
+                                ),
+                                const SizedBox(height: 20),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 50),
+                                  child: CustomButton(
+                                    Languages.of(context)!
+                                        .saveNewPassword
+                                        .toUpperCase(),
+                                    isLeading: !isSaveNewPasswordLoad,
+                                    trailingWidget: CustomLoadingWidget(
+                                      gradientColors: <Color>[
+                                        ColorResource.colorFFFFFF,
+                                        ColorResource.colorFFFFFF
+                                            .withOpacity(0.7),
+                                      ],
+                                    ),
+                                    fontSize: FontSize.sixteen,
+                                    fontWeight: FontWeight.w700,
+                                    padding: 15.0,
+                                    cardShape: 75.0,
+                                    onTap: isSaveNewPasswordLoad
+                                        ? () async {
+                                            if (formKey.currentState!
+                                                .validate()) {
+                                              if (newPasswordController.text ==
+                                                  confirmPasswordController
+                                                      .text) {
+                                                setState(() =>
+                                                    isSaveNewPasswordLoad =
+                                                        false);
+                                                final SetPasswordModel
+                                                    requestBodyData =
+                                                    SetPasswordModel(
+                                                        username: name,
+                                                        newPassword:
+                                                            newPasswordController
+                                                                .text);
+                                                final Map<String, dynamic>
+                                                    requestData = {
+                                                  'data': jsonEncode(
+                                                      requestBodyData)
+                                                };
+                                                String text =
+                                                    await platform.invokeMethod(
+                                                        'sendEncryptedData',
+                                                        requestData);
+                                                final Map<String, dynamic>
+                                                    postResult =
+                                                    await APIRepository
+                                                        .apiRequest(
+                                                            APIRequestType.post,
+                                                            HttpUrl
+                                                                .setPasswordUrl(),
+                                                            requestBodydata: {
+                                                              'encryptedData':
+                                                                  text
+                                                            },
+                                                            encrypt: true,
+                                                            decryptResponse:
+                                                                false);
+                                                debugPrint(
+                                                    jsonEncode(postResult));
+                                                if (postResult[
+                                                    Constants.success]) {
+                                                  AppUtils.topSnackBar(
+                                                      context,
+                                                      Constants
+                                                          .successfullyUpdated);
+                                                  // AppUtils.showToast(
+                                                  //     Constants.successfullyUpdated,
+                                                  //     gravity: ToastGravity.BOTTOM);
+                                                  await Future<dynamic>.delayed(
+                                                      const Duration(
+                                                          seconds: 2));
+                                                  Navigator.pop(context);
+                                                  bloc.emit(SignInLoadedState());
+                                                }
+                                              } else {
+                                                AppUtils.showToast(
+                                                  Languages.of(context)!
+                                                      .pleaseSelectCorrectPassword,
+                                                );
+                                              }
+                                              setState(() =>
+                                                  isSaveNewPasswordLoad = true);
+                                            }
+                                          }
+                                        : () {},
+                                    borderColor: ColorResource.colorBEC4CF,
+                                    buttonBackgroundColor:
+                                        ColorResource.color23375A,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )));
+  }
+
   Future<void> _signIn({String? fcmToken}) async {
     final bool isValid = _formKey.currentState!.validate();
     if (!isValid) {
@@ -679,15 +863,12 @@ class _LoginScreenState extends State<LoginScreen> {
           'fcmToken': fcmToken,
           'appVersion': packageInfo.version
         };
-        final Map<String, dynamic> requestData = {
-          'data': jsonEncode(object)
-        };
-        String text = await platform.invokeMethod(
-            'sendEncryptedData', requestData);
+        final Map<String, dynamic> requestData = {'data': jsonEncode(object)};
+        String text =
+            await platform.invokeMethod('sendEncryptedData', requestData);
 
         bloc.add(
-          SignInEvent(
-              paramValue: text, userId: userId.text, context: context),
+          SignInEvent(paramValue: text, userId: userId.text, context: context),
         );
       }
     }

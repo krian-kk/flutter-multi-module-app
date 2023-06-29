@@ -18,6 +18,8 @@ class NoInternetConnectionEvent extends LoginEvent {}
 
 class ResendOTPEvent extends LoginEvent {}
 
+class SetPasswordEvent extends LoginEvent {}
+
 class TriggeredHomeTabEvent extends LoginEvent {
   TriggeredHomeTabEvent(this.userId);
   final String userId;

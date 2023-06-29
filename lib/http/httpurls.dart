@@ -105,6 +105,8 @@ class HttpUrl {
 
   static String resetPasswordUrl() => '$url/${apiType}public/resetPassword';
 
+  static String setPasswordUrl() => '$url/${apiType}public/setPassword';
+
   static String verifyOTP() => '$url/${apiType}public/verifyOtp';
 
   static String getPublicAgentInfo() => '$url/${apiType}public/agentDetails';

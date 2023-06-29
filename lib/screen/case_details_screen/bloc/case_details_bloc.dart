@@ -290,6 +290,13 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
                   (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
           Singleton.instance.caseCustomerName =
               caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+          List<ContactType> contactTemplate = [];
+          caseDetailsAPIValue.result?.availableAddContacts?.forEach((element) {
+            contactTemplate
+                .add(ContactType(cType: element.cType, name: element.cName));
+          });
+          Singleton.instance.availableAddContacts = contactTemplate;
+          debugPrint('screen${Singleton.instance.availableAddContacts.length}');
         } else if (caseDetailsData['statusCode'] == 401 ||
             caseDetailsData['statusCode'] == 502) {
           isNoInternetAndServerError = true;

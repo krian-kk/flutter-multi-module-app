@@ -195,6 +195,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                           });
                                       print(getAgentDetail);
                                       if (getAgentDetail['success'] == false) {
+                                        setState(() => isCheck = true);
+
                                         final AgentDetailErrorModel
                                             agentDetailError =
                                             AgentDetailErrorModel.fromJson(

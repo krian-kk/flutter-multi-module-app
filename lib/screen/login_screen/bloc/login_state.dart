@@ -17,10 +17,17 @@ class SignInCompletedState extends LoginState {}
 
 class ResendOTPState extends LoginState {}
 
+class SetPasswordState extends LoginState {
+
+  SetPasswordState({this.name});
+  final String? name;
+}
+
 class TriggerHomeTabState extends LoginState {}
 
 class EnterSecurePinState extends LoginState {
   EnterSecurePinState({this.securePin, this.userName});
+
   final int? securePin;
   final String? userName;
 }

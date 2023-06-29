@@ -93,7 +93,7 @@ class _CustomOtherFeedBackBottomSheetState
     AddNewContactFieldModel(TextEditingController(), '', FocusNode()),
   ];
 
-  List<dynamic> otherFeedbackContact = <dynamic>[];
+  List<OtherFeedBackContact> otherFeedbackContact = <OtherFeedBackContact>[];
 
   Map<String, dynamic> dynamicEventAttr = {};
   final List<String> dropDownList = [];
@@ -526,8 +526,16 @@ class _CustomOtherFeedBackBottomSheetState
     otherFeedbackContact.clear();
     for (int i = 0; i < (listOfContact.length); i++) {
       if (listOfContact[i].controller.text.isNotEmpty) {
+        final String name = listOfContact[i].formValue.toUpperCase();
+        String cTypeFinal = '';
+        for (var element in Singleton.instance.availableAddContacts) {
+          if (element.name?.toUpperCase() == name.toUpperCase()) {
+            cTypeFinal = element.cType!;
+          }
+        }
+        debugPrint("cTypeFinal---"+cTypeFinal);
         otherFeedbackContact.add(OtherFeedBackContact(
-            cType: listOfContact[i].formValue.toLowerCase(),
+            cType: cTypeFinal.toString(),
             value: listOfContact[i].controller.text,
             contactId0: '',
             resAddressId0: ''));
@@ -787,7 +795,9 @@ class _CustomOtherFeedBackBottomSheetState
   expandList(List<FeedbackTemplate> list, int index, List<String> dropList) {
     List<String> contactTypeList = [];
     contactTypeList.add('');
-    contactTypeList.addAll(Singleton.instance.availableAddContacts);
+    for (var element in Singleton.instance.availableAddContacts) {
+      contactTypeList.add(element.name.toString());
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
