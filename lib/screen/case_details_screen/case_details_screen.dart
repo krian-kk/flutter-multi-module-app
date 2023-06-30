@@ -1572,11 +1572,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             final List<String> s1 = <String>[];
             bloc.caseDetailsAPIValue.result?.callDetails
                 ?.forEach((dynamic element) {
-              if (element['cType'].contains('mobile')) {
-                if (!(s1.contains(element['value']))) {
+              // if (element['cType'].contains('mobile')) {
+              //   if (!(s1.contains(element['value']))) {
                   s1.add(element['value']);
-                }
-              } else {}
+                // }
+              // } else {}
             });
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,

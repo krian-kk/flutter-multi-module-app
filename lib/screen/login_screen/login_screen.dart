@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
     bloc = LoginBloc()..add(LoginInitialEvent(context: context));
     if (kDebugMode) {
       userId.text = 'gfldev_suvodeepcollector';
-      password.text = 'Agent1234';
+      password.text = 'Abcd@123';
     }
     username = FocusNode();
     passwords = FocusNode();

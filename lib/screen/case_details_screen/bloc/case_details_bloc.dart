@@ -210,9 +210,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
         caseDetailsAPIValue.result?.caseDetails = caseDetails;
         caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-            .result?.callDetails
-            ?.where((dynamic element) => (element['cType'] == 'mobile'))
-            .toList();
+            .result?.callDetails;
         caseDetailsAPIValue.result?.callDetails?.sort((dynamic a, dynamic b) =>
             (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
         Singleton.instance.caseCustomerName =
@@ -252,9 +250,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               CaseDetailsResultModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.caseDetails = caseDetails;
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-              .result?.callDetails
-              ?.where((dynamic element) => (element['cType'] == 'mobile'))
-              .toList();
+              .result?.callDetails;
           caseDetailsAPIValue.result?.callDetails?.sort(
               (dynamic a, dynamic b) =>
                   (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
@@ -282,9 +278,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           final Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
           caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-              .result?.callDetails
-              ?.where((dynamic element) => (element['cType'] == 'mobile'))
-              .toList();
+              .result?.callDetails;
           caseDetailsAPIValue.result?.callDetails?.sort(
               (dynamic a, dynamic b) =>
                   (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
@@ -690,6 +684,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           await AppUtils.makePhoneCall(event.seleectedContactNumber.toString());
           yield CaseDetailsLoadedState();
         } else {
+          debugPrint('line 693------->${event.list?.length}');
           yield ClickOpenBottomSheetState(
             event.title,
             event.list!,
@@ -1451,11 +1446,11 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           case Constants.callCustomer:
             final List<String> s1 = <String>[];
             caseDetailsAPIValue.result?.callDetails?.forEach((dynamic element) {
-              if (element['cType'].contains('mobile')) {
-                if (!(s1.contains(element['value']))) {
+              // if (element['cType'].contains('mobile')) {
+              //   if (!(s1.contains(element['value']))) {
                   s1.add(element['value']);
-                }
-              } else {}
+                // }
+              // } else {}
             });
             return CallCustomerBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(

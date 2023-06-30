@@ -112,7 +112,10 @@ class _CallDetailsBottomSheetScreenState
                                 widget.bloc.listOfCallDetails?.length ?? 0,
                             itemBuilder: (BuildContext context, int i) {
                               String value = widget.bloc.caseDetailsAPIValue
-                                  .result?.callDetails?[i]['value']?.toString() ?? '';
+                                      .result?.callDetails?[i]['value']
+                                      ?.toString() ??
+                                  '';
+                              debugPrint('Length ${widget.bloc.listOfCallDetails?.length}');
                               ContractorResult? informationModel = Singleton
                                   .instance.contractorInformations?.result;
                               if (informationModel?.cloudTelephony == true &&
@@ -120,247 +123,209 @@ class _CallDetailsBottomSheetScreenState
                                 value = value.replaceRange(2, 7, 'XXXXX');
                               }
                               // _AnimatedMovies = AllMovies.where((i) => i.isAnimated).toList();
-                              return widget.bloc.listOfCallDetails?[i]
-                                              ['cType'] ==
-                                          'mobile' ||
-                                      widget.bloc.listOfCallDetails?[i]
-                                              ['cType'] ==
-                                          'resNo' ||
-                                      widget.bloc.listOfCallDetails?[i]
-                                              ['cType'] ==
-                                          'office contact no.' ||
-                                      widget.bloc.listOfCallDetails?[i]
-                                              ['cType'] ==
-                                          'residence contact no.'
-                                  ? SizedBox(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          CustomText(
-                                            widget
-                                                    .bloc
-                                                    .listOfCallDetails?[i]
-                                                        ['cType']
-                                                    .toString()
-                                                    .toUpperCase() ??
-                                                '_',
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResource.color23375A,
-                                          ),
-                                          const SizedBox(height: 7),
-                                          GestureDetector(
-                                            onTap: () async {
-                                              if (ConnectivityResult.none !=
-                                                  await Connectivity()
-                                                      .checkConnectivity()) {
-                                                widget.bloc.add(
-                                                    ClickMainCallBottomSheetEvent(
-                                                        i));
-                                                Singleton.instance
-                                                    .contactId_0 = widget
-                                                            .bloc
-                                                            .caseDetailsAPIValue
-                                                            .result
-                                                            ?.callDetails![i]
-                                                        ['contactId_0'] ??
-                                                    '';
-                                                Singleton.instance
-                                                        .customerContactNo =
-                                                    widget
-                                                        .bloc
-                                                        .caseDetailsAPIValue
-                                                        .result
-                                                        ?.callDetails![i]
-                                                            ['value']
-                                                        .toString()
-                                                        .toUpperCase();
-                                              } else {
-                                                AppUtils.showErrorToast(
-                                                    Languages.of(buildContext)!
-                                                        .noInternetConnection);
-                                              }
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 12, 12, 12),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                              return SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    CustomText(
+                                      widget.bloc.listOfCallDetails?[i]['cType']
+                                              .toString()
+                                              .toUpperCase() ??
+                                          '_',
+                                      fontWeight: FontWeight.w700,
+                                      color: ColorResource.color23375A,
+                                    ),
+                                    const SizedBox(height: 7),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        if (ConnectivityResult.none !=
+                                            await Connectivity()
+                                                .checkConnectivity()) {
+                                          widget.bloc.add(
+                                              ClickMainCallBottomSheetEvent(i));
+                                          Singleton.instance.contactId_0 =
+                                              widget
+                                                          .bloc
+                                                          .caseDetailsAPIValue
+                                                          .result
+                                                          ?.callDetails![i]
+                                                      ['contactId_0'] ??
+                                                  '';
+                                          Singleton.instance.customerContactNo =
+                                              widget
+                                                  .bloc
+                                                  .caseDetailsAPIValue
+                                                  .result
+                                                  ?.callDetails![i]['value']
+                                                  .toString()
+                                                  .toUpperCase();
+                                        } else {
+                                          AppUtils.showErrorToast(
+                                              Languages.of(buildContext)!
+                                                  .noInternetConnection);
+                                        }
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 12, 12, 12),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Flexible(
+                                                    child: Row(
                                                       children: <Widget>[
-                                                        Flexible(
-                                                          child: Row(
-                                                            children: <Widget>[
-                                                              CustomText(
-                                                                value,
-                                                                color: ColorResource
-                                                                    .color484848,
-                                                              ),
-                                                              const SizedBox(
-                                                                  width: 10),
-                                                            ],
-                                                          ),
+                                                        CustomText(
+                                                          value,
+                                                          color: ColorResource
+                                                              .color484848,
                                                         ),
-                                                        Align(
-                                                          alignment: Alignment
-                                                              .topRight,
-                                                          child: ShowHealthStatus
-                                                              .healthStatus(widget
-                                                                          .bloc
-                                                                          .listOfCallDetails?[i]
-                                                                      [
-                                                                      'health'] ??
-                                                                  ''),
-                                                        ),
+                                                        const SizedBox(
+                                                            width: 10),
                                                       ],
                                                     ),
-                                                    const SizedBox(height: 15),
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        SizedBox(
-                                                            child: InkWell(
-                                                          onTap: () async {
-                                                            if (ConnectivityResult
-                                                                    .none !=
-                                                                await Connectivity()
-                                                                    .checkConnectivity()) {
-                                                              widget.bloc
-                                                                  .indexValue = i;
-                                                              widget.bloc.add(EventDetailsEvent(
-                                                                  Constants
-                                                                      .callCustomer,
-                                                                  widget
-                                                                      .bloc
-                                                                      .caseDetailsAPIValue
-                                                                      .result
-                                                                      ?.callDetails,
-                                                                  false,
-                                                                  isCallFromCallDetails:
-                                                                      true,
-                                                                  seleectedContactNumber:
-                                                                      widget.bloc.listOfCallDetails?[i]
-                                                                              [
-                                                                              'value'] ??
-                                                                          ''));
-                                                            } else {
-                                                              AppUtils.showErrorToast(
-                                                                  Languages.of(
-                                                                          buildContext)!
-                                                                      .noInternetConnection);
-                                                            }
-                                                          },
-                                                          child: Container(
-                                                              decoration: const BoxDecoration(
-                                                                  color: ColorResource
-                                                                      .colorBEC4CF,
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              75.0))),
-                                                              child: Row(
-                                                                children: <
-                                                                    Widget>[
-                                                                  CircleAvatar(
-                                                                    backgroundColor:
-                                                                        ColorResource
-                                                                            .color23375A,
-                                                                    radius: 20,
-                                                                    child:
-                                                                        Center(
-                                                                      child: SvgPicture
-                                                                          .asset(
-                                                                        ImageResource
-                                                                            .phone,
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          12),
-                                                                  CustomText(
-                                                                    Languages.of(
-                                                                            context)!
-                                                                        .call,
-                                                                    color: ColorResource
-                                                                        .color23375A,
-                                                                    lineHeight:
-                                                                        1,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                  ),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          40),
-                                                                ],
-                                                              )),
-                                                        )),
-                                                        const Spacer(),
-                                                        const SizedBox(
-                                                            width: 5),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
+                                                  ),
+                                                  Align(
+                                                    alignment:
+                                                        Alignment.topRight,
+                                                    child: ShowHealthStatus
+                                                        .healthStatus(widget
+                                                                    .bloc
+                                                                    .listOfCallDetails?[
+                                                                i]['health'] ??
+                                                            ''),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  SizedBox(
+                                                      child: InkWell(
+                                                    onTap: () async {
+                                                      if (ConnectivityResult
+                                                              .none !=
+                                                          await Connectivity()
+                                                              .checkConnectivity()) {
+                                                        widget.bloc.indexValue =
+                                                            i;
+                                                        widget.bloc.add(EventDetailsEvent(
+                                                            Constants
+                                                                .callCustomer,
+                                                            widget
+                                                                .bloc
+                                                                .caseDetailsAPIValue
+                                                                .result
+                                                                ?.callDetails,
+                                                            false,
+                                                            isCallFromCallDetails:
+                                                                true,
+                                                            seleectedContactNumber:
+                                                                widget.bloc.listOfCallDetails?[
+                                                                            i][
+                                                                        'value'] ??
+                                                                    ''));
+                                                      } else {
+                                                        AppUtils.showErrorToast(
+                                                            Languages.of(
+                                                                    buildContext)!
+                                                                .noInternetConnection);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        decoration: const BoxDecoration(
+                                                            color: ColorResource
+                                                                .colorBEC4CF,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        75.0))),
+                                                        child: Row(
                                                           children: <Widget>[
+                                                            CircleAvatar(
+                                                              backgroundColor:
+                                                                  ColorResource
+                                                                      .color23375A,
+                                                              radius: 20,
+                                                              child: Center(
+                                                                child:
+                                                                    SvgPicture
+                                                                        .asset(
+                                                                  ImageResource
+                                                                      .phone,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 12),
                                                             CustomText(
                                                               Languages.of(
                                                                       context)!
-                                                                  .disposition,
+                                                                  .call,
+                                                              color: ColorResource
+                                                                  .color23375A,
                                                               lineHeight: 1,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
-                                                              color: ColorResource
-                                                                  .color23375A,
                                                             ),
                                                             const SizedBox(
-                                                                width: 10),
-                                                            SvgPicture.asset(
-                                                              ImageResource
-                                                                  .forwardArrow,
-                                                              fit: BoxFit
-                                                                  .scaleDown,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 5)
+                                                                width: 40),
                                                           ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                        )),
+                                                  )),
+                                                  const Spacer(),
+                                                  const SizedBox(width: 5),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      CustomText(
+                                                        Languages.of(context)!
+                                                            .disposition,
+                                                        lineHeight: 1,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      SvgPicture.asset(
+                                                        ImageResource
+                                                            .forwardArrow,
+                                                        fit: BoxFit.scaleDown,
+                                                      ),
+                                                      const SizedBox(width: 5)
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                          const SizedBox(height: 15)
-                                        ],
+                                        ),
                                       ),
-                                    )
-                                  : const SizedBox();
+                                    ),
+                                    const SizedBox(height: 15)
+                                  ],
+                                ),
+                              );
                             },
                           )
                         ],

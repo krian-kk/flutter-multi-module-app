@@ -123,191 +123,178 @@ class _AddressDetailsBottomSheetScreenState
                             itemBuilder: (BuildContext context, int i) {
                               bool showVisit = false;
                               String? key = Singleton
-                                  .instance.contractorInformations?.result?.googleMapsApiKey;
+                                  .instance
+                                  .contractorInformations
+                                  ?.result
+                                  ?.googleMapsApiKey;
                               if (key?.isEmpty == false) {
                                 showVisit = true;
                               }
                               // debugPrint(
                               //     'List of address ----> ${widget.bloc.listOfAddressDetails}');
-                              return widget.bloc.listOfAddressDetails?[i]
-                                              ['cType'] ==
-                                          'residence address' ||
-                                      widget.bloc.listOfAddressDetails?[i]
-                                              ['cType'] ==
-                                          'office address'
-                                  ? SizedBox(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: <Widget>[
-                                          CustomText(
+                              return SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    CustomText(
+                                      widget.bloc
+                                              .listOfAddressDetails?[i]['cType']
+                                              .toString()
+                                              .toUpperCase() ??
+                                          '_',
+                                      fontWeight: FontWeight.w700,
+                                      color: ColorResource.color23375A,
+                                    ),
+                                    const SizedBox(height: 7),
+                                    GestureDetector(
+                                      onTap: () {
+                                        widget.bloc.add(
+                                            ClickMainAddressBottomSheetEvent(i,
+                                                addressModel: widget.bloc
+                                                    .listOfAddressDetails?[i]));
+                                        Singleton.instance.resAddressId_0 =
                                             widget
-                                                    .bloc
-                                                    .listOfAddressDetails?[i]
-                                                        ['cType']
-                                                    .toString()
-                                                    .toUpperCase() ??
-                                                '_',
-                                            fontWeight: FontWeight.w700,
-                                            color: ColorResource.color23375A,
-                                          ),
-                                          const SizedBox(height: 7),
-                                          GestureDetector(
-                                            onTap: () {
-                                              widget.bloc.add(
-                                                  ClickMainAddressBottomSheetEvent(
-                                                      i,
-                                                      addressModel: widget.bloc
-                                                              .listOfAddressDetails?[
-                                                          i]));
-                                              Singleton.instance
-                                                  .resAddressId_0 = widget
-                                                          .bloc
-                                                          .caseDetailsAPIValue
-                                                          .result
-                                                          ?.addressDetails![i]
-                                                      ['resAddressId_0'] ??
-                                                  '';
+                                                        .bloc
+                                                        .caseDetailsAPIValue
+                                                        .result
+                                                        ?.addressDetails![i]
+                                                    ['resAddressId_0'] ??
+                                                '';
 
-                                              for (dynamic element in widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .result!
-                                                  .callDetails!) {
-                                                if (element['cType'] ==
-                                                    'mobile') {
-                                                  Singleton.instance
-                                                          .customerContactNo =
-                                                      element['value'];
-                                                  break;
-                                                }
-                                              }
-                                            },
-                                            child: Container(
-                                              width: double.infinity,
-                                              decoration: const BoxDecoration(
-                                                  color:
-                                                      ColorResource.colorF8F9FB,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              10.0))),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                        20, 12, 12, 12),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        Flexible(
-                                                          child: CustomText(
-                                                            widget
-                                                                    .bloc
-                                                                    .listOfAddressDetails?[
-                                                                        i][
-                                                                        'value']
-                                                                    .toString() ??
-                                                                '_',
-                                                            color: ColorResource
-                                                                .color484848,
-                                                          ),
-                                                        ),
-                                                        Align(
-                                                            alignment: Alignment
-                                                                .topRight,
-                                                            child: Row(
-                                                              children: <
-                                                                  Widget>[
-                                                                const SizedBox(
-                                                                    width: 10),
-                                                                ShowHealthStatus
-                                                                    .healthStatus(
-                                                                        widget.bloc.listOfAddressDetails?[i]['health'] ??
-                                                                            ''),
-                                                              ],
-                                                            )),
-                                                      ],
+                                        for (dynamic element in widget
+                                            .bloc
+                                            .caseDetailsAPIValue
+                                            .result!
+                                            .callDetails!) {
+                                          if (element['cType'] == 'mobile') {
+                                            Singleton.instance
+                                                    .customerContactNo =
+                                                element['value'];
+                                            break;
+                                          }
+                                        }
+                                      },
+                                      child: Container(
+                                        width: double.infinity,
+                                        decoration: const BoxDecoration(
+                                            color: ColorResource.colorF8F9FB,
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10.0))),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              20, 12, 12, 12),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Flexible(
+                                                    child: CustomText(
+                                                      widget
+                                                              .bloc
+                                                              .listOfAddressDetails?[
+                                                                  i]['value']
+                                                              .toString() ??
+                                                          '_',
+                                                      color: ColorResource
+                                                          .color484848,
                                                     ),
-                                                    const SizedBox(height: 15),
-                                                    Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: <Widget>[
-                                                        GestureDetector(
-                                                          onTap: () async {
-                                                            if (ConnectivityResult
-                                                                    .none !=
-                                                                await Connectivity()
-                                                                    .checkConnectivity()) {
-                                                              Position?
-                                                                  currentLocation;
-                                                              await MapUtils
-                                                                      .getCurrentLocation(
-                                                                          context)
-                                                                  .then((Position
-                                                                      value) {
-                                                                setState(() {
-                                                                  currentLocation =
-                                                                      value;
-                                                                });
-                                                              });
-                                                              final Northeast?
-                                                                  destinationLocation =
-                                                                  await MapUtils
-                                                                      .convertAddressToLarlng(
-                                                                address: widget
-                                                                        .bloc
-                                                                        .caseDetailsAPIValue
-                                                                        .result!
-                                                                        .addressDetails![
-                                                                    i]['value'],
-                                                                context:
-                                                                    context,
-                                                              );
-                                                              if (destinationLocation !=
-                                                                  null) {
-                                                                await MapUtils.openMap(
-                                                                    startLatitude:
-                                                                        currentLocation!
-                                                                            .latitude,
-                                                                    startLongitude:
-                                                                        currentLocation!
-                                                                            .longitude,
-                                                                    destinationLatitude:
-                                                                        destinationLocation.lat ??
-                                                                            0.0,
-                                                                    destinationLongitude:
-                                                                        destinationLocation.lng ??
-                                                                            0.0);
-                                                              }
-                                                            } else {
-                                                              AppUtils.showErrorToast(
-                                                                  Languages.of(
-                                                                          context)!
-                                                                      .noInternetConnection);
-                                                            }
-                                                          },
-                                                          child: Container(
-                                                              decoration: const BoxDecoration(
-                                                                  color: ColorResource
-                                                                      .colorBEC4CF,
-                                                                  borderRadius:
-                                                                      BorderRadius.all(
-                                                                          Radius.circular(
-                                                                              75.0))),
-                                                              child: showVisit ? Row(
-                                                                children: <
-                                                                    Widget>[
+                                                  ),
+                                                  Align(
+                                                      alignment:
+                                                          Alignment.topRight,
+                                                      child: Row(
+                                                        children: <Widget>[
+                                                          const SizedBox(
+                                                              width: 10),
+                                                          ShowHealthStatus
+                                                              .healthStatus(widget
+                                                                          .bloc
+                                                                          .listOfAddressDetails?[i]
+                                                                      [
+                                                                      'health'] ??
+                                                                  ''),
+                                                        ],
+                                                      )),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 15),
+                                              Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  GestureDetector(
+                                                    onTap: () async {
+                                                      if (ConnectivityResult
+                                                              .none !=
+                                                          await Connectivity()
+                                                              .checkConnectivity()) {
+                                                        Position?
+                                                            currentLocation;
+                                                        await MapUtils
+                                                                .getCurrentLocation(
+                                                                    context)
+                                                            .then((Position
+                                                                value) {
+                                                          setState(() {
+                                                            currentLocation =
+                                                                value;
+                                                          });
+                                                        });
+                                                        final Northeast?
+                                                            destinationLocation =
+                                                            await MapUtils
+                                                                .convertAddressToLarlng(
+                                                          address: widget
+                                                                  .bloc
+                                                                  .caseDetailsAPIValue
+                                                                  .result!
+                                                                  .addressDetails![
+                                                              i]['value'],
+                                                          context: context,
+                                                        );
+                                                        if (destinationLocation !=
+                                                            null) {
+                                                          await MapUtils.openMap(
+                                                              startLatitude:
+                                                                  currentLocation!
+                                                                      .latitude,
+                                                              startLongitude:
+                                                                  currentLocation!
+                                                                      .longitude,
+                                                              destinationLatitude:
+                                                                  destinationLocation
+                                                                          .lat ??
+                                                                      0.0,
+                                                              destinationLongitude:
+                                                                  destinationLocation
+                                                                          .lng ??
+                                                                      0.0);
+                                                        }
+                                                      } else {
+                                                        AppUtils.showErrorToast(
+                                                            Languages.of(
+                                                                    context)!
+                                                                .noInternetConnection);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        decoration: const BoxDecoration(
+                                                            color: ColorResource
+                                                                .colorBEC4CF,
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        75.0))),
+                                                        child: showVisit
+                                                            ? Row(
+                                                                children: <Widget>[
                                                                   CircleAvatar(
                                                                     backgroundColor:
                                                                         ColorResource
@@ -341,52 +328,48 @@ class _AddressDetailsBottomSheetScreenState
                                                                     width: 17,
                                                                   ),
                                                                 ],
-                                                              ) : const SizedBox()),
-                                                        ),
-                                                        const Spacer(),
-                                                        const SizedBox(
-                                                          width: 5,
-                                                        ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: <Widget>[
-                                                            CustomText(
-                                                              Languages.of(
-                                                                      context)!
-                                                                  .disposition,
-                                                              lineHeight: 1,
-                                                              color: ColorResource
-                                                                  .color23375A,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 10),
-                                                            SvgPicture.asset(
-                                                              ImageResource
-                                                                  .forwardArrow,
-                                                              fit: BoxFit
-                                                                  .scaleDown,
-                                                            ),
-                                                            const SizedBox(
-                                                                width: 5)
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                                              )
+                                                            : const SizedBox()),
+                                                  ),
+                                                  const Spacer(),
+                                                  const SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      CustomText(
+                                                        Languages.of(context)!
+                                                            .disposition,
+                                                        lineHeight: 1,
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      SvgPicture.asset(
+                                                        ImageResource
+                                                            .forwardArrow,
+                                                        fit: BoxFit.scaleDown,
+                                                      ),
+                                                      const SizedBox(width: 5)
+                                                    ],
+                                                  ),
+                                                ],
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                          const SizedBox(height: 15)
-                                        ],
+                                        ),
                                       ),
-                                    )
-                                  : const SizedBox();
+                                    ),
+                                    const SizedBox(height: 15)
+                                  ],
+                                ),
+                              );
+                              // : const SizedBox();
                             },
                           )
                         ],
