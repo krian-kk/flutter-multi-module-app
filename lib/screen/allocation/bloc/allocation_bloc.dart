@@ -187,7 +187,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     : HttpUrl.priorityCaseListV1 +
                         'pageNo=${Constants.pageNo}' +
                         '&limit=${Constants.limit}',
-                encrypt: true);
+                encrypt: false);
 
         resultList.clear();
         starCount = 0;
@@ -197,9 +197,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           try {
             offlinePriorityResponseModel =
                 OfflinePriorityResponseModel.fromJson(priorityListData['data']);
-            debugPrint((offlinePriorityResponseModel).toString());
           } catch (e) {
-            debugPrint("(offlinePriorityResponseModel).toString()");
             yield AllocationLoadedState(successResponse: '');
             debugPrint(e.toString());
           }
