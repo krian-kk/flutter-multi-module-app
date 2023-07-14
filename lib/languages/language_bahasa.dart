@@ -1191,7 +1191,7 @@ class LanguageBa extends Languages {
   String get legalActions => 'Legal Actions';
 
   @override
-  String get origa => 'Origa';
+  String get origa => 'Origa.ai';
 
   @override
   String get splashScreen => 'Splash Screen';

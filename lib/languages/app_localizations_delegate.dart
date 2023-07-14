@@ -5,6 +5,7 @@ import 'package:origa/languages/language_hindi.dart';
 
 import 'language_english.dart';
 import 'language_tamil.dart';
+import 'language_bahasa.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
   const AppLocalizationsDelegate();

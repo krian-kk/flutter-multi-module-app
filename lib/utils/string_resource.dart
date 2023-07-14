@@ -64,7 +64,7 @@ class StringResource {
   static const String hindi = 'हिन्दी  / HINDI';
   static const String tamil = 'தமிழ்  / TAMIL';
   static const String kannadam = 'ಕನ್ನಡ  / KANNADA';
-  static const String bahasa = 'Bahasa';
+  static const String bahasa = 'Bahasa / Indonesian';
   static const String change = 'Change';
   static const String all = 'All';
   static const String reference = 'Reference';
