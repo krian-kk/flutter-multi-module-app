@@ -65,7 +65,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
           Languages.of(context)!.choiceOtherLanguages, 'hi'),
       LanguageModel(StringResource.tamil, false,
           Languages.of(context)!.choiceOtherLanguages, 'ta'),
-
+      LanguageModel(StringResource.bahasa, false,
+          Languages.of(context)!.choiceOtherLanguages, 'id'),
       /*Not available in First release*/
 
       // LanguageModel(StringResource.kannadam, false,

@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         }
       }
     });
-    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+    // FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
       final RemoteNotification? notification = message.notification;
