@@ -26,7 +26,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,22 +53,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAILjLc9SRaolhytYHsy46Q418E4igeER0',
-    appId: '1:927842067224:android:7016623f8b54349138746d',
-    messagingSenderId: '927842067224',
-    projectId: 'instalmint-prod',
-    databaseURL: 'https://instalmint-prod-default-rtdb.firebaseio.com',
-    storageBucket: 'instalmint-prod.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDZSVdBFQckiLyUQU4jCOdXHifXSZ_h7jQ',
-    appId: '1:927842067224:ios:9a5d8e753b98f73538746d',
-    messagingSenderId: '927842067224',
-    projectId: 'instalmint-prod',
-    databaseURL: 'https://instalmint-prod-default-rtdb.firebaseio.com',
-    storageBucket: 'instalmint-prod.appspot.com',
-    iosClientId: '927842067224-gvh1p4k8d1g2u9uqvri25hqjkmeacfef.apps.googleusercontent.com',
-    iosBundleId: 'com.mcollect.origa.ai',
+    apiKey: 'AIzaSyA8rc-Nmw5zDExKXeMkG3rMHgQC0wS-CNQ',
+    appId: '1:128453541404:android:50850df560224d6e83e9d9',
+    messagingSenderId: '128453541404',
+    projectId: 'push-notification-9204d',
+    databaseURL: 'https://push-notification-9204d-default-rtdb.firebaseio.com',
+    storageBucket: 'push-notification-9204d.appspot.com',
   );
 }

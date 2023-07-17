@@ -1,5 +1,5 @@
 {
-  "base_url":"https://dev-collect.m2pfintech.com",
-  "web_url":"https://dev-collect.m2pfintech.com",
+  "base_url":"https://collect-poc.m2pfintech.com",
+  "web_url":"https://collect-poc.m2pfintech.com",
   "api_type":""
 }

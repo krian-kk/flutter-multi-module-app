@@ -142,8 +142,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (userType == Constants.fieldagent) {
         selectOptions = [
           Languages.of(event.context)!.priority,
-          Languages.of(event.context)!.buildRoute,
-          Languages.of(event.context)!.mapView,
+          // Languages.of(event.context)!.buildRoute,
+          // Languages.of(event.context)!.mapView,
         ];
       } else {
         selectOptions = [
@@ -154,9 +154,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
 
       filterBuildRoute = [
-        Languages.of(event.context)!.all,
-        Languages.of(event.context)!.under5km,
-        Languages.of(event.context)!.more5km,
+        // Languages.of(event.context)!.all,
+        // Languages.of(event.context)!.under5km,
+        // Languages.of(event.context)!.more5km,
       ];
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
@@ -177,17 +177,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         });
 
         //event.isOfflineAPI! For offline purpose only
+        var url = Singleton.instance.isOfflineEnabledContractorBased &&
+            !appDataLoadedFromFirebase &&
+            Singleton.instance.usertype == Constants.fieldagent
+            ? HttpUrl.priorityCaseListV2
+            : HttpUrl.priorityCaseListV1;
         final Map<String, dynamic> priorityListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                Singleton.instance.isOfflineEnabledContractorBased &&
-                        !appDataLoadedFromFirebase &&
-                        Singleton.instance.usertype == Constants.fieldagent
-                    ? HttpUrl.priorityCaseListV2
-                    : HttpUrl.priorityCaseListV1 +
-                        'pageNo=${Constants.pageNo}' +
-                        '&limit=${Constants.limit}',
-                encrypt: false);
+               '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
+                encrypt: url.contains('v1') ? true : false);
 
         resultList.clear();
         starCount = 0;
@@ -197,11 +196,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           try {
             offlinePriorityResponseModel =
                 OfflinePriorityResponseModel.fromJson(priorityListData['data']);
-          } catch (e) {
-            yield AllocationLoadedState(successResponse: '');
-            debugPrint(e.toString());
-          }
-          if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
             hasNextPage = true;
             isOfflineTriggered = true;
             totalCases = 0;
@@ -211,7 +205,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 Constants.appDataLoadedFromFirebaseTime,
                 DateTime.now().toString());
             yield FirebaseStoredCompletionState();
-          } else {
+          } catch (e) {
+            yield AllocationLoadedState(successResponse: '');
+            debugPrint(priorityListData['data']['result'].toString());
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
