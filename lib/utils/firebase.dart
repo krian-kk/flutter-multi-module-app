@@ -10,14 +10,13 @@ import 'package:flutter/foundation.dart';
 import 'package:mime/mime.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/main.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/constants.dart';
-
-import '../models/profile_api_result_model/profile_api_result_model.dart';
 
 class FirebaseUtils {
   // to get the events history using case id
@@ -77,7 +76,7 @@ class FirebaseUtils {
               .doc(caseId)
               .snapshots()
               .forEach((element) {
-            element.data()!.forEach((key, value) {
+            element.data()?.forEach((key, value) {
               if (key == 'addressDetails') {
                 final Map selectedAddress = bloc.selectedAddressModel;
                 value.asMap().forEach((index, values) {
@@ -185,12 +184,13 @@ class FirebaseUtils {
 
   static streaming({required int count}) async {
     debugPrint('Firebase streaming method--> count-> $count');
-    await FirebaseDatabase.instance.goOnline();
-    FirebaseDatabase.instance.setPersistenceEnabled(true);
-    FirebaseDatabase.instance
+    await FirebaseDatabase.instanceFor(app: firebaseApp).goOnline();
+    FirebaseDatabase.instanceFor(app: firebaseApp).setPersistenceEnabled(true);
+    FirebaseDatabase.instanceFor(app: firebaseApp)
         .setPersistenceCacheSizeBytes(Settings.CACHE_SIZE_UNLIMITED);
     final DatabaseReference scoresRef =
-        FirebaseDatabase.instance.ref(Singleton.instance.firebaseDatabaseName);
+        FirebaseDatabase.instanceFor(app: firebaseApp)
+            .ref(Singleton.instance.firebaseDatabaseName);
     await scoresRef.keepSynced(true);
     await FirebaseFirestore.instance
         .collection(Singleton.instance.firebaseDatabaseName)
@@ -223,7 +223,7 @@ class FirebaseUtils {
   static Future<void> priority() async {
     final Map<String, dynamic> priorityListData =
         await APIRepository.apiRequest(
-            APIRequestType.get, HttpUrl.priorityCaseListV2,encrypt: true);
+            APIRequestType.get, HttpUrl.priorityCaseListV2);
     if (priorityListData['success']) {
       dynamic offlinePriorityResponseModel;
       try {
@@ -233,7 +233,8 @@ class FirebaseUtils {
         debugPrint(e.toString());
       }
       if (offlinePriorityResponseModel is OfflinePriorityResponseModel) {
-        FirebaseDatabase.instance.setPersistenceEnabled(true);
+        FirebaseDatabase.instanceFor(app: firebaseApp)
+            .setPersistenceEnabled(true);
         await FirebaseFirestore.instance
             .collection(Singleton.instance.firebaseDatabaseName)
             .doc(Singleton.instance.agentRef)

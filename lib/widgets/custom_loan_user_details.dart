@@ -36,49 +36,69 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
           borderRadius: const BorderRadius.all(Radius.circular(10.0))),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            CustomText(
-              widget.userName.toUpperCase(),
-              fontWeight: FontWeight.w700,
-              color: ColorResource.color333333,
-            ),
-            SizedBox(height: widget.isAccountNo ? 9 : 7),
-            widget.isAccountNo
-                ? Column(
-                    children: <Widget>[
-                      CustomText(
-                        Languages.of(context)!.accountNo,
-                        fontSize: FontSize.twelve,
-                        color: ColorResource.color666666,
+        child: Container(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Column(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: CustomText(
+                                widget.userName.toUpperCase(),
+                                fontWeight: FontWeight.w700,
+                                color: ColorResource.color333333,
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: widget.isAccountNo ? 9 : 7),
+                          widget.isAccountNo
+                              ? Column(
+                                  children: <Widget>[
+                                    CustomText(
+                                      Languages.of(context)!.accountNo,
+                                      fontSize: FontSize.twelve,
+                                      color: ColorResource.color666666,
+                                    ),
+                                    const SizedBox(height: 7)
+                                  ],
+                                )
+                              : const SizedBox(),
+                          CustomText(
+                            widget.userId.toUpperCase(),
+                            fontWeight:
+                                widget.isAccountNo ? FontWeight.w700 : FontWeight.w400,
+                            color: ColorResource.color333333,
+                          ),
+                          const SizedBox(height: 17),
+                          CustomText(
+                            Languages.of(context)!.overdueAmount,
+                            fontSize: FontSize.twelve,
+                            color: ColorResource.color666666,
+                          ),
+                          const SizedBox(height: 9),
+                          CustomText(
+                            widget.userAmount.toString(),
+                            lineHeight: 1,
+                            fontWeight: FontWeight.w700,
+                            fontSize: FontSize.twentyFour,
+                            color: ColorResource.color333333,
+                          )
+                        ],
                       ),
-                      const SizedBox(height: 7)
                     ],
-                  )
-                : const SizedBox(),
-            CustomText(
-              widget.userId.toUpperCase(),
-              fontWeight:
-                  widget.isAccountNo ? FontWeight.w700 : FontWeight.w400,
-              color: ColorResource.color333333,
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 17),
-            CustomText(
-              Languages.of(context)!.overdueAmount,
-              fontSize: FontSize.twelve,
-              color: ColorResource.color666666,
-            ),
-            const SizedBox(height: 9),
-            CustomText(
-              widget.userAmount.toString(),
-              lineHeight: 1,
-              fontWeight: FontWeight.w700,
-              fontSize: FontSize.twentyFour,
-              color: ColorResource.color333333,
-            )
-          ],
+          ),
         ),
       ),
     );

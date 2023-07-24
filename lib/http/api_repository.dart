@@ -197,12 +197,6 @@ class APIRepository {
         }
       }
 
-      // returnValue = {
-      //   'success': false,
-      //   'data': error,
-      //   'statusCode': e.response!.statusCode ?? ''
-      // };
-
       returnValue = {
         'success': false,
         'data': (invalidAccessServerError != null)

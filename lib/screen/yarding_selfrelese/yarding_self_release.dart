@@ -223,9 +223,8 @@ class _YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                   .yardingAndSelfReleaseData
                                                                   .result![
                                                                       index]
-                                                                  .eventAttr!
-                                                                  .registrationNo
-                                                                  .toString(),
+                                                                  .eventAttr
+                                                                  ?.registrationNo ?? '',
                                                               isSingleLine:
                                                                   true,
                                                               fontSize: FontSize

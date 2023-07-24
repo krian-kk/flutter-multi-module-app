@@ -142,8 +142,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (userType == Constants.fieldagent) {
         selectOptions = [
           Languages.of(event.context)!.priority,
-          // Languages.of(event.context)!.buildRoute,
-          // Languages.of(event.context)!.mapView,
+          Languages.of(event.context)!.buildRoute,
+          Languages.of(event.context)!.mapView,
         ];
       } else {
         selectOptions = [
@@ -154,9 +154,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
 
       filterBuildRoute = [
-        // Languages.of(event.context)!.all,
-        // Languages.of(event.context)!.under5km,
-        // Languages.of(event.context)!.more5km,
+        Languages.of(event.context)!.all,
+        Languages.of(event.context)!.under5km,
+        Languages.of(event.context)!.more5km,
       ];
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
@@ -178,14 +178,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         //event.isOfflineAPI! For offline purpose only
         var url = Singleton.instance.isOfflineEnabledContractorBased &&
-            !appDataLoadedFromFirebase &&
-            Singleton.instance.usertype == Constants.fieldagent
+                !appDataLoadedFromFirebase &&
+                Singleton.instance.usertype == Constants.fieldagent
             ? HttpUrl.priorityCaseListV2
             : HttpUrl.priorityCaseListV1;
         final Map<String, dynamic> priorityListData =
-            await APIRepository.apiRequest(
-                APIRequestType.get,
-               '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: url.contains('v1') ? true : false);
 
         resultList.clear();
@@ -484,7 +483,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         resultList.clear();
         multipleLatLong.clear();
-        buildRouteListData['data']['result']['cases'].forEach((element) {
+        buildRouteListData['data']['result'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
               Result.fromJson(jsonDecode(jsonEncode(element)));
@@ -525,7 +524,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 encrypt: true);
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(buildRouteListData['data']);
-        buildRouteListData['data']['result']['cases'].forEach((element) {
+        buildRouteListData['data']['result'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
               Result.fromJson(jsonDecode(jsonEncode(element)));
@@ -584,21 +583,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                     'page=${Constants.pageNo}&' +
                     'limit=${Constants.limit}',
                 encrypt: true);
-
-        buildRouteListData['data']['result']['cases'].forEach((element) {
-          final Result listOfCases =
-              Result.fromJson(jsonDecode(jsonEncode(element)));
-          multipleLatLong.add(
-            MapMarkerModel(
-              caseId: listOfCases.caseId,
-              address: listOfCases.address?.first.value,
-              due: listOfCases.due.toString(),
-              name: listOfCases.cust,
-              latitude: listOfCases.location?.lat,
-              longitude: listOfCases.location?.lng,
-            ),
-          );
-        });
+        if (buildRouteListData['data']['result'] != null) {
+          buildRouteListData['data']['result'].forEach((element) {
+            final Result listOfCases =
+                Result.fromJson(jsonDecode(jsonEncode(element)));
+            multipleLatLong.add(
+              MapMarkerModel(
+                caseId: listOfCases.caseId,
+                address: listOfCases.address?.first.value,
+                due: listOfCases.due.toString(),
+                name: listOfCases.cust,
+                latitude: listOfCases.location?.lat,
+                longitude: listOfCases.location?.lng,
+              ),
+            );
+          });
+        }
       }
       yield MapViewState();
     }

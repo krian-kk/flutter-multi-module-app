@@ -510,6 +510,8 @@ class _AllocationScreenState extends State<AllocationScreen>
             }));
           });
         }
+
+        /**Offline code*/
         if (state is AllocationOfflineState) {
           if (state.successResponse ==
               Singleton.instance.offlineDataSynchronization) {
@@ -555,13 +557,6 @@ class _AllocationScreenState extends State<AllocationScreen>
               });
             }
           });
-          /*if (state.selectedEventValue == Constants.remainder) {
-            var tempCaseDetails = bloc.resultList[bloc.resultList
-                .indexWhere((element) => element.caseId == state.paramValue)];
-            bloc.resultList
-                .removeWhere((element) => elsement.caseId == state.paramValue);
-            bloc.resultList.add(tempCaseDetails);
-          }*/
         }
 
         if (state is AutoCallingContactSortState) {

@@ -90,13 +90,8 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
   Future<void> timeCalculateForOffline() async {
     try {
-      final int nextLoginTime = (DateFormat('yyyy-MM-dd hh:mm:ss')
-                  .parse(PreferenceHelper.getString(
-                          keyPair: Constants.appDataLoadedFromFirebaseTime)
-                      .toString())
-                  .add(const Duration(days: 1)))
-              .millisecondsSinceEpoch -
-          DateTime.now().millisecondsSinceEpoch;
+      final int nextLoginTime = 2;
+      debugPrint(nextLoginTime.toString());
       if (nextLoginTime > 0) {
         Future<dynamic>.delayed(
           Duration(milliseconds: nextLoginTime),
@@ -446,13 +441,11 @@ class _HomeTabScreenState extends State<HomeTabScreen>
       ),
     );
   }
-   void indexMethod(int value){
-     setState(() {
-       _controller!.animateTo(value);
 
-     });
-     debugPrint('Tab controls-> $value');
-   }
-
-
+  void indexMethod(int value) {
+    setState(() {
+      _controller!.animateTo(value);
+    });
+    debugPrint('Tab controls-> $value');
+  }
 }

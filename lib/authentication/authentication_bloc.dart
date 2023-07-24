@@ -47,7 +47,7 @@ class AuthenticationBloc
         });
         if (Singleton.instance.usertype == Constants.fieldagent &&
             appDataLoadedFromFirebase) {
-          // await FirebaseDatabase.instance
+          // await FirebaseDatabase.instanceFor(app: firebaseApp)
           //     .ref(Singleton.instance.firebaseDatabaseName)
           //     .keepSynced(true);
           yield OfflineState();

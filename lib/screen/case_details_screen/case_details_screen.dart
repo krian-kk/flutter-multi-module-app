@@ -677,7 +677,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               .isNotEmpty && shouldShowSection == false) {
             shouldShowSection = true;
           }
-          if (keyName.contains('REF_URL') == false) {
+          if (keyName.contains('REFERENCE URL') == false) {
             childWidgets.add(ListOfCaseDetails.textFieldView(
                 title: keyName.toString(), value: value.toString()));
           }

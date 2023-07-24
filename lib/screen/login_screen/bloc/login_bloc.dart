@@ -346,6 +346,7 @@ import 'package:flutter/services.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
+import 'package:origa/main.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
 import 'package:origa/models/agent_details_model.dart';
 import 'package:origa/models/agent_information_model.dart';
@@ -535,7 +536,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
               Filed agent only having offline concept - When app is going to work with offline app required mPin flow */
               if (Singleton.instance.isOfflineEnabledContractorBased &&
                   Singleton.instance.usertype == Constants.fieldagent) {
-                FirebaseDatabase.instance.setPersistenceEnabled(true);
+                FirebaseDatabase.instanceFor(app: firebaseApp).setPersistenceEnabled(true);
                 if (getProfileData['success']) {
                   yield EnterSecurePinState(
                       securePin: profileAPIValue.result?.first.mPin,
@@ -577,6 +578,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       // final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
       //     APIRequestType.get, HttpUrl.agentDetailUrl + event.userId);
 
+
+      /** Agent Details*/
       final Map<String, dynamic> agentDetail = await APIRepository.apiRequest(
           APIRequestType.get,
           HttpUrl.agentInformation + 'aRef=${event.userId}',encrypt: true);
@@ -629,7 +632,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             //     Constants.code, agentDetails.result.first!);
             await PreferenceHelper.setPreference(
                 Constants.userAdmin, agentDetails.result!.first.userAdmin!);
-            // Here call share device info api
+
+
+            /** Here call share device info api*/
             Map<String, dynamic> deviceData = <String, dynamic>{};
 
             try {
@@ -712,7 +717,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 }
                 // AppUtils.showErrorToast('Success Getting devide info');
               } on PlatformException {
-                AppUtils.showErrorToast('Error Getting devide info');
+                AppUtils.showErrorToast('Error Getting device info');
               }
             } else {
               AppUtils.showErrorToast('Device info is empty!');

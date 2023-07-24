@@ -58,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     bloc = ProfileBloc()..add(ProfileInitialEvent(context));
     getAddress();
 
-    openChatScreenFromNotificationClick();
+    // openChatScreenFromNotificationClick();
     super.initState();
   }
 

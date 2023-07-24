@@ -29,11 +29,13 @@ late AndroidNotificationChannel channel;
 // local notification integration
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 // late AuthenticationBloc bloc;
+late FirebaseApp firebaseApp;
 
 Future<void> main({String? env = 'uat'}) async {
   // bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
   await HttpUrl.loadValue(env ?? '');
   // await Firebase.initializeApp();
   // Requesting Push Notification Permission
@@ -106,7 +108,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // androidAndIOSNotification();
     //
     // final scoresRef =
-    //     FirebaseDatabase.instance.ref(Singleton.instance.firebaseDatabaseName);
+    //     FirebaseDatabase.instanceFor(app: firebaseApp).ref(Singleton.instance.firebaseDatabaseName);
     // scoresRef.keepSynced(true);
     // Background Notification onclick process
     FirebaseMessaging.instance

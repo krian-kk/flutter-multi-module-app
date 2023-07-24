@@ -57,7 +57,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
       listener: (BuildContext context, CaseDetailsState state) {
         if (state is GenerateQRcodeState) {
           widget.bloc.isQRcodeBtnLoading = false;
-          qrBottomSheet(qrLink: state.qrUrl);
+          qrBottomSheet(state.qrUrl, context);
         }
       },
       child: BlocBuilder<CaseDetailsBloc, CaseDetailsState>(
@@ -237,9 +237,9 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     );
   }
 
-  qrBottomSheet({String? qrLink}) {
-    showModalBottomSheet(
-        context: context,
+  qrBottomSheet(String? qrLink, BuildContext buildContext) async {
+    await showModalBottomSheet(
+        context: buildContext,
         isDismissible: false,
         enableDrag: false,
         isScrollControlled: true,
@@ -254,7 +254,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
             builder: (BuildContext buildContext, StateSetter setState) =>
                 GenerateQRcode(
                   bloc: widget.bloc,
-                  qrCode: qrLink!,
+                  qrCode: qrLink ?? '',
                 )));
   }
 }

@@ -22,6 +22,30 @@ class GeneratePaymentLinkModel {
   }
 }
 
+class GenerateQrLinkModel {
+
+  GenerateQrLinkModel({this.status, this.message, this.data});
+
+  GenerateQrLinkModel.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? QRData.fromJson(json['data']) : null;
+  }
+  int? status;
+  String? message;
+  QRData? data;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['message'] = message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
 class Data {
 
   Data({this.paymentId, this.paymentLink});
@@ -37,6 +61,25 @@ class Data {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['payment_id'] = paymentId;
     data['payment_link'] = paymentLink;
+    return data;
+  }
+}
+
+class QRData {
+
+  QRData({this.paymentId, this.qrLink});
+
+  QRData.fromJson(Map<String, dynamic> json) {
+    paymentId = json['payment_id'];
+    qrLink = json['qr_link'];
+  }
+  String? paymentId;
+  String? qrLink;
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['payment_id'] = paymentId;
+    data['qr_link'] = qrLink;
     return data;
   }
 }

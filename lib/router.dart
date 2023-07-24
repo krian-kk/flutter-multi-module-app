@@ -31,7 +31,6 @@ class AppRoutes {
   static const String splashScreen = 'splash_screen';
   static const String loginScreen = 'login_screen';
   static const String homeTabScreen = 'homeTab_screen';
-  static const String dashboardScreen = 'dashboard_screen';
   static const String allocationScreen = 'allocation_screen';
   static const String allocationTelecallerScreen =
       'allocation_telecaller_screen';

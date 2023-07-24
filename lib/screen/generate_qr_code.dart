@@ -80,7 +80,7 @@ class _GenerateQRcodeState extends State<GenerateQRcode> {
                         SizedBox(
                           width: 190,
                           child: CustomButton(
-                            Languages.of(context)!.close.toUpperCase(),
+                            Languages.of(context)?.close.toUpperCase(),
                             onTap: () {
                               Navigator.pop(context);
                             },

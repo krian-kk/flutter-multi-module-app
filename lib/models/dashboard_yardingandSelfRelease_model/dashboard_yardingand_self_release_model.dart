@@ -62,7 +62,7 @@ class EventAttr {
     customerName = json['customerName'];
     date = json['date'];
   }
-  String? registrationNo;
+  String? registrationNo='';
   String? customerName;
   String? date;
 

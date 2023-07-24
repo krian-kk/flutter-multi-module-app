@@ -307,9 +307,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       listOfAddressDetails?.clear();
       listOfCallDetails?.clear();
       //Stor list of address
-      listOfAddressDetails = caseDetailsAPIValue.result?.addressDetails!;
+      listOfAddressDetails = caseDetailsAPIValue.result?.addressDetails ?? [];
       //Stor list of contacts (mobile Numbers)
-      listOfCallDetails = caseDetailsAPIValue.result?.callDetails!;
+      listOfCallDetails = caseDetailsAPIValue.result?.callDetails ?? [];
 
       addressCustomerMetGridList.addAll(<CustomerMetGridModel>[
         CustomerMetGridModel(
@@ -487,6 +487,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is PhoneBottomSheetInitialEvent) {
       yield PhoneBottomSheetLoadingState();
       // here
+
       // print('contractor id is ----->  ${Singleton.instance.contractor}');
       // print(
       //     'contractor id 2 is ----->  ${Singleton.instance.contractorInformations!.result!.contractor}');
@@ -1187,8 +1188,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     if (event is GenerateQRcodeEvent) {
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
-        GeneratePaymentLinkModel generatePaymentLink =
-            GeneratePaymentLinkModel();
+        GenerateQrLinkModel generatePaymentLink = GenerateQrLinkModel();
         final GeneratePaymentLinkPost requestBodyData = GeneratePaymentLinkPost(
           caseId: event.caseID,
           dynamicLink: false,
@@ -1201,9 +1201,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
         if (postResult[Constants.success]) {
           generatePaymentLink =
-              GeneratePaymentLinkModel.fromJson(postResult['data']);
+              GenerateQrLinkModel.fromJson(postResult['data']);
           yield GenerateQRcodeState(
-              qrUrl: generatePaymentLink.data?.paymentLink);
+              qrUrl: generatePaymentLink.data?.qrLink);
         } else {
           AppUtils.showToast('Error while generating QR coxde');
         }
