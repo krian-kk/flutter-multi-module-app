@@ -31,14 +31,8 @@ class AppRoutes {
   static const String splashScreen = 'splash_screen';
   static const String loginScreen = 'login_screen';
   static const String homeTabScreen = 'homeTab_screen';
-  static const String allocationScreen = 'allocation_screen';
-  static const String allocationTelecallerScreen =
-      'allocation_telecaller_screen';
   static const String searchScreen = 'search_allocation_details_screen';
   static const String caseDetailsScreen = 'case_details_screen';
-  static const String caseDetailsTelecallerScreen =
-      'case_details_telecaller_screen';
-  static const String phoneTelecallerScreen = 'phone_telecaller_screen';
   static const String chatScreen = 'chat_screen';
 }
 
@@ -56,8 +50,6 @@ Route<dynamic> getRoute(RouteSettings settings) {
       return _buildLoginScreen(settings);
     case AppRoutes.chatScreen:
       return _buildChatScreen(settings);
-    // case AppRoutes.caseDetailsTelecallerScreen:
-    //   return _buildCaseDetailsTelecallerScreen();
   }
   return _buildSplashScreen();
 }
