@@ -524,6 +524,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       ]);
     }
 
+
     //todo search
     // if (event is SearchReturnDataEvent) {
     //   emit(SelectedTimeperiodDataLoadingState());
