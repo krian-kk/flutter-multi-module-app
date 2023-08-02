@@ -11,9 +11,10 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 import '../../singleton.dart';
-import '../../utils/date_formate_utils.dart';
+import '../../utils/date_format_utils.dart';
 import '../../widgets/case_status_widget.dart';
 
+//todo affected file
 class SearchCaseList {
   static Widget buildListView(
     DashboardBloc bloc, {
@@ -237,7 +238,7 @@ class SearchCaseList {
                                     CustomText(
                                       resultData[index].fieldfollowUpDate !=
                                               null
-                                          ? DateFormateUtils
+                                          ? DateFormatUtils
                                               .followUpDateFormate(
                                                   resultData[index]
                                                       .fieldfollowUpDate!)
@@ -249,7 +250,7 @@ class SearchCaseList {
                                       Constants.telecaller)
                                     CustomText(
                                       resultData[index].followUpDate != null
-                                          ? DateFormateUtils
+                                          ? DateFormatUtils
                                               .followUpDateFormate(
                                                   resultData[index]
                                                       .followUpDate!)

@@ -8,7 +8,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
-import 'package:origa/models/event_details_model/event_details_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
@@ -16,7 +15,7 @@ import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -370,7 +369,7 @@ class _CustomEventDetailsBottomSheetState
                   Row(
                     children: [
                       CustomText(
-                        DateFormateUtils.followUpDateFormate(
+                        DateFormatUtils.followUpDateFormate(
                             expandedList[index].createdAt.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
@@ -412,8 +411,8 @@ class _CustomEventDetailsBottomSheetState
                   CustomText(
                     expandedList[index].eventType == 'RECEIPT' ||
                             expandedList[index].eventType == 'TC : RECEIPT'
-                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}'
-                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr!.date.toString())}',
+                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}'
+                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
@@ -443,7 +442,7 @@ class _CustomEventDetailsBottomSheetState
                   ),
                 if (expandedList[index].eventAttr?.reminderDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
@@ -461,13 +460,13 @@ class _CustomEventDetailsBottomSheetState
                   ),
                 if (expandedList[index].eventAttr?.nextActionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.actionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormateUtils2.followUpDateFormate2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),

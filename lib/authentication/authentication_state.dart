@@ -11,6 +11,7 @@ class AuthenticationUnInitialized extends AuthenticationState {
 
 class AuthenticationUnAuthenticated extends AuthenticationState {
   AuthenticationUnAuthenticated({this.notificationData});
+
   final dynamic notificationData;
 
   @override
@@ -21,7 +22,9 @@ class AuthenticationUnAuthenticated extends AuthenticationState {
 
 class AuthenticationAuthenticated extends AuthenticationState {
   AuthenticationAuthenticated({this.notificationData});
+
   final dynamic notificationData;
+
   @override
   String toString() {
     return 'AuthenticationAuthenticated';

@@ -39,7 +39,6 @@ import 'package:origa/widgets/custom_textfield.dart';
 import 'package:origa/widgets/web_view_widget.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
-import '../../singleton.dart';
 import 'bloc/login_bloc.dart';
 
 class LoginScreen extends StatefulWidget {

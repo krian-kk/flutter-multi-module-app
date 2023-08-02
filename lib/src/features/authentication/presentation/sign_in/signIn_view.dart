@@ -1,7 +1,3 @@
-import 'package:go_router/go_router.dart';
-import 'package:origa/src/routing/app_router.dart';
-import 'package:origa/gen/assets.gen.dart';
-import 'package:origa/src/features/authentication/data/auth_repository.dart';
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/strings.dart';
@@ -11,6 +7,11 @@ import 'package:design_system/widgets/textFormFieldValidate_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:origa/gen/assets.gen.dart';
+import 'package:origa/src/routing/app_router.dart';
+import 'package:origa/utils/app_utils.dart';
+import 'package:repository/auth_repository.dart';
 import '../../form_submission_status.dart';
 import '../reset_password/resetPassword_view.dart';
 import 'bloc/signIn_bloc.dart';
@@ -49,9 +50,10 @@ class _SignInViewState extends State<SignInView> {
     return BlocListener<SignInBloc, SignInState>(
       listener: (context, state) {
         if (state.formStatus is SubmissionSuccess) {
-          context.go("/${AppRouter.homeTabScreen}");
+          context.go('/${AppRouter.homeTabScreen}');
         } else if (state.formStatus is SubmissionFailed) {
-          context.go("/${AppRouter.homeTabScreen}");
+          final message = (state.formStatus as SubmissionFailed).message;
+          AppUtils.showErrorToast(message);
         }
       },
       child: Form(
@@ -59,7 +61,6 @@ class _SignInViewState extends State<SignInView> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: Sizes.p20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 gapH40,
                 _authBanner(),

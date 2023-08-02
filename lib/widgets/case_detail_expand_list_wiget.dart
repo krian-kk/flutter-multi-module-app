@@ -7,7 +7,7 @@ import 'package:origa/widgets/custom_text.dart';
 import '../languages/app_languages.dart';
 import '../utils/app_utils.dart';
 import '../utils/color_resource.dart';
-import '../utils/date_formate_utils.dart';
+import '../utils/date_format_utils.dart';
 import '../utils/font.dart';
 
 class ListOfCaseDetails {
@@ -163,7 +163,7 @@ class ListOfCaseDetails {
             Flexible(
               child: ListOfCaseDetails.textFieldView(
                   title: Languages.of(context)!.emiStartDate,
-                  value: DateFormateUtils2.followUpDateFormate2(bloc
+                  value: DateFormatUtils2.followUpDateFormat2(bloc
                           .caseDetailsAPIValue.result?.caseDetails?.emiStartDate
                           .toString() ??
                       '')),
@@ -436,7 +436,7 @@ class ListOfCaseDetails {
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.createdAt,
-            value: DateFormateUtils2.followUpDateFormate2(bloc
+            value: DateFormatUtils2.followUpDateFormat2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.crAt
                     .toString() ??
                 '')),
@@ -446,7 +446,7 @@ class ListOfCaseDetails {
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.updatedAt,
-            value: DateFormateUtils2.followUpDateFormate2(bloc
+            value: DateFormatUtils2.followUpDateFormat2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.upAt
                     .toString() ??
                 '')),
@@ -457,7 +457,7 @@ class ListOfCaseDetails {
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.allocatedAt,
-            value: DateFormateUtils2.followUpDateFormate2(bloc
+            value: DateFormatUtils2.followUpDateFormat2(bloc
                     .caseDetailsAPIValue.result?.caseDetails?.audit?.allocatedAt
                     .toString() ??
                 '')),

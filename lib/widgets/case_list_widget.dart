@@ -1,34 +1,31 @@
+import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
-import 'package:origa/models/dashboard_all_models/address.dart';
-import 'package:origa/models/dashboard_all_models/dashboard_all_models.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/no_case_available.dart';
-
 import 'case_status_widget.dart';
 
 class CaseLists {
   static Widget buildListView(
     DashboardBloc bloc,
-    DashboardAllModels listData, {
+    DashboardEventsCaseResults listData, {
     bool untouchedCases = false,
     bool isPriorityFollowUp = false,
     bool brokenPTP = false,
   }) {
     return bloc.selectedFilterDataLoading
         ? const CustomLoadingWidget()
-        : listData.result == null || listData.result!.cases!.isEmpty
+        : listData.cases!.isEmpty
             ? Column(
                 children: <Widget>[
                   Padding(
@@ -38,7 +35,7 @@ class CaseLists {
                 ],
               )
             : ListView.builder(
-                itemCount: listData.result!.cases!.length,
+                itemCount: listData.cases!.length,
                 // itemCount: 1,
                 itemBuilder: (BuildContext context, int index) {
                   // int listCount = index + 1;
@@ -63,7 +60,7 @@ class CaseLists {
                                       color: ColorResource.color101010,
                                     ),
                                     CustomText(
-                                      listData.result!.count.toString(),
+                                      listData.count.toString(),
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -84,7 +81,7 @@ class CaseLists {
                                     ),
                                     CustomText(
                                       Constants.inr +
-                                          listData.result!.totalAmt.toString(),
+                                          listData.totalAmt.toString(),
                                       color: ColorResource.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -100,19 +97,18 @@ class CaseLists {
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(
                               paramValues: <String, dynamic>{
-                                'caseID': listData.result!.cases![index].caseId,
+                                'caseID': listData.cases![index].caseId,
                               },
                               isUnTouched: untouchedCases,
                               isPriorityFollowUp: isPriorityFollowUp,
                             ));
                             Singleton.instance.agrRef =
-                                listData.result!.cases![index].agrRef ?? '';
+                                listData.cases![index].agrRef ?? '';
                           },
                           child: Container(
-                            margin:
-                                (index == listData.result!.cases!.length - 1)
-                                    ? const EdgeInsets.only(bottom: 70)
-                                    : EdgeInsets.zero,
+                            margin: (index == listData.cases!.length - 1)
+                                ? const EdgeInsets.only(bottom: 70)
+                                : EdgeInsets.zero,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
                               color: ColorResource.colorffffff,
@@ -139,7 +135,7 @@ class CaseLists {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24, vertical: 2),
                                   child: CustomText(
-                                    listData.result?.cases?[index].agrRef ?? '',
+                                    listData.cases?[index].agrRef ?? '',
                                     fontSize: FontSize.twelve,
                                     fontWeight: FontWeight.w500,
                                     color: ColorResource.color101010,
@@ -163,8 +159,7 @@ class CaseLists {
                                           children: <Widget>[
                                             CustomText(
                                               Constants.inr +
-                                                  listData
-                                                      .result!.cases![index].due
+                                                  listData.cases![index].due
                                                       .toString(),
                                               fontSize: FontSize.eighteen,
                                               color: ColorResource.color101010,
@@ -174,8 +169,7 @@ class CaseLists {
                                               height: 3.0,
                                             ),
                                             CustomText(
-                                              listData
-                                                  .result!.cases![index].cust!,
+                                              listData.cases![index].cust!,
                                               fontSize: FontSize.sixteen,
                                               color: ColorResource.color101010,
                                             ),
@@ -184,8 +178,7 @@ class CaseLists {
                                       ),
                                       if (Singleton.instance.usertype ==
                                           Constants.fieldagent)
-                                        listData.result!.cases![index]
-                                                    .collSubStatus ==
+                                        listData.cases![index].collSubStatus ==
                                                 'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
@@ -195,17 +188,14 @@ class CaseLists {
                                               )
                                             : CaseStatusWidget.satusTextWidget(
                                                 context,
-                                                text: listData
-                                                        .result!
-                                                        .cases![index]
+                                                text: listData.cases![index]
                                                         .collSubStatus ??
                                                     '',
                                               ),
                                       // : const SizedBox(),
                                       if (Singleton.instance.usertype ==
                                           Constants.telecaller)
-                                        listData.result!.cases![index]
-                                                    .telSubStatus ==
+                                        listData.cases![index].telSubStatus ==
                                                 'new'
                                             ? CaseStatusWidget.satusTextWidget(
                                                 context,
@@ -215,9 +205,7 @@ class CaseLists {
                                               )
                                             : CaseStatusWidget.satusTextWidget(
                                                 context,
-                                                text: listData
-                                                        .result!
-                                                        .cases![index]
+                                                text: listData.cases![index]
                                                         .telSubStatus ??
                                                     '',
                                               ),
@@ -269,7 +257,7 @@ class CaseLists {
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
                                               CustomText(
-                                                listData.result!.cases![index]
+                                                listData.cases![index]
                                                     .address![0].value!,
                                                 color:
                                                     ColorResource.color484848,
@@ -285,7 +273,7 @@ class CaseLists {
                                       : Wrap(
                                           children: <Widget>[
                                             for (Address item in listData
-                                                .result!.cases![index].address!)
+                                                .cases![index].address!)
                                               item.cType!.contains('mobile') ||
                                                       item.cType!
                                                           .contains('phone')
@@ -344,12 +332,12 @@ class CaseLists {
                                           //here check Fieldagent 'collSubSatus'
                                           if (Singleton.instance.usertype ==
                                               Constants.fieldagent)
-                                            listData.result!.cases![index]
+                                            listData.cases![index]
                                                         .collSubStatus!
                                                         .toLowerCase() ==
                                                     'new'
                                                 ? CustomText(
-                                                    DateFormateUtils
+                                                    DateFormatUtils
                                                         .followUpDateFormate(
                                                             DateTime.now()
                                                                 .toString()),
@@ -358,15 +346,12 @@ class CaseLists {
                                                     fontWeight: FontWeight.w700,
                                                   )
                                                 : CustomText(
-                                                    listData
-                                                                .result!
-                                                                .cases![index]
+                                                    listData.cases![index]
                                                                 .fieldfollowUpDate !=
                                                             '-'
-                                                        ? DateFormateUtils
+                                                        ? DateFormatUtils
                                                             .followUpDateFormate(
                                                                 listData
-                                                                    .result!
                                                                     .cases![
                                                                         index]
                                                                     .fieldfollowUpDate!)
@@ -378,12 +363,11 @@ class CaseLists {
                                           //here check telecaller 'tellSubSatus'
                                           if (Singleton.instance.usertype ==
                                               Constants.telecaller)
-                                            listData.result!.cases![index]
-                                                        .telSubStatus!
+                                            listData.cases![index].telSubStatus!
                                                         .toLowerCase() ==
                                                     'new'
                                                 ? CustomText(
-                                                    DateFormateUtils
+                                                    DateFormatUtils
                                                         .followUpDateFormate(
                                                             DateTime.now()
                                                                 .toString()),
@@ -392,15 +376,12 @@ class CaseLists {
                                                     fontWeight: FontWeight.w700,
                                                   )
                                                 : CustomText(
-                                                    listData
-                                                                .result!
-                                                                .cases![index]
+                                                    listData.cases![index]
                                                                 .followUpDate !=
                                                             '-'
-                                                        ? DateFormateUtils
+                                                        ? DateFormatUtils
                                                             .followUpDateFormate(
                                                                 listData
-                                                                    .result!
                                                                     .cases![
                                                                         index]
                                                                     .followUpDate!)

@@ -40,7 +40,7 @@ dependencies:
   geolocator: ^9.0.2
   fluttertoast: ^8.1.2
   location: ^4.4.0
-  package_info_plus: ^3.1.1
+  package_info_plus: ^4.0.2
   platform_device_id: ^1.0.1
   workmanager: ^0.5.0
 #  firebase_crashlytics: ^3.0.12
@@ -52,11 +52,21 @@ dependencies:
   firebase_core: ^2.15.0
   #new code from here
   go_router: ^8.0.0
+  json_annotation: ^4.8.1
   design_system:
     path: core/design_system
   network:
     path: core/network
-  json_annotation: ^4.8.1
+  network_helper:
+    path: core/network_helper
+  domain_models:
+    path: core/domain_models
+  preference_helper:
+    path: core/preference_helper
+  repository:
+    path: core/repository
+  languages:
+    path: core/languages
 
 dev_dependencies:
   equatable: ^2.0.3

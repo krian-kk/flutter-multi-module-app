@@ -73,7 +73,7 @@ import AVFoundation
             
             
             guard let args = call.arguments as? [String : Any] else {return}
-            let filePath = args["filePath"] as! String
+            let filePath = args["data"] as! String
             if call.method == "startRecordAudio" {
                 let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
                 mPath = documentsPath + "/" + String(10) + ".m4a"

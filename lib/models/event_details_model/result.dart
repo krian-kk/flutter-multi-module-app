@@ -1,4 +1,4 @@
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 
 import 'event_attr.dart';
 
@@ -31,7 +31,7 @@ class EvnetDetailsResultsModel {
           agrRef: json['agrRef'],
           contractor: json['contractor'],
           eventCode: json['eventCode'],
-          monthName: DateFormateUtils.getDate2Month(json['createdAt']));
+          monthName: DateFormatUtils.getDate2Month(json['createdAt']));
   String? id;
   String? caseId;
   String? eventType;

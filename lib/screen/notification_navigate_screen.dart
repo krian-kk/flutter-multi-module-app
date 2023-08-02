@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
-import 'package:origa/screen/my_deposists/my_deposists.dart';
-import 'package:origa/screen/my_recipts/my_receipts.dart';
-import 'package:origa/screen/my_visit/my_visits.dart';
+import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/src/features/dashboard/presentation/my_recipts/my_receipts.dart';
+import 'package:origa/src/features/dashboard/presentation/my_visit/my_visits.dart';
+import 'package:origa/src/features/dashboard/presentation/priority/my_deposits/my_deposists.dart';
 import 'package:origa/utils/color_resource.dart';
 
 class OnclickNotificationNavigateScreen {
@@ -40,13 +40,13 @@ class OnclickNotificationNavigateScreen {
         });
   }
 
-  void myDeposistsSheet(
+  void myDepositsSheet(
       BuildContext buildContext, DashboardBloc dashboardbloc) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SafeArea(
-              bottom: false, child: MyDeposistsBottomSheet(dashboardbloc));
+              bottom: false, child: MyDepositsBottomSheet(dashboardbloc));
         });
   }
 

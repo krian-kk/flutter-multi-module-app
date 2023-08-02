@@ -119,8 +119,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
   }
 }
 
-// class DateFormateUtils {
-//   DateFormateUtils._();
+// class DateFormatUtils {
+//   DateFormatUtils._();
 //   static String chatDate(String date) =>
 //       DateFormat('yyyy-MM-dd  HH:mm').format(DateTime.parse(date));
 // }
@@ -217,8 +217,8 @@ class ChatScreenBloc extends Bloc<ChatScreenEvent, ChatScreenState> {
 //   }
 // }
 
-// // class DateFormateUtils {
-// //   DateFormateUtils._();
+// // class DateFormatUtils {
+// //   DateFormatUtils._();
 // //   static String chatDate(String date) =>
 // //       DateFormat('yyyy-MM-dd  HH:mm').format(DateTime.parse(date));
 // // }

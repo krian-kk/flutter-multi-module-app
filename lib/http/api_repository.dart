@@ -11,7 +11,7 @@ import 'package:origa/router.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/preference_helper.dart';
+import 'package:preference_helper/preference_helper.dart';
 
 enum APIRequestType {
   get,
@@ -63,8 +63,7 @@ class APIRepository {
             // final FormData data = FormData.fromMap({
             //   'files': DioClient.listOfMultiPart(file),
             // });
-            response = await DioClient.dioFileConfig()
-                .post(urlString, data: formDatas);
+            response = await DioClient.dioFileConfig().post(urlString, data: formDatas);
             break;
           }
         case APIRequestType.singleFileUpload:
@@ -101,8 +100,8 @@ class APIRepository {
         if (response.headers['access-token']![0].toString() != 'false') {
           await PreferenceHelper.setPreference(Constants.accessToken,
               response.headers['access-token']![0].toString());
-          Singleton.instance.accessToken =
-              response.headers['access-token']![0].toString();
+          // Singleton.instance.accessToken =
+          //     response.headers['access-token']![0].toString();
         }
       }
       if (encrypt && response.data['status'] == 200) {

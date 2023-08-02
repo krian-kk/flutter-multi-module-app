@@ -1,21 +1,28 @@
-import 'package:flutter/material.dart';
-
 abstract class SignInEvent {}
 
 class SignInUsernameChanged extends SignInEvent {
-  final String username;
-
   SignInUsernameChanged({required this.username});
+
+  final String username;
 }
 
 class SignInPasswordChanged extends SignInEvent {
-  final String password;
-
   SignInPasswordChanged({required this.password});
+
+  final String password;
 }
 
 class SignInSubmitted extends SignInEvent {
   SignInSubmitted({this.paramValue});
 
   final dynamic paramValue;
+}
+
+class SignInSuccess extends SignInEvent {
+  SignInSuccess();
+}
+
+class SignInError extends SignInEvent {
+  SignInError({required this.message});
+  final String message;
 }

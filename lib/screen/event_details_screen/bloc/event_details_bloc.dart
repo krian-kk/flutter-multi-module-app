@@ -15,7 +15,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 
 part 'event_details_event.dart';
 

@@ -561,7 +561,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is ResendOTPEvent) {
       yield ResendOTPState();
     }
-
     if (event is TriggeredHomeTabEvent) {
       yield SignInLoadingState();
       // Execute agent detail URl to get Agent details
@@ -738,7 +737,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
       yield HomeTabState();
     }
-
     if (event is NoInternetConnectionEvent) {
       yield NoInternetConnectionState();
     }

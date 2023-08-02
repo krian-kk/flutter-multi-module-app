@@ -12,7 +12,7 @@ class AppLocalizationsDelegate extends LocalizationsDelegate<Languages> {
 
   @override
   bool isSupported(Locale locale) =>
-      ['en', 'hi', 'ta','id'].contains(locale.languageCode);
+      ['en', 'hi', 'ta', 'id'].contains(locale.languageCode);
 
   @override
   Future<Languages> load(Locale locale) => _load(locale);

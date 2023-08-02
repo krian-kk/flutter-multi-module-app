@@ -7,14 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
-import 'package:origa/screen/broken_ptp/broken_ptp.dart';
 import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/screen/my_deposists/my_deposists.dart';
-import 'package:origa/screen/my_recipts/my_receipts.dart';
-import 'package:origa/screen/my_visit/my_visits.dart';
-import 'package:origa/screen/priority_follow_up/priority_follow_up_bottomsheet.dart';
-import 'package:origa/screen/untouched_case/untouched_cases.dart';
-import 'package:origa/screen/yarding_selfrelese/yarding_self_release.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -92,61 +85,61 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void priorityFollowUpSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false, child: PriorityFollowUpBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(
+    //           bottom: false, child: PriorityFollowUpBottomSheet(bloc));
+    //     });
   }
 
   void brokenPTPSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(bottom: false, child: BrokenPTPBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(bottom: false, child: BrokenPTPBottomSheet(bloc));
+    //     });
   }
 
   void untouchedCasesSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false, child: UntouchedCasesBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(
+    //           bottom: false, child: UntouchedCasesBottomSheet(bloc));
+    //     });
   }
 
   void myVisitsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(bottom: false, child: MyVisitsBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(bottom: false, child: MyVisitsBottomSheet(bloc));
+    //     });
   }
 
   void myReceiptsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(bottom: false, child: MyReceiptsBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(bottom: false, child: MyReceiptsBottomSheet(bloc));
+    //     });
   }
 
   void myDeposistsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(bottom: false, child: MyDeposistsBottomSheet(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(bottom: false, child: MyDeposistsBottomSheet(bloc));
+    //     });
   }
 
   void yardingSelfReleaseSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(bottom: false, child: YardingAndSelfRelease(bloc));
-        });
+    // showCupertinoModalPopup(
+    //     context: buildContext,
+    //     builder: (BuildContext context) {
+    //       return SafeArea(bottom: false, child: YardingAndSelfRelease(bloc));
+    //     });
   }
 
   @override

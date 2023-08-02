@@ -133,25 +133,6 @@ class PriorityFollowUp {
   }
 }
 
-// class BrokenPtp {
-//   int? count;
-//   dynamic? totalAmt;
-
-//   BrokenPtp({this.count, this.totalAmt});
-
-//   BrokenPtp.fromJson(Map<String, dynamic> json) {
-//     count = json['count'];
-//     totalAmt = json['totalAmt'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final Map<String, dynamic> data = new Map<String, dynamic>();
-//     data['count'] = this.count;
-//     data['totalAmt'] = this.totalAmt;
-//     return data;
-//   }
-// }
-
 class MtdCases {
   MtdCases({this.completed, this.total});
 

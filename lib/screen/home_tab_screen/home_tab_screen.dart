@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/allocation/allocation.dart';
-import 'package:origa/screen/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
-import 'package:origa/screen/notification_navigate_screen.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -24,8 +21,6 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-import '../../utils/app_utils.dart';
-import '../notification_navigate_screen.dart';
 import 'bloc/home_tab_event.dart';
 
 class HomeTabScreen extends StatefulWidget {
@@ -90,11 +85,11 @@ class _HomeTabScreenState extends State<HomeTabScreen>
 
   Future<void> timeCalculateForOffline() async {
     try {
-      final int nextLoginTime = 2;
+      const int nextLoginTime = 2;
       debugPrint(nextLoginTime.toString());
       if (nextLoginTime > 0) {
         Future<dynamic>.delayed(
-          Duration(milliseconds: nextLoginTime),
+          const Duration(milliseconds: nextLoginTime),
         ).asStream().listen((dynamic value) {
           if (Singleton.instance.isOfflineStorageFeatureEnabled) {
             PreferenceHelper.setPreference(
@@ -166,7 +161,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
               break;
             case '4':
               // Initiate Dashboard bloc
-              final DashboardBloc dashboardbloc = DashboardBloc();
+              /* final DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyVisit and MyCalls Screen
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyVisitsEvent());
@@ -176,11 +171,11 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                     .myVisitsSheet(context, dashboardbloc);
               } else {
                 AppUtils.showErrorToast(navigationErrorMsg);
-              }
+              }*/
               break;
             case '5':
               if (Singleton.instance.usertype == Constants.fieldagent) {
-                // Initiate Dashboard bloc
+                /*// Initiate Dashboard bloc
                 final DashboardBloc dashboardbloc = DashboardBloc();
                 //Navigate MyDeposists Screen
                 dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
@@ -192,12 +187,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                       .myDeposistsSheet(context, dashboardbloc);
                 } else {
                   AppUtils.showErrorToast(navigationErrorMsg);
-                }
+                }*/
               }
               break;
             case '6':
               // Initiate Dashboard bloc
-              final DashboardBloc dashboardbloc = DashboardBloc();
+              /* final DashboardBloc dashboardbloc = DashboardBloc();
               //Navigate MyReceipts Screen
               dashboardbloc.add(AddFilterTimeperiodFromNotification(context));
               dashboardbloc.add(MyReceiptsEvent());
@@ -207,7 +202,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                     .myReceiptsSheet(context, dashboardbloc);
               } else {
                 AppUtils.showErrorToast(navigationErrorMsg);
-              }
+              }*/
               break;
             case '7':
               // //Navigate Case Detail Screen

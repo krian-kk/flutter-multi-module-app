@@ -1,8 +1,8 @@
+import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/signIn_view.dart';
 import 'package:origa/src/features/home/presentation/home_view.dart';
-import 'package:flutter/widgets.dart';
-import 'package:go_router/go_router.dart';
 
 class AppRouter {
 

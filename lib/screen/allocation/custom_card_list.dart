@@ -8,7 +8,7 @@ import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -369,7 +369,7 @@ class CustomCardList {
                                                 resultData[index]
                                                             .fieldfollowUpDate !=
                                                         null && (resultData[index].fieldfollowUpDate?.isNotEmpty == true)
-                                                    ? DateFormateUtils
+                                                    ? DateFormatUtils
                                                         .followUpDateFormate(
                                                             resultData[index]
                                                                 .fieldfollowUpDate!)
@@ -384,7 +384,7 @@ class CustomCardList {
                                                 resultData[index]
                                                             .followUpDate !=
                                                         null
-                                                    ? DateFormateUtils
+                                                    ? DateFormatUtils
                                                         .followUpDateFormate(
                                                             resultData[index]
                                                                 .followUpDate!)

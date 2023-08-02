@@ -1,18 +1,18 @@
-import 'package:origa/src/features/authentication/data/auth_repository.dart';
-import 'package:origa/src/features/authentication/presentation/sign_in/bloc/signIn_bloc.dart';
-import 'package:origa/src/features/home/presentation/search_view.dart';
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:design_system/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/gen/assets.gen.dart';
+import 'package:origa/src/common_widgets/homeAppBarAction_widget.dart';
+import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/src/features/dashboard/dashboard_screen.dart';
+import 'package:origa/src/features/home/presentation/search_view.dart';
+import 'package:origa/src/features/profile/presentation/profile_view.dart';
+import 'package:repository/dashboard_repository.dart';
 
-import '../../../../gen/assets.gen.dart';
-import '../../../common_widgets/homeAppBarAction_widget.dart';
-import '../../allocation/presentation/allocation_view.dart';
-import '../../dashboard/presentation/dashboard_view.dart';
-import '../../profile/presentation/profile_view.dart';
 import 'bloc/home_bloc.dart';
 
 class HomeView extends StatefulWidget {
@@ -25,10 +25,17 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => AuthRepositoryImpl(),
-      child: BlocProvider(
-        create: (context) => HomeBloc(),
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => DashBoardRepositoryImpl())
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(
+              create: (context) => DashboardBloc(
+                  repository: context.read<DashBoardRepositoryImpl>()))
+        ],
         child: getHome(),
       ),
     );
@@ -102,7 +109,7 @@ class _HomeViewState extends State<HomeView> {
     if (currentPage == allocation) {
       return const AllocationView();
     } else if (currentPage == dashboard) {
-      return DashboardView();
+      return const DashboardScreen();
     } else if (currentPage == profile) {
       return const ProfileView();
     } else {

@@ -45,7 +45,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/date_formate_utils.dart';
+import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/skeleton.dart';
@@ -2144,7 +2144,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   Row(
                     children: [
                       CustomText(
-                        DateFormateUtils.followUpDateFormate(
+                        DateFormatUtils.followUpDateFormate(
                             expandedList[index].createdAt.toString()),
                         fontSize: FontSize.seventeen,
                         fontWeight: FontWeight.w700,
@@ -2190,10 +2190,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     expandedList[index].eventType == 'RECEIPT' ||
                         expandedList[index].eventType == 'TC : RECEIPT'
                         ? '${Languages.of(context)!.date.replaceAll(
-                        '*', '')} : ${DateFormateUtils2.followUpDateFormate2(
+                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
                         expandedList[index].eventAttr!.date.toString())}'
                         : '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormateUtils2.followUpDateFormate2(
+                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
                         expandedList[index].eventAttr!.date.toString())}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
@@ -2233,7 +2233,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 if (expandedList[index].eventAttr?.reminderDate != null)
                   CustomText(
                     '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormateUtils2.followUpDateFormate2(
+                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
                         expandedList[index].eventAttr?.reminderDate
                             .toString() ?? '')}',
                     fontWeight: FontWeight.w700,
@@ -2259,7 +2259,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 if (expandedList[index].eventAttr?.nextActionDate != null)
                   CustomText(
                     '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormateUtils2.followUpDateFormate2(
+                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
                         expandedList[index].eventAttr?.nextActionDate
                             .toString() ?? '')}',
                     fontWeight: FontWeight.w700,
@@ -2268,7 +2268,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 if (expandedList[index].eventAttr?.actionDate != null)
                   CustomText(
                     '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormateUtils2.followUpDateFormate2(
+                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
                         expandedList[index].eventAttr?.actionDate.toString() ??
                             '')}',
                     fontWeight: FontWeight.w700,
