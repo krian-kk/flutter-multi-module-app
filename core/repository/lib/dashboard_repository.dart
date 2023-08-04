@@ -44,6 +44,12 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
         '';
   }
 
+  Future<String> getAgentType() async {
+    return await PreferenceHelper.getString(
+        keyPair: PreferenceConstants.accessToken) ??
+        '';
+  }
+
   @override
   Future<ApiResult<DashCountResult>> getDashboardData(String agentType) async {
     String? accessToken = await getAccessToken();

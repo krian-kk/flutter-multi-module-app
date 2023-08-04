@@ -1,8 +1,8 @@
 import 'dart:convert';
 
+import 'package:cross_platform_crypto/cross_platform_crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 
 const _defaultConnectTimeout = Duration.millisecondsPerMinute;
 const _defaultReceiveTimeout = Duration.millisecondsPerMinute;
@@ -17,6 +17,7 @@ const httpCode404 = 404;
 
 const responseStatusKey = 'status';
 const responseResultKey = 'result';
+const responseResultDataKey = 'data';
 
 const String baseUrl = 'https://collect-poc.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
@@ -29,6 +30,7 @@ class DioClient {
 
   final List<Interceptor>? interceptors;
   bool isMultiFormRequest = false;
+  final _cryptoPlugin = CrossPlatformCrypto();
 
   DioClient(baseUrl,
       {this.interceptors,
@@ -76,21 +78,6 @@ class DioClient {
     }
   }
 
-  static const MethodChannel platform = MethodChannel('recordAudioChannel');
-
-  Future<dynamic> extractResponse(
-      bool decryptResponse, Response<dynamic> response) async {
-    if (response.data[responseStatusKey] == httpCode200 && decryptResponse) {
-      final Map<String, dynamic> responseData = {
-        'data': response.data[responseResultKey]
-      };
-      String text =
-          await platform.invokeMethod('getDecryptedData', responseData);
-      response.data[responseResultKey] = json.decode(text);
-    }
-    return response.data;
-  }
-
   Future<dynamic> post(String uri,
       {data,
       Map<String, dynamic>? queryParameters,
@@ -98,7 +85,8 @@ class DioClient {
       CancelToken? cancelToken,
       ProgressCallback? onSendProgress,
       ProgressCallback? onReceiveProgress,
-      bool decryptResponse = true}) async {
+      bool decryptResponse = false,
+      bool encryptRequestBody = false}) async {
     try {
       var response = await dio.post(
         uri,
@@ -159,6 +147,30 @@ class DioClient {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<dynamic> extractResponse(
+      bool decryptResponse, Response<dynamic> response) async {
+    if (response.data[responseStatusKey] == httpCode200 && decryptResponse) {
+      final Map<String, dynamic> responseData = {
+        'data': response.data[responseResultKey]
+      };
+      String text = await _cryptoPlugin.getDecryptedData(responseData) ?? '';
+      response.data[responseResultKey] = json.decode(text);
+    }
+    return response.data;
+  }
+
+  Future<dynamic> generateEncryptedRequest(
+      bool decryptResponse, Response<dynamic> response) async {
+    if (response.data[responseStatusKey] == httpCode200 && decryptResponse) {
+      final Map<String, dynamic> responseData = {
+        'data': response.data[responseResultKey]
+      };
+      String text = await _cryptoPlugin.sendEncryptedData(responseData) ?? '';
+      response.data[responseResultKey] = json.decode(text);
+    }
+    return response.data;
   }
 
   Map<String, String> _getHeadersConfig(

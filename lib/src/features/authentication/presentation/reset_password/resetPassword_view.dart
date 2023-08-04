@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
-import '../../../../../gen/assets.gen.dart';
+import 'package:origa/gen/assets.gen.dart';
 
 class ResetPasswordView extends StatelessWidget {
   const ResetPasswordView({Key? key}) : super(key: key);
@@ -38,8 +37,6 @@ class ResetPasswordView extends StatelessWidget {
                   ),
                   onPressed: () => Navigator.pop(context),
                   child: SvgPicture.asset(Assets.images.resetPasswordCross),
-                  // child: const Icon(AllocationIcons.resetpassword_cross,
-                  //     color: Color(0xFF23375A), size: 14),
                 )
               ],
             ),
@@ -69,7 +66,6 @@ class ResetPasswordView extends StatelessWidget {
               hintText: 'User Name',
               enabledBorder: const OutlineInputBorder(
                   borderSide: BorderSide(
-                width: 1,
                 color: Color(0xFFFFFFFF),
               )),
               hintStyle: const TextStyle(
@@ -86,7 +82,6 @@ class ResetPasswordView extends StatelessWidget {
                 hintText: 'Mobile Number',
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                  width: 1,
                   color: Color(0xFFFFFFFF),
                 )),
                 hintStyle: TextStyle(
@@ -104,7 +99,6 @@ class ResetPasswordView extends StatelessWidget {
               hintText: 'Password',
               enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                width: 1,
                 color: Color(0xFFFFFFFF),
               )),
               hintStyle: TextStyle(
@@ -121,7 +115,6 @@ class ResetPasswordView extends StatelessWidget {
                 hintText: 'Email',
                 enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                  width: 1,
                   color: Color(0xFFFFFFFF),
                 )),
                 hintStyle: TextStyle(

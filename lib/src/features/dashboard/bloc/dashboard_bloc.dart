@@ -95,6 +95,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         noInternetAndServerErrorMsg = 'noInternetConnection';
         emit(NoInternetConnectionState());
       } else {
+        dashboardList.clear();
         final ApiResult<DashCountResult> dashBoardData =
             await repository.getDashboardData(userType ?? '');
         await dashBoardData.when(
@@ -172,7 +173,9 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               ]);
               emit(DashboardLoadedState());
             },
-            failure: (NetworkExceptions? error) async {});
+            failure: (NetworkExceptions? error) async {
+
+            });
       }
     }
 
@@ -523,7 +526,6 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         FilterCasesByTimePeriod(timePeriodText: 'monthly', value: '2'),
       ]);
     }
-
 
     //todo search
     // if (event is SearchReturnDataEvent) {

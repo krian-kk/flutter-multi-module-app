@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="testMigrate" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--debug" />
+    <option name="buildFlavor" value="uat" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/src/main_migrate.dart" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -24,12 +24,12 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
-      case TargetPlatform.iOS:
         throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
+          'DefaultFirebaseOptions have not been configured for android - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
+      case TargetPlatform.iOS:
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -52,12 +52,14 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA8rc-Nmw5zDExKXeMkG3rMHgQC0wS-CNQ',
-    appId: '1:128453541404:android:50850df560224d6e83e9d9',
-    messagingSenderId: '128453541404',
-    projectId: 'push-notification-9204d',
-    databaseURL: 'https://push-notification-9204d-default-rtdb.firebaseio.com',
-    storageBucket: 'push-notification-9204d.appspot.com',
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAU97tNOFdv8_wHT5GJWpCFcJo85WgKGNE',
+    appId: '1:9444734201:ios:8506ee78b77e66c8d45e28',
+    messagingSenderId: '9444734201',
+    projectId: 'fir-project-4d27b',
+    databaseURL: 'https://fir-project-4d27b-default-rtdb.firebaseio.com',
+    storageBucket: 'fir-project-4d27b.appspot.com',
+    iosClientId: '9444734201-8trnnta07eo9fug1ojhla0gpt74r5e1q.apps.googleusercontent.com',
+    iosBundleId: 'com.mcollect.origa.ai',
   );
 }

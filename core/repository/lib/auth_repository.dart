@@ -1,17 +1,29 @@
+import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
 import 'package:domain_models/response_models/response_login.dart';
-import 'package:network_helper/api_services/login_api_service.dart';
+import 'package:network_helper/api_services/authentication_api_service.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:preference_helper/preference_constants.dart';
 import 'package:preference_helper/preference_helper.dart';
 
 abstract class AuthRepository {
   Future<ApiResult<LoginResponseModel>> login(
       String userName, String password, String fcmToken);
+
+  Future<ApiResult<bool>?> sendOtpRequestToServer(String agentRef);
+
+  Future<ApiResult<ShortAgentDetails>?> getAgentDataForPrefill(String agentRef);
+
+  Future<ApiResult<bool>?> verifyOtpRequestToServer(
+      String agentRef, String pin);
+
+  Future<ApiResult<bool>?> resetPasswordForAgent(
+      String agentRef, String password, String otp);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
-  LoginApiProvider provider = LoginApiProvider();
+  AuthenticationApiProvider provider = AuthenticationApiProvider();
 
   @override
   Future<ApiResult<LoginResponseModel>> login(
@@ -42,4 +54,75 @@ class AuthRepositoryImpl extends AuthRepository {
         failure: (NetworkExceptions? error) async {});
     return response;
   }
+
+  @override
+  Future<ApiResult<ShortAgentDetails>?> getAgentDataForPrefill(
+      String agentRef) async {
+    final ApiResult<PublicAgentInfoModel> response =
+        await provider.getAgentDataFromApi(agentRef);
+    await response.when(success: (PublicAgentInfoModel? agentData) async {
+      String? phoneNumber = '';
+      String? email = '';
+      agentData?.contact?.forEach((element) {
+        if (element.cType == 'mobile') {
+          phoneNumber = element.value;
+        }
+        if (element.cType == 'email') {
+          email = element.value;
+        }
+      });
+      ShortAgentDetails agentMiniDetails = ShortAgentDetails(
+          agentData?.name ?? '', email ?? '', phoneNumber ?? '');
+      return ApiResult.success(data: agentMiniDetails);
+    }, failure: (NetworkExceptions? error) async {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    });
+    return null;
+  }
+
+  @override
+  Future<ApiResult<bool>?> sendOtpRequestToServer(String agentRef) async {
+    final ApiResult<BaseResponse> response =
+        await provider.resendOtpApiForResetPassword(agentRef);
+    await response.when(success: (BaseResponse? agentData) async {
+      return const ApiResult.success(data: true);
+    }, failure: (NetworkExceptions? error) async {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    });
+    return null;
+  }
+
+  @override
+  Future<ApiResult<bool>?> verifyOtpRequestToServer(
+      String agentRef, String pin) async {
+    final ApiResult<BaseResponse> response =
+        await provider.verifyOtpApiFromServer(agentRef, pin);
+    await response.when(success: (BaseResponse? agentData) async {
+      return const ApiResult.success(data: true);
+    }, failure: (NetworkExceptions? error) async {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    });
+    return null;
+  }
+
+  @override
+  Future<ApiResult<bool>?> resetPasswordForAgent(
+      String agentRef, String password, String otp) async {
+    final ApiResult<BaseResponse> response =
+        await provider.resetPasswordForAgent(agentRef, password, otp);
+    await response.when(success: (BaseResponse? agentData) async {
+      return const ApiResult.success(data: true);
+    }, failure: (NetworkExceptions? error) async {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    });
+    return null;
+  }
+}
+
+class ShortAgentDetails {
+  String name = '';
+  String email = '';
+  String mobile = '';
+
+  ShortAgentDetails(this.name, this.email, this.mobile);
 }

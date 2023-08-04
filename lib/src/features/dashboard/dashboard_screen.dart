@@ -36,12 +36,12 @@ class DashboardScreenState extends State<DashboardScreen> {
   Widget userActivity(
       {String? header,
       String? count,
-      Color? backgrountColor,
+      Color? backgroundColor,
       required Color leadingColor}) {
     return Container(
       height: 65,
       decoration: BoxDecoration(
-          color: backgrountColor, borderRadius: BorderRadius.circular(10)),
+          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
       child: Row(
         children: [
           Container(
@@ -80,83 +80,6 @@ class DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
     );
-  }
-
-  void priorityFollowUpSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: PriorityFollowUpBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void brokenPTPSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: BrokenPTPBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void untouchedCasesSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: UntouchedCasesBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void myVisitsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: MyVisitsBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void myReceiptsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: MyReceiptsBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void myDepositsSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: MyDepositsBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
-  }
-
-  void yardingSelfReleaseSheet(BuildContext buildContext) {
-    showCupertinoModalPopup(
-        context: buildContext,
-        builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: YardingAndSelfRelease(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
-        });
   }
 
   @override
@@ -341,7 +264,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                       DashboardBloc>(context)
                                                   .met
                                                   .toString(),
-                                              backgrountColor:
+                                              backgroundColor:
                                                   ColorResource.colorE0ECDF,
                                               leadingColor:
                                                   ColorResource.color73C170,
@@ -366,7 +289,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                       DashboardBloc>(context)
                                                   .notMet
                                                   .toString(),
-                                              backgrountColor:
+                                              backgroundColor:
                                                   ColorResource.colorF2EEDC,
                                               leadingColor:
                                                   ColorResource.colorE5C55B,
@@ -384,7 +307,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                       DashboardBloc>(context)
                                                   .invalid
                                                   .toString(),
-                                              backgrountColor:
+                                              backgroundColor:
                                                   ColorResource.colorF4ECEF,
                                               leadingColor:
                                                   ColorResource.colorF1BCC4,
@@ -928,5 +851,82 @@ class DashboardScreenState extends State<DashboardScreen> {
                   ],
                 );
         }));
+  }
+
+  void priorityFollowUpSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: PriorityFollowUpBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void brokenPTPSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: BrokenPTPBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void untouchedCasesSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: UntouchedCasesBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void myVisitsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: MyVisitsBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void myReceiptsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: MyReceiptsBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void myDepositsSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: MyDepositsBottomSheet(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void yardingSelfReleaseSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return SafeArea(
+              bottom: false,
+              child: YardingAndSelfRelease(
+                  BlocProvider.of<DashboardBloc>(buildContext)));
+        });
   }
 }

@@ -22,15 +22,15 @@ class HomeAppBarAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (label == allocation) {
-          context.read<HomeBloc>().add(HomeEvent.allocation);
-        } else if (label == dashboard) {
-          context.read<HomeBloc>().add(HomeEvent.dashboard);
-        } else if (label == profile) {
-          context.read<HomeBloc>().add(HomeEvent.profile);
-        } else {
-          context.read<HomeBloc>().add(HomeEvent.allocation);
-        }
+        // if (label == allocation) {
+        //   context.read<HomeBloc>().add(HomeEvent.allocation);
+        // } else if (label == dashboard) {
+        //   context.read<HomeBloc>().add(HomeEvent.dashboard);
+        // } else if (label == profile) {
+        //   context.read<HomeBloc>().add(HomeEvent.profile);
+        // } else {
+        //   context.read<HomeBloc>().add(HomeEvent.allocation);
+        // }
       },
       splashColor: greyColor,
       child: Ink(

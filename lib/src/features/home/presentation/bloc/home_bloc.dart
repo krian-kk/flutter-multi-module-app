@@ -1,23 +1,24 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:origa/src/features/home/presentation/bloc/home_event.dart';
+import 'package:origa/src/features/home/presentation/bloc/home_state.dart';
 
-enum HomeEvent { allocation, dashboard, profile }
-
-class HomeBloc extends Bloc<HomeEvent, String> {
-  HomeBloc() : super('Allocation') {
+class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  HomeBloc() : super(HomeInitialState()) {
     on<HomeEvent>(_onEvent);
   }
 
-  Future<void> _onEvent(HomeEvent event, Emitter<String> emit) async {
-    switch (event) {
-      case HomeEvent.allocation:
-        emit('Allocation');
-        break;
-      case HomeEvent.dashboard:
-        emit('Dashboard');
-        break;
-      case HomeEvent.profile:
-        emit('Profile');
-        break;
+  int? notificationCount = 0;
+  String? userType;
+
+  Future<void> _onEvent(HomeEvent event, Emitter<HomeState> emit) async {
+    if (event is HomeInitialEvent) {
+      emit(HomeLoadingState());
+
+      if (event.notificationData != null) {
+        emit(NavigateState(notificationData: event.notificationData));
+      }
+      userType = '';
+      emit(HomeLoadedState());
     }
   }
 }
