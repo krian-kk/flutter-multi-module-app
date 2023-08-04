@@ -208,7 +208,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                         setState(() {
                                           PublicAgentInfoModel agentInfo =
                                               PublicAgentInfoModel.fromJson(
-                                                  getAgentDetail['data']['result']);
+                                                  getAgentDetail['data']
+                                                      ['result']);
                                           print(getAgentDetail['data']);
                                           String? phoneNumber = '';
                                           String? email = '';
@@ -220,9 +221,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               email = element.value;
                                             }
                                           });
-                                          mobileNumberController.text = phoneNumber.toString();
-                                          emailController.text = email.toString();
-                                          userNameController.text = agentInfo.name.toString();
+                                          mobileNumberController.text =
+                                              phoneNumber.toString();
+                                          emailController.text =
+                                              email.toString();
+                                          userNameController.text =
+                                              agentInfo.name.toString();
                                         });
                                       }
                                       setState(() => isCheck = true);
