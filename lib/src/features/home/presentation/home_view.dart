@@ -34,10 +34,12 @@ class _HomeViewState extends State<HomeView>
   String? internetAvailability;
   late final TabController? _controller;
   String navigationErrorMsg = 'Bad network connection';
+  late BuildContext mContext;
 
   @override
   void initState() {
     super.initState();
+    mContext = context;
     _controller = TabController(
       length: 3,
       vsync: this,
@@ -92,7 +94,7 @@ class _HomeViewState extends State<HomeView>
                       color: ColorResource.colorE72C30,
                       width: MediaQuery.of(context).size.width,
                       child: CustomText(
-                        Languages.of(context)!.youAreInOffline,
+                        "You are offline",
                         color: Colors.white,
                         style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
@@ -308,10 +310,14 @@ class _HomeViewState extends State<HomeView>
                                 providers: [
                                   RepositoryProvider(
                                       create: (context) =>
-                                          DashBoardRepositoryImpl())
+                                          DashBoardRepositoryImpl()),
                                 ],
                                 child: MultiBlocProvider(
                                   providers: [
+                                    BlocProvider(
+                                        create: (context) => DashboardBloc(
+                                            repository: context.read<
+                                                DashBoardRepositoryImpl>())),
                                     BlocProvider(
                                         create: (context) => DashboardBloc(
                                             repository: context.read<

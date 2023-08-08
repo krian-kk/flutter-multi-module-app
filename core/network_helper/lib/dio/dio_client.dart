@@ -19,7 +19,7 @@ const responseStatusKey = 'status';
 const responseResultKey = 'result';
 const responseResultDataKey = 'data';
 
-const String baseUrl = 'https://collect-poc.m2pfintech.com/';
+const String baseUrl = 'https://dev-collect.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
 const String version = 'v1/';
 const String apiType = 'mobile-backend/';
