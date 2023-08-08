@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cross_platform_crypto/cross_platform_crypto.dart';
 import 'package:domain_models/request_body/authentication/reset_password_request_body.dart';
 import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
+import 'package:domain_models/response_models/response_login.dart';
 import 'package:flutter/foundation.dart';
 import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
@@ -13,7 +14,7 @@ import 'package:network_helper/network_base_models/api_result.dart';
 class AuthenticationApiProvider {
   final _cryptoPlugin = CrossPlatformCrypto();
 
-  Future<dynamic> signIn(
+  Future<ApiResult<LoginResponseModel>> signIn(
       String userName, String password, String fcmToken) async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final object = <String, dynamic>{
@@ -34,7 +35,9 @@ class AuthenticationApiProvider {
       encryptedText = await _cryptoPlugin.sendEncryptedData(requestData) ?? '';
       response = await DioClient(baseUrl).post('$mobileBackendUrl/login',
           data: {'encryptedData': encryptedText});
-      return ApiResult.success(data: response);
+      final mappedResponse =
+          SingleResponse.fromJson(response, LoginResponseModel.fromJson);
+      return ApiResult.success(data: mappedResponse.result);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }
