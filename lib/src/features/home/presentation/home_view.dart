@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/gen/assets.gen.dart';
 import 'package:origa/src/common_widgets/homeAppBarAction_widget.dart';
+import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
 import 'package:origa/src/features/home/presentation/search_view.dart';
-import 'package:origa/src/features/profile/presentation/profile_view.dart';
+import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
+import 'package:origa/src/features/profile/profile_screen.dart';
 import 'package:repository/dashboard_repository.dart';
+import 'package:repository/file_repository.dart';
+import 'package:repository/profile_repository.dart';
 
 import 'bloc/home_bloc.dart';
 
@@ -27,93 +31,87 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => DashBoardRepositoryImpl())
+        RepositoryProvider(create: (context) => DashBoardRepositoryImpl()),
+        RepositoryProvider(create: (context) => FileRepositoryImpl()),
+        RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) => HomeBloc()),
           BlocProvider(
               create: (context) => DashboardBloc(
-                  repository: context.read<DashBoardRepositoryImpl>()))
+                  repository: context.read<DashBoardRepositoryImpl>())),
+          BlocProvider(create: (context) => AllocationBloc()),
+          BlocProvider(
+              create: (context) => ProfileBloc(
+                  repository: ProfileRepositoryImpl(),
+                  fileRepository: FileRepositoryImpl())),
         ],
-        child: getHome(),
+        child: Material(
+            child: Scaffold(
+          backgroundColor: ColorResourceDesign.primaryColor,
+          appBar: AppBar(
+            backgroundColor: ColorResourceDesign.primaryColor,
+            elevation: Sizes.p0,
+            titleSpacing: Sizes.p24,
+            title: BlocBuilder<HomeBloc, String>(builder: (context, state) {
+              String appbarTitle = ConstantsResourceDesign.allocation;
+              if (state != ConstantsResourceDesign.allocation) {
+                appbarTitle = state;
+              }
+              return Text(
+                appbarTitle,
+                style: const TextStyle(
+                  color: ColorResourceDesign.appTextPrimaryColor,
+                  fontWeight: FontResourceDesign.textFontWeightSemiBold,
+                  fontSize: Sizes.p16,
+                ),
+              );
+            }),
+            actions: <Widget>[
+              BlocBuilder<HomeBloc, String>(
+                builder: (context, state) {
+                  return Row(
+                    children: [
+                      HomeAppBarAction(
+                          label: ConstantsResourceDesign.allocation,
+                          isActive: state == ConstantsResourceDesign.allocation
+                              ? true
+                              : false,
+                          iconPath:
+                              Assets.images.allocationPageAllocationAppbar),
+                      HomeAppBarAction(
+                        label: ConstantsResourceDesign.dashboard,
+                        isActive: state == ConstantsResourceDesign.dashboard
+                            ? true
+                            : false,
+                        iconPath: Assets.images.allocationPageDashboardAppbar,
+                      ),
+                      HomeAppBarAction(
+                        label: ConstantsResourceDesign.profile,
+                        isActive: state == ConstantsResourceDesign.profile
+                            ? true
+                            : false,
+                        iconPath: Assets.images.allocationPageUserAppbar,
+                      ),
+                    ],
+                  );
+                },
+              )
+            ],
+          ),
+          body: BlocBuilder<HomeBloc, String>(builder: (context, currentPage) {
+            if (currentPage == ConstantsResourceDesign.allocation) {
+              return const AllocationView();
+            } else if (currentPage == ConstantsResourceDesign.dashboard) {
+              return const DashboardScreen();
+            } else if (currentPage == ConstantsResourceDesign.profile) {
+              return const ProfileScreen();
+            } else {
+              return const AllocationView();
+            }
+          }),
+        )),
       ),
     );
-  }
-
-  Widget getHome() {
-    return Material(
-        child: Scaffold(
-            backgroundColor: primaryColor,
-            appBar: AppBar(
-              backgroundColor: primaryColor,
-              elevation: Sizes.p0,
-              titleSpacing: Sizes.p24,
-              title: BlocBuilder<HomeBloc, String>(builder: (context, state) {
-                String appbarTitle = allocation;
-                if (state != allocation) {
-                  appbarTitle = state;
-                }
-                return Text(
-                  appbarTitle,
-                  style: const TextStyle(
-                    color: appTextPrimaryColor,
-                    fontWeight: textFontWeightSemiBold,
-                    fontSize: Sizes.p16,
-                  ),
-                );
-              }),
-              actions: <Widget>[
-                BlocBuilder<HomeBloc, String>(
-                  builder: (context, state) {
-                    return Row(
-                      children: [
-                        HomeAppBarAction(
-                            label: allocation,
-                            isActive: state == allocation ? true : false,
-                            iconPath:
-                                Assets.images.allocationPageAllocationAppbar),
-                        HomeAppBarAction(
-                          label: dashboard,
-                          isActive: state == dashboard ? true : false,
-                          iconPath: Assets.images.allocationPageDashboardAppbar,
-                        ),
-                        HomeAppBarAction(
-                          label: profile,
-                          isActive: state == profile ? true : false,
-                          iconPath: Assets.images.allocationPageUserAppbar,
-                        ),
-                      ],
-                    );
-                  },
-                )
-              ],
-            ),
-            body:
-                BlocBuilder<HomeBloc, String>(builder: (context, currentPage) {
-              return getPage(currentPage);
-            }),
-            floatingActionButton: FloatingActionButton(
-              backgroundColor: blackOne,
-              tooltip: search, // used by assistive technologies
-              onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const SearchView())),
-              child: const Icon(
-                Icons.search,
-                size: Sizes.p30,
-              ),
-            )));
-  }
-
-  Widget getPage(String currentPage) {
-    if (currentPage == allocation) {
-      return const AllocationView();
-    } else if (currentPage == dashboard) {
-      return const DashboardScreen();
-    } else if (currentPage == profile) {
-      return const ProfileView();
-    } else {
-      return const AllocationView();
-    }
   }
 }

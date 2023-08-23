@@ -95,8 +95,10 @@ class _SignInViewState extends State<SignInView> {
     return BlocBuilder<SignInBloc, SignInState>(
       builder: (context, state) {
         return TextFormFieldValidateWidget(
-          placeholder: username,
-          validator: (value) => state.isValidUsername ? null : invalidUsername,
+          placeholder: ConstantsResourceDesign.username,
+          validator: (value) => state.isValidUsername
+              ? null
+              : ConstantsResourceDesign.invalidUsername,
           onChanged: (value) => context
               .read<SignInBloc>()
               .add(SignInUsernameChanged(username: value)),
@@ -128,9 +130,9 @@ class _SignInViewState extends State<SignInView> {
         return state.formStatus is FormSubmitting
             ? const CircularProgressIndicator()
             : LongRoundedBtn(
-                btnText: signIn,
+                btnText: ConstantsResourceDesign.signIn,
                 isBorder: false,
-                btnBackgroundColor: orangeMain,
+                btnBackgroundColor: ColorResourceDesign.orangeMain,
                 onPressed: () {
                   _signIn(context);
                 },
@@ -147,7 +149,7 @@ class _SignInViewState extends State<SignInView> {
 
   Widget _signInDiffUser() {
     return LongRoundedBtn(
-      btnText: loginDiffUser,
+      btnText: ConstantsResourceDesign.loginDiffUser,
       isBorder: true,
       onPressed: () {},
     );
@@ -175,7 +177,7 @@ class ResetPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextBtnWidget(
-      btnText: resetPwd,
+      btnText: ConstantsResourceDesign.resetPwd,
       onPressed: () => _showModalBottomSheet(context),
     );
   }

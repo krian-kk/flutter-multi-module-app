@@ -22,21 +22,21 @@ class HomeAppBarAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        if (label == allocation) {
+        if (label == ConstantsResourceDesign.allocation) {
           context.read<HomeBloc>().add(HomeEvent.allocation);
-        } else if (label == dashboard) {
+        } else if (label == ConstantsResourceDesign.dashboard) {
           context.read<HomeBloc>().add(HomeEvent.dashboard);
-        } else if (label == profile) {
+        } else if (label == ConstantsResourceDesign.profile) {
           context.read<HomeBloc>().add(HomeEvent.profile);
         } else {
           context.read<HomeBloc>().add(HomeEvent.allocation);
         }
       },
-      splashColor: greyColor,
+      splashColor: ColorResourceDesign.greyColor,
       child: Ink(
         decoration: isActive
             ? BoxDecoration(
-                color: whiteColor,
+                color: ColorResourceDesign.whiteColor,
                 border: Border.all(
                   color: const Color(0xFFECECEC),
                 ),

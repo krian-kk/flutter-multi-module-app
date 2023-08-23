@@ -39,6 +39,7 @@ class StringResource {
   static const String allocation = 'Allocation';
   static const String dashboard = 'Dashboard';
   static const String profile = 'Profile';
+
   // static const String areYouAtOffice = 'Are you at Office ?';
   // static const String yes = 'YES';
   // static const String no = 'NO';
@@ -71,6 +72,7 @@ class StringResource {
 
   static const String under5km = 'Under 5Km';
   static const String more5km = '5Km-10Km';
+
   // static const String read = 'read';
   // static const String connected = 'Connected';
   // static const String unreachable = 'Unreachable';
@@ -92,7 +94,10 @@ class StringResource {
   static const String loginViaDifferentUser = 'Login via different user';
   static const String signIn = 'Sign In';
   static const String profileImageChanged = 'Profile Image Updated!';
+  static const String FailureprofileImageChanged =
+      'Couldnt update profile image';
   static const String canceled = 'Canceled';
+
   static String remainingSeconds(int time) {
     return '$time seconds';
   }

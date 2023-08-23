@@ -31,34 +31,34 @@ class SearchView extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+      body: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
           child: SizedBox(
             height: 575,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'Account No.',
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'Customer Name',
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'DPD/Bucket',
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'Status',
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'Pincode',
                 ),
-                const TextFormFieldWidget(
+                TextFormFieldWidget(
                   placeholder: 'Customer ID',
                 ),
                 Column(
-                  children: const [
+                  children: [
                     ChkBoxWithText(textVal: 'My Recent Activity'),
                     ChkBoxWithText(textVal: 'Show only STAR (High Priority)'),
                   ],

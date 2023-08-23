@@ -1,11 +1,12 @@
+import 'package:design_system/app_sizes.dart';
+import 'package:design_system/colors.dart';
+import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/priority/my_deposits/chegue_and_cash_tab.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -42,10 +43,10 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
         builder: (context, state) {
           return Container(
             decoration: const BoxDecoration(
-              color: ColorResource.colorF7F8FA,
+              color: ColorResourceDesign.whiteTwo,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0)),
+                  topLeft: Radius.circular(Sizes.p20),
+                  topRight: Radius.circular(Sizes.p20)),
             ),
             height: MediaQuery.of(context).size.height * 0.85,
             child: StatefulBuilder(
@@ -53,7 +54,7 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
               return WillPopScope(
                 onWillPop: () async => true,
                 child: Container(
-                  padding: const EdgeInsets.only(top: 16),
+                  padding: const EdgeInsets.only(top: Sizes.p16),
                   child: DefaultTabController(
                     length: 2,
                     child: SafeArea(
@@ -70,12 +71,12 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                             ),
                             Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
+                                  horizontal: Sizes.p20, vertical: Sizes.p4),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
+                                    padding: const EdgeInsets.all(Sizes.p4),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -86,16 +87,17 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                                             children: [
                                               CustomText(
                                                 Languages.of(context)!.count,
-                                                fontSize: FontSize.ten,
-                                                color:
-                                                    ColorResource.color101010,
+                                                fontSize: Sizes.p10,
+                                                color: ColorResourceDesign
+                                                    .appTextPrimaryColor,
                                               ),
                                               CustomText(
                                                 widget.bloc.myDepositsData.count
                                                     .toString(),
-                                                color:
-                                                    ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
+                                                color: ColorResourceDesign
+                                                    .appTextPrimaryColor,
+                                                fontWeight: FontResourceDesign
+                                                    .textFontWeightSemiBold,
                                               ),
                                             ],
                                           ),
@@ -108,18 +110,19 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                                             children: [
                                               CustomText(
                                                 Languages.of(context)!.amount,
-                                                fontSize: FontSize.ten,
-                                                color:
-                                                    ColorResource.color101010,
+                                                fontSize: Sizes.p10,
+                                                color: ColorResourceDesign
+                                                    .appTextPrimaryColor,
                                               ),
                                               CustomText(
                                                 Constants.inr +
                                                     widget.bloc.myDepositsData
                                                         .totalAmt
                                                         .toString(),
-                                                color:
-                                                    ColorResource.color101010,
-                                                fontWeight: FontWeight.w700,
+                                                color: ColorResourceDesign
+                                                    .appTextPrimaryColor,
+                                                fontWeight: FontResourceDesign
+                                                    .textFontWeightSemiBold,
                                               ),
                                             ],
                                           ),
@@ -127,9 +130,7 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
+                                  gapH12,
                                   Wrap(
                                     spacing: 7,
                                     children: _buildFilterOptions(),
@@ -141,17 +142,20 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                               decoration: const BoxDecoration(
                                   border: Border(
                                       bottom: BorderSide(
-                                          color: ColorResource.colorD8D8D8))),
+                                          color: ColorResourceDesign
+                                              .lightGrayTwo))),
                               child: TabBar(
-                                indicatorColor: ColorResource.colorD5344C,
+                                indicatorColor: ColorResourceDesign.redColor,
                                 labelStyle: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    color: ColorResource.color23375A,
-                                    fontSize: FontSize.fourteen,
+                                    fontWeight: FontResourceDesign
+                                        .textFontWeightSemiBold,
+                                    color: ColorResourceDesign.textColor,
+                                    fontSize: Sizes.p14,
                                     fontStyle: FontStyle.normal),
-                                indicatorWeight: 5.0,
-                                labelColor: ColorResource.color23375A,
-                                unselectedLabelColor: ColorResource.colorC4C4C4,
+                                indicatorWeight: Sizes.p5,
+                                labelColor: ColorResourceDesign.textColor,
+                                unselectedLabelColor:
+                                    ColorResourceDesign.grayColor,
                                 tabs: [
                                   Tab(text: Languages.of(context)!.cheque),
                                   Tab(text: Languages.of(context)!.cash)
@@ -170,7 +174,8 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                                               0
                                           ? Center(
                                               child: Padding(
-                                              padding: const EdgeInsets.all(20),
+                                              padding: const EdgeInsets.all(
+                                                  Sizes.p20),
                                               child: NoCaseAvailble
                                                   .buildNoCaseAvailable(),
                                             ))
@@ -185,7 +190,8 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
                                               0
                                           ? Center(
                                               child: Padding(
-                                              padding: const EdgeInsets.all(20),
+                                              padding: const EdgeInsets.all(
+                                                  Sizes.p20),
                                               child: NoCaseAvailble
                                                   .buildNoCaseAvailable(),
                                             ))
@@ -252,27 +258,29 @@ class MyDepositsBottomSheetState extends State<MyDepositsBottomSheet> {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Sizes.p10),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 11),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.p4, vertical: Sizes.p10),
           width: 100,
           // height: 35,
           decoration: BoxDecoration(
-            border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
-            borderRadius: BorderRadius.circular(10),
+            border:
+                Border.all(color: ColorResourceDesign.lightGray, width: 0.5),
+            borderRadius: BorderRadius.circular(Sizes.p10),
             color: option == widget.bloc.selectedFilterIndex
-                ? ColorResource.color23375A
-                : Colors.white,
+                ? ColorResourceDesign.textColor
+                : ColorResourceDesign.whiteColor,
           ),
           child: Center(
             child: CustomText(
               filterTitle,
-              fontSize: FontSize.twelve,
-              fontWeight: FontWeight.w700,
+              fontSize: Sizes.p12,
+              fontWeight: FontResourceDesign.textFontWeightSemiBold,
               color: option == widget.bloc.selectedFilterIndex
-                  ? Colors.white
-                  : ColorResource.color101010,
+                  ? ColorResourceDesign.whiteColor
+                  : ColorResourceDesign.appTextPrimaryColor,
             ),
           ),
         ),

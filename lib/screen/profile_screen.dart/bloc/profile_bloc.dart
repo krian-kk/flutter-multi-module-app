@@ -242,7 +242,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
 
     if (event is PostProfileImageEvent) {
-      isProfileImageUpdating = true;
+      bool isProfileImageUpdating = true;
       final Map<String, dynamic> postResult = await APIRepository.apiRequest(
         APIRequestType.singleFileUpload,
         HttpUrl.changeProfileImage,

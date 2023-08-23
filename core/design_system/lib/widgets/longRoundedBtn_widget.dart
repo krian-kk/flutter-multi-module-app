@@ -30,11 +30,12 @@ class LongRoundedBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: btnBackgroundColor ?? secondaryButtonBg,
+        backgroundColor:
+            btnBackgroundColor ?? ColorResourceDesign.secondaryButtonBg,
         side: isBorder
             ? const BorderSide(
                 width: 0.5,
-                color: blueColor,
+                color: ColorResourceDesign.blueColor,
               )
             : null,
         minimumSize: const Size(320, 50),
@@ -45,8 +46,8 @@ class LongRoundedBtn extends StatelessWidget {
       onPressed: onPressed,
       child: Text(btnText,
           style: const TextStyle(
-              color: textColor,
-              fontWeight: textFontWeightNormal,
+              color: ColorResourceDesign.textColor,
+              fontWeight: FontResourceDesign.textFontWeightNormal,
               fontSize: Sizes.p16)),
     );
   }

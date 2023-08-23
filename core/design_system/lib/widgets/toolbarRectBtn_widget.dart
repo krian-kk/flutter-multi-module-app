@@ -30,12 +30,12 @@ class ToolbarRectBtnWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: btnBackgroundColor ?? primaryButtonBg,
+        backgroundColor: btnBackgroundColor ?? ColorResourceDesign.primaryButtonBg,
         minimumSize: Size(btnWidth ?? 73, btnHeight ?? 30),
         side: isBorder
             ? const BorderSide(
                 width: 0.5,
-                color: blueColor,
+                color: ColorResourceDesign.blueColor,
               )
             : null,
       ),
@@ -45,7 +45,7 @@ class ToolbarRectBtnWidget extends StatelessWidget {
         style: TextStyle(
           fontWeight: btnTextFontWeight ?? FontWeight.w700,
           fontSize: btnTextFontSize ?? 12,
-          color: btnTextColor ?? primaryButtonTextColor,
+          color: btnTextColor ?? ColorResourceDesign.primaryButtonTextColor,
         ),
       ),
     );

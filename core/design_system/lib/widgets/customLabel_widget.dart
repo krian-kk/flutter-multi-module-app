@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_sizes.dart';
+
 import '../colors.dart';
 import '../fonts.dart';
 
@@ -30,15 +31,16 @@ class CustomLabelWidget extends StatelessWidget {
       width: labelWidth ?? 55,
       height: labelHeight ?? 19,
       decoration: BoxDecoration(
-        color: labelBg ?? primaryLabelBg,
+        color: labelBg ?? ColorResourceDesign.primaryLabelBg,
         borderRadius: const BorderRadius.all(Radius.circular(50)),
       ),
       child: Center(
         child: Text(labelText,
             style: TextStyle(
               fontSize: labelTextFontSize ?? Sizes.p10,
-              fontWeight: labelTextFontWeight ?? textFontWeightSemiBold,
-              color: labelTextColor ?? appTextSecondaryColor,
+              fontWeight: labelTextFontWeight ?? FontResourceDesign.textFontWeightSemiBold,
+              color:
+                  labelTextColor ?? ColorResourceDesign.appTextSecondaryColor,
             )),
       ),
     );

@@ -5,33 +5,102 @@ import 'package:design_system/strings.dart';
 import 'package:design_system/widgets/customLabel_widget.dart';
 import 'package:design_system/widgets/toolbarRectBtn_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/src/features/search/bloc/search_bloc.dart';
+import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
+import 'package:repository/search_list_repository.dart';
 import '../../../../gen/assets.gen.dart';
 
-class AllocationView extends StatelessWidget {
+class AllocationView extends StatefulWidget {
   const AllocationView({Key? key}) : super(key: key);
 
   @override
+  State<AllocationView> createState() => _AllocationViewState();
+}
+
+class _AllocationViewState extends State<AllocationView> {
+
+  String? searchBasedOnValue;
+
+  @override
+  void initState() {
+    super.initState();
+    // BlocProvider.of<AllocationBloc>(context).add(AllocationInitialEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: primaryColor,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              gapH8,
-              _officeChecker(),
-              gapH12,
-              _searchByPincode(),
-              gapH16,
-              _buttonList(),
-              gapH16,
-              _allocationBloc(),
-            ],
-          ),
-        ));
+    return BlocListener<AllocationBloc, AllocationState>(
+      bloc: BlocProvider.of<AllocationBloc>(context),
+      listener: (BuildContext context, AllocationState state) {
+        if (state is NavigateSearchPageState) {
+          context.push(context.namedLocation('search'));
+          // if (returnValue != null) {
+          //   BlocProvider.of<AllocationBloc>(context)
+          //       .add(SearchReturnDataEvent(returnValue: returnValue));
+          //   final data = returnValue as SearchingDataModel;
+          //   if (data.isStarCases!) {
+          //     searchBasedOnValue = 'Stared Cases (High Priority)';
+          //   } else if (data.isMyRecentActivity!) {
+          //     searchBasedOnValue = 'My Recent Activity';
+          //   } else if (data.accountNumber!.isNotEmpty) {
+          //     searchBasedOnValue = 'Account Number: ' + data.accountNumber!;
+          //   } else if (data.customerName!.isNotEmpty) {
+          //     searchBasedOnValue = 'Customer Name: ' + data.customerName!;
+          //   } else if (data.bankName!.isNotEmpty) {
+          //     searchBasedOnValue = 'Bank Name : ' + data.bankName!;
+          //   } else if (data.dpdBucket!.isNotEmpty) {
+          //     searchBasedOnValue = 'DPD/Bucket: ' + data.dpdBucket!;
+          //   } else if (data.status!.isNotEmpty) {
+          //     searchBasedOnValue = 'Status: ' + data.status!;
+          //   } else if (data.pincode!.isNotEmpty) {
+          //     searchBasedOnValue = 'Pincode: ' + data.pincode!;
+          //   } else if (data.customerID!.isNotEmpty) {
+          //     searchBasedOnValue = 'Customer ID: ' + data.customerID!;
+          //   }
+          // }
+        }
+      },
+      child: BlocProvider(
+        create: (BuildContext context) => SearchBloc(),
+        child: Scaffold(
+            backgroundColor: ColorResourceDesign.primaryColor,
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  gapH8,
+                  _officeChecker(),
+                  gapH12,
+                  _searchByPincode(),
+                  gapH16,
+                  _buttonList(),
+                  gapH16,
+                  _allocationBloc(),
+                ],
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: ColorResourceDesign.blackOne,
+              tooltip: ConstantsResourceDesign.search,
+              // used by assistive technologies
+              onPressed: () async {
+                BlocProvider.of<AllocationBloc>(context)
+                    .add(NavigateSearchPageEvent());
+                // Navigator.of(context).push(
+                // MaterialPageRoute(builder: (context) => const SearchScreen())),
+              },
+
+              child: const Icon(
+                Icons.search,
+                size: Sizes.p30,
+              ),
+            )),
+      ),
+    );
   }
 
   Widget _officeChecker() {
@@ -39,9 +108,9 @@ class AllocationView extends StatelessWidget {
         width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: whiteColor,
+          color: ColorResourceDesign.whiteColor,
           border: Border.all(
-            color: whiteGray,
+            color: ColorResourceDesign.whiteGray,
           ),
           borderRadius: BorderRadius.circular(Sizes.p10),
         ),
@@ -53,23 +122,23 @@ class AllocationView extends StatelessWidget {
               width: Sizes.p18,
               height: Sizes.p20,
             ),
-            const Text(atOffice,
+            const Text(ConstantsResourceDesign.atOffice,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Sizes.p12,
-                  color: blackOne,
+                  color: ColorResourceDesign.blackOne,
                 )),
             ToolbarRectBtnWidget(
-              btnText: yes,
+              btnText: ConstantsResourceDesign.yes,
               isBorder: false,
               onPressed: () {},
             ),
             ToolbarRectBtnWidget(
               onPressed: () {},
-              btnText: no,
+              btnText: ConstantsResourceDesign.no,
               isBorder: true,
-              btnBackgroundColor: secondaryButtonBg,
-              btnTextColor: secondaryButtonTextColor,
+              btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+              btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
             ),
           ],
         ));
@@ -82,23 +151,23 @@ class AllocationView extends StatelessWidget {
         height: 70,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: greyColor,
+          color: ColorResourceDesign.greyColor,
         ),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(searchBasedOn,
+            Text(ConstantsResourceDesign.searchBasedOn,
                 style: TextStyle(
-                  fontWeight: textFontWeightNormal,
+                  fontWeight: FontResourceDesign.textFontWeightNormal,
                   fontSize: Sizes.p10,
-                  color: blackTwo,
+                  color: ColorResourceDesign.blackTwo,
                 )),
-            Text(pincode,
+            Text(ConstantsResourceDesign.pincode,
                 style: TextStyle(
-                  fontWeight: textFontWeightSemiBold,
+                  fontWeight: FontResourceDesign.textFontWeightSemiBold,
                   fontSize: Sizes.p14,
-                  color: blackTwo,
+                  color: ColorResourceDesign.blackTwo,
                 ))
           ],
         ));
@@ -106,11 +175,10 @@ class AllocationView extends StatelessWidget {
 
   Widget _buttonList() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: priority,
+          btnText: ConstantsResourceDesign.priority,
           isBorder: false,
           btnWidth: 84,
           btnHeight: 30,
@@ -118,22 +186,22 @@ class AllocationView extends StatelessWidget {
         gapW12,
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: buildRoute,
+          btnText: ConstantsResourceDesign.buildRoute,
           isBorder: true,
           btnWidth: 84,
           btnHeight: 30,
-          btnBackgroundColor: secondaryButtonBg,
-          btnTextColor: secondaryButtonTextColor,
+          btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+          btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
         ),
         gapW12,
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: mapView,
+          btnText: ConstantsResourceDesign.mapView,
           isBorder: true,
           btnWidth: 84,
           btnHeight: 30,
-          btnBackgroundColor: secondaryButtonBg,
-          btnTextColor: secondaryButtonTextColor,
+          btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+          btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
         ),
       ],
     );
@@ -145,29 +213,28 @@ class AllocationView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: Sizes.p10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(allocationNo,
+              const Text(ConstantsResourceDesign.allocationNo,
                   style: TextStyle(
                     fontSize: Sizes.p14,
-                    fontWeight: textFontWeightSemiBold,
-                    color: blackTwo,
+                    fontWeight: FontResourceDesign.textFontWeightSemiBold,
+                    color: ColorResourceDesign.blackTwo,
                   )),
               gapW8,
               Container(
                 decoration: const BoxDecoration(
-                  color: starActiveBg,
+                  color: ColorResourceDesign.starActiveBg,
                   borderRadius: BorderRadius.all(Radius.circular(50)),
                 ),
                 child: SvgPicture.asset(
                     Assets.images.allocationPageHighPriorityActive),
               ),
               gapW4,
-              const Text(noHighPriority,
+              const Text(ConstantsResourceDesign.noHighPriority,
                   style: TextStyle(
                     fontSize: Sizes.p10,
-                    fontWeight: textFontWeightSemiBold,
-                    color: appTextPrimaryColor,
+                    fontWeight: FontResourceDesign.textFontWeightSemiBold,
+                    color: ColorResourceDesign.appTextPrimaryColor,
                   )),
             ],
           ),
@@ -178,22 +245,21 @@ class AllocationView extends StatelessWidget {
           // height:220,
           decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(Radius.circular(Sizes.p10)),
-              color: whiteColor,
+              color: ColorResourceDesign.whiteColor,
               border: Border.all(
                 width: 0.5,
-                color: borderColor,
+                color: ColorResourceDesign.borderColor,
               )),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
                 padding: EdgeInsets.only(top: Sizes.p8, left: Sizes.p24),
-                child: Text(tvs,
+                child: Text(ConstantsResourceDesign.tvs,
                     style: TextStyle(
                       fontSize: Sizes.p12,
-                      fontWeight: textFontWeightLight,
-                      color: appTextPrimaryColor,
+                      fontWeight: FontResourceDesign.textFontWeightLight,
+                      color: ColorResourceDesign.appTextPrimaryColor,
                     )),
               ),
               const Divider(
@@ -202,32 +268,33 @@ class AllocationView extends StatelessWidget {
               ),
               Padding(
                 padding:
-                    const EdgeInsets.only(left: Sizes.p24, right: Sizes.p24),
+                const EdgeInsets.only(left: Sizes.p24, right: Sizes.p24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '₹ 3,97,553.67',
                           style: TextStyle(
                             fontSize: Sizes.p18,
-                            fontWeight: textFontWeightSemiBold,
-                            color: appTextPrimaryColor,
+                            fontWeight:
+                            FontResourceDesign.textFontWeightSemiBold,
+                            color: ColorResourceDesign.appTextPrimaryColor,
                           ),
                         ),
                         CustomLabelWidget(
-                          labelText: newLabel,
+                          labelText: ConstantsResourceDesign.newLabel,
                         ),
                       ],
                     ),
                     const Text('Debashish Patnaik',
                         style: TextStyle(
-                          fontWeight: textFontWeightLight,
+                          fontWeight: FontResourceDesign.textFontWeightLight,
                           fontSize: Sizes.p16,
-                          color: appTextPrimaryColor,
+                          color: ColorResourceDesign.appTextPrimaryColor,
                         )),
                     gapH8,
                     Container(
@@ -235,57 +302,62 @@ class AllocationView extends StatelessWidget {
                         height: 72,
                         alignment: Alignment.center,
                         decoration: const BoxDecoration(
-                          color: primaryColor,
+                          color: ColorResourceDesign.primaryColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text('2/345, 6th Main Road Gomathipuram,',
                                 style: TextStyle(
-                                  fontWeight: textFontWeightLight,
+                                  fontWeight:
+                                  FontResourceDesign.textFontWeightLight,
                                   fontSize: Sizes.p14,
-                                  color: darkGray,
+                                  color: ColorResourceDesign.darkGray,
                                 )),
                             Text('Madurai - 625032',
                                 style: TextStyle(
-                                  fontWeight: textFontWeightLight,
+                                  fontWeight:
+                                  FontResourceDesign.textFontWeightLight,
                                   fontSize: Sizes.p14,
-                                  color: darkGray,
+                                  color: ColorResourceDesign.darkGray,
                                 ))
                           ],
                         )),
                     const Divider(
                       thickness: 0.5,
-                      color: lightGray,
+                      color: ColorResourceDesign.lightGray,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Follow Up Date',
                             style: TextStyle(
-                              fontWeight: textFontWeightLight,
+                              fontWeight:
+                              FontResourceDesign.textFontWeightLight,
                               fontSize: Sizes.p14,
-                              color: darkGray,
+                              color: ColorResourceDesign.darkGray,
                             )),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             const Text('Today, Thu 18 Oct, 2021',
                                 style: TextStyle(
-                                  fontWeight: textFontWeightLight,
+                                  fontWeight:
+                                  FontResourceDesign.textFontWeightLight,
                                   fontSize: Sizes.p14,
-                                  color: darkGray,
+                                  color: ColorResourceDesign.darkGray,
                                 )),
                             Wrap(
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
                                 const Text('View',
                                     style: TextStyle(
-                                      fontWeight: textFontWeightSemiBold,
+                                      fontWeight: FontResourceDesign
+                                          .textFontWeightSemiBold,
                                       fontSize: Sizes.p14,
-                                      color: blueColor,
+                                      color: ColorResourceDesign.blueColor,
                                     )),
                                 gapW8,
                                 SvgPicture.asset(

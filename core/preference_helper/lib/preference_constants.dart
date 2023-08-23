@@ -15,4 +15,11 @@ class PreferenceConstants{
   static const String status = 'status';
   static const String userAdmin = 'userAdmin';
   static const String code = 'code';
+  static const String addressValue = 'addressValue';
+  static const String mainLanguage = 'mainLanguage';
+  static const String mainLanguageCode = 'mainLanguageCode';
+  static const String s2tLangSelectedIndex = 's2tLangSelectedIndex';
+  static const String s2tLangcode = 's2tLangcode';
+
+
 }

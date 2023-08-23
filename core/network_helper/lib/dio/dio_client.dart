@@ -18,7 +18,7 @@ const httpCode404 = 404;
 const responseStatusKey = 'status';
 const responseResultKey = 'result';
 
-const String baseUrl = 'https://collect-poc.m2pfintech.com/';
+const String baseUrl = 'https://uat-sbic-collect.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
 const String version = 'v1/';
 const String apiType = 'mobile-backend/';

@@ -1,3 +1,6 @@
+import 'package:design_system/app_sizes.dart';
+import 'package:design_system/colors.dart';
+import 'package:design_system/fonts.dart';
 import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,9 +57,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
       },
       child: Container(
         decoration: const BoxDecoration(
-          color: ColorResource.colorF7F8FA,
+          color: ColorResourceDesign.whiteTwo,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+              topLeft: Radius.circular(Sizes.p20),
+              topRight: Radius.circular(Sizes.p20)),
         ),
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
@@ -64,11 +68,11 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: Sizes.p16),
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
-                  backgroundColor: ColorResource.colorF7F8FA,
+                  backgroundColor: ColorResourceDesign.whiteTwo,
                   floatingActionButton: CustomFloatingActionButton(
                     onTap: () async {
                       widget.bloc.add(NavigateSearchEvent());
@@ -86,12 +90,12 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
+                            horizontal: Sizes.p20, vertical: Sizes.p4),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(Sizes.p4),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -104,14 +108,17 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                           Languages.of(context)!
                                               .count
                                               .toUpperCase(),
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
+                                          fontSize: Sizes.p10,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
                                         ),
                                         CustomText(
                                           widget.bloc.myReceiptsData.totalCount
                                               .toString(),
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
+                                          fontWeight: FontResourceDesign
+                                              .textFontWeightSemiBold,
                                         ),
                                       ],
                                     ),
@@ -126,16 +133,19 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                           Languages.of(context)!
                                               .amount
                                               .toUpperCase(),
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
+                                          fontSize: Sizes.p10,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
                                         ),
                                         CustomText(
                                           Constants.inr +
                                               widget
                                                   .bloc.myReceiptsData.totalAmt
                                                   .toString(),
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
+                                          fontWeight: FontResourceDesign
+                                              .textFontWeightSemiBold,
                                         ),
                                       ],
                                     ),
@@ -143,9 +153,7 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 12,
-                            ),
+                            gapH12,
                             Wrap(
                               spacing: 7,
                               children: _buildFilterOptions(),
@@ -158,19 +166,20 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                         decoration: const BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    color: ColorResource.colorD8D8D8))),
+                                    color: ColorResourceDesign.lightGrayTwo))),
                         child: Center(
                           child: TabBar(
                             isScrollable: true,
-                            indicatorColor: ColorResource.colorD5344C,
+                            indicatorColor: ColorResourceDesign.redColor,
                             labelStyle: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                                color: ColorResource.color23375A,
-                                fontSize: FontSize.fourteen,
+                                fontWeight:
+                                    FontResourceDesign.textFontWeightSemiBold,
+                                color: ColorResourceDesign.textColor,
+                                fontSize: Sizes.p14,
                                 fontStyle: FontStyle.normal),
                             indicatorWeight: 5.0,
-                            labelColor: ColorResource.color23375A,
-                            unselectedLabelColor: ColorResource.colorC4C4C4,
+                            labelColor: ColorResourceDesign.textColor,
+                            unselectedLabelColor: ColorResourceDesign.grayColor,
                             tabs: [
                               Tab(text: Languages.of(context)!.approved),
                               Tab(text: Languages.of(context)!.pendingApproval),
@@ -183,8 +192,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           ? widget.bloc.searchResultList.isNotEmpty
                               ? const Expanded(
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Sizes.p20),
                                     //todo
                                     // child: SearchCaseList.buildListView(
                                     //   widget.bloc,
@@ -197,7 +206,9 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 50, right: 20, left: 20),
+                                            top: Sizes.p50,
+                                            right: Sizes.p20,
+                                            left: Sizes.p20),
                                         child: NoCaseAvailble
                                             .buildNoCaseAvailable(),
                                       ),
@@ -211,7 +222,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                   // Approved
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(
                                         widget.bloc,
                                         widget.bloc.myReceiptsData.approved ??
@@ -220,7 +232,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                   // Pending ApprovaL
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(
                                         widget.bloc,
                                         widget.bloc.myReceiptsData.newCase ??
@@ -229,7 +242,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                   // Rejected
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(
                                         widget.bloc,
                                         widget.bloc.myReceiptsData.rejected ??
@@ -287,27 +301,29 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Sizes.p10),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 11),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.p4, vertical: Sizes.p10),
           width: 100,
           // height: 35,
           decoration: BoxDecoration(
-            border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
-            borderRadius: BorderRadius.circular(10),
+            border:
+                Border.all(color: ColorResourceDesign.lightGray, width: 0.5),
+            borderRadius: BorderRadius.circular(Sizes.p10),
             color: option == widget.bloc.selectedFilterIndex
-                ? ColorResource.color23375A
-                : Colors.white,
+                ? ColorResourceDesign.textColor
+                : ColorResourceDesign.whiteColor,
           ),
           child: Center(
             child: CustomText(
               filterTitle,
-              fontSize: FontSize.twelve,
-              fontWeight: FontWeight.w700,
+              fontSize: Sizes.p12,
+              fontWeight: FontResourceDesign.textFontWeightSemiBold,
               color: option == widget.bloc.selectedFilterIndex
-                  ? Colors.white
-                  : ColorResource.color101010,
+                  ? ColorResourceDesign.whiteColor
+                  : ColorResourceDesign.appTextPrimaryColor,
             ),
           ),
         ),
@@ -322,7 +338,7 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
             ? Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 40),
+                    padding: const EdgeInsets.only(top: Sizes.p40),
                     child: NoCaseAvailble.buildNoCaseAvailable(),
                   ),
                 ],
@@ -336,7 +352,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                     children: [
                       if (index == 0)
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
+                          padding: const EdgeInsets.fromLTRB(
+                              Sizes.p5, Sizes.p5, Sizes.p5, Sizes.p0),
                           child: Row(
                             children: [
                               Expanded(
@@ -348,13 +365,16 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                       Languages.of(context)!
                                           .count
                                           .toUpperCase(),
-                                      fontSize: FontSize.ten,
-                                      color: ColorResource.color101010,
+                                      fontSize: Sizes.p10,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
                                     ),
                                     CustomText(
                                       caseLists.count.toString(),
-                                      color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w700,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
+                                      fontWeight: FontResourceDesign
+                                          .textFontWeightSemiBold,
                                     ),
                                   ],
                                 ),
@@ -368,14 +388,17 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                       Languages.of(context)!
                                           .amount
                                           .toUpperCase(),
-                                      fontSize: FontSize.ten,
-                                      color: ColorResource.color101010,
+                                      fontSize: Sizes.p10,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
                                     ),
                                     CustomText(
                                       Constants.inr +
                                           caseLists.totalAmt.toString(),
-                                      color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w700,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
+                                      fontWeight: FontResourceDesign
+                                          .textFontWeightSemiBold,
                                     ),
                                   ],
                                 ),
@@ -384,7 +407,7 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           ),
                         ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: Sizes.p20),
                         child: InkWell(
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
@@ -399,10 +422,11 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                 : EdgeInsets.zero,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                              color: ColorResource.colorffffff,
+                              color: ColorResourceDesign.whiteColor,
                               border: Border.all(
-                                  color: ColorResource.colorDADADA, width: 0.5),
-                              borderRadius: BorderRadius.circular(10),
+                                  color: ColorResourceDesign.lightGray,
+                                  width: 0.5),
+                              borderRadius: BorderRadius.circular(Sizes.p10),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -414,17 +438,18 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  height: 2.0,
-                                ),
+                                gapH2,
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 2),
+                                      horizontal: Sizes.p24,
+                                      vertical: Sizes.p2),
                                   child: CustomText(
                                     caseLists.cases?[index].agrRef ?? '',
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorResource.color101010,
+                                    fontSize: Sizes.p12,
+                                    fontWeight:
+                                        FontResourceDesign.textFontWeightNormal,
+                                    color:
+                                        ColorResourceDesign.appTextPrimaryColor,
                                   ),
                                 ),
                                 AppUtils.showDivider(),
@@ -434,8 +459,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                 // ),
                                 // const SizedBox(height: 6.0,),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(23, 0, 10, 0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      Sizes.p24, Sizes.p0, Sizes.p10, Sizes.p0),
                                   child: Row(
                                     children: [
                                       Expanded(
@@ -447,17 +472,18 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                               Constants.inr +
                                                   caseLists.cases![index].due
                                                       .toString(),
-                                              fontSize: FontSize.eighteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              fontSize: Sizes.p18,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
-                                            const SizedBox(
-                                              height: 3.0,
-                                            ),
+                                            gapH2,
                                             CustomText(
                                               caseLists.cases![index].cust!,
-                                              fontSize: FontSize.sixteen,
-                                              color: ColorResource.color101010,
+                                              fontSize: Sizes.p16,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
                                             ),
                                           ],
                                         ),
@@ -505,21 +531,26 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
 
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 6),
+                                      horizontal: Sizes.p14,
+                                      vertical: Sizes.p6),
                                   child: bloc.userType == Constants.fieldagent
                                       ? Container(
                                           width: double.infinity,
                                           padding: const EdgeInsets.fromLTRB(
-                                              20, 12, 15, 12),
+                                              Sizes.p20,
+                                              Sizes.p12,
+                                              Sizes.p16,
+                                              Sizes.p12),
                                           decoration: BoxDecoration(
-                                            color: ColorResource.colorF8F9FB,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            color: ColorResourceDesign
+                                                .lightWhiteGray,
+                                            borderRadius: BorderRadius.circular(
+                                                Sizes.p10),
                                           ),
                                           child: CustomText(
                                             caseLists.cases![index].contact![0]
                                                 .value!,
-                                            color: ColorResource.color484848,
+                                            color: ColorResourceDesign.darkGray,
                                           ),
                                         )
                                       : Wrap(
@@ -532,53 +563,55 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                                   ? Container(
                                                       margin:
                                                           const EdgeInsets.only(
-                                                              top: 10,
-                                                              right: 20),
+                                                              top: Sizes.p10,
+                                                              right: Sizes.p20),
                                                       padding: const EdgeInsets
                                                               .symmetric(
-                                                          horizontal: 17,
-                                                          vertical: 6),
+                                                          horizontal: Sizes.p16,
+                                                          vertical: Sizes.p6),
                                                       decoration: BoxDecoration(
-                                                        color: ColorResource
-                                                            .colorF8F9FB,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .lightWhiteGray,
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(30),
+                                                                .circular(
+                                                                    Sizes.p30),
                                                       ),
                                                       child: CustomText(
                                                         item.value!,
-                                                        color: ColorResource
-                                                            .color484848,
-                                                        lineHeight: 1.0,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .darkGray,
+                                                        lineHeight: Sizes.p1,
                                                       ),
                                                     )
-                                                  : const SizedBox(),
+                                                  : gapW0,
                                           ],
                                         ),
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
+                                gapW4,
                                 const Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: 15,
+                                    horizontal: Sizes.p14,
                                   ),
                                   child: Divider(
-                                    color: ColorResource.colorDADADA,
+                                    color: ColorResourceDesign.lightGray,
                                     thickness: 0.5,
                                   ),
                                 ),
                                 //  const SizedBox(height: 5,),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(23, 5, 14, 13),
+                                  padding: const EdgeInsets.fromLTRB(Sizes.p24,
+                                      Sizes.p4, Sizes.p14, Sizes.p12),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       CustomText(
                                         Languages.of(context)!.followUpDate,
-                                        color: ColorResource.color101010,
+                                        color: ColorResourceDesign
+                                            .appTextPrimaryColor,
                                       ),
                                       Row(
                                         children: [
@@ -597,8 +630,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                                               .cases![index]
                                                               .fieldfollowUpDate!)
                                                   : '-',
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
                                           if (Singleton.instance.usertype ==
                                               Constants.telecaller)
@@ -615,21 +650,22 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                                               .cases![index]
                                                               .followUpDate!)
                                                   : '-',
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
                                           const Spacer(),
                                           Row(
                                             children: [
                                               CustomText(
                                                 Languages.of(context)!.view,
-                                                color:
-                                                    ColorResource.color23375A,
-                                                fontWeight: FontWeight.w700,
+                                                color: ColorResourceDesign
+                                                    .textColor,
+                                                fontWeight: FontResourceDesign
+                                                    .textFontWeightSemiBold,
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
+                                              gapW12,
                                               SvgPicture.asset(
                                                   ImageResource.forwardArrow)
                                             ],
