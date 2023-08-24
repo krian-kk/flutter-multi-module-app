@@ -91,6 +91,7 @@ class SearchListBloc extends Bloc<SearchListEvent, SearchListState> {
         // isShowSearchPincode = true;
         // selectedOption = 3;
         // showFilterDistance = false;
+        print("something goes here");
         emit(SearchSuccessReturnDataState());
       }, failure: (NetworkExceptions? error) async {
         emit(SearchFailureReturnDataState());
