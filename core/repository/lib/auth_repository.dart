@@ -1,5 +1,5 @@
 import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
-import 'package:domain_models/response_models/response_login.dart';
+import 'package:domain_models/response_models/auth/sign_in/login_response.dart';
 import 'package:network_helper/api_services/authentication_api_service.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
@@ -8,7 +8,7 @@ import 'package:preference_helper/preference_constants.dart';
 import 'package:preference_helper/preference_helper.dart';
 
 abstract class AuthRepository {
-  Future<ApiResult<LoginResponseModel>> login(
+  Future<ApiResult<LoginResponse>> login(
       String userName, String password, String fcmToken);
 
   Future<ApiResult<bool>?> sendOtpRequestToServer(String agentRef);
@@ -20,47 +20,60 @@ abstract class AuthRepository {
 
   Future<ApiResult<bool>?> resetPasswordForAgent(
       String agentRef, String password, String otp);
+
+  Future<ApiResult> setPasswordForAgent(String userName, String password);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
   AuthenticationApiProvider provider = AuthenticationApiProvider();
 
   @override
-  Future<ApiResult<LoginResponseModel>> login(
+  Future<ApiResult<LoginResponse>> login(
       String userName, String password, String fcmToken) async {
-    final ApiResult<LoginResponseModel> response =
-        await provider.signIn(userName, password, fcmToken);
-    await response.when(
-        success: (LoginResponseModel? loginData) async {
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.accessToken, loginData?.accessToken ?? '');
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.accessTokenExpireTime,
-              loginData?.expiresIn ?? '');
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.refreshToken, loginData?.refreshToken ?? '');
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.refreshTokenExpireTime,
-              loginData?.refreshExpiresIn ?? '');
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.sessionId, loginData?.sessionState ?? '');
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.agentRef, userName);
-          await PreferenceHelper.setPreference(
-              PreferenceConstants.userId, userName);
-          await PreferenceHelper.getString(
-              keyPair: PreferenceConstants.agentRef);
-        },
-        failure: (NetworkExceptions? error) async {});
-    return response;
+    try {
+      final ApiResult<dynamic> response =
+          await provider.signIn(userName, password, fcmToken);
+      LoginResponse? loginData;
+      response.map(
+          success: (value) {
+            loginData = LoginResponse.fromJson(value.data);
+          },
+          failure: (error) => throw NetworkExceptions.getDioException(error));
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.accessToken, loginData?.accessToken ?? '');
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.accessTokenExpireTime,
+          loginData?.expiresIn ?? '');
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.refreshToken, loginData?.refreshToken ?? '');
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.refreshTokenExpireTime,
+          loginData?.refreshExpiresIn ?? '');
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.sessionId, loginData?.sessionState ?? '');
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.agentRef, userName);
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.userId, userName);
+      await PreferenceHelper.getString(keyPair: PreferenceConstants.agentRef);
+      return ApiResult.success(data: loginData);
+    } catch (error) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    }
   }
 
   @override
   Future<ApiResult<ShortAgentDetails>?> getAgentDataForPrefill(
       String agentRef) async {
-    final ApiResult<PublicAgentInfoModel> response =
-        await provider.getAgentDataFromApi(agentRef);
-    await response.when(success: (PublicAgentInfoModel? agentData) async {
+    try {
+      final ApiResult<dynamic> response =
+          await provider.getAgentDataFromApi(agentRef);
+      PublicAgentInfoModel? agentData;
+      response.map(
+          success: (value) {
+            agentData = PublicAgentInfoModel.fromJson(value.data);
+          },
+          failure: (error) => throw error);
       String? phoneNumber = '';
       String? email = '';
       agentData?.contact?.forEach((element) {
@@ -74,10 +87,9 @@ class AuthRepositoryImpl extends AuthRepository {
       ShortAgentDetails agentMiniDetails = ShortAgentDetails(
           agentData?.name ?? '', email ?? '', phoneNumber ?? '');
       return ApiResult.success(data: agentMiniDetails);
-    }, failure: (NetworkExceptions? error) async {
+    } catch (error) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
-    });
-    return null;
+    }
   }
 
   @override
@@ -89,7 +101,6 @@ class AuthRepositoryImpl extends AuthRepository {
     }, failure: (NetworkExceptions? error) async {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
     });
-    return null;
   }
 
   @override
@@ -102,7 +113,6 @@ class AuthRepositoryImpl extends AuthRepository {
     }, failure: (NetworkExceptions? error) async {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
     });
-    return null;
   }
 
   @override
@@ -115,7 +125,14 @@ class AuthRepositoryImpl extends AuthRepository {
     }, failure: (NetworkExceptions? error) async {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
     });
-    return null;
+  }
+
+  @override
+  Future<ApiResult> setPasswordForAgent(
+      String userName, String password) async {
+    final ApiResult response =
+        await provider.setPasswordForAgent(userName, password);
+    return response;
   }
 }
 

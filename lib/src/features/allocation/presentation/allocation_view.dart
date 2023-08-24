@@ -4,34 +4,93 @@ import 'package:design_system/fonts.dart';
 import 'package:design_system/strings.dart';
 import 'package:design_system/widgets/customLabel_widget.dart';
 import 'package:design_system/widgets/toolbarRectBtn_widget.dart';
+import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:origa/gen/assets.gen.dart';
+import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
+import 'package:repository/case_repository.dart';
+import 'package:repository/repo_utils.dart';
 
-import '../../../../gen/assets.gen.dart';
-
-class AllocationView extends StatelessWidget {
+class AllocationView extends StatefulWidget {
   const AllocationView({Key? key}) : super(key: key);
+
+  @override
+  State<AllocationView> createState() => _AllocationViewState();
+}
+
+class _AllocationViewState extends State<AllocationView> {
+  static const _pageSize = 20;
+  final _pagingController =
+      PagingController<int, PriorityCaseListModel>(firstPageKey: 1);
+
+  @override
+  void initState() {
+    _pagingController.addPageRequestListener((pageKey) {
+      fetchPage(pageKey);
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pagingController.dispose();
+  }
+
+  Future<void> fetchPage(int pageKey) async {
+    try {
+      String access = await getAccessToken();
+
+      final apiResult = await BlocProvider.of<PriorityBloc>(context)
+          .repository
+          .collectApiProvider
+          .getCases(access, _pageSize, pageKey);
+      List<PriorityCaseListModel> newItems = [];
+      apiResult.when(
+          success: (value) => {newItems = value ?? []},
+          failure: (failure) => {});
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey.toInt());
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: primaryColor,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              gapH8,
-              _officeChecker(),
-              gapH12,
-              _searchByPincode(),
-              gapH16,
-              _buttonList(),
-              gapH16,
-              _allocationBloc(),
-            ],
-          ),
-        ));
+        body: PagedListView<int, PriorityCaseListModel>(
+            pagingController: _pagingController,
+            builderDelegate: PagedChildBuilderDelegate<PriorityCaseListModel>(
+              itemBuilder: (context, item, index) => _allocationBloc(),
+            ))
+        // body: Column(
+        //   children: [
+        //     gapH8,
+        //     // _officeChecker(),
+        //     gapH12,
+        //     // _searchByPincode(),
+        //     gapH16,
+        //     _buttonList(),
+        //     gapH16,
+        //     // _allocationBloc(),
+        //     PagedListView<int, PriorityCaseListModel>(
+        //         pagingController: _pagingController,
+        //         builderDelegate:
+        //             PagedChildBuilderDelegate<PriorityCaseListModel>(
+        //           itemBuilder: (context, item, index) => _allocationBloc(),
+        //         ))
+        //   ],
+        );
   }
 
   Widget _officeChecker() {
@@ -106,7 +165,6 @@ class AllocationView extends StatelessWidget {
 
   Widget _buttonList() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         ToolbarRectBtnWidget(
           onPressed: () {},
@@ -145,7 +203,6 @@ class AllocationView extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: Sizes.p10),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Text(allocationNo,
                   style: TextStyle(
@@ -184,7 +241,6 @@ class AllocationView extends StatelessWidget {
                 color: borderColor,
               )),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
@@ -207,9 +263,9 @@ class AllocationView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
+                      children: [
                         Text(
                           '₹ 3,97,553.67',
                           style: TextStyle(
@@ -238,10 +294,10 @@ class AllocationView extends StatelessWidget {
                           color: primaryColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Column(
+                        child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
+                          children: [
                             Text('2/345, 6th Main Road Gomathipuram,',
                                 style: TextStyle(
                                   fontWeight: textFontWeightLight,

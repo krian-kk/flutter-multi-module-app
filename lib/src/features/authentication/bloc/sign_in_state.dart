@@ -31,7 +31,20 @@ class FillAgentInfoForResetPassword extends SignInState {
   ShortAgentDetails agentDetails;
 }
 
+class SetPasswordState extends SignInState {
+  SetPasswordState({this.name});
+
+  final String? name;
+}
+
+class SetPasswordSuccessState extends SignInState{
+
+}
+
 class SendOtpSuccessState extends SignInState {}
+
 class RequestOtpSuccessState extends SignInState {}
+
 class VerifyOtpSuccessState extends SignInState {}
+
 class ResetPasswordSuccessState extends SignInState {}

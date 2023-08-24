@@ -10,6 +10,7 @@ import 'package:network_helper/api_services/dashboard_api_service.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:preference_helper/preference_constants.dart';
 import 'package:preference_helper/preference_helper.dart';
+import 'package:repository/repo_utils.dart';
 
 abstract class DashBoardRepository {
   Future<ApiResult<DashCountResult>> getDashboardData(String agentType);
@@ -38,15 +39,9 @@ abstract class DashBoardRepository {
 class DashBoardRepositoryImpl extends DashBoardRepository {
   DashboardApiProvider provider = DashboardApiProvider();
 
-  Future<String> getAccessToken() async {
-    return await PreferenceHelper.getString(
-            keyPair: PreferenceConstants.accessToken) ??
-        '';
-  }
-
   Future<String> getAgentType() async {
     return await PreferenceHelper.getString(
-        keyPair: PreferenceConstants.accessToken) ??
+            keyPair: PreferenceConstants.accessToken) ??
         '';
   }
 

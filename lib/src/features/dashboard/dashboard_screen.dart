@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
@@ -255,9 +255,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? Languages.of(context)!
+                                                      ? LanguageEn()
                                                           .customerMet
-                                                      : Languages.of(context)!
+                                                      : LanguageEn()
                                                           .connected
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -280,9 +280,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? Languages.of(context)!
+                                                      ? LanguageEn()
                                                           .customerNotMet
-                                                      : Languages.of(context)!
+                                                      : LanguageEn()
                                                           .unreachable
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -300,7 +300,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Expanded(
                                             child: userActivity(
-                                              header: Languages.of(context)!
+                                              header: LanguageEn()
                                                   .invalid
                                                   .trim(),
                                               count: BlocProvider.of<
@@ -327,7 +327,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            Languages.of(context)!
+                                            LanguageEn()
                                                 .mtdResolutionProgress,
                                             fontSize: FontSize.twelve,
                                             fontWeight: FontWeight.w700,
@@ -337,7 +337,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            Languages.of(context)!
+                                            LanguageEn()
                                                 .customer
                                                 .toUpperCase(),
                                             color: ColorResource.color23375A,
@@ -423,7 +423,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            Languages.of(context)!
+                                            LanguageEn()
                                                 .amount
                                                 .toUpperCase(),
                                             color: ColorResource.color23375A,

@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
-import 'package:domain_models/response_models/response_login.dart';
+import 'package:domain_models/response_models/auth/sign_in/login_response.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
@@ -25,10 +24,18 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     } else if (event is SignInSubmitted) {
       emit(state.copyWith(formStatus: FormSubmitting()));
       try {
-        final ApiResult<LoginResponseModel> data =
+        // if (kDebugMode) {
+        //   String userName = "gfldev_testfosv"; //gfldev_telev
+        //   String password = "Abcd@123";
+        // }
+        final ApiResult<LoginResponse> data =
             await authRepo.login(state.username, state.password, '');
-        await data.when(success: (LoginResponseModel? loginData) async {
-          emit(state.copyWith(formStatus: SubmissionSuccess()));
+        await data.when(success: (LoginResponse? loginData) async {
+          if (loginData?.setPassword == true) {
+            emit(SetPasswordState(name: state.username));
+          } else {
+            emit(state.copyWith(formStatus: SubmissionSuccess()));
+          }
         }, failure: (NetworkExceptions? error) async {
           emit(state.copyWith(
               formStatus:
@@ -90,6 +97,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
             emit(VerifyOtpSuccessState());
           },
           failure: (NetworkExceptions? error) async {});
+    }
+
+    if (event is SetPasswordEvent) {
+      final ApiResult data =
+          await authRepo.setPasswordForAgent(event.userName, event.password);
+      data.when(
+          success: (success) => {emit(SetPasswordSuccessState())},
+          failure: (failure) => {});
     }
   }
 }

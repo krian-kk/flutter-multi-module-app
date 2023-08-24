@@ -60,3 +60,10 @@ class ResetPasswordChangeEvent extends SignInEvent {
   final String password;
   final String otp;
 }
+
+class SetPasswordEvent extends SignInEvent {
+  SetPasswordEvent(this.userName, this.password);
+
+  final String userName;
+  final String password;
+}

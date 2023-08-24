@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/case_repository.dart';
 import 'package:repository/dashboard_repository.dart';
 
 class HomeView extends StatefulWidget {
@@ -327,8 +329,16 @@ class _HomeViewState extends State<HomeView>
                                       controller: _controller,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                      children: const <Widget>[
-                                        AllocationView(), //1
+                                      children: <Widget>[
+                                        RepositoryProvider(
+                                          create: (context) =>
+                                              CaseRepositoryImpl(),
+                                          child: BlocProvider(
+                                              create: (context) => PriorityBloc(
+                                                  repository:
+                                                      CaseRepositoryImpl()),
+                                              child: const AllocationView()),
+                                        ), //1
                                         DashboardScreen(), //2
                                         ProfileScreen(), //3
                                       ]),

@@ -2,9 +2,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/sign_in_view.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/src/features/home/presentation/home_view.dart';
+import 'package:repository/auth_repository.dart';
 
 class AppRouter {
   static const String splashScreen = 'splash_screen';
@@ -26,9 +28,13 @@ class AppRouter {
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return BlocProvider(
-            create: (context) => HomeBloc(),
-            child: const SignInView(),
+          return RepositoryProvider(
+            create: (context) => AuthRepositoryImpl(),
+            child: BlocProvider(
+              create: (context) =>
+                  SignInBloc(authRepo: context.read<AuthRepositoryImpl>()),
+              child: const SignInView(),
+            ),
           );
         },
         routes: <RouteBase>[
@@ -56,13 +62,7 @@ class AppRouter {
             builder: (BuildContext context, GoRouterState state) {
               return const AllocationView();
             },
-          ),
-          GoRoute(
-            path: chatScreen,
-            builder: (BuildContext context, GoRouterState state) {
-              return const AllocationView();
-            },
-          ),
+          )
         ],
       ),
     ],
