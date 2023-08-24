@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_database/firebase_database.dart';
+
+// import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,8 @@ class _AllocationScreenState extends State<AllocationScreen>
 
   // The controller for the ListView
   late ScrollController _controller;
-  CollectionReference<Map<String, dynamic>>? collectionReference;
+
+  // CollectionReference<Map<String, dynamic>>? collectionReference;
 
   @override
   void dispose() {
@@ -128,10 +130,10 @@ class _AllocationScreenState extends State<AllocationScreen>
     debugPrint('initState--> $this');
     bloc = AllocationBloc();
     firebase();
-    collectionReference = FirebaseFirestore.instance
-        .collection(Singleton.instance.firebaseDatabaseName)
-        .doc(Singleton.instance.agentRef)
-        .collection(Constants.firebaseCase);
+    // collectionReference = FirebaseFirestore.instance
+    //     .collection(Singleton.instance.firebaseDatabaseName)
+    //     .doc(Singleton.instance.agentRef)
+    //     .collection(Constants.firebaseCase);
     _controller = ScrollController()..addListener(_loadMore);
 
     // For offline checking only
@@ -142,16 +144,16 @@ class _AllocationScreenState extends State<AllocationScreen>
   }
 
   Future firebase() async {
-    await FirebaseFirestore.instance
-        .collection(Singleton.instance.firebaseDatabaseName)
-        .doc(Singleton.instance.agentRef)
-        .collection(Constants.firebaseCase)
-        .get()
-        .then((value) {
-      for (var element in value.docs) {
-        debugPrint('Element--> $element');
-      }
-    });
+    // await FirebaseFirestore.instance
+    //     .collection(Singleton.instance.firebaseDatabaseName)
+    //     .doc(Singleton.instance.agentRef)
+    //     .collection(Constants.firebaseCase)
+    //     .get()
+    //     .then((value) {
+    //   for (var element in value.docs) {
+    //     debugPrint('Element--> $element');
+    //   }
+    // });
     return;
   }
 
@@ -490,10 +492,10 @@ class _AllocationScreenState extends State<AllocationScreen>
         //   starCount++;
         // }
         if (state is FirebaseStoredCompletionState) {
-          collectionReference = FirebaseFirestore.instance
-              .collection(Singleton.instance.firebaseDatabaseName)
-              .doc(Singleton.instance.agentRef)
-              .collection(Constants.firebaseCase);
+          // collectionReference = FirebaseFirestore.instance
+          //     .collection(Singleton.instance.firebaseDatabaseName)
+          //     .doc(Singleton.instance.agentRef)
+          //     .collection(Constants.firebaseCase);
 
           Future.delayed(const Duration(milliseconds: 60), () {
             widget.myValueSetter!(0);
@@ -515,13 +517,13 @@ class _AllocationScreenState extends State<AllocationScreen>
         if (state is AllocationOfflineState) {
           if (state.successResponse ==
               Singleton.instance.offlineDataSynchronization) {
-            final Stream<QuerySnapshot> _usersStream = FirebaseFirestore
-                .instance
-                .collection(Singleton.instance.firebaseDatabaseName)
-                .doc(Singleton.instance.agentRef)
-                .collection(Constants.firebaseCase)
-                .get(const GetOptions(source: Source.server))
-                .asStream();
+            // final Stream<QuerySnapshot> _usersStream = FirebaseFirestore
+            //     .instance
+            //     .collection(Singleton.instance.firebaseDatabaseName)
+            //     .doc(Singleton.instance.agentRef)
+            //     .collection(Constants.firebaseCase)
+            //     .get(const GetOptions(source: Source.server))
+            //     .asStream();
           } else {
             isOffline = true;
             debugPrint('Offline state in bloc $isOffline');
@@ -571,7 +573,8 @@ class _AllocationScreenState extends State<AllocationScreen>
           if (bloc.customerCount < bloc.totalCount) {
             final Map<String, dynamic> getAgencyDetailsData =
                 await APIRepository.apiRequest(
-                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl, encrypt: true);
+                    APIRequestType.get, HttpUrl.voiceAgencyDetailsUrl,
+                    encrypt: true);
             if (getAgencyDetailsData[Constants.success]) {
               if (Singleton.instance.cloudTelephony!) {
                 final Map<String, dynamic> jsonData =
@@ -774,9 +777,9 @@ class _AllocationScreenState extends State<AllocationScreen>
               searchBasedOnValue = 'Account Number: ' + data.accountNumber!;
             } else if (data.customerName!.isNotEmpty) {
               searchBasedOnValue = 'Customer Name: ' + data.customerName!;
-            } else if(data.bankName!.isNotEmpty) {
+            } else if (data.bankName!.isNotEmpty) {
               searchBasedOnValue = 'Bank Name : ' + data.bankName!;
-            }else if (data.dpdBucket!.isNotEmpty) {
+            } else if (data.dpdBucket!.isNotEmpty) {
               searchBasedOnValue = 'DPD/Bucket: ' + data.dpdBucket!;
             } else if (data.status!.isNotEmpty) {
               searchBasedOnValue = 'Status: ' + data.status!;
@@ -1146,8 +1149,11 @@ class _AllocationScreenState extends State<AllocationScreen>
                                                           .yes,
                                                       fontSize: FontSize.twelve,
                                                       cardShape: 5,
-                                                      borderColor: ColorResource.color23375A,
-                                                      buttonBackgroundColor: ColorResource.color23375A,
+                                                      borderColor: ColorResource
+                                                          .color23375A,
+                                                      buttonBackgroundColor:
+                                                          ColorResource
+                                                              .color23375A,
                                                       isRemoveExtraPadding:
                                                           true,
                                                       onTap: () {
@@ -1368,102 +1374,103 @@ class _AllocationScreenState extends State<AllocationScreen>
                           child: AutoCalling.buildAutoCalling(context, bloc))
                       : isOffline &&
                               Singleton.instance.isOfflineEnabledContractorBased
-                          ? StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection(
-                                      Singleton.instance.firebaseDatabaseName)
-                                  .doc(Singleton.instance.agentRef)
-                                  .collection(Constants.firebaseCase)
-                                  .limit(100)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 50, right: 20, left: 20),
-                                        child:
-                                            NoCaseAvailble.buildNoCaseAvailable(
-                                                messageContent:
-                                                    'Something went wrong'),
-                                      ),
-                                    ],
-                                  );
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  const CustomLoadingWidget();
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.active) {
-                                  // bloc.resultList.clear();
-                                  // resultList.clear();
-
-                                  bloc.resultList = [];
-                                  resultList = [];
-                                  bloc.starCount = 0;
-                                  bloc.totalCases = 0;
-                                  // setState(() {
-                                  for (var element in snapshot.data!.docs) {
-                                    final tempResult = Result.fromJson(element
-                                        .data()! as Map<String, dynamic>);
-                                    bloc.resultList.add(tempResult);
-                                    resultList.add(tempResult);
-                                    bloc.totalCases++;
-                                    if (tempResult.starredCase == true) {
-                                      bloc.starCount++;
-                                    }
-                                  }
-                                  // resultList.sort((a, b) {
-                                  //   return b.starredCase ? 1 : -1;
-                                  //   // });
-                                  // });
-                                  // resultList.sort((a, b) {
-                                  //   if (b.starredCase) {
-                                  //     return 1;
-                                  //   }
-                                  //   return -1;
-                                  // });
-
-                                  final List<Result> staredCasesList = [];
-                                  for (var element in resultList) {
-                                    if (element.starredCase) {
-                                      staredCasesList.add(element);
-                                    }
-                                  }
-                                  resultList.removeWhere(
-                                      (element) => element.starredCase);
-                                  resultList.insertAll(0, staredCasesList);
-                                  for (var element in resultList) {
-                                    debugPrint(
-                                        'Cases accNo--> ${element.accNo}');
-                                  }
-                                }
-                                return resultList.isEmpty
-                                    ? Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 50, right: 20, left: 20),
-                                            child: NoCaseAvailble
-                                                .buildNoCaseAvailable(),
-                                          ),
-                                        ],
-                                      )
-                                    : Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: CustomCardList.buildListView(
-                                            bloc,
-                                            resultData: resultList,
-                                            listViewController: _controller,
-                                          ),
-                                        ),
-                                      );
-                              },
-                            )
+                          ? Container(child: Text("Commented autocalling"))
+                          // StreamBuilder<QuerySnapshot>(
+                          //             stream: FirebaseFirestore.instance
+                          //                 .collection(
+                          //                     Singleton.instance.firebaseDatabaseName)
+                          //                 .doc(Singleton.instance.agentRef)
+                          //                 .collection(Constants.firebaseCase)
+                          //                 .limit(100)
+                          //                 .snapshots(),
+                          //             builder: (BuildContext context,
+                          //                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                          //               if (snapshot.hasError) {
+                          //                 return Column(
+                          //                   children: [
+                          //                     Padding(
+                          //                       padding: const EdgeInsets.only(
+                          //                           top: 50, right: 20, left: 20),
+                          //                       child:
+                          //                           NoCaseAvailble.buildNoCaseAvailable(
+                          //                               messageContent:
+                          //                                   'Something went wrong'),
+                          //                     ),
+                          //                   ],
+                          //                 );
+                          //               } else if (snapshot.connectionState ==
+                          //                   ConnectionState.waiting) {
+                          //                 const CustomLoadingWidget();
+                          //               }
+                          //               if (snapshot.connectionState ==
+                          //                   ConnectionState.active) {
+                          //                 // bloc.resultList.clear();
+                          //                 // resultList.clear();
+                          //
+                          //                 bloc.resultList = [];
+                          //                 resultList = [];
+                          //                 bloc.starCount = 0;
+                          //                 bloc.totalCases = 0;
+                          //                 // setState(() {
+                          //                 for (var element in snapshot.data!.docs) {
+                          //                   final tempResult = Result.fromJson(element
+                          //                       .data()! as Map<String, dynamic>);
+                          //                   bloc.resultList.add(tempResult);
+                          //                   resultList.add(tempResult);
+                          //                   bloc.totalCases++;
+                          //                   if (tempResult.starredCase == true) {
+                          //                     bloc.starCount++;
+                          //                   }
+                          //                 }
+                          //                 // resultList.sort((a, b) {
+                          //                 //   return b.starredCase ? 1 : -1;
+                          //                 //   // });
+                          //                 // });
+                          //                 // resultList.sort((a, b) {
+                          //                 //   if (b.starredCase) {
+                          //                 //     return 1;
+                          //                 //   }
+                          //                 //   return -1;
+                          //                 // });
+                          //
+                          //                 final List<Result> staredCasesList = [];
+                          //                 for (var element in resultList) {
+                          //                   if (element.starredCase) {
+                          //                     staredCasesList.add(element);
+                          //                   }
+                          //                 }
+                          //                 resultList.removeWhere(
+                          //                     (element) => element.starredCase);
+                          //                 resultList.insertAll(0, staredCasesList);
+                          //                 for (var element in resultList) {
+                          //                   debugPrint(
+                          //                       'Cases accNo--> ${element.accNo}');
+                          //                 }
+                          //               }
+                          //               return resultList.isEmpty
+                          //                   ? Column(
+                          //                       children: [
+                          //                         Padding(
+                          //                           padding: const EdgeInsets.only(
+                          //                               top: 50, right: 20, left: 20),
+                          //                           child: NoCaseAvailble
+                          //                               .buildNoCaseAvailable(),
+                          //                         ),
+                          //                       ],
+                          //                     )
+                          //                   : Flexible(
+                          //                       child: Padding(
+                          //                         padding: const EdgeInsets.symmetric(
+                          //                             horizontal: 20.0),
+                          //                         child: CustomCardList.buildListView(
+                          //                           bloc,
+                          //                           resultData: resultList,
+                          //                           listViewController: _controller,
+                          //                         ),
+                          //                       ),
+                          //                     );
+                          //             },
+                          //           )
                           : Expanded(
                               child: isCaseDetailLoading
                                   ? const SkeletonLoading()

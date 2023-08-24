@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:origa/http/api_repository.dart';
@@ -194,7 +194,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     if (event is LoginEvent) {
       yield ProfileLoadingState();
       Singleton.instance.isOfflineStorageFeatureEnabled = false;
-      await FirebaseFirestore.instance.terminate();
+      // await FirebaseFirestore.instance.terminate();
       // await _prefs.clear();
       await PreferenceHelper.setPreference(Constants.accessToken, '');
       await PreferenceHelper.setPreference(Constants.userType, '');

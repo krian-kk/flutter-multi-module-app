@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -295,34 +295,35 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             yield AllocationLoadedState(successResponse: resultList);
             if (Singleton.instance.isOfflineEnabledContractorBased &&
                 Singleton.instance.usertype == Constants.fieldagent) {
-              await FirebaseFirestore.instance
-                  .collection(Singleton.instance.firebaseDatabaseName)
-                  .doc(Singleton.instance.agentRef)
-                  .collection(Constants.firebaseCase)
-                  .get()
-                  .then((value) {
-                for (var element in value.docChanges) {
-                  debugPrint('Element--> $element');
-                }
-              });
-              await FirebaseFirestore.instance
-                  .collection(Singleton.instance.firebaseDatabaseName)
-                  .doc(Singleton.instance.agentRef)
-                  .collection(Constants.firebaseEvent)
-                  .get()
-                  .then((QuerySnapshot<Map<String, dynamic>> value) {
-                if (value.docs.isNotEmpty) {
-                  for (QueryDocumentSnapshot<Map<String, dynamic>> element
-                      in value.docs) {
-                    try {
-                      debugPrint(
-                          'Event details case id--> ${EvnetDetailsResultsModel.fromJson(element.data()).agrRef}');
-                    } catch (e) {
-                      debugPrint(e.toString());
-                    }
-                  }
-                }
-              });
+              //todo firebase
+              // await FirebaseFirestore.instance
+              //     .collection(Singleton.instance.firebaseDatabaseName)
+              //     .doc(Singleton.instance.agentRef)
+              //     .collection(Constants.firebaseCase)
+              //     .get()
+              //     .then((value) {
+              //   for (var element in value.docChanges) {
+              //     debugPrint('Element--> $element');
+              //   }
+              // });
+              // await FirebaseFirestore.instance
+              //     .collection(Singleton.instance.firebaseDatabaseName)
+              //     .doc(Singleton.instance.agentRef)
+              //     .collection(Constants.firebaseEvent)
+              //     .get()
+              //     .then((QuerySnapshot<Map<String, dynamic>> value) {
+              //   if (value.docs.isNotEmpty) {
+              //     for (QueryDocumentSnapshot<Map<String, dynamic>> element
+              //         in value.docs) {
+              //       try {
+              //         debugPrint(
+              //             'Event details case id--> ${EvnetDetailsResultsModel.fromJson(element.data()).agrRef}');
+              //       } catch (e) {
+              //         debugPrint(e.toString());
+              //       }
+              //     }
+              //   }
+              // });
             }
           }
         } else if (priorityListData['statusCode'] == 401 ||

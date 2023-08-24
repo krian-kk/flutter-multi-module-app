@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -197,26 +197,26 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   Stream<CaseDetailsState> mapEventToState(CaseDetailsEvent event) async* {
     if (event is FirebaseStream) {
       yield CaseDetailsLoadingState();
-      final Stream streamingDocument = FirebaseFirestore.instance
-          .collection(Singleton.instance.firebaseDatabaseName)
-          .doc(Singleton.instance.agentRef)
-          .collection(Constants.firebaseCase)
-          .doc(caseId)
-          .snapshots();
-
-      await streamingDocument.first.then((value) {
-        final Map<String, dynamic>? jsonData = value.data();
-        final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
-        caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
-        caseDetailsAPIValue.result?.caseDetails = caseDetails;
-        caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-            .result?.callDetails;
-        caseDetailsAPIValue.result?.callDetails?.sort((dynamic a, dynamic b) =>
-            (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
-        Singleton.instance.caseCustomerName =
-            caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-      });
-      yield CaseDetailsLoadedState();
+      // final Stream streamingDocument = FirebaseFirestore.instance
+      //     .collection(Singleton.instance.firebaseDatabaseName)
+      //     .doc(Singleton.instance.agentRef)
+      //     .collection(Constants.firebaseCase)
+      //     .doc(caseId)
+      //     .snapshots();
+      //
+      // await streamingDocument.first.then((value) {
+      //   final Map<String, dynamic>? jsonData = value.data();
+      //   final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+      //   caseDetailsAPIValue.result = CaseDetailsResultModel.fromJson(jsonData);
+      //   caseDetailsAPIValue.result?.caseDetails = caseDetails;
+      //   caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+      //       .result?.callDetails;
+      //   caseDetailsAPIValue.result?.callDetails?.sort((dynamic a, dynamic b) =>
+      //       (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+      //   Singleton.instance.caseCustomerName =
+      //       caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+      // });
+      // yield CaseDetailsLoadedState();
     }
 
     if (event is CaseDetailsInitialEvent) {
@@ -236,27 +236,27 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       });
       // check internet
       if (await Connectivity().checkConnectivity() == ConnectivityResult.none) {
-        final Stream streamingDocument = FirebaseFirestore.instance
-            .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(Singleton.instance.agentRef)
-            .collection(Constants.firebaseCase)
-            .doc('${event.paramValues['caseID']}')
-            .snapshots();
-
-        await streamingDocument.first.then((value) {
-          final Map<String, dynamic>? jsonData = value.data();
-          final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
-          caseDetailsAPIValue.result =
-              CaseDetailsResultModel.fromJson(jsonData);
-          caseDetailsAPIValue.result?.caseDetails = caseDetails;
-          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-              .result?.callDetails;
-          caseDetailsAPIValue.result?.callDetails?.sort(
-              (dynamic a, dynamic b) =>
-                  (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
-          Singleton.instance.caseCustomerName =
-              caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
-        });
+        // final Stream streamingDocument = FirebaseFirestore.instance
+        //     .collection(Singleton.instance.firebaseDatabaseName)
+        //     .doc(Singleton.instance.agentRef)
+        //     .collection(Constants.firebaseCase)
+        //     .doc('${event.paramValues['caseID']}')
+        //     .snapshots();
+        //
+        // await streamingDocument.first.then((value) {
+        //   final Map<String, dynamic>? jsonData = value.data();
+        //   final CaseDetails caseDetails = CaseDetails.fromJson(jsonData!);
+        //   caseDetailsAPIValue.result =
+        //       CaseDetailsResultModel.fromJson(jsonData);
+        //   caseDetailsAPIValue.result?.caseDetails = caseDetails;
+        //   caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
+        //       .result?.callDetails;
+        //   caseDetailsAPIValue.result?.callDetails?.sort(
+        //       (dynamic a, dynamic b) =>
+        //           (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
+        //   Singleton.instance.caseCustomerName =
+        //       caseDetailsAPIValue.result?.caseDetails?.cust ?? '';
+        // });
       } else {
         isNoInternetAndServerError = false;
         debugPrint(caseId);
@@ -413,38 +413,38 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         // yield CDNoInternetState();
         //Getting event details from firebase databse
-        await FirebaseFirestore.instance
-            .collection(Singleton.instance.firebaseDatabaseName)
-            .doc(Singleton.instance.agentRef)
-            .collection(Constants
-                .firebaseEvent) // To get the events from event collection
-            .orderBy('createdAt', descending: true)
-            .where(Constants.caseId,
-                isEqualTo: caseId) //To find respective events of case details
-            .limit(5) // Need to show the last five events only
-            .get()
-            .then((QuerySnapshot<Map<String, dynamic>> value) {
-          if (value.docs.isNotEmpty) {
-            //temporaryList for events list
-            // ignore: prefer_final_locals
-            List<EvnetDetailsResultsModel>? results =
-                <EvnetDetailsResultsModel>[];
-            for (QueryDocumentSnapshot<Map<String, dynamic>> element
-                in value.docs) {
-              debugPrint('element--> ${element.data()}');
-              try {
-                results.add(EvnetDetailsResultsModel.fromJson(element.data()));
-              } catch (e) {
-                debugPrint(e.toString());
-              }
-            }
-            eventDetailsAPIValues.result = results.reversed.toList();
-            // eventDetailsAPIValues.result =
-            //     eventDetailsAPIValues.result!.reversed.toList();
-          } else {
-            eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
-          }
-        });
+        // await FirebaseFirestore.instance
+        //     .collection(Singleton.instance.firebaseDatabaseName)
+        //     .doc(Singleton.instance.agentRef)
+        //     .collection(Constants
+        //         .firebaseEvent) // To get the events from event collection
+        //     .orderBy('createdAt', descending: true)
+        //     .where(Constants.caseId,
+        //         isEqualTo: caseId) //To find respective events of case details
+        //     .limit(5) // Need to show the last five events only
+        //     .get()
+        //     .then((QuerySnapshot<Map<String, dynamic>> value) {
+        //   if (value.docs.isNotEmpty) {
+        //     //temporaryList for events list
+        //     // ignore: prefer_final_locals
+        //     List<EvnetDetailsResultsModel>? results =
+        //         <EvnetDetailsResultsModel>[];
+        //     for (QueryDocumentSnapshot<Map<String, dynamic>> element
+        //         in value.docs) {
+        //       debugPrint('element--> ${element.data()}');
+        //       try {
+        //         results.add(EvnetDetailsResultsModel.fromJson(element.data()));
+        //       } catch (e) {
+        //         debugPrint(e.toString());
+        //       }
+        //     }
+        //     eventDetailsAPIValues.result = results.reversed.toList();
+        //     // eventDetailsAPIValues.result =
+        //     //     eventDetailsAPIValues.result!.reversed.toList();
+        //   } else {
+        //     eventDetailsAPIValues.result = <EvnetDetailsResultsModel>[];
+        //   }
+        // });
       } else {
         final Map<String, dynamic> getEventDetailsData =
             await APIRepository.apiRequest(APIRequestType.get,

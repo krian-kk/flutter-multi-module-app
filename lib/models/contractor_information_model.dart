@@ -151,18 +151,18 @@ class ContractorResult {
   int? perDayReceiptLimit;
   bool? autoApprovalReceipt;
   String? receiptAckSmsTemplate;
-  bool? sendSms;
+  bool? sendSms; //using
   bool? autoApprovalReceiptTelecalling;
   bool? attachBankToAgrRef;
   bool? bankExistCheck;
   String? reportEndDate;
   String? reportStartDate;
-  bool? cloudTelephony;
-  bool? contactMasking;
-  bool? showSendRepaymentInfo;
+  bool? cloudTelephony; //using
+  bool? contactMasking; //using
+  bool? showSendRepaymentInfo; //using
   String? repaymentSmsTemplate;
   String? callTriedSmsTemplate;
-  bool? showCallTriedSmsButton;
+  bool? showCallTriedSmsButton;//using
   bool? ptpSms;
   String? ptpSmsTemplate;
   bool? disabledTcRecommendFieldCollect;
@@ -182,10 +182,10 @@ class ContractorResult {
   String? appBuildVersion;
   bool? hideSendRepaymentInfoWhatsappButton;
   bool? enableAgencyManagement = false;
-  String? repaymentWhatsappTemplate;
-  String? sendRepaymentInfoWhatsappTemplateName;
-  String? googleMapsApiKey;
-  AllocationTemplateConfig? allocationTemplateConfig;
+  String? repaymentWhatsappTemplate; //using
+  String? sendRepaymentInfoWhatsappTemplateName;//using
+  String? googleMapsApiKey;//using
+  AllocationTemplateConfig? allocationTemplateConfig;//using
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

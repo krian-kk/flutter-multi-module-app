@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -289,338 +287,334 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Firebase.initializeApp(),
+        future: null,
         builder: (context, snapshot) {
-          return FutureBuilder(
-              future: FirebaseMessaging.instance.getToken(),
-              builder: (context, snapshot) {
-                if (snapshot.data != null) {
-                  return BlocListener<LoginBloc, LoginState>(
-                    bloc: bloc,
-                    listener: (context, state) async {
-                      if (state is NoInternetConnectionState) {
-                        AppUtils.noInternetSnackbar(context);
-                      }
-                      if (state is EnterSecurePinState) {
-                        setState(() {
-                          bloc.isSubmit = true;
-                          bloc.isLoading = false;
-                          bloc.isLoaded = false;
-                        });
-                        if (state.securePin == null) {
-                          await showCreateMPinDialogBox();
-                        } else {
-                          await showComformSecurePinDialogBox(
-                            state.securePin.toString(),
-                            state.userName.toString(),
-                          );
-                        }
-                      }
-                      if (state is HomeTabState) {
-                        await Navigator.pushReplacementNamed(
-                            context, AppRoutes.homeTabScreen,
-                            arguments: widget.notificationData);
+          if (snapshot.data != null) {
+            return BlocListener<LoginBloc, LoginState>(
+              bloc: bloc,
+              listener: (context, state) async {
+                if (state is NoInternetConnectionState) {
+                  AppUtils.noInternetSnackbar(context);
+                }
+                if (state is EnterSecurePinState) {
+                  setState(() {
+                    bloc.isSubmit = true;
+                    bloc.isLoading = false;
+                    bloc.isLoaded = false;
+                  });
+                  if (state.securePin == null) {
+                    await showCreateMPinDialogBox();
+                  } else {
+                    await showComformSecurePinDialogBox(
+                      state.securePin.toString(),
+                      state.userName.toString(),
+                    );
+                  }
+                }
+                if (state is HomeTabState) {
+                  await Navigator.pushReplacementNamed(
+                      context, AppRoutes.homeTabScreen,
+                      arguments: widget.notificationData);
 
-                      }
-                      if(state is SetPasswordState){
-                        setPasswordBottomSheet(context,state.name.toString());
-                      }
+                }
+                if(state is SetPasswordState){
+                  setPasswordBottomSheet(context,state.name.toString());
+                }
 
-                      if (state is ResendOTPState) {
-                        resendOTPBottomSheet(context);
-                      }
-                      if (state is SignInLoadingState) {
-                        bloc.isSubmit = false;
-                        bloc.isLoading = true;
-                      }
-                      if (state is SignInLoadedState) {
-                        bloc.isSubmit = true;
-                        bloc.isLoading = false;
-                      }
-                      if (state is SignInCompletedState) {
-                        bloc.isSubmit = false;
-                        bloc.isLoaded = true;
-                      }
+                if (state is ResendOTPState) {
+                  resendOTPBottomSheet(context);
+                }
+                if (state is SignInLoadingState) {
+                  bloc.isSubmit = false;
+                  bloc.isLoading = true;
+                }
+                if (state is SignInLoadedState) {
+                  bloc.isSubmit = true;
+                  bloc.isLoading = false;
+                }
+                if (state is SignInCompletedState) {
+                  bloc.isSubmit = false;
+                  bloc.isLoaded = true;
+                }
 
-                      if (state is TriggerHomeTabState) {
-                        bloc.add(TriggeredHomeTabEvent(userId.text));
-                      }
-                    },
-                    child: BlocBuilder<LoginBloc, LoginState>(
-                      bloc: bloc,
-                      builder: (context, state) {
-                        return Scaffold(
-                          backgroundColor: ColorResource.colorF8F9FB,
-                          body: KeyboardActions(
-                            enable: (Platform.isIOS),
-                            config: KeyboardActionsConfig(
-                              keyboardActionsPlatform:
-                                  KeyboardActionsPlatform.IOS,
-                              actions: [
-                                KeyboardActionsItem(
-                                  focusNode: passwords,
-                                  displayArrows: false,
-                                ),
-                              ],
-                            ),
-                            child: SingleChildScrollView(
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Form(
-                                    key: _formKey,
-                                    child: Column(
-                                      children: [
-                                        const SizedBox(height: 40),
-                                        Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 35),
-                                            child: SvgPicture.asset(
-                                                ImageResource.collectLogo)),
-                                        const SizedBox(
-                                          height: 17,
-                                        ),
-                                        SvgPicture.asset(ImageResource.login),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        CustomTextField(
-                                          Languages.of(context)!.userId,
-                                          userId,
-                                          isFill: true,
-                                          isBorder: true,
-                                          isLabel: true,
-                                          keyBoardType:
-                                              TextInputType.emailAddress,
-                                          errorborderColor:
-                                              ColorResource.color23375A,
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          validationRules: const ['required'],
-                                          focusNode: username,
-                                          onEditing: () {
-                                            username.unfocus();
-                                            _formKey.currentState!.validate();
-                                          },
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          validatorCallBack: (bool values) {},
-                                        ),
-                                        const SizedBox(
-                                          height: 23,
-                                        ),
-                                        CustomTextField(
-                                          Languages.of(context)!.password,
-                                          password,
-                                          obscureText: _obscureText,
-                                          isFill: true,
-                                          isBorder: true,
-                                          isLabel: true,
-                                          borderColor:
-                                              ColorResource.color23375A,
-                                          errorborderColor:
-                                              ColorResource.color23375A,
-                                          keyBoardType: TextInputType.text,
-                                          validationRules: const ['required'],
-                                          focusNode: passwords,
-                                          onEditing: () {
-                                            passwords.unfocus();
-                                            _formKey.currentState!.validate();
-                                          },
-                                          autovalidateMode: AutovalidateMode
-                                              .onUserInteraction,
-                                          validatorCallBack: (bool values) {},
-                                          suffixWidget: InkWell(
-                                            onTap: _passwordVisibleOrNot,
-                                            child: Icon(
-                                              _obscureText
-                                                  ? Icons.visibility_off
-                                                  : Icons.visibility,
-                                              color: ColorResource.color23375A,
-                                            ),
-                                          ),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Checkbox(
-                                                value: _isChecked,
-                                                activeColor:
-                                                    ColorResource.color23375A,
-                                                onChanged: (bool? newValue) {
-                                                  final bool isValid = _formKey
-                                                      .currentState!
-                                                      .validate();
-                                                  if (!isValid) {
-                                                    return;
-                                                  } else {
-                                                    _handleRemeberme(newValue!);
-                                                  }
-                                                }),
-                                            CustomText(
-                                              Languages.of(context)!.rememberMe,
-                                              color: ColorResource.color23375A,
-                                            )
-                                          ],
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        AnimatedContainer(
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                            onEnd: () => setState(() {
-                                                  bloc.isAnimating =
-                                                      !bloc.isAnimating;
-                                                }),
-                                            width: bloc.isSubmit
-                                                ? MediaQuery.of(context)
-                                                    .size
-                                                    .width
-                                                : 90,
-                                            height: 55,
-                                            child: bloc.isAnimating ||
-                                                    bloc.isSubmit
-                                                ? loginButton(
-                                                    fcmToken: snapshot.data
-                                                        .toString())
-                                                : circularLoading(
-                                                    bloc.isLoaded)),
-                                        const SizedBox(
-                                          height: 17,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            bloc.add(ResendOTPEvent());
-                                          },
-                                          child: CustomText(
-                                            Languages.of(context)!
-                                                .resetPassword,
-                                            fontSize: FontSize.sixteen,
-                                            fontWeight: FontWeight.w600,
-                                            color: ColorResource.color23375A,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        if (userId.text != '' ||
-                                            password.text != '')
-                                          CustomButton(
-                                            Languages.of(context)!
-                                                .loginViaDifferentUser,
-                                            onTap: bloc.isSubmit
-                                                ? () {
-                                                    if (userId.text != '' ||
-                                                        password.text != '') {
-                                                      setState(() {
-                                                        userId.clear();
-                                                        password.clear();
-                                                        _isChecked = false;
-                                                        // Signin submit button activities
-                                                      });
-                                                      AppUtils.showToast(Languages
-                                                              .of(context)!
-                                                          .logiginDeifferentSucessMessage);
-                                                    } else {
-                                                      AppUtils.showToast(Languages
-                                                              .of(context)!
-                                                          .logiginDeifferentFailMessage);
-                                                    }
-                                                  }
-                                                : () {
-                                                    AppUtils.showToast(
-                                                      Languages.of(context)!
-                                                          .pleaseWait,
-                                                    );
-                                                  },
-                                            borderColor:
-                                                ColorResource.color23375A,
-                                            cardShape: 90,
-                                            fontSize: FontSize.sixteen,
-                                            textColor:
-                                                ColorResource.color23375A,
-                                            buttonBackgroundColor:
-                                                ColorResource.colorffffff,
-                                          ),
-                                        // const SizedBox(height: 10),
-                                      ],
+                if (state is TriggerHomeTabState) {
+                  bloc.add(TriggeredHomeTabEvent(userId.text));
+                }
+              },
+              child: BlocBuilder<LoginBloc, LoginState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  return Scaffold(
+                    backgroundColor: ColorResource.colorF8F9FB,
+                    body: KeyboardActions(
+                      enable: (Platform.isIOS),
+                      config: KeyboardActionsConfig(
+                        keyboardActionsPlatform:
+                            KeyboardActionsPlatform.IOS,
+                        actions: [
+                          KeyboardActionsItem(
+                            focusNode: passwords,
+                            displayArrows: false,
+                          ),
+                        ],
+                      ),
+                      child: SingleChildScrollView(
+                        child: Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 40),
+                                  Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 35),
+                                      child: SvgPicture.asset(
+                                          ImageResource.collectLogo)),
+                                  const SizedBox(
+                                    height: 17,
+                                  ),
+                                  SvgPicture.asset(ImageResource.login),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  CustomTextField(
+                                    Languages.of(context)!.userId,
+                                    userId,
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    keyBoardType:
+                                        TextInputType.emailAddress,
+                                    errorborderColor:
+                                        ColorResource.color23375A,
+                                    borderColor:
+                                        ColorResource.color23375A,
+                                    validationRules: const ['required'],
+                                    focusNode: username,
+                                    onEditing: () {
+                                      username.unfocus();
+                                      _formKey.currentState!.validate();
+                                    },
+                                    autovalidateMode: AutovalidateMode
+                                        .onUserInteraction,
+                                    validatorCallBack: (bool values) {},
+                                  ),
+                                  const SizedBox(
+                                    height: 23,
+                                  ),
+                                  CustomTextField(
+                                    Languages.of(context)!.password,
+                                    password,
+                                    obscureText: _obscureText,
+                                    isFill: true,
+                                    isBorder: true,
+                                    isLabel: true,
+                                    borderColor:
+                                        ColorResource.color23375A,
+                                    errorborderColor:
+                                        ColorResource.color23375A,
+                                    keyBoardType: TextInputType.text,
+                                    validationRules: const ['required'],
+                                    focusNode: passwords,
+                                    onEditing: () {
+                                      passwords.unfocus();
+                                      _formKey.currentState!.validate();
+                                    },
+                                    autovalidateMode: AutovalidateMode
+                                        .onUserInteraction,
+                                    validatorCallBack: (bool values) {},
+                                    suffixWidget: InkWell(
+                                      onTap: _passwordVisibleOrNot,
+                                      child: Icon(
+                                        _obscureText
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                        color: ColorResource.color23375A,
+                                      ),
                                     ),
                                   ),
-                                ),
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                          value: _isChecked,
+                                          activeColor:
+                                              ColorResource.color23375A,
+                                          onChanged: (bool? newValue) {
+                                            final bool isValid = _formKey
+                                                .currentState!
+                                                .validate();
+                                            if (!isValid) {
+                                              return;
+                                            } else {
+                                              _handleRemeberme(newValue!);
+                                            }
+                                          }),
+                                      CustomText(
+                                        Languages.of(context)!.rememberMe,
+                                        color: ColorResource.color23375A,
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  AnimatedContainer(
+                                      duration: const Duration(
+                                          milliseconds: 300),
+                                      onEnd: () => setState(() {
+                                            bloc.isAnimating =
+                                                !bloc.isAnimating;
+                                          }),
+                                      width: bloc.isSubmit
+                                          ? MediaQuery.of(context)
+                                              .size
+                                              .width
+                                          : 90,
+                                      height: 55,
+                                      child: bloc.isAnimating ||
+                                              bloc.isSubmit
+                                          ? loginButton(
+                                              fcmToken: snapshot.data
+                                                  .toString())
+                                          : circularLoading(
+                                              bloc.isLoaded)),
+                                  const SizedBox(
+                                    height: 17,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      bloc.add(ResendOTPEvent());
+                                    },
+                                    child: CustomText(
+                                      Languages.of(context)!
+                                          .resetPassword,
+                                      fontSize: FontSize.sixteen,
+                                      fontWeight: FontWeight.w600,
+                                      color: ColorResource.color23375A,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  if (userId.text != '' ||
+                                      password.text != '')
+                                    CustomButton(
+                                      Languages.of(context)!
+                                          .loginViaDifferentUser,
+                                      onTap: bloc.isSubmit
+                                          ? () {
+                                              if (userId.text != '' ||
+                                                  password.text != '') {
+                                                setState(() {
+                                                  userId.clear();
+                                                  password.clear();
+                                                  _isChecked = false;
+                                                  // Signin submit button activities
+                                                });
+                                                AppUtils.showToast(Languages
+                                                        .of(context)!
+                                                    .logiginDeifferentSucessMessage);
+                                              } else {
+                                                AppUtils.showToast(Languages
+                                                        .of(context)!
+                                                    .logiginDeifferentFailMessage);
+                                              }
+                                            }
+                                          : () {
+                                              AppUtils.showToast(
+                                                Languages.of(context)!
+                                                    .pleaseWait,
+                                              );
+                                            },
+                                      borderColor:
+                                          ColorResource.color23375A,
+                                      cardShape: 90,
+                                      fontSize: FontSize.sixteen,
+                                      textColor:
+                                          ColorResource.color23375A,
+                                      buttonBackgroundColor:
+                                          ColorResource.colorffffff,
+                                    ),
+                                  // const SizedBox(height: 10),
+                                ],
                               ),
                             ),
                           ),
-                          floatingActionButton: Visibility(
-                            visible: false,
-                            // visible: WidgetsBinding
-                            //             .instance.window.viewInsets.bottom >
-                            //         0.0
-                            //     ? false
-                            //     : true,
-                            child: GestureDetector(
-                              onTap: () {
-                                webViewScreen(context,
-                                    urlAddress:
-                                        'https://origahelpdesk.w3spaces.com');
-                              },
-                              child: Container(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.white),
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(100),
-                                        ),
-                                      ),
-                                      padding: const EdgeInsets.all(2),
-                                      child: const Icon(
-                                        Icons.question_mark_rounded,
-                                        size: 14.0,
+                        ),
+                      ),
+                    ),
+                    floatingActionButton: Visibility(
+                      visible: false,
+                      // visible: WidgetsBinding
+                      //             .instance.window.viewInsets.bottom >
+                      //         0.0
+                      //     ? false
+                      //     : true,
+                      child: GestureDetector(
+                        onTap: () {
+                          webViewScreen(context,
+                              urlAddress:
+                                  'https://origahelpdesk.w3spaces.com');
+                        },
+                        child: Container(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(2),
+                                child: const Icon(
+                                  Icons.question_mark_rounded,
+                                  size: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                Languages.of(context)!.help,
+                                textScaleFactor: 3,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .subtitle1!
+                                    .copyWith(
                                         color: Colors.white,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(
-                                      Languages.of(context)!.help,
-                                      textScaleFactor: 3,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                              color: Colors.white,
-                                              fontSize: 6,
-                                              backgroundColor:
-                                                  Colors.transparent),
-                                    )
-                                  ],
-                                ),
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(30),
-                                      bottomRight: Radius.circular(30),
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(5)),
-                                  color: ColorResource.color23375A,
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                              ),
-                            ),
+                                        fontSize: 6,
+                                        backgroundColor:
+                                            Colors.transparent),
+                              )
+                            ],
                           ),
-                        );
-                      },
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30),
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(5)),
+                            color: ColorResource.color23375A,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                        ),
+                      ),
                     ),
                   );
-                } else {
-                  return Container(
-                    color: Colors.white,
-                    alignment: Alignment.center,
-                    child: const CustomLoadingWidget(),
-                  );
-                }
-              });
+                },
+              ),
+            );
+          } else {
+            return Container(
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: const CustomLoadingWidget(),
+            );
+          }
         });
   }
 
