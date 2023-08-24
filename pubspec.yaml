@@ -44,12 +44,12 @@ dependencies:
   platform_device_id: ^1.0.1
   workmanager: ^0.5.0
   #  firebase_crashlytics: ^3.0.12
-  firebase_database: ^10.2.4
-  cloud_firestore: ^4.8.1
-  firebase_messaging: ^14.2.2
+#  firebase_database: ^10.2.4
+#  cloud_firestore: ^4.8.1
+#  firebase_messaging: ^14.2.2
   ably_flutter: ^1.2.15
   #  freerasp: 4.0.0
-  firebase_core: ^2.15.0
+#  firebase_core: ^2.15.0
   #new code from here
   go_router: ^8.0.0
   json_annotation: ^4.8.1
@@ -65,6 +65,9 @@ dependencies:
     path: core/repository
   languages:
     path: core/languages
+  infinite_scroll_pagination: ^3.2.0
+  rxdart: ^0.27.7
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   equatable: ^2.0.3

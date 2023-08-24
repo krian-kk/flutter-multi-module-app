@@ -1,17 +1,11 @@
 import UIKit
 import Flutter
-//import GoogleMaps
-// import Firebase
-// import FirebaseMessaging
 import AVFoundation
 
 @UIApplicationMain
-
-
 @objc class AppDelegate: FlutterAppDelegate,AVAudioRecorderDelegate, AVAudioPlayerDelegate {
 
      var result: FlutterResult?
-
 
     override func application(
         _ application: UIApplication,
@@ -21,12 +15,6 @@ import AVFoundation
         let audioSession : AVAudioSession = AVAudioSession.sharedInstance()
         var audioPlayer : AVAudioPlayer = AVAudioPlayer()
         var audioRecord: AVAudioRecorder!
-
-//        let settings = [  AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-//                                  AVSampleRateKey: 12000,
-//                            AVNumberOfChannelsKey: 1,
-//                         AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue ]
-
         let settings =   [  AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
                             AVSampleRateKey: 48000,
                             AVNumberOfChannelsKey: 2,
@@ -36,16 +24,7 @@ import AVFoundation
         let controller : FlutterViewController = window?.rootViewController as! FlutterViewController
         let recordChannel = FlutterMethodChannel(name: "recordAudioChannel",
                                                  binaryMessenger: controller.binaryMessenger)
-
-
-        //    Messaging.messaging().delegate = self;
-//         FirebaseApp.configure()
-//         application.registerForRemoteNotifications()
-        // GMSServices.provideAPIKey("AIzaSyCZI9K_T5crucTDPuNMvolMqRBL_srEMOU")
-//        GMSServices.provideAPIKey("AIzaSyCd2C9YZHP8pHM36PANa8eOCfGU9oCyKTE")
         GeneratedPluginRegistrant.register(with: self)
-//         Messaging.messaging().isAutoInitEnabled = true;
-
         if #available(iOS 10.0, *) {
             // For iOS 10 display notification (sent via APNS)
             UNUserNotificationCenter.current().delegate = self
@@ -58,22 +37,11 @@ import AVFoundation
             UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
             application.registerUserNotificationSettings(settings)
         }
-//         application.registerForRemoteNotifications()
-//         Messaging.messaging().delegate = self
-//         UNUserNotificationCenter.current().delegate = self
 
         recordChannel.setMethodCallHandler({
             [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
-            // guard call.method == "initAudioRecord" else {
-            //     result(FlutterMethodNotImplemented)
-            //   return
-            // }
-
             self?.result = result
-
-
             guard let args = call.arguments as? [String : Any] else {return}
-//            let filePath = args["filePath"] as! String
             if call.method == "startRecordAudio" {
                 let documentsPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
                 mPath = documentsPath + "/" + String(10) + ".m4a"
@@ -103,17 +71,8 @@ import AVFoundation
                     result(true)
                 }
             } else if(call.method == "playRecordAudio") {
-//                do {
-//                    audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: filePath))
-//                    audioPlayer.prepareToPlay()
-//                    audioPlayer.delegate = self
-//                    audioPlayer.play()
                     print("Play Audio")
                     result(true)
-//                } catch let error {
-//                    result(false)
-//                    print(error)
-//                }
             } else if(call.method == "stopPlayingAudio") {
                 print("Stop Audio")
                 if(audioRecord == nil ) {
