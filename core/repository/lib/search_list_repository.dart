@@ -5,16 +5,16 @@ import 'package:preference_helper/preference_helper.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 
 abstract class SearchListRepository {
-  Future<ApiResult<SearchListResponse>> getSearchResultData(String urlParams);
+  Future<ApiResult<List<SearchListResponse>>> getSearchResultData(String urlParams);
 }
 
 class SearchListRepositoryImpl extends SearchListRepository {
   SearchListApiProvider apiProvider = SearchListApiProvider();
 
   @override
-  Future<ApiResult<SearchListResponse>> getSearchResultData(String urlParams) async {
+  Future<ApiResult<List<SearchListResponse>>> getSearchResultData(String urlParams) async {
     String? accessToken = await getAccessToken();
-    final ApiResult<SearchListResponse> response =
+    final ApiResult<List<SearchListResponse>> response =
         await apiProvider.getSearchCaseListData(accessToken,urlParams);
     return response;
   }

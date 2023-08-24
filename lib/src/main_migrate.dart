@@ -14,12 +14,23 @@ Future<void> main() async {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  static void setLocale(BuildContext context, Locale newLocale) {
+    final _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    state!.setLocale(newLocale);
+  }
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   Locale? _locale;
+
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,12 +68,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
   }
 
   @override

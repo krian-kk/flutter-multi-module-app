@@ -225,15 +225,16 @@ class _SearchScreenState extends State<SearchScreen> {
             fontSize: Sizes.p16,
             cardShape: 5,
             onTap: () {
-              if (accountNoController.text.isNotEmpty ||
-                  customerNameController.text.isNotEmpty ||
-                  bankNameController.text.isNotEmpty ||
-                  bucketController.text.isNotEmpty ||
-                  statusController.text.isNotEmpty ||
-                  pincodeController.text.isNotEmpty ||
-                  customerIDController.text.isNotEmpty ||
-                  isStarOnly ||
-                  isMyRecentActivity) {
+              // if (accountNoController.text.isNotEmpty ||
+              //     customerNameController.text.isNotEmpty ||
+              //     bankNameController.text.isNotEmpty ||
+              //     bucketController.text.isNotEmpty ||
+              //     statusController.text.isNotEmpty ||
+              //     pincodeController.text.isNotEmpty ||
+              //     customerIDController.text.isNotEmpty ||
+              //     isStarOnly ||
+              //     isMyRecentActivity)
+              if (true) {
                 BlocProvider.of<SearchBloc>(context).add(NavigatePopEvent());
               } else {
                 AppUtils.showToast(

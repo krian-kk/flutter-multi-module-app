@@ -7,7 +7,6 @@ import 'package:design_system/app_sizes.dart';
 import 'package:design_system/widgets/longRoundedBtnIcon_widget.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
-import 'package:design_system/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +33,6 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/skeleton.dart';
 import 'package:origa/utils/string_resource.dart';
-import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:repository/file_repository.dart';
@@ -214,14 +212,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       //       bloc.add(ClickNotificationEvent());
       //     }),
       ProfileNavigation(
-          title: ConstantsResourceDesign.selectAppLang,
+          title: Languages.of(context)!.selectAppLanguage,
           isEnable: true,
           onTap: () {
             BlocProvider.of<ProfileBloc>(context)
                 .add(InitialClickChangeLanguageEvent());
           }),
       ProfileNavigation(
-          title: ConstantsResourceDesign.selectS2tLang,
+          title: Languages.of(context)!.selectSpeechToTextLanguage,
           isEnable: true,
           // Singleton.instance.usertype == Constants.fieldagent
           //     ? true
@@ -258,9 +256,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: BlocProvider.of<ProfileBloc>(context),
       listener: (BuildContext context, ProfileState state) async {
-        if (state is PostDataApiSuccessState) {
-          AppUtils.topSnackBar(context, StringResource.profileImageChanged);
-        }
         if (state is OpenChangeLanguagePopUpState) {
           languageBottomSheet();
         }
@@ -278,9 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           messageShowBottomSheet(fromID: state.fromId, toID: state.toId);
           // BlocProvider.of<ProfileBloc>(context).newMsgCount = 0;
         }
-        if (state is ChangeProfileImageState) {
-          profileImageShowBottomSheet();
-        }
+
         if (state is SuccessUpdatedProfileImageState) {
           AppUtils.topSnackBar(context, StringResource.profileImageChanged);
         }
@@ -795,82 +788,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         });
   }
 
-  profileImageShowBottomSheet() {
-    showModalBottomSheet(
-        context: context,
-        isDismissible: false,
-        enableDrag: false,
-        isScrollControlled: true,
-        backgroundColor: ColorResourceDesign.whiteColor,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) => StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                  height: 270.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            CustomText(
-                              Languages.of(context)!
-                                  .addAProfilePhoto
-                                  .toUpperCase(),
-                              color: ColorResourceDesign.textColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                            const Spacer(),
-                            GestureDetector(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: SvgPicture.asset(ImageResource.close))
-                          ],
-                        ),
-                        const SizedBox(height: 60),
-                        CustomButton(
-                          Languages.of(context)!.captureImage.toUpperCase(),
-                          cardShape: 75.0,
-                          textColor: ColorResourceDesign.blueColor,
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w700,
-                          padding: 15.0,
-                          borderColor: ColorResourceDesign.grayTwo,
-                          buttonBackgroundColor: ColorResourceDesign.grayTwo,
-                          isLeading: true,
-                          // onTap: () => pickImage(ImageSource.camera, context),
-                          trailingWidget:
-                              SvgPicture.asset(ImageResource.captureImage),
-                        ),
-                        const SizedBox(height: 20),
-                        CustomButton(
-                          Languages.of(context)!.uploadPhoto,
-                          textColor: ColorResourceDesign.blueColor,
-                          fontSize: FontSize.sixteen,
-                          fontWeight: FontWeight.w700,
-                          padding: 15.0,
-                          cardShape: 75.0,
-                          // onTap: () => pickImage(ImageSource.gallery, context),
-                          borderColor: ColorResourceDesign.grayTwo,
-                          buttonBackgroundColor: ColorResourceDesign.grayTwo,
-                          isLeading: true,
-                          trailingWidget:
-                              SvgPicture.asset(ImageResource.uploadPhoto),
-                        ),
-                      ],
-                    ),
-                  ),
-                )));
-  }
-
   webViewScreen(BuildContext context, {required String urlAddress}) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -1123,8 +1040,8 @@ class GetPhotoView extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(ConstantsResourceDesign.addDP,
-                        style: TextStyle(
+                    Text(Languages.of(context)!.captureImage.toUpperCase(),
+                        style: const TextStyle(
                           color: ColorResourceDesign.textColor,
                           fontSize: Sizes.p14,
                           fontWeight: FontResourceDesign.textFontWeightSemiBold,
@@ -1143,7 +1060,7 @@ class GetPhotoView extends StatelessWidget {
                 ),
                 const SizedBox(height: 60),
                 LongRoundedBtnIcon(
-                  btnText: ConstantsResourceDesign.captureImage,
+                  btnText: Languages.of(context)!.captureImage,
                   isBorder: false,
                   onPressed: () async {
                     Navigator.pop(context);
@@ -1152,14 +1069,14 @@ class GetPhotoView extends StatelessWidget {
                             imageType: ImagePickerType.camera.toString()));
                   },
                   // btnImage: SvgPicture.asset(Assets.images.captureImage),
-                  btnImage: SvgPicture.asset(Assets.images.caseCallPhone),
+                  btnImage: SvgPicture.asset(ImageResource.captureImage),
                   btnBackgroundColor: ColorResourceDesign.lightGray,
                   btnTextColor: ColorResourceDesign.textColor,
                   btnWidth: 340,
                 ),
                 gapH20,
                 LongRoundedBtnIcon(
-                  btnText: ConstantsResourceDesign.uploadPhoto,
+                  btnText: Languages.of(context)!.uploadPhoto,
                   isBorder: false,
                   onPressed: () async {
                     Navigator.pop(context);
@@ -1167,7 +1084,7 @@ class GetPhotoView extends StatelessWidget {
                         InitialImageEvent(
                             imageType: ImagePickerType.gallery.toString()));
                   },
-                  btnImage: SvgPicture.asset(Assets.images.caseCollections),
+                  btnImage: SvgPicture.asset(ImageResource.uploadPhoto),
                   // btnImage: SvgPicture.asset(Assets.images.uploadPhoto),
                   btnBackgroundColor: ColorResourceDesign.lightGray,
                   btnTextColor: ColorResourceDesign.textColor,
@@ -1179,15 +1096,3 @@ class GetPhotoView extends StatelessWidget {
     );
   }
 }
-
-///Stop here
-// import 'package:flutter/material.dart';
-//
-// class ProfileScreen extends StatelessWidget {
-//   const ProfileScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Text('Profile');
-//   }
-// }

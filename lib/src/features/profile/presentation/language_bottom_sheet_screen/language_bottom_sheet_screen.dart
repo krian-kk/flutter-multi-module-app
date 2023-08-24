@@ -36,8 +36,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     ratioIndex = BlocProvider.of<ProfileBloc>(widget.mcontext).ratioIndex ?? 0;
     setLanguageCode =
         BlocProvider.of<ProfileBloc>(widget.mcontext).setLangCode ?? 'en';
-    print(ratioIndex);
-    print(setLanguageCode);
+    // print(ratioIndex);
+    // print(setLanguageCode);
   }
 
   @override
@@ -147,6 +147,7 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
                         onTap: () {
+                          print(setLanguageCode);
                           changeLanguage(context, setLanguageCode!);
                           BlocProvider.of<ProfileBloc>(widget.mcontext)
                               .ratioIndex = ratioIndex;
