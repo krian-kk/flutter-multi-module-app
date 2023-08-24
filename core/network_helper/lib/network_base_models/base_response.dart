@@ -50,4 +50,12 @@ class SingleResponse<T> extends BaseResponse {
         message: json["message"],
         result: create(json["result"]));
   }
+
+  factory SingleResponse.fromJson2(
+      Map<String, dynamic> json) {
+    return SingleResponse<T>(
+        status: json["status"],
+        message: json["message"],
+        result: json["result"]);
+  }
 }

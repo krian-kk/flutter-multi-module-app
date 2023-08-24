@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:cross_platform_crypto/cross_platform_crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:network_helper/utils/utils.dart';
 
 const _defaultConnectTimeout = Duration.millisecondsPerMinute;
 const _defaultReceiveTimeout = Duration.millisecondsPerMinute;
@@ -15,15 +14,30 @@ const httpCode402 = 402;
 const httpCode403 = 403;
 const httpCode404 = 404;
 
-const responseStatusKey = 'status';
-const responseResultKey = 'result';
-const responseResultDataKey = 'data';
+const keyStatus = 'status';
+const keyResult = 'result';
+const keyData = 'data';
+const keyEncryptedData = 'encryptedData';
+const keyAuthorization = 'authorization';
+const keyContentType = 'Content-Type';
+const jsonContentType = 'application/json';
+const multiPartContentType = 'multipart/form-data';
+const authTypeBearer = 'Bearer';
 
-const String baseUrl = 'https://dev-collect.m2pfintech.com/';
+const String baseUrl = 'https://uat-sbic-collect.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
 const String version = 'v1/';
 const String apiType = 'mobile-backend/';
 const String fieldAgent = 'agent/';
+
+String? getMobileBackendUrl(
+    {String? typeOfApi = apiType,
+    String? apiVersion = version,
+    String? agentType = fieldAgent}) {
+  String type = typeOfApi ?? "";
+  String? versionType = apiVersion ?? "";
+  return baseUrl + type + versionType + fieldAgent;
+}
 
 class DioClient {
   String accessToken = '';
@@ -72,7 +86,7 @@ class DioClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
-      return extractResponse(decryptResponse, response);
+      return _cryptoPlugin.extractResponse(decryptResponse, response);
     } catch (e) {
       rethrow;
     }
@@ -90,14 +104,14 @@ class DioClient {
     try {
       var response = await dio.post(
         uri,
-        data: data,
+        data: await _cryptoPlugin.checkForRequestBody(encryptRequestBody, data),
         queryParameters: queryParameters,
         options: options,
         cancelToken: cancelToken,
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-      return response.data;
+      return _cryptoPlugin.extractResponse(decryptResponse, response);
     } catch (e) {
       rethrow;
     }
@@ -149,49 +163,25 @@ class DioClient {
     }
   }
 
-  Future<dynamic> extractResponse(
-      bool decryptResponse, Response<dynamic> response) async {
-    if (response.data[responseStatusKey] == httpCode200 && decryptResponse) {
-      final Map<String, dynamic> responseData = {
-        'data': response.data[responseResultKey]
-      };
-      String text = await _cryptoPlugin.getDecryptedData(responseData) ?? '';
-      response.data[responseResultKey] = json.decode(text);
-    }
-    return response.data;
-  }
-
-  Future<dynamic> generateEncryptedRequest(
-      bool decryptResponse, Response<dynamic> response) async {
-    if (response.data[responseStatusKey] == httpCode200 && decryptResponse) {
-      final Map<String, dynamic> responseData = {
-        'data': response.data[responseResultKey]
-      };
-      String text = await _cryptoPlugin.sendEncryptedData(responseData) ?? '';
-      response.data[responseResultKey] = json.decode(text);
-    }
-    return response.data;
-  }
-
   Map<String, String> _getHeadersConfig(
       String accessToken, bool isMultiFormRequest) {
     if (accessToken.isNotEmpty) {
       if (isMultiFormRequest) {
         return {
-          'authorization': 'Bearer $accessToken',
-          'Content-Type': 'application/json'
+          keyAuthorization: '$authTypeBearer $accessToken',
+          keyContentType: jsonContentType
         };
       } else {
         return {
-          'authorization': 'Bearer $accessToken',
-          'Content-Type': 'application/json'
+          keyAuthorization: '$authTypeBearer $accessToken',
+          keyContentType: jsonContentType
         };
       }
     } else {
       if (isMultiFormRequest) {
-        return {'Content-Type': 'multipart/form-data'};
+        return {keyContentType: multiPartContentType};
       } else {
-        return {'Content-Type': 'application/json'};
+        return {keyContentType: jsonContentType};
       }
     }
   }
