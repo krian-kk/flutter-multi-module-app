@@ -761,6 +761,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   static const MethodChannel platform = MethodChannel('recordAudioChannel');
 
+  //todo plugin for configurable google map services
   Future<void> _setGoogleMapApiKey(String mapKey) async {
     final Map<String, dynamic> requestData = {'mapKey': mapKey};
     await platform.invokeMethod('setGoogleMapKey', requestData).then((value) {

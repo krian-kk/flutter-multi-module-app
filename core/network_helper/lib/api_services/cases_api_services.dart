@@ -10,20 +10,19 @@ class CasesApiService {
   static String priorityCasesV2 =
       "${getMobileBackendUrl(apiVersion: 'v2/')}case-details/priority?";
 
-  Future<ApiResult<List<PriorityCaseListModel>>> getCases(
+  Future<List<PriorityCaseListModel>> getCases(
       String accessToken, int limit, int pageNo) async {
     dynamic response;
     try {
       String url = priorityCasesV1;
       url = "${url}pageNo=$pageNo&limit=$limit";
       response = await DioClient(baseUrl, accessToken: accessToken)
-          .post(url, decryptResponse: true);
+          .get(url, decryptResponse: true);
       final mappedResponse =
           ListResponse.fromJson(response, PriorityCaseListModel.fromJson);
-      return ApiResult.success(
-          data: mappedResponse.result as List<PriorityCaseListModel>);
+      return mappedResponse.result as List<PriorityCaseListModel>;
     } catch (e) {
-      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+      return [];
     }
   }
 }

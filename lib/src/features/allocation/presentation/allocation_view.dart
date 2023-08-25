@@ -11,7 +11,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:origa/gen/assets.gen.dart';
 import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
-import 'package:repository/case_repository.dart';
 import 'package:repository/repo_utils.dart';
 
 class AllocationView extends StatefulWidget {
@@ -28,9 +27,6 @@ class _AllocationViewState extends State<AllocationView> {
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey);
-    });
     super.initState();
   }
 
@@ -38,30 +34,6 @@ class _AllocationViewState extends State<AllocationView> {
   void dispose() {
     super.dispose();
     _pagingController.dispose();
-  }
-
-  Future<void> fetchPage(int pageKey) async {
-    try {
-      String access = await getAccessToken();
-
-      final apiResult = await BlocProvider.of<PriorityBloc>(context)
-          .repository
-          .collectApiProvider
-          .getCases(access, _pageSize, pageKey);
-      List<PriorityCaseListModel> newItems = [];
-      apiResult.when(
-          success: (value) => {newItems = value ?? []},
-          failure: (failure) => {});
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey.toInt());
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
   }
 
   @override

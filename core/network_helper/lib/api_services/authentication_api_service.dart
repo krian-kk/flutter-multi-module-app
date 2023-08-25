@@ -56,11 +56,8 @@ class AuthenticationApiProvider {
     dynamic response;
     try {
       response = await DioClient(baseUrl).post(resendOtpEndPoint,
-          data: requestObject,
-          encryptRequestBody: true,
-          decryptResponse: false);
-      final mappedResponse =
-          SingleResponse.fromJson(response, BaseResponse.fromJson);
+          data: requestObject, encryptRequestBody: true);
+      final mappedResponse = SingleResponse.fromJson2(response);
       return ApiResult.success(data: mappedResponse.result);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
