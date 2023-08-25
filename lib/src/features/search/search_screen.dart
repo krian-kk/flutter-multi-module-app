@@ -1,13 +1,13 @@
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
+import 'package:domain_models/common/searching_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/src/features/search/bloc/search_bloc.dart';
 import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -225,16 +225,15 @@ class _SearchScreenState extends State<SearchScreen> {
             fontSize: Sizes.p16,
             cardShape: 5,
             onTap: () {
-              // if (accountNoController.text.isNotEmpty ||
-              //     customerNameController.text.isNotEmpty ||
-              //     bankNameController.text.isNotEmpty ||
-              //     bucketController.text.isNotEmpty ||
-              //     statusController.text.isNotEmpty ||
-              //     pincodeController.text.isNotEmpty ||
-              //     customerIDController.text.isNotEmpty ||
-              //     isStarOnly ||
-              //     isMyRecentActivity)
-              if (true) {
+              if (accountNoController.text.isNotEmpty ||
+                  customerNameController.text.isNotEmpty ||
+                  bankNameController.text.isNotEmpty ||
+                  bucketController.text.isNotEmpty ||
+                  statusController.text.isNotEmpty ||
+                  pincodeController.text.isNotEmpty ||
+                  customerIDController.text.isNotEmpty ||
+                  isStarOnly ||
+                  isMyRecentActivity) {
                 BlocProvider.of<SearchBloc>(context).add(NavigatePopEvent());
               } else {
                 AppUtils.showToast(

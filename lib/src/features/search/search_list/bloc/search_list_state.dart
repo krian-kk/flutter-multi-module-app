@@ -1,6 +1,5 @@
 part of 'search_list_bloc.dart';
 
-
 class SearchListState extends BaseEquatable {}
 
 class SearchListInitial extends SearchListState {}

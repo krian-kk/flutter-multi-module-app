@@ -13,11 +13,12 @@ class SearchListApiProvider {
 
     try {
       final String searchUrl = searchBaseUrl + urlParams;
-      response =
-          await DioClient(baseUrl, accessToken: accessToken).get(searchBaseUrl);
+      response = await DioClient(baseUrl, accessToken: accessToken)
+          .get(searchUrl, decryptResponse: true);
 
-      ListResponse<List<SearchListResponse>> mappedResponse =
+      ListResponse<SearchListResponse> mappedResponse =
           ListResponse.fromJson(response, SearchListResponse.fromJson);
+
       return ApiResult.success(data: mappedResponse.result as dynamic);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
