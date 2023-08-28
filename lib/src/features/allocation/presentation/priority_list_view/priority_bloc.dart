@@ -3,8 +3,9 @@ import 'dart:async';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:origa/utils/base_equatable.dart';
 import 'package:repository/case_repository.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'priority_event.dart';
 
@@ -16,53 +17,35 @@ class PriorityBloc extends Bloc<PriorityEvent, PriorityState> {
   }
 
   CaseRepositoryImpl repository;
-
-  FutureOr<void> _onEvent(PriorityEvent event, Emitter<PriorityState> emit) {
-    if (event is InitialPriorityEvent) {}
-  }
-
   static const _pageSize = 20;
 
-  final _onNewListingStateController =
-      BehaviorSubject<MerchantListingState>.seeded(
-    MerchantListingState(),
-  );
+  Future<void> _onEvent(
+      PriorityEvent event, Emitter<PriorityState> emit) async {
+    if (event is LoadPriorityList) {
+      final newItems =
+          await repository.getCasesFromServer(_pageSize, event.pageKey);
+      await newItems.when(
+          success: (List<PriorityCaseListModel>? result) async {
+            if (result?.isNotEmpty == true && result != null) {
+              final isLastPage = result.length < _pageSize;
+              if (isLastPage) {
+                emit(PriorityCompletedState(result));
+                // _pagingController.appendLastPage(newItems);
+              } else {
+                final nextPageKey = event.pageKey + result.length;
+                emit(PriorityCompletedState(result, nextPageKey));
 
-  Stream<MerchantListingState> get onNewListingState =>
-      _onNewListingStateController.stream;
-
-  final _onPageRequest = StreamController<int>();
-
-  Sink<int> get onPageRequestSink => _onPageRequest.sink;
-
-  Stream<MerchantListingState> fetchPage(int pageKey) async* {
-    final lastListingState = _onNewListingStateController.value;
-    debugPrint("qwqeqrew");
-    try {
-      yield MerchantListingState(
-          error: null,
-          nextPageKey: lastListingState.nextPageKey,
-          itemList: lastListingState.itemList);
-      final newItems = await repository.getCasesFromServer(_pageSize, pageKey);
-      debugPrint("data---->  ");
-      final isLastPage = newItems.length < _pageSize;
-      final nextPageKey = isLastPage ? null : pageKey + newItems.length;
-      debugPrint("fdsfsfdf");
-      yield MerchantListingState(
-          error: null,
-          nextPageKey: nextPageKey?.toInt(),
-          itemList: [...lastListingState.itemList ?? [], ...newItems]);
-    } catch (e) {
-      yield MerchantListingState(
-          error: e,
-          nextPageKey: lastListingState.nextPageKey,
-          itemList: lastListingState.itemList);
+                // _pagingController.appendPage(newItems, nextPageKey);
+              }
+            }
+          },
+          failure: (NetworkExceptions? error) async {});
     }
   }
 }
 
-class MerchantListingState {
-  MerchantListingState({this.itemList, this.error, this.nextPageKey = 0});
+class PriorityStateListState {
+  PriorityStateListState({this.itemList, this.error, this.nextPageKey = 0});
 
   final List<PriorityCaseListModel>? itemList;
   final dynamic error;

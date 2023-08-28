@@ -7,31 +7,30 @@ import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:repository/repo_utils.dart';
 
 abstract class CaseRepository {
-  // Future<dynamic> getCaseLists(int limit, int pageNo, bool isOffline);
-
-  Future<List<PriorityCaseListModel>> getCasesFromServer(int limit, int pageNo);
+  Future<dynamic> getCaseLists(int limit, int pageNo, bool isOffline);
 }
 
 class CaseRepositoryImpl implements CaseRepository {
   CasesApiService collectApiProvider = CasesApiService();
 
-  // @override
-  // Future<ApiResult<List<PriorityCaseListModel>>> getCaseLists(
-  //     int limit, int pageNo, bool isOffline) async {
-  //   if (isOffline) {
-  //     // return getCasesFromOfflineDb(limit, pageNo);
-  //   }
-  //   return getCasesFromServer(limit, pageNo);
-  // }
+  @override
+  Future<ApiResult<List<PriorityCaseListModel>>> getCaseLists(
+      int limit, int pageNo, bool isOffline) async {
+    if (isOffline) {
+      // return getCasesFromOfflineDb(limit, pageNo);
+    }
+    return getCasesFromServer(limit, pageNo);
+  }
 
   void getCasesFromOfflineDb(int limit, int pageLimit) {
     //todo
   }
 
-  @override
-  Future<List<PriorityCaseListModel>> getCasesFromServer(
+  Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
       int limit, int pageNo) async {
     String? accessToken = await getAccessToken();
-    return await collectApiProvider.getCases(accessToken, limit, pageNo);
+    ApiResult<List<PriorityCaseListModel>> response =
+        await collectApiProvider.getCases(accessToken, limit, pageNo);
+    return response;
   }
 }

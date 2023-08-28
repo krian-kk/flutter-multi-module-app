@@ -10,6 +10,12 @@ abstract class PriorityEvent {}
 /// 3. Load the cases depending on the agent type.
 class InitialPriorityEvent extends PriorityEvent {}
 
+class LoadPriorityList extends PriorityEvent {
+  LoadPriorityList(this.pageKey);
+
+  final int pageKey;
+}
+
 class LoadPriorityEvent extends PriorityEvent {}
 
 class LoadMorePriorityEvent extends PriorityEvent {}
