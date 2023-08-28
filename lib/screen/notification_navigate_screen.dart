@@ -40,8 +40,7 @@ class OnclickNotificationNavigateScreen {
         });
   }
 
-  void myDepositsSheet(
-      BuildContext buildContext, DashboardBloc dashboardbloc) {
+  void myDepositsSheet(BuildContext buildContext, DashboardBloc dashboardbloc) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
@@ -54,8 +53,7 @@ class OnclickNotificationNavigateScreen {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false, child: MyReceiptsBottomSheet(dashboardbloc));
+          return const SafeArea(bottom: false, child: MyReceiptsBottomSheet());
         });
   }
 }

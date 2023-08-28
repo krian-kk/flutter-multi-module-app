@@ -25,7 +25,4 @@ Locale _locale(String languageCode) {
       : const Locale('en', '');
 }
 
-changeLanguage(BuildContext context, String selectedLanguageCode) async {
-  final Locale _locale = await setLocale(selectedLanguageCode);
-  MyApp.setLocale(context, _locale);
-}
+

@@ -1,10 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
+import 'package:origa/src/main_migrate.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/preference_helper.dart';
@@ -162,8 +161,9 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       width: 190,
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
-                        onTap: () {
-                          changeLanguage(context, setLanguageCode!);
+                        onTap: () async {
+                          MyApp.setLocale(context,
+                              await changeLanguage(context, setLanguageCode!));
                           PreferenceHelper.setPreference(
                               'mainLanguage', ratioIndex ?? 0);
                           PreferenceHelper.setPreference(
@@ -186,5 +186,9 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
         ),
       ),
     );
+  }
+
+  Future<Locale> changeLanguage(BuildContext context, String selectedLanguageCode) async {
+    return await setLocale(selectedLanguageCode);
   }
 }

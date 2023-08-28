@@ -1,9 +1,6 @@
 import 'package:design_system/colors.dart';
-import 'package:design_system/strings.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 
 
 class HomeAppBarAction extends StatelessWidget {

@@ -18,9 +18,17 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 
+class MyReceiptsBottomSheetWidget extends StatelessWidget {
+  const MyReceiptsBottomSheetWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MyReceiptsBottomSheet();
+  }
+}
+
 class MyReceiptsBottomSheet extends StatefulWidget {
-  const MyReceiptsBottomSheet(this.bloc, {Key? key}) : super(key: key);
-  final DashboardBloc bloc;
+  const MyReceiptsBottomSheet({Key? key}) : super(key: key);
 
   @override
   MyReceiptsBottomSheetState createState() => MyReceiptsBottomSheetState();
@@ -30,14 +38,16 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<DashboardBloc, DashboardState>(
-      bloc: widget.bloc,
+      bloc: BlocProvider.of<DashboardBloc>(context),
       listener: (context, state) {
         if (state is SelectedTimeperiodDataLoadingState) {
-          widget.bloc.selectedFilterDataLoading = true;
+          BlocProvider.of<DashboardBloc>(context).selectedFilterDataLoading =
+              true;
         }
 
         if (state is SelectedTimeperiodDataLoadedState) {
-          widget.bloc.selectedFilterDataLoading = false;
+          BlocProvider.of<DashboardBloc>(context).selectedFilterDataLoading =
+              false;
         }
 
         if (state is ReturnReceiptsApiState) {
@@ -46,9 +56,9 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
 
         if (state is GetSearchDataState) {
           setState(() {
-            widget.bloc.isShowSearchResult = true;
-            widget.bloc.selectedFilter = '';
-            widget.bloc.selectedFilterIndex = '';
+            BlocProvider.of<DashboardBloc>(context).isShowSearchResult = true;
+            BlocProvider.of<DashboardBloc>(context).selectedFilter = '';
+            BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '';
           });
         }
       },
@@ -60,7 +70,7 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         ),
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+            builder: (BuildContext context1, StateSetter setState) {
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
@@ -71,7 +81,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                   backgroundColor: ColorResource.colorF7F8FA,
                   floatingActionButton: CustomFloatingActionButton(
                     onTap: () async {
-                      widget.bloc.add(NavigateSearchEvent());
+                      BlocProvider.of<DashboardBloc>(context)
+                          .add(NavigateSearchEvent());
                     },
                   ),
                   body: Column(
@@ -80,7 +91,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                       BottomSheetAppbar(
                         title: Languages.of(context)!.myReceipts,
                         onTap: () {
-                          widget.bloc.add(SetTimePeriodValueEvent());
+                          BlocProvider.of<DashboardBloc>(context)
+                              .add(SetTimePeriodValueEvent());
                           Navigator.pop(context);
                         },
                       ),
@@ -108,7 +120,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                           color: ColorResource.color101010,
                                         ),
                                         CustomText(
-                                          widget.bloc.myReceiptsData.totalCount
+                                          BlocProvider.of<DashboardBloc>(
+                                                  context)
+                                              .myReceiptsData
+                                              .totalCount
                                               .toString(),
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -131,8 +146,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                         ),
                                         CustomText(
                                           Constants.inr +
-                                              widget
-                                                  .bloc.myReceiptsData.totalAmt
+                                              BlocProvider.of<DashboardBloc>(
+                                                      context)
+                                                  .myReceiptsData
+                                                  .totalAmt
                                                   .toString(),
                                           color: ColorResource.color101010,
                                           fontWeight: FontWeight.w700,
@@ -179,16 +196,18 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                           ),
                         ),
                       ),
-                      widget.bloc.isShowSearchResult
-                          ? widget.bloc.searchResultList.isNotEmpty
+                      BlocProvider.of<DashboardBloc>(context).isShowSearchResult
+                          ? BlocProvider.of<DashboardBloc>(context)
+                                  .searchResultList
+                                  .isNotEmpty
                               ? const Expanded(
                                   child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20.0),
                                     //todo
                                     // child: SearchCaseList.buildListView(
-                                    //   widget.bloc,
-                                    //   resultData: widget.bloc.searchResultList,
+                                    //   BlocProvider.of<DashboardBloc>(context),
+                                    //   resultData: BlocProvider.of<DashboardBloc>(context).searchResultList,
                                     // ),
                                   ),
                                 )
@@ -213,8 +232,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
                                     child: buildListView(
-                                        widget.bloc,
-                                        widget.bloc.myReceiptsData.approved ??
+                                        BlocProvider.of<DashboardBloc>(context),
+                                        BlocProvider.of<DashboardBloc>(context)
+                                                .myReceiptsData
+                                                .approved ??
                                             ReceiptCases()),
                                   ),
                                   // Pending ApprovaL
@@ -222,8 +243,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
                                     child: buildListView(
-                                        widget.bloc,
-                                        widget.bloc.myReceiptsData.newCase ??
+                                        BlocProvider.of<DashboardBloc>(context),
+                                        BlocProvider.of<DashboardBloc>(context)
+                                                .myReceiptsData
+                                                .newCase ??
                                             ReceiptCases()),
                                   ),
                                   // Rejected
@@ -231,8 +254,10 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 5),
                                     child: buildListView(
-                                        widget.bloc,
-                                        widget.bloc.myReceiptsData.rejected ??
+                                        BlocProvider.of<DashboardBloc>(context),
+                                        BlocProvider.of<DashboardBloc>(context)
+                                                .myReceiptsData
+                                                .rejected ??
                                             ReceiptCases()),
                                   ),
                                 ],
@@ -251,7 +276,7 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
 
   List<Widget> _buildFilterOptions() {
     final List<Widget> widgets = [];
-    for (var element in widget.bloc.filterOption) {
+    for (var element in BlocProvider.of<DashboardBloc>(context).filterOption) {
       widgets.add(_buildFilterWidget(element.value!, element.timePeriodText!));
     }
     return widgets;
@@ -263,24 +288,30 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
         switch (option) {
           case '0':
             setState(() {
-              widget.bloc.selectedFilter = Constants.today;
-              widget.bloc.selectedFilterIndex = '0';
+              BlocProvider.of<DashboardBloc>(context).selectedFilter =
+                  Constants.today;
+              BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '0';
             });
-            widget.bloc.add(ReceiptsApiEvent(timePeriod: Constants.today));
+            BlocProvider.of<DashboardBloc>(context)
+                .add(ReceiptsApiEvent(timePeriod: Constants.today));
             break;
           case '1':
             setState(() {
-              widget.bloc.selectedFilter = Constants.weeklY;
-              widget.bloc.selectedFilterIndex = '1';
+              BlocProvider.of<DashboardBloc>(context).selectedFilter =
+                  Constants.weeklY;
+              BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '1';
             });
-            widget.bloc.add(ReceiptsApiEvent(timePeriod: Constants.weeklY));
+            BlocProvider.of<DashboardBloc>(context)
+                .add(ReceiptsApiEvent(timePeriod: Constants.weeklY));
             break;
           case '2':
             setState(() {
-              widget.bloc.selectedFilter = Constants.monthly;
-              widget.bloc.selectedFilterIndex = '2';
+              BlocProvider.of<DashboardBloc>(context).selectedFilter =
+                  Constants.monthly;
+              BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '2';
             });
-            widget.bloc.add(ReceiptsApiEvent(timePeriod: Constants.monthly));
+            BlocProvider.of<DashboardBloc>(context)
+                .add(ReceiptsApiEvent(timePeriod: Constants.monthly));
             break;
           default:
         }
@@ -296,7 +327,8 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
           decoration: BoxDecoration(
             border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
             borderRadius: BorderRadius.circular(10),
-            color: option == widget.bloc.selectedFilterIndex
+            color: option ==
+                    BlocProvider.of<DashboardBloc>(context).selectedFilterIndex
                 ? ColorResource.color23375A
                 : Colors.white,
           ),
@@ -305,7 +337,9 @@ class MyReceiptsBottomSheetState extends State<MyReceiptsBottomSheet> {
               filterTitle,
               fontSize: FontSize.twelve,
               fontWeight: FontWeight.w700,
-              color: option == widget.bloc.selectedFilterIndex
+              color: option ==
+                      BlocProvider.of<DashboardBloc>(context)
+                          .selectedFilterIndex
                   ? Colors.white
                   : ColorResource.color101010,
             ),

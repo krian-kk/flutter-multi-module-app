@@ -255,8 +255,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? LanguageEn()
-                                                          .customerMet
+                                                      ? LanguageEn().customerMet
                                                       : LanguageEn()
                                                           .connected
                                                           .trim(),
@@ -300,9 +299,8 @@ class DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Expanded(
                                             child: userActivity(
-                                              header: LanguageEn()
-                                                  .invalid
-                                                  .trim(),
+                                              header:
+                                                  LanguageEn().invalid.trim(),
                                               count: BlocProvider.of<
                                                       DashboardBloc>(context)
                                                   .invalid
@@ -327,8 +325,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn()
-                                                .mtdResolutionProgress,
+                                            LanguageEn().mtdResolutionProgress,
                                             fontSize: FontSize.twelve,
                                             fontWeight: FontWeight.w700,
                                             color: ColorResource.color23375A,
@@ -337,9 +334,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            LanguageEn()
-                                                .customer
-                                                .toUpperCase(),
+                                            LanguageEn().customer.toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,
@@ -423,9 +418,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn()
-                                                .amount
-                                                .toUpperCase(),
+                                            LanguageEn().amount.toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,
@@ -901,10 +894,10 @@ class DashboardScreenState extends State<DashboardScreen> {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
-          return SafeArea(
-              bottom: false,
-              child: MyReceiptsBottomSheet(
-                  BlocProvider.of<DashboardBloc>(buildContext)));
+          return BlocProvider.value(
+              value: BlocProvider.of<DashboardBloc>(buildContext),
+              child: const SafeArea(
+                  bottom: false, child: MyReceiptsBottomSheet()));
         });
   }
 
