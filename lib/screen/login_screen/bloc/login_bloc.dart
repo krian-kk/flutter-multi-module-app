@@ -452,7 +452,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
       if (response['success'] == false) {
         yield SignInLoadedState();
-        AppUtils.showToast(response['data'], backgroundColor: Colors.red);
+        AppUtils.showToast(response['message'], backgroundColor: Colors.red);
       } else if (response['statusCode'] == 401) {
         loginErrorResponse = LoginErrorMessage.fromJson(response['data']);
         // if SignIn error to show again SignIn button
@@ -546,8 +546,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
                 yield TriggerHomeTabState();
               }
             } else {
-              AppUtils.showToast(getProfileData['data'],
-                  backgroundColor: Colors.red);
             }
           }
         } else {

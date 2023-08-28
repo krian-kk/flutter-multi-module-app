@@ -1,9 +1,10 @@
+import 'package:design_system/app_sizes.dart';
+import 'package:design_system/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/src/common_widgets/case_list_widget.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
@@ -45,9 +46,10 @@ class PriorityFollowUpBottomSheetState
       },
       child: Container(
         decoration: const BoxDecoration(
-          color: ColorResource.colorF7F8FA,
+          color: ColorResourceDesign.whiteTwo,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+              topLeft: Radius.circular(Sizes.p20),
+              topRight: Radius.circular(Sizes.p20)),
         ),
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
@@ -55,9 +57,9 @@ class PriorityFollowUpBottomSheetState
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: Sizes.p16),
               child: Scaffold(
-                backgroundColor: ColorResource.colorF7F8FA,
+                backgroundColor: ColorResourceDesign.whiteTwo,
                 floatingActionButton: CustomFloatingActionButton(
                   onTap: () async {
                     widget.bloc.add(NavigateSearchEvent());
@@ -70,10 +72,10 @@ class PriorityFollowUpBottomSheetState
                     ),
                     widget.bloc.isShowSearchResult
                         ? widget.bloc.searchResultList.isNotEmpty
-                            ? Expanded(
+                            ? const Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: Sizes.p20),
                                   //todo affected
                                   // child: SearchCaseList.buildListView(
                                   //   widget.bloc,
@@ -86,7 +88,9 @@ class PriorityFollowUpBottomSheetState
                                   children: <Widget>[
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 50, right: 20, left: 20),
+                                          top: Sizes.p50,
+                                          right: Sizes.p20,
+                                          left: Sizes.p20),
                                       child:
                                           NoCaseAvailble.buildNoCaseAvailable(),
                                     ),
@@ -96,7 +100,7 @@ class PriorityFollowUpBottomSheetState
                         : Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
+                                  horizontal: Sizes.p20, vertical: Sizes.p4),
                               child: CaseLists.buildListView(
                                 widget.bloc,
                                 widget.bloc.priorityFollowUpData,

@@ -1,25 +1,10 @@
+import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 
-class CustomText extends StatefulWidget {
-  const CustomText(
-    this.text, {
-    Key? key,
-    this.fontWeight = FontWeight.w400,
-    this.fontStyle = FontStyle.normal,
-    this.fontSize = FontSize.fourteen,
-    this.font = Font.latoMedium,
-    this.color = ColorResource.color1c1d22,
-    this.lineHeight = 1.5,
-    this.textAlign = TextAlign.left,
-    this.onTap,
-    this.isUnderLine = false,
-    this.isSingleLine = false,
-    this.letterSpacing,
-    this.style,
-    this.maxLines,
-  }) : super(key: key);
+class CustomText extends StatelessWidget {
+
   final String text;
   final double fontSize;
   final Font font;
@@ -35,32 +20,46 @@ class CustomText extends StatefulWidget {
   final double? letterSpacing;
   final TextStyle? style;
 
-  @override
-  _CustomTextState createState() => _CustomTextState();
-}
+  const CustomText(
+    this.text, {
+    Key? key,
+    this.fontWeight,
+    this.fontStyle = FontStyle.normal,
+    this.fontSize = FontSize.fourteen,
+    this.font = Font.latoMedium,
+    this.color = ColorResource.color1c1d22,
+    this.lineHeight = 1.5,
+    this.textAlign = TextAlign.left,
+    this.onTap,
+    this.isUnderLine = false,
+    this.isSingleLine = false,
+    this.letterSpacing,
+    this.style,
+    this.maxLines,
+  }) : super(key: key);
 
-class _CustomTextState extends State<CustomText> {
+
   @override
   Widget build(BuildContext context) {
-    final Text textWidget = Text(widget.text,
-        textAlign: widget.textAlign,
-        overflow: widget.isSingleLine ? TextOverflow.ellipsis : null,
-        maxLines: widget.maxLines,
+    final Text textWidget = Text(text,
+        textAlign: textAlign,
+        overflow: isSingleLine ? TextOverflow.ellipsis : null,
+        maxLines: maxLines,
         style: TextStyle(
-            decoration: widget.isUnderLine
-                ? TextDecoration.underline
-                : TextDecoration.none,
-            color: widget.color,
-            fontFamily: widget.font.value,
-            fontSize: widget.fontSize,
-            height: widget.lineHeight,
-            fontStyle: widget.fontStyle,
-            letterSpacing: widget.letterSpacing,
-            fontWeight: widget.fontWeight));
+            decoration:
+                isUnderLine ? TextDecoration.underline : TextDecoration.none,
+            color: color,
+            fontFamily: font.value,
+            fontSize: fontSize,
+            height: lineHeight,
+            fontStyle: fontStyle,
+            letterSpacing: letterSpacing,
+            fontWeight:
+                fontWeight ?? FontResourceDesign.textFontWeightSemiBold));
 
-    if (widget.onTap != null) {
+    if (onTap != null) {
       return InkWell(
-        onTap: widget.onTap,
+        onTap: onTap,
         child: textWidget,
       );
     } else {

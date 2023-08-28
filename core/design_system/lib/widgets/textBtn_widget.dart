@@ -21,8 +21,8 @@ class TextBtnWidget extends StatelessWidget {
       child: Text(
         btnText,
         style: const TextStyle(
-            color: textColor,
-            fontWeight: textFontWeightNormal,
+            color: ColorResourceDesign.textColor,
+            fontWeight: FontResourceDesign.textFontWeightNormal,
             fontSize: Sizes.p16),
       ),
     );

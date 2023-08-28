@@ -70,8 +70,12 @@ class _CustomerLanguagePreferenceState
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10),
+                          padding: const EdgeInsets.fromLTRB(
+                            20.0,
+                            20.0,
+                            20.0,
+                            10,
+                          ),
                           child: BottomSheetAppbar(
                             title: Languages.of(context)!
                                 .customerLanguagePreference

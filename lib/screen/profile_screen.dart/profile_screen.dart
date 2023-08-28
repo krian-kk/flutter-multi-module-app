@@ -109,14 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<bool> requestOTP(String aRef) async {
     bool returnValue = false;
-    final object = <String, dynamic>{
-      'aRef': aRef
-    };
-    final Map<String, dynamic> requestData = {
-      'data': jsonEncode(object)
-    };
-    String text = await platform.invokeMethod(
-        'sendEncryptedData', requestData);
+    final object = <String, dynamic>{'aRef': aRef};
+    final Map<String, dynamic> requestData = {'data': jsonEncode(object)};
+    String text = await platform.invokeMethod('sendEncryptedData', requestData);
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
       HttpUrl.requestOTPUrl(),
@@ -499,12 +494,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     const SizedBox(height: 30),
                                     Singleton.instance.usertype ==
                                             Constants.fieldagent
-                                        ? Row(
+                                        ? const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             mainAxisSize: MainAxisSize.min,
                                             children: <Widget>[
-                                              const Spacer(),
+                                               Spacer(),
                                               // CustomText(
                                               //   Languages.of(context)!
                                               //       .homeAddress
@@ -756,7 +751,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textScaleFactor: 3,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .subtitle1!
+                                    .titleMedium!
                                     .copyWith(
                                         color: Colors.white,
                                         fontSize: 6,
@@ -785,7 +780,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   _loadHtmlFromAssets() async {
-    showModalBottomSheet(
+    await showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
           return HelpScreen();
@@ -1065,7 +1060,7 @@ class HelpScreenState extends State<HelpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Help')),
+      appBar: AppBar(title: const Text('Help')),
       // body: WebView(
       //   javascriptMode: JavascriptMode.unrestricted,
       //   initialUrl: 'about:blank',

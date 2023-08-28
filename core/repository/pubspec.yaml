@@ -16,6 +16,7 @@ dependencies:
     path: ../domain_models
   preference_helper:
     path: ../preference_helper
+  image_picker: ^1.0.1
 
 dev_dependencies:
   flutter_test:

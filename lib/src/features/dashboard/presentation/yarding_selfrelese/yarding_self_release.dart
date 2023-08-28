@@ -1,9 +1,11 @@
+import 'package:design_system/app_sizes.dart';
+import 'package:design_system/colors.dart';
+import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -37,9 +39,10 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: ColorResource.colorF7F8FA,
+        color: ColorResourceDesign.whiteTwo,
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+            topLeft: Radius.circular(Sizes.p20),
+            topRight: Radius.circular(Sizes.p20)),
       ),
       height: MediaQuery.of(context).size.height * 0.85,
       child: StatefulBuilder(
@@ -48,29 +51,27 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
           onWillPop: () async => true,
           child: Container(
             decoration: const BoxDecoration(
-              color: ColorResource.colorF7F8FA,
+              color: ColorResourceDesign.whiteTwo,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0)),
+                  topLeft: Radius.circular(Sizes.p20),
+                  topRight: Radius.circular(Sizes.p20)),
             ),
-            padding: const EdgeInsets.only(top: 16),
+            padding: const EdgeInsets.only(top: Sizes.p16),
             // color: ColorResource.colorF7F8FA,
             child: SafeArea(
               child: widget.bloc.yardingAndSelfReleaseData.isEmpty
                   ? Scaffold(
-                      backgroundColor: ColorResource.colorF7F8FA,
+                      backgroundColor: ColorResourceDesign.whiteTwo,
                       body: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           BottomSheetAppbar(
                             title: Languages.of(context)!.yardingSelfRelease,
                           ),
-                          const SizedBox(
-                            height: 30,
-                          ),
+                          gapH32,
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.all(20.0),
+                              padding: const EdgeInsets.all(Sizes.p20),
                               child: NoCaseAvailble.buildNoCaseAvailable(),
                             ),
                           )
@@ -78,26 +79,28 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                       ),
                     )
                   : Scaffold(
-                      backgroundColor: ColorResource.colorF7F8FA,
+                      backgroundColor: ColorResourceDesign.whiteTwo,
                       bottomNavigationBar: Container(
                         height: 66,
                         decoration: const BoxDecoration(
-                            color: ColorResource.colorFFFFFF,
+                            color: ColorResourceDesign.whiteColor,
                             border: Border(
                                 top: BorderSide(
                                     color: Color.fromRGBO(0, 0, 0, 0.13)))),
                         child: Padding(
-                          padding: const EdgeInsets.fromLTRB(13, 5, 20, 0),
+                          padding: const EdgeInsets.fromLTRB(
+                              Sizes.p12, Sizes.p4, Sizes.p20, Sizes.p0),
                           child: CustomButton(
                             Languages.of(context)!.enterRepoDetails,
-                            fontSize: FontSize.sixteen,
+                            fontSize: Sizes.p16,
                             onTap: () {
                               if (_selectedIndex != null) {
                                 repoStatusModeSheet(context);
                               } else {
                                 AppUtils.showToast(
                                     Languages.of(context)!.notSelectedCase,
-                                    backgroundColor: Colors.red);
+                                    backgroundColor:
+                                        ColorResourceDesign.redColor);
                               }
                             },
                           ),
@@ -109,11 +112,11 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                           BottomSheetAppbar(
                             title: Languages.of(context)!.yardingSelfRelease,
                           ),
-                          const SizedBox(height: 10),
+                          gapH12,
                           Expanded(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 5),
+                                  horizontal: Sizes.p20, vertical: Sizes.p4),
                               child: ListView.builder(
                                   itemCount: widget
                                       .bloc.yardingAndSelfReleaseData.length,
@@ -124,20 +127,22 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 20),
+                                          padding: const EdgeInsets.only(
+                                              top: Sizes.p20),
                                           child: Container(
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
                                             decoration: BoxDecoration(
-                                              color: ColorResource.colorffffff,
+                                              color: ColorResourceDesign
+                                                  .whiteColor,
                                               border: Border.all(
-                                                  color:
-                                                      ColorResource.colorDADADA,
+                                                  color: ColorResourceDesign
+                                                      .lightGray,
                                                   width: 0.5),
                                               borderRadius:
-                                                  BorderRadius.circular(10),
+                                                  BorderRadius.circular(
+                                                      Sizes.p10),
                                               boxShadow: const [
                                                 BoxShadow(
                                                   color: Color.fromRGBO(
@@ -153,9 +158,7 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                const SizedBox(
-                                                  height: 2.0,
-                                                ),
+                                                gapH2,
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -163,22 +166,21 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                     Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
-                                                          horizontal: 24,
-                                                          vertical: 2),
+                                                          horizontal: Sizes.p24,
+                                                          vertical: Sizes.p2),
                                                       child: CustomText(
                                                         Languages.of(context)!
                                                             .loanAccountNumber,
-                                                        fontSize:
-                                                            FontSize.twelve,
-                                                        color: ColorResource
-                                                            .color101010,
+                                                        fontSize: Sizes.p12,
+                                                        color: ColorResourceDesign
+                                                            .appTextPrimaryColor,
                                                       ),
                                                     ),
                                                     Padding(
                                                       padding: const EdgeInsets
                                                               .symmetric(
-                                                          horizontal: 24,
-                                                          vertical: 2),
+                                                          horizontal: Sizes.p24,
+                                                          vertical: Sizes.p2),
                                                       child: CustomText(
                                                         widget
                                                                 .bloc
@@ -186,10 +188,11 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                     index]
                                                                 .agrRef ??
                                                             '',
-                                                        color: ColorResource
-                                                            .color101010,
+                                                        color: ColorResourceDesign
+                                                            .appTextPrimaryColor,
                                                         fontWeight:
-                                                            FontWeight.w700,
+                                                            FontResourceDesign
+                                                                .textFontWeightSemiBold,
                                                       ),
                                                     ),
                                                   ],
@@ -199,7 +202,10 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
-                                                          23, 0, 10, 0),
+                                                          Sizes.p24,
+                                                          Sizes.p0,
+                                                          Sizes.p10,
+                                                          Sizes.p0),
                                                   child: Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -209,8 +215,9 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                         children: [
                                                           CustomText(
                                                             '${Languages.of(context)!.registrationNo}. ',
-                                                            color: ColorResource
-                                                                .color000000,
+                                                            color:
+                                                                ColorResourceDesign
+                                                                    .blackTwo,
                                                           ),
                                                           Flexible(
                                                             child: CustomText(
@@ -223,21 +230,19 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                   '',
                                                               isSingleLine:
                                                                   true,
-                                                              fontSize: FontSize
-                                                                  .seventeen,
+                                                              fontSize:
+                                                                  Sizes.p16,
                                                               lineHeight: 1,
-                                                              color: ColorResource
-                                                                  .color101010,
+                                                              color: ColorResourceDesign
+                                                                  .appTextPrimaryColor,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
+                                                                  FontResourceDesign
+                                                                      .textFontWeightSemiBold,
                                                             ),
                                                           ),
                                                         ],
                                                       ),
-                                                      const SizedBox(
-                                                        height: 3.0,
-                                                      ),
+                                                      gapH4,
                                                       CustomText(
                                                         widget
                                                             .bloc
@@ -247,8 +252,8 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                             .customerName!,
                                                         fontSize:
                                                             FontSize.sixteen,
-                                                        color: ColorResource
-                                                            .color101010,
+                                                        color: ColorResourceDesign
+                                                            .appTextPrimaryColor,
                                                       ),
                                                     ],
                                                   ),
@@ -285,16 +290,14 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 //     ),
                                                 //   ),
                                                 // ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
+                                                gapH4,
                                                 const Padding(
                                                   padding: EdgeInsets.symmetric(
-                                                    horizontal: 15,
+                                                    horizontal: Sizes.p14,
                                                   ),
                                                   child: Divider(
-                                                    color: ColorResource
-                                                        .colorDADADA,
+                                                    color: ColorResourceDesign
+                                                        .lightGray,
                                                     thickness: 0.5,
                                                   ),
                                                 ),
@@ -302,7 +305,10 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.fromLTRB(
-                                                          23, 5, 10, 13),
+                                                          Sizes.p24,
+                                                          Sizes.p4,
+                                                          Sizes.p10,
+                                                          Sizes.p12),
                                                   child: Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
@@ -318,8 +324,8 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                               Languages.of(
                                                                       context)!
                                                                   .repoDate,
-                                                              color: ColorResource
-                                                                  .color101010,
+                                                              color: ColorResourceDesign
+                                                                  .appTextPrimaryColor,
                                                             ),
                                                             CustomText(
                                                               widget
@@ -336,11 +342,11 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                       .eventAttr!
                                                                       .date!)
                                                                   : '-',
-                                                              color: ColorResource
-                                                                  .color101010,
+                                                              color: ColorResourceDesign
+                                                                  .appTextPrimaryColor,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
+                                                                  FontResourceDesign
+                                                                      .textFontWeightSemiBold,
                                                             ),
                                                           ],
                                                         ),
@@ -362,8 +368,7 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                       true,
                                                                   padding: 3,
                                                                   fontSize:
-                                                                      FontSize
-                                                                          .twelve,
+                                                                      Sizes.p12,
                                                                 )
                                                               : CustomButton(
                                                                   Languages.of(
@@ -371,17 +376,16 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
                                                                       .select
                                                                       .toUpperCase(),
                                                                   fontSize:
-                                                                      FontSize
-                                                                          .twelve,
+                                                                      Sizes.p12,
                                                                   buttonBackgroundColor:
-                                                                      ColorResource
-                                                                          .colorFEFFFF,
+                                                                      ColorResourceDesign
+                                                                          .whiteThree,
                                                                   borderColor:
-                                                                      ColorResource
-                                                                          .colorFEFFFF,
+                                                                      ColorResourceDesign
+                                                                          .whiteThree,
                                                                   textColor:
-                                                                      ColorResource
-                                                                          .color23375A,
+                                                                      ColorResourceDesign
+                                                                          .textColor,
                                                                   cardElevation:
                                                                       3.0,
                                                                   onTap: () {
@@ -432,10 +436,10 @@ class YardingAndSelfReleaseState extends State<YardingAndSelfRelease> {
         context: context,
         isDismissible: false,
         isScrollControlled: true,
-        backgroundColor: ColorResource.colorFFFFFF,
+        backgroundColor: ColorResourceDesign.whiteColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
+            top: Radius.circular(Sizes.p20),
           ),
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,

@@ -1,3 +1,6 @@
+import 'package:design_system/app_sizes.dart';
+import 'package:design_system/colors.dart';
+import 'package:design_system/fonts.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_myvisit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,10 +9,8 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_format_utils.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/case_status_widget.dart';
@@ -54,9 +55,10 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
       },
       child: Container(
         decoration: const BoxDecoration(
-          color: ColorResource.colorF7F8FA,
+          color: ColorResourceDesign.whiteTwo,
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+              topLeft: Radius.circular(Sizes.p20),
+              topRight: Radius.circular(Sizes.p20)),
         ),
         height: MediaQuery.of(context).size.height * 0.85,
         child: StatefulBuilder(
@@ -64,11 +66,11 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
           return WillPopScope(
             onWillPop: () async => true,
             child: Container(
-              padding: const EdgeInsets.only(top: 16),
+              padding: const EdgeInsets.only(top: Sizes.p16),
               child: DefaultTabController(
                 length: 3,
                 child: Scaffold(
-                  backgroundColor: ColorResource.colorF7F8FA,
+                  backgroundColor: ColorResourceDesign.whiteTwo,
                   floatingActionButton: CustomFloatingActionButton(
                     onTap: () async {
                       widget.bloc.add(NavigateSearchEvent());
@@ -88,12 +90,12 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 5),
+                            horizontal: Sizes.p20, vertical: Sizes.p4),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(Sizes.p4),
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
@@ -106,14 +108,17 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           Languages.of(context)!
                                               .count
                                               .toUpperCase(),
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
+                                          fontSize: Sizes.p10,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
                                         ),
                                         CustomText(
                                           widget.bloc.myVisitsData.count
                                               .toString(),
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
+                                          fontWeight: FontResourceDesign
+                                              .textFontWeightSemiBold,
                                         ),
                                       ],
                                     ),
@@ -128,15 +133,18 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                           Languages.of(context)!
                                               .amount
                                               .toUpperCase(),
-                                          fontSize: FontSize.ten,
-                                          color: ColorResource.color101010,
+                                          fontSize: Sizes.p10,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
                                         ),
                                         CustomText(
                                           Constants.inr +
                                               widget.bloc.myVisitsData.totalAmt
                                                   .toString(),
-                                          color: ColorResource.color101010,
-                                          fontWeight: FontWeight.w700,
+                                          color: ColorResourceDesign
+                                              .appTextPrimaryColor,
+                                          fontWeight: FontResourceDesign
+                                              .textFontWeightSemiBold,
                                         ),
                                       ],
                                     ),
@@ -144,11 +152,9 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 12,
-                            ),
+                            gapH12,
                             Wrap(
-                              spacing: 7,
+                              spacing: Sizes.p6,
                               children: _buildFilterOptions(),
                             ),
                           ],
@@ -160,18 +166,19 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                         decoration: const BoxDecoration(
                             border: Border(
                                 bottom: BorderSide(
-                                    color: ColorResource.colorD8D8D8))),
+                                    color: ColorResourceDesign.lightGrayTwo))),
                         child: TabBar(
                           isScrollable: true,
-                          indicatorColor: ColorResource.colorD5344C,
+                          indicatorColor: ColorResourceDesign.redColor,
                           labelStyle: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: ColorResource.color23375A,
-                              fontSize: FontSize.fourteen,
+                              fontWeight:
+                                  FontResourceDesign.textFontWeightSemiBold,
+                              color: ColorResourceDesign.textColor,
+                              fontSize: Sizes.p14,
                               fontStyle: FontStyle.normal),
-                          indicatorWeight: 5.0,
-                          labelColor: ColorResource.color23375A,
-                          unselectedLabelColor: ColorResource.colorC4C4C4,
+                          indicatorWeight: Sizes.p5,
+                          labelColor: ColorResourceDesign.textColor,
+                          unselectedLabelColor: ColorResourceDesign.grayColor,
                           tabs: <Widget>[
                             Tab(
                                 text:
@@ -191,8 +198,8 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           ? widget.bloc.searchResultList.isNotEmpty
                               ? const Expanded(
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20.0),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Sizes.p20),
                                     //todo
                                     // child: SearchCaseList.buildListView(
                                     //   widget.bloc,
@@ -205,7 +212,9 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                     children: <Widget>[
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            top: 50, right: 20, left: 20),
+                                            top: Sizes.p50,
+                                            right: Sizes.p20,
+                                            left: Sizes.p20),
                                         child: NoCaseAvailble
                                             .buildNoCaseAvailable(),
                                       ),
@@ -220,21 +229,24 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                   // Customer Met
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(widget.bloc,
                                         widget.bloc.myVisitsData.met),
                                   ),
                                   // Customer Not Met
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(widget.bloc,
                                         widget.bloc.myVisitsData.notMet),
                                   ),
                                   // Invalid
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 5),
+                                        horizontal: Sizes.p20,
+                                        vertical: Sizes.p4),
                                     child: buildListView(widget.bloc,
                                         widget.bloc.myVisitsData.invalid),
                                   ),
@@ -290,27 +302,29 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(Sizes.p10),
         ),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 11),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Sizes.p4, vertical: Sizes.p10),
           width: 100,
           // height: 35,
           decoration: BoxDecoration(
-            border: Border.all(color: ColorResource.colorDADADA, width: 0.5),
-            borderRadius: BorderRadius.circular(10),
+            border:
+                Border.all(color: ColorResourceDesign.lightGray, width: 0.5),
+            borderRadius: BorderRadius.circular(Sizes.p10),
             color: option == widget.bloc.selectedFilterIndex
-                ? ColorResource.color23375A
+                ? ColorResourceDesign.textColor
                 : Colors.white,
           ),
           child: Center(
             child: CustomText(
               filterTitle,
-              fontSize: FontSize.twelve,
-              fontWeight: FontWeight.w700,
+              fontSize: Sizes.p12,
+              fontWeight: FontResourceDesign.textFontWeightSemiBold,
               color: option == widget.bloc.selectedFilterIndex
                   ? Colors.white
-                  : ColorResource.color101010,
+                  : ColorResourceDesign.appTextPrimaryColor,
             ),
           ),
         ),
@@ -325,7 +339,7 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
             ? Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 40),
+                    padding: const EdgeInsets.only(top: Sizes.p40),
                     child: NoCaseAvailble.buildNoCaseAvailable(),
                   ),
                 ],
@@ -339,7 +353,8 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                     children: <Widget>[
                       if (index == 0)
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(5.0, 5.0, 5.0, 0),
+                          padding: const EdgeInsets.fromLTRB(
+                              Sizes.p4, Sizes.p4, Sizes.p4, Sizes.p0),
                           child: Row(
                             children: <Widget>[
                               Expanded(
@@ -351,13 +366,16 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       Languages.of(context)!
                                           .count
                                           .toUpperCase(),
-                                      fontSize: FontSize.ten,
-                                      color: ColorResource.color101010,
+                                      fontSize: Sizes.p10,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
                                     ),
                                     CustomText(
                                       caseLists.count.toString(),
-                                      color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w700,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
+                                      fontWeight: FontResourceDesign
+                                          .textFontWeightSemiBold,
                                     ),
                                   ],
                                 ),
@@ -371,14 +389,17 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                       Languages.of(context)!
                                           .amount
                                           .toUpperCase(),
-                                      fontSize: FontSize.ten,
-                                      color: ColorResource.color101010,
+                                      fontSize: Sizes.p10,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
                                     ),
                                     CustomText(
                                       Constants.inr +
                                           caseLists.totalAmt.toString(),
-                                      color: ColorResource.color101010,
-                                      fontWeight: FontWeight.w700,
+                                      color: ColorResourceDesign
+                                          .appTextPrimaryColor,
+                                      fontWeight: FontResourceDesign
+                                          .textFontWeightSemiBold,
                                     ),
                                   ],
                                 ),
@@ -387,7 +408,7 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                           ),
                         ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: Sizes.p20),
                         child: InkWell(
                           onTap: () {
                             bloc.add(NavigateCaseDetailEvent(paramValues: {
@@ -402,10 +423,11 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 : EdgeInsets.zero,
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                              color: ColorResource.colorffffff,
+                              color: ColorResourceDesign.whiteColor,
                               border: Border.all(
-                                  color: ColorResource.colorDADADA, width: 0.5),
-                              borderRadius: BorderRadius.circular(10),
+                                  color: ColorResourceDesign.lightGray,
+                                  width: 0.5),
+                              borderRadius: BorderRadius.circular(Sizes.p10),
                               boxShadow: const <BoxShadow>[
                                 BoxShadow(
                                   color: Color.fromRGBO(0, 0, 0, 0.25),
@@ -417,17 +439,18 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(
-                                  height: 2.0,
-                                ),
+                                gapH2,
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 24, vertical: 2),
+                                      horizontal: Sizes.p24,
+                                      vertical: Sizes.p2),
                                   child: CustomText(
                                     caseLists.cases?[index].agrRef ?? '',
-                                    fontSize: FontSize.twelve,
-                                    fontWeight: FontWeight.w500,
-                                    color: ColorResource.color101010,
+                                    fontSize: Sizes.p12,
+                                    fontWeight:
+                                        FontResourceDesign.textFontWeightNormal,
+                                    color:
+                                        ColorResourceDesign.appTextPrimaryColor,
                                   ),
                                 ),
                                 AppUtils.showDivider(),
@@ -437,8 +460,8 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                 // ),
                                 // const SizedBox(height: 6.0,),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(23, 0, 10, 0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      Sizes.p24, Sizes.p0, Sizes.p10, Sizes.p0),
                                   child: Row(
                                     children: <Widget>[
                                       Expanded(
@@ -450,17 +473,18 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                               Constants.inr +
                                                   caseLists.cases![index].due
                                                       .toString(),
-                                              fontSize: FontSize.eighteen,
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              fontSize: Sizes.p18,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
-                                            const SizedBox(
-                                              height: 3.0,
-                                            ),
+                                            gapH2,
                                             CustomText(
                                               caseLists.cases![index].cust!,
-                                              fontSize: FontSize.sixteen,
-                                              color: ColorResource.color101010,
+                                              fontSize: Sizes.p16,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
                                             ),
                                           ],
                                         ),
@@ -509,21 +533,26 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
 
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 6),
+                                      horizontal: Sizes.p14,
+                                      vertical: Sizes.p6),
                                   child: bloc.userType == Constants.fieldagent
                                       ? Container(
                                           width: double.infinity,
                                           padding: const EdgeInsets.fromLTRB(
-                                              20, 12, 15, 12),
+                                              Sizes.p20,
+                                              Sizes.p12,
+                                              Sizes.p14,
+                                              Sizes.p12),
                                           decoration: BoxDecoration(
-                                            color: ColorResource.colorF8F9FB,
-                                            borderRadius:
-                                                BorderRadius.circular(10),
+                                            color: ColorResourceDesign
+                                                .lightWhiteGray,
+                                            borderRadius: BorderRadius.circular(
+                                                Sizes.p10),
                                           ),
                                           child: CustomText(
                                             caseLists.cases![index].contact![0]
                                                 .value!,
-                                            color: ColorResource.color484848,
+                                            color: ColorResourceDesign.darkGray,
                                           ),
                                         )
                                       : Wrap(
@@ -536,53 +565,55 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                   ? Container(
                                                       margin:
                                                           const EdgeInsets.only(
-                                                              top: 10,
-                                                              right: 20),
+                                                              top: Sizes.p10,
+                                                              right: Sizes.p20),
                                                       padding: const EdgeInsets
                                                               .symmetric(
-                                                          horizontal: 17,
-                                                          vertical: 6),
+                                                          horizontal: Sizes.p16,
+                                                          vertical: Sizes.p6),
                                                       decoration: BoxDecoration(
-                                                        color: ColorResource
-                                                            .colorF8F9FB,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .lightWhiteGray,
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(30),
+                                                                .circular(
+                                                                    Sizes.p30),
                                                       ),
                                                       child: CustomText(
                                                         item.value!,
-                                                        color: ColorResource
-                                                            .color484848,
-                                                        lineHeight: 1.0,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .darkGray,
+                                                        lineHeight: Sizes.p1,
                                                       ),
                                                     )
                                                   : const SizedBox(),
                                           ],
                                         ),
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
+                                gapH4,
                                 const Padding(
                                   padding: EdgeInsets.symmetric(
-                                    horizontal: 15,
+                                    horizontal: Sizes.p14,
                                   ),
                                   child: Divider(
-                                    color: ColorResource.colorDADADA,
+                                    color: ColorResourceDesign.lightGray,
                                     thickness: 0.5,
                                   ),
                                 ),
                                 //  const SizedBox(height: 5,),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(23, 5, 14, 13),
+                                  padding: const EdgeInsets.fromLTRB(Sizes.p24,
+                                      Sizes.p4, Sizes.p14, Sizes.p12),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: <Widget>[
                                       CustomText(
                                         Languages.of(context)!.followUpDate,
-                                        color: ColorResource.color101010,
+                                        color: ColorResourceDesign
+                                            .appTextPrimaryColor,
                                       ),
                                       Row(
                                         children: <Widget>[
@@ -601,8 +632,10 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                               .cases![index]
                                                               .fieldfollowUpDate!)
                                                   : '-',
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
                                           if (Singleton.instance.usertype ==
                                               Constants.telecaller)
@@ -619,21 +652,22 @@ class MyVisitsBottomSheetState extends State<MyVisitsBottomSheet> {
                                                               .cases![index]
                                                               .followUpDate!)
                                                   : '-',
-                                              color: ColorResource.color101010,
-                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                              fontWeight: FontResourceDesign
+                                                  .textFontWeightSemiBold,
                                             ),
                                           const Spacer(),
                                           Row(
                                             children: <Widget>[
                                               CustomText(
                                                 Languages.of(context)!.view,
-                                                color:
-                                                    ColorResource.color23375A,
-                                                fontWeight: FontWeight.w700,
+                                                color: ColorResourceDesign
+                                                    .textColor,
+                                                fontWeight: FontResourceDesign
+                                                    .textFontWeightSemiBold,
                                               ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
+                                              gapW12,
                                               SvgPicture.asset(
                                                   ImageResource.forwardArrow)
                                             ],
