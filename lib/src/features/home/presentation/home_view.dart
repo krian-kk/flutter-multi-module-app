@@ -62,7 +62,9 @@ class _HomeViewState extends State<HomeView>
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => DashBoardRepositoryImpl())
+        RepositoryProvider(create: (context) => DashBoardRepositoryImpl()),
+        // RepositoryProvider(create: (context) => FileRepositoryImpl()),
+        // RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
       ],
       child: MultiBlocProvider(
         providers: [
