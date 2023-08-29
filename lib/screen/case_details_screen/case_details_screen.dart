@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +13,6 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/audio_convertion_model.dart';
-import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/play_audio_model.dart';
@@ -99,10 +97,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             'isSubmitForMyVisit': bloc.isSubmitedForMyVisits,
             'eventType': bloc.submitedEventType,
             'returnCaseAmount':
-            bloc.caseDetailsAPIValue.result?.caseDetails?.due,
+                bloc.caseDetailsAPIValue.result?.caseDetails?.due,
             'returnCollectionAmount': bloc.collectionAmount,
             'selectedClipValue': (Singleton.instance.usertype ==
-                Constants.telecaller)
+                    Constants.telecaller)
                 ? bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus
                 : bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus,
             'followUpDate': bloc.changeFollowUpDate,
@@ -227,19 +225,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                   'isSubmit': bloc.isEventSubmited,
                                   'caseId': bloc.caseId!,
                                   'isSubmitForMyVisit':
-                                  bloc.isSubmitedForMyVisits,
+                                      bloc.isSubmitedForMyVisits,
                                   'eventType': bloc.submitedEventType,
                                   'returnCaseAmount': bloc.caseDetailsAPIValue
                                       .result?.caseDetails?.due,
                                   'returnCollectionAmount':
-                                  bloc.collectionAmount,
+                                      bloc.collectionAmount,
                                   'selectedClipValue':
-                                  (Singleton.instance.usertype ==
-                                      Constants.telecaller)
-                                      ? bloc.caseDetailsAPIValue.result
-                                      ?.caseDetails?.telSubStatus
-                                      : bloc.caseDetailsAPIValue.result
-                                      ?.caseDetails?.collSubStatus,
+                                      (Singleton.instance.usertype ==
+                                              Constants.telecaller)
+                                          ? bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.telSubStatus
+                                          : bloc.caseDetailsAPIValue.result
+                                              ?.caseDetails?.collSubStatus,
                                   'followUpDate': bloc.changeFollowUpDate,
                                 },
                               );
@@ -249,7 +247,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                       ),
                       Container(
                           padding:
-                          const EdgeInsets.fromLTRB(20.0, 0, 20.0, 13.0),
+                              const EdgeInsets.fromLTRB(20.0, 0, 20.0, 13.0),
                           color: ColorResource.colorF7F8FA,
                           child: caseInfo()),
                       Container(
@@ -283,7 +281,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ),
                                     child: Padding(
                                       padding:
-                                      const EdgeInsets.only(bottom: 13),
+                                          const EdgeInsets.only(bottom: 13),
                                       child: CustomText(
                                         Languages.of(context)!.basicInfo,
                                         fontWeight: FontWeight.w700,
@@ -321,7 +319,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                     ),
                                     child: Padding(
                                       padding:
-                                      const EdgeInsets.only(bottom: 13),
+                                          const EdgeInsets.only(bottom: 13),
                                       child: CustomText(
                                         Languages.of(context)!.eventDetailsInfo,
                                         fontWeight: FontWeight.w700,
@@ -337,200 +335,198 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           )),
                       bloc.isNoInternetAndServerError
                           ? Expanded(
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              CustomText(
-                                  bloc.noInternetAndServerErrorMsg!),
-                              const SizedBox(
-                                height: 5,
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    CustomText(
+                                        bloc.noInternetAndServerErrorMsg!),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          bloc.add(CaseDetailsInitialEvent(
+                                              paramValues: widget.paramValues,
+                                              context: context));
+                                        },
+                                        icon: const Icon(Icons.refresh)),
+                                  ],
+                                ),
                               ),
-                              IconButton(
-                                  onPressed: () {
-                                    bloc.add(CaseDetailsInitialEvent(
-                                        paramValues: widget.paramValues,
-                                        context: context));
-                                  },
-                                  icon: const Icon(Icons.refresh)),
-                            ],
-                          ),
-                        ),
-                      )
+                            )
                           : Expanded(
-                        child: bloc.isBasicInfo
-                            ? basicInfo()
-                            : eventDetails(),
-                      ),
+                              child: bloc.isBasicInfo
+                                  ? basicInfo()
+                                  : eventDetails(),
+                            ),
                     ],
                   ),
                   bottomNavigationBar: bloc.isNoInternetAndServerError
                       ? const SizedBox()
                       : Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        decoration: const BoxDecoration(
-                            color: ColorResource.colorFFFFFF,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(28.0),
-                                topRight: Radius.circular(28.0))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(21.0),
-                          child: Align(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                bloc.userType == 'FIELDAGENT'
-                                    ? GestureDetector(
-                                    onTap: () {
-                                      debugPrint("");
-                                      bloc.add(
-                                        EventDetailsEvent(
-                                            Constants.addressDetails,
-                                            const <dynamic>[],
-                                            false),
-                                      );
-                                      if (!bloc.isBasicInfo) {
-                                        setState(() {
-                                          bloc.isBasicInfo =
-                                          !bloc.isBasicInfo;
-                                        });
-                                      }
-                                    },
-                                    child: Container(
-                                      height: 50,
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width -
-                                          62) /
-                                          2,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: ColorResource
-                                                  .color23375A,
-                                              width: 0.5),
-                                          borderRadius:
-                                          const BorderRadius.all(
-                                              Radius.circular(
-                                                  10.0))),
-                                      child: Padding(
-                                        padding: const EdgeInsets
-                                            .symmetric(
-                                            horizontal: 10.0,
-                                            vertical: 5.0),
-                                        child: Row(
-                                          children: <Widget>[
-                                            CircleAvatar(
-                                              backgroundColor:
-                                              ColorResource
-                                                  .color23375A,
-                                              radius: 20,
-                                              child: Center(
-                                                child:
-                                                SvgPicture.asset(
-                                                  ImageResource
-                                                      .direction,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              decoration: const BoxDecoration(
+                                  color: ColorResource.colorFFFFFF,
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(28.0),
+                                      topRight: Radius.circular(28.0))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(21.0),
+                                child: Align(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      bloc.userType == 'FIELDAGENT'
+                                          ? GestureDetector(
+                                              onTap: () {
+                                                debugPrint("");
+                                                bloc.add(
+                                                  EventDetailsEvent(
+                                                      Constants.addressDetails,
+                                                      const <dynamic>[],
+                                                      false),
+                                                );
+                                                if (!bloc.isBasicInfo) {
+                                                  setState(() {
+                                                    bloc.isBasicInfo =
+                                                        !bloc.isBasicInfo;
+                                                  });
+                                                }
+                                              },
+                                              child: Container(
+                                                height: 50,
+                                                width: (MediaQuery.of(context)
+                                                            .size
+                                                            .width -
+                                                        62) /
+                                                    2,
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                        width: 0.5),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(
+                                                                10.0))),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 10.0,
+                                                      vertical: 5.0),
+                                                  child: Row(
+                                                    children: <Widget>[
+                                                      CircleAvatar(
+                                                        backgroundColor:
+                                                            ColorResource
+                                                                .color23375A,
+                                                        radius: 20,
+                                                        child: Center(
+                                                          child:
+                                                              SvgPicture.asset(
+                                                            ImageResource
+                                                                .direction,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 10),
+                                                      Expanded(
+                                                          child: CustomText(
+                                                        Languages.of(context)!
+                                                            .visit
+                                                            .toString()
+                                                            .toUpperCase(),
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        lineHeight: 1,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: ColorResource
+                                                            .color23375A,
+                                                      ))
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                                child: CustomText(
-                                                  Languages.of(context)!
-                                                      .visit
-                                                      .toString()
-                                                      .toUpperCase(),
-                                                  fontSize:
-                                                  FontSize.twelve,
-                                                  lineHeight: 1,
-                                                  fontWeight:
-                                                  FontWeight.w700,
-                                                  color: ColorResource
-                                                      .color23375A,
-                                                ))
-                                          ],
-                                        ),
-                                      ),
-                                    ))
-                                    : const SizedBox(),
-                                SizedBox(
-                                    width: bloc.userType == 'FIELDAGENT'
-                                        ? 20
-                                        : 0),
-                                GestureDetector(
-                                  onTap: () {
-                                    bloc.add(EventDetailsEvent(
-                                        Constants.callDetails,
-                                        const <dynamic>[],
-                                        true));
+                                              ))
+                                          : const SizedBox(),
+                                      SizedBox(
+                                          width: bloc.userType == 'FIELDAGENT'
+                                              ? 20
+                                              : 0),
+                                      GestureDetector(
+                                        onTap: () {
+                                          bloc.add(EventDetailsEvent(
+                                              Constants.callDetails,
+                                              const <dynamic>[],
+                                              true));
 
-                                    if (!bloc.isBasicInfo) {
-                                      setState(() {
-                                        bloc.isBasicInfo =
-                                        !bloc.isBasicInfo;
-                                      });
-                                    }
-                                  },
-                                  child: Container(
-                                    height: 50,
-                                    width: (MediaQuery
-                                        .of(context)
-                                        .size
-                                        .width -
-                                        62) /
-                                        2,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                            ColorResource.color23375A,
-                                            width: 0.5),
-                                        borderRadius:
-                                        const BorderRadius.all(
-                                            Radius.circular(10.0))),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10.0,
-                                          vertical: 5.0),
-                                      child: Row(
-                                        children: <Widget>[
-                                          CircleAvatar(
-                                            backgroundColor:
-                                            ColorResource.color23375A,
-                                            radius: 20,
-                                            child: Center(
-                                              child: SvgPicture.asset(
-                                                ImageResource.phone,
-                                              ),
+                                          if (!bloc.isBasicInfo) {
+                                            setState(() {
+                                              bloc.isBasicInfo =
+                                                  !bloc.isBasicInfo;
+                                            });
+                                          }
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          width: (MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  62) /
+                                              2,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color:
+                                                      ColorResource.color23375A,
+                                                  width: 0.5),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                      Radius.circular(10.0))),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10.0,
+                                                vertical: 5.0),
+                                            child: Row(
+                                              children: <Widget>[
+                                                CircleAvatar(
+                                                  backgroundColor:
+                                                      ColorResource.color23375A,
+                                                  radius: 20,
+                                                  child: Center(
+                                                    child: SvgPicture.asset(
+                                                      ImageResource.phone,
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10),
+                                                Expanded(
+                                                    child: CustomText(
+                                                  Languages.of(context)!
+                                                      .call
+                                                      .toUpperCase(),
+                                                  fontSize: FontSize.twelve,
+                                                  fontWeight: FontWeight.w700,
+                                                  lineHeight: 1,
+                                                  color:
+                                                      ColorResource.color23375A,
+                                                ))
+                                              ],
                                             ),
                                           ),
-                                          const SizedBox(width: 10),
-                                          Expanded(
-                                              child: CustomText(
-                                                Languages.of(context)!
-                                                    .call
-                                                    .toUpperCase(),
-                                                fontSize: FontSize.twelve,
-                                                fontWeight: FontWeight.w700,
-                                                lineHeight: 1,
-                                                color:
-                                                ColorResource.color23375A,
-                                              ))
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
                 );
               }
             },
@@ -549,8 +545,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             userName: bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '_',
             userId: bloc.caseDetailsAPIValue.result?.caseDetails?.accNo ?? '_',
             userAmount:
-            bloc.caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                0,
+                bloc.caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+                    0,
             isAccountNo: true,
             color: ColorResource.colorD4F5CF,
             marginTop: 10,
@@ -560,36 +556,36 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         if (Singleton.instance.usertype == Constants.fieldagent)
           bloc.caseDetailsAPIValue.result?.caseDetails?.collSubStatus == 'new'
               ? Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: CaseStatusWidget.satusTextWidget(
-              context,
-              text: Languages.of(context)!.new_,
-              width: 55,
-            ),
-          )
+                  padding: const EdgeInsets.only(left: 10),
+                  child: CaseStatusWidget.satusTextWidget(
+                    context,
+                    text: Languages.of(context)!.new_,
+                    width: 55,
+                  ),
+                )
               : Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: caseStatusWidget(
-                text: bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.collSubStatus),
-          ),
+                  padding: const EdgeInsets.only(left: 10),
+                  child: caseStatusWidget(
+                      text: bloc.caseDetailsAPIValue.result?.caseDetails
+                          ?.collSubStatus),
+                ),
 
         if (Singleton.instance.usertype == Constants.telecaller)
           bloc.caseDetailsAPIValue.result?.caseDetails?.telSubStatus == 'new'
               ? Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: CaseStatusWidget.satusTextWidget(
-              context,
-              text: Languages.of(context)!.new_,
-              width: 55,
-            ),
-          )
+                  padding: const EdgeInsets.only(left: 10),
+                  child: CaseStatusWidget.satusTextWidget(
+                    context,
+                    text: Languages.of(context)!.new_,
+                    width: 55,
+                  ),
+                )
               : Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: caseStatusWidget(
-                text: bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.telSubStatus),
-          ),
+                  padding: const EdgeInsets.only(left: 10),
+                  child: caseStatusWidget(
+                      text: bloc.caseDetailsAPIValue.result?.caseDetails
+                          ?.telSubStatus),
+                ),
       ],
     );
   }
@@ -614,39 +610,25 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       if (keyData.isNotEmpty) {
         switch (caseResultKey) {
           case 'attributeDetails':
-            title = Languages
-                .of(context)
-                ?.attributeDetails ?? '';
+            title = Languages.of(context)?.attributeDetails ?? '';
             break;
           case 'customerDetails':
-            title = Languages
-                .of(context)
-                ?.customerDetails ?? '';
+            title = Languages.of(context)?.customerDetails ?? '';
             break;
           case 'loanDetails':
-            title = Languages
-                .of(context)
-                ?.loanDetails ?? '';
+            title = Languages.of(context)?.loanDetails ?? '';
             break;
           case 'customerContactDetails':
-            title = Languages
-                .of(context)
-                ?.customerContactDetails ?? '';
+            title = Languages.of(context)?.customerContactDetails ?? '';
             break;
           case 'allocationDetails':
-            title = Languages
-                .of(context)
-                ?.allocationDetails ?? '';
+            title = Languages.of(context)?.allocationDetails ?? '';
             break;
           case 'repaymentDetails':
-            title = Languages
-                .of(context)
-                ?.repaymentInformation ?? '';
+            title = Languages.of(context)?.repaymentInformation ?? '';
             break;
           case 'assetDetails':
-            title = Languages
-                .of(context)
-                ?.assetDetails ?? '';
+            title = Languages.of(context)?.assetDetails ?? '';
             break;
           case 'derivedVariables':
             title = 'Derived Variables';
@@ -672,9 +654,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           if (keyName.isEmpty) {
             keyName = key.toUpperCase().toString();
           }
-          if (value
-              .toString()
-              .isNotEmpty && shouldShowSection == false) {
+          if (value.toString().isNotEmpty && shouldShowSection == false) {
             shouldShowSection = true;
           }
           if (keyName.contains('REFERENCE URL') == false) {
@@ -686,7 +666,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           // childWidgets.add(getSmsButton());
           childWidgets.add(repaymentInfo());
           if (Singleton.instance.contractorInformations?.result
-              ?.showSendRepaymentInfo ==
+                  ?.showSendRepaymentInfo ==
               true) {
             shouldShowSection = true;
           }
@@ -916,7 +896,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             padding: EdgeInsets.zero,
             shrinkWrap: true,
             itemCount:
-            bloc.caseDetailsAPIValue.result?.otherLoanDetails?.length ?? 0,
+                bloc.caseDetailsAPIValue.result?.otherLoanDetails?.length ?? 0,
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 mainAxisSize: MainAxisSize.min,
@@ -950,7 +930,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               color: ColorResource.colorDADADA, width: 0.5),
                           color: ColorResource.colorF7F8FA,
                           borderRadius:
-                          const BorderRadius.all(Radius.circular(10.0))),
+                              const BorderRadius.all(Radius.circular(10.0))),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 12),
@@ -960,8 +940,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                           children: <Widget>[
                             CustomText(
                               Languages.of(context)!
-                                  .bankName
-                                  .replaceAll('*', '') +
+                                      .bankName
+                                      .replaceAll('*', '') +
                                   ': ' +
                                   bloc.caseDetailsAPIValue.result!
                                       .otherLoanDetails![index].bankName!,
@@ -979,11 +959,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                             const SizedBox(height: 5),
                             CustomText(
                               bloc.caseDetailsAPIValue.result
-                                  ?.otherLoanDetails![index].cust !=
-                                  null
+                                          ?.otherLoanDetails![index].cust !=
+                                      null
                                   ? bloc.caseDetailsAPIValue.result!
-                                  .otherLoanDetails![index].cust!
-                                  .toUpperCase()
+                                      .otherLoanDetails![index].cust!
+                                      .toUpperCase()
                                   : '_',
                               color: ColorResource.color333333,
                               fontWeight: FontWeight.w700,
@@ -1000,8 +980,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               children: <Widget>[
                                 CustomText(
                                   bloc.caseDetailsAPIValue.result
-                                      ?.otherLoanDetails![index].due
-                                      .toString() ??
+                                          ?.otherLoanDetails![index].due
+                                          .toString() ??
                                       '_',
                                   color: ColorResource.color333333,
                                   fontWeight: FontWeight.w700,
@@ -1037,166 +1017,166 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Singleton.instance.contractorInformations?.result
-            ?.showSendRepaymentInfo ==
-            false
+                    ?.showSendRepaymentInfo ==
+                false
             ? const SizedBox()
             : bloc.isSendSMSloading
-            ? Container(
-          margin: const EdgeInsets.only(left: 50),
-          height: 37,
-          width: 37,
-          decoration: BoxDecoration(
-              color: ColorResource.color23375A,
-              borderRadius: BorderRadius.circular(25)),
-          child: const CustomLoadingWidget(
-            radius: 11,
-            strokeWidth: 2,
-          ),
-        )
-            : GestureDetector(
-          onTap: () async {
-            if (ConnectivityResult.none !=
-                await Connectivity().checkConnectivity()) {
-              if (!bloc.isSendSMSloading) {
-                bloc.add(SendSMSEvent(context,
-                    type: Constants.repaymentInfoType));
-              }
-            } else {
-              AppUtils.noInternetSnackbar(context);
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 15, vertical: 11.2),
-            decoration: BoxDecoration(
-              color: ColorResource.color23375A,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: ColorResource.colorECECEC),
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                SvgPicture.asset(ImageResource.sms),
-                const SizedBox(width: 7),
-                CustomText(Languages.of(context)!.sendSMS,
-                    fontSize: FontSize.eleven,
-                    fontWeight: FontWeight.w700,
-                    lineHeight: 1.3,
-                    color: ColorResource.colorffffff),
-              ],
-            ),
-          ),
-        ),
+                ? Container(
+                    margin: const EdgeInsets.only(left: 50),
+                    height: 37,
+                    width: 37,
+                    decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const CustomLoadingWidget(
+                      radius: 11,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : GestureDetector(
+                    onTap: () async {
+                      if (ConnectivityResult.none !=
+                          await Connectivity().checkConnectivity()) {
+                        if (!bloc.isSendSMSloading) {
+                          bloc.add(SendSMSEvent(context,
+                              type: Constants.repaymentInfoType));
+                        }
+                      } else {
+                        AppUtils.noInternetSnackbar(context);
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 11.2),
+                      decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: ColorResource.colorECECEC),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          SvgPicture.asset(ImageResource.sms),
+                          const SizedBox(width: 7),
+                          CustomText(Languages.of(context)!.sendSMS,
+                              fontSize: FontSize.eleven,
+                              fontWeight: FontWeight.w700,
+                              lineHeight: 1.3,
+                              color: ColorResource.colorffffff),
+                        ],
+                      ),
+                    ),
+                  ),
         const SizedBox(width: 30),
         CheckWhatsappButtonEnable.checkWAbutton(
-            whatsappTemplate: Singleton.instance.contractorInformations
-                ?.result?.repaymentWhatsappTemplate,
-            whatsappTemplateName: Singleton.instance.contractorInformations
-                ?.result?.sendRepaymentInfoWhatsappTemplateName,
-            whatsappKey: bloc.campaingnConfigModel.result?.whatsappApiKey)
-        // Singleton.instance.contractorInformations?.result
-        //             ?.hideSendRepaymentInfoWhatsappButton ==
-        //         false
+                whatsappTemplate: Singleton.instance.contractorInformations
+                    ?.result?.repaymentWhatsappTemplate,
+                whatsappTemplateName: Singleton.instance.contractorInformations
+                    ?.result?.sendRepaymentInfoWhatsappTemplateName,
+                whatsappKey: bloc.campaingnConfigModel.result?.whatsappApiKey)
+            // Singleton.instance.contractorInformations?.result
+            //             ?.hideSendRepaymentInfoWhatsappButton ==
+            //         false
             ? bloc.isSendWhatsappLoading
-            ? Container(
-          margin: const EdgeInsets.only(right: 50),
-          height: 37,
-          width: 37,
-          decoration: BoxDecoration(
-              color: ColorResource.color23375A,
-              borderRadius: BorderRadius.circular(25)),
-          child: const CustomLoadingWidget(
-            radius: 11,
-            strokeWidth: 2,
-          ),
-        )
-            : Flexible(
-          child: GestureDetector(
-            onTap: () {
-              bloc.add(SendWhatsAppEvent(context,
-                  caseID: bloc.caseDetailsAPIValue.result!
-                      .caseDetails!.caseId!));
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 15, vertical: 11.2),
-              decoration: BoxDecoration(
-                color: ColorResource.color23375A,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: ColorResource.colorECECEC),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SvgPicture.asset(
-                    ImageResource.whatsApp,
-                    height: 17,
-                  ),
-                  const SizedBox(width: 7),
-                  Expanded(
-                    child: CustomText(
-                        Languages.of(context)!.sendWhatsapp,
-                        fontSize: FontSize.eleven,
-                        fontWeight: FontWeight.w700,
-                        lineHeight: 1.3,
-                        color: ColorResource.colorffffff),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        )
+                ? Container(
+                    margin: const EdgeInsets.only(right: 50),
+                    height: 37,
+                    width: 37,
+                    decoration: BoxDecoration(
+                        color: ColorResource.color23375A,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const CustomLoadingWidget(
+                      radius: 11,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        bloc.add(SendWhatsAppEvent(context,
+                            caseID: bloc.caseDetailsAPIValue.result!
+                                .caseDetails!.caseId!));
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 11.2),
+                        decoration: BoxDecoration(
+                          color: ColorResource.color23375A,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: ColorResource.colorECECEC),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SvgPicture.asset(
+                              ImageResource.whatsApp,
+                              height: 17,
+                            ),
+                            const SizedBox(width: 7),
+                            Expanded(
+                              child: CustomText(
+                                  Languages.of(context)!.sendWhatsapp,
+                                  fontSize: FontSize.eleven,
+                                  fontWeight: FontWeight.w700,
+                                  lineHeight: 1.3,
+                                  color: ColorResource.colorffffff),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
             : bloc.isGeneratePaymentLink
-            ? bloc.isGeneratePaymentLinkLoading
-            ? Container(
-          margin: const EdgeInsets.only(right: 50),
-          height: 37,
-          width: 37,
-          decoration: BoxDecoration(
-              color: ColorResource.color23375A,
-              borderRadius: BorderRadius.circular(25)),
-          child: const CustomLoadingWidget(
-            radius: 11,
-            strokeWidth: 2,
-          ),
-        )
-            : Flexible(
-          child: GestureDetector(
-            onTap: () async {
-              if (await Connectivity().checkConnectivity() !=
-                  ConnectivityResult.none) {
-                setState(() {
-                  bloc.isGeneratePaymentLinkLoading = true;
-                });
-              } else {
-                AppUtils.noInternetSnackbar(context);
-              }
-              bloc.add(GeneratePaymenLinktEvent(context,
-                  caseID: bloc.caseDetailsAPIValue.result!
-                      .caseDetails!.caseId!));
-            },
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 15, vertical: 13),
-              decoration: BoxDecoration(
-                color: ColorResource.color23375A,
-                borderRadius: BorderRadius.circular(8),
-                border:
-                Border.all(color: ColorResource.colorECECEC),
-              ),
-              child: CustomText(
-                  Languages.of(context)!
-                      .generatePaymentLink
-                      .toUpperCase(),
-                  fontSize: FontSize.eleven,
-                  fontWeight: FontWeight.w700,
-                  // isSingleLine: true,
-                  lineHeight: 1.3,
-                  color: ColorResource.colorffffff),
-            ),
-          ),
-        )
-            : const SizedBox(),
+                ? bloc.isGeneratePaymentLinkLoading
+                    ? Container(
+                        margin: const EdgeInsets.only(right: 50),
+                        height: 37,
+                        width: 37,
+                        decoration: BoxDecoration(
+                            color: ColorResource.color23375A,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const CustomLoadingWidget(
+                          radius: 11,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Flexible(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (await Connectivity().checkConnectivity() !=
+                                ConnectivityResult.none) {
+                              setState(() {
+                                bloc.isGeneratePaymentLinkLoading = true;
+                              });
+                            } else {
+                              AppUtils.noInternetSnackbar(context);
+                            }
+                            bloc.add(GeneratePaymenLinktEvent(context,
+                                caseID: bloc.caseDetailsAPIValue.result!
+                                    .caseDetails!.caseId!));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 13),
+                            decoration: BoxDecoration(
+                              color: ColorResource.color23375A,
+                              borderRadius: BorderRadius.circular(8),
+                              border:
+                                  Border.all(color: ColorResource.colorECECEC),
+                            ),
+                            child: CustomText(
+                                Languages.of(context)!
+                                    .generatePaymentLink
+                                    .toUpperCase(),
+                                fontSize: FontSize.eleven,
+                                fontWeight: FontWeight.w700,
+                                // isSingleLine: true,
+                                lineHeight: 1.3,
+                                color: ColorResource.colorffffff),
+                          ),
+                        ),
+                      )
+                : const SizedBox(),
       ],
     );
   }
@@ -1209,7 +1189,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       context: context,
       removeTop: true,
       child: ListView.builder(
-        // shrinkWrap: true,
+          // shrinkWrap: true,
           itemCount: bloc.displayEventDetail.length,
           itemBuilder: (BuildContext context, int monthIndex) {
             return ListTileTheme(
@@ -1260,7 +1240,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                               controller: secondlistScrollController,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: bloc.displayEventDetail[monthIndex]
-                                  .eventList?.length ??
+                                      .eventList?.length ??
                                   0,
                               itemBuilder: (BuildContext context, int index) {
                                 // final dynamic listVal = bloc
@@ -1273,9 +1253,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                                 bloc.displayEventDetail[monthIndex].eventList
                                     ?.forEach(
                                         (EvnetDetailsResultsModel element) {
-                                      bloc.eventDetailsPlayAudioModel
-                                          .add(EventDetailsPlayAudioModel());
-                                    });
+                                  bloc.eventDetailsPlayAudioModel
+                                      .add(EventDetailsPlayAudioModel());
+                                });
                                 final dynamic value = bloc
                                     .displayEventDetail[monthIndex]
                                     .eventList!
@@ -1294,14 +1274,14 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       {required String title, required TextEditingController controller}) {
     return controller.text != '-'
         ? Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: CustomReadOnlyTextField(
-        title,
-        controller,
-        isLabel: true,
-        isEnable: false,
-      ),
-    )
+            padding: const EdgeInsets.only(top: 16),
+            child: CustomReadOnlyTextField(
+              title,
+              controller,
+              isLabel: true,
+              isEnable: false,
+            ),
+          )
         : const SizedBox();
   }
 
@@ -1318,27 +1298,24 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             callId: callId,
             customerLoanUserWidget: CustomLoanUserDetails(
               userName:
-              bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               userId: '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
               userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                  ?.toDouble() ??
+                      ?.toDouble() ??
                   0.0,
             ),
           );
         });
   }
 
-  void addressBottomSheet(BuildContext buildContext, CaseDetailsBloc bloc,
-      int i,
+  void addressBottomSheet(
+      BuildContext buildContext, CaseDetailsBloc bloc, int i,
       {dynamic addressModel}) {
     showCupertinoModalPopup(
         context: buildContext,
         builder: (BuildContext context) {
           return SizedBox(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.89,
+              height: MediaQuery.of(context).size.height * 0.89,
               child: AddressScreen(
                 bloc: bloc,
                 index: i,
@@ -1350,9 +1327,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   openBottomSheet(BuildContext buildContext, String cardTitle,
       List<dynamic> list, bool? isCall,
       {String? health,
-        String? selectedContact,
-        required bool isCallFromCallDetails,
-        String? callId}) {
+      String? selectedContact,
+      required bool isCallFromCallDetails,
+      String? callId}) {
     debugPrint('callTitle---->$cardTitle');
     showModalBottomSheet(
       isScrollControlled: true,
@@ -1373,11 +1350,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1393,11 +1370,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1413,11 +1390,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1433,11 +1410,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1453,11 +1430,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               isCall: isCall,
@@ -1465,7 +1442,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               postValue: list[bloc.indexValue!],
               bloc: bloc,
               custName:
-              bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               isCallFromCaseDetails: isCallFromCallDetails,
               callId: callId,
             );
@@ -1474,11 +1451,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.ots,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               caseId: bloc.caseId.toString(),
@@ -1495,13 +1472,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1514,13 +1489,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               Languages.of(context)!.captureImage,
               customerLoanUserDetailsWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               bloc: bloc,
@@ -1532,13 +1505,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1554,13 +1525,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               bloc,
               customeLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
             );
@@ -1574,21 +1543,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 ?.forEach((dynamic element) {
               // if (element['cType'].contains('mobile')) {
               //   if (!(s1.contains(element['value']))) {
-                  s1.add(element['value']);
-                // }
+              s1.add(element['value']);
+              // }
               // } else {}
             });
             return CallCustomerBottomSheet(
               caseDetailsAPIValue: bloc.caseDetailsAPIValue,
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               listOfMobileNo: s1,
@@ -1597,7 +1564,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   ? bloc.caseId!
                   : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
               custName:
-              bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
               sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
               contactNumber: selectedContact,
               isCallFromCallDetails: isCallFromCallDetails,
@@ -1607,30 +1574,26 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             return AddNewContactBottomSheet(
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
             );
-        // this events only visible based on contractor
+          // this events only visible based on contractor
           case Constants.notInterested:
             return CustomNotIntrestedBottomSheet(
               Languages.of(context)!.notInterested,
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1647,13 +1610,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1670,13 +1631,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               caseId: bloc.caseId.toString(),
               customerLoanUserWidget: CustomLoanUserDetails(
                 userName:
-                bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
                 userId:
-                '${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails
-                    ?.agrRef}',
+                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
                 userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                    ?.toDouble() ??
+                        ?.toDouble() ??
                     0.0,
               ),
               userType: bloc.userType.toString(),
@@ -1689,10 +1648,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
 
           default:
             return SizedBox(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.89,
+                height: MediaQuery.of(context).size.height * 0.89,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: const <Widget>[
@@ -1709,22 +1665,22 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   Widget caseStatusWidget({String? text}) {
     return text != null
         ? Card(
-      elevation: 0,
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
-      color: CaseStatusWidget.getStatusColor(text),
-      child: Padding(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 12, vertical: 3.3),
-        child: CustomText(
-          text,
-          color: ColorResource.colorFFFFFF,
-          lineHeight: 1,
-          fontSize: FontSize.ten,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    )
+            elevation: 0,
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30.0))),
+            color: CaseStatusWidget.getStatusColor(text),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 3.3),
+              child: CustomText(
+                text,
+                color: ColorResource.colorFFFFFF,
+                lineHeight: 1,
+                fontSize: FontSize.ten,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
         : const SizedBox();
   }
 
@@ -1743,7 +1699,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 GestureDetector(
                   onTap: () async {
                     final String urlValue = bloc.caseDetailsAPIValue.result
-                        ?.caseDetails?.repaymentInfo?.refUrl ??
+                            ?.caseDetails?.repaymentInfo?.refUrl ??
                         '';
                     await Clipboard.setData(ClipboardData(text: urlValue))
                         .then((_) {
@@ -1753,7 +1709,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   child: ListOfCaseDetails.textFieldView(
                       title: Languages.of(context)!.referenceUrl,
                       value: bloc.caseDetailsAPIValue.result?.caseDetails
-                          ?.repaymentInfo?.refUrl ??
+                              ?.repaymentInfo?.refUrl ??
                           '-'),
                 ),
                 const SizedBox(height: 15),
@@ -1761,60 +1717,188 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Singleton.instance.contractorInformations?.result
-                        ?.showSendRepaymentInfo ==
-                        false
+                                ?.showSendRepaymentInfo ==
+                            false
                         ? const SizedBox()
                         : bloc.isSendSMSloading
-                        ? Container(
-                      margin: const EdgeInsets.only(left: 50),
-                      height: 37,
-                      width: 37,
-                      decoration: BoxDecoration(
-                          color: ColorResource.color23375A,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: const CustomLoadingWidget(
-                        radius: 11,
-                        strokeWidth: 2,
-                      ),
-                    )
-                        : GestureDetector(
-                      onTap: () async {
-                        if (ConnectivityResult.none !=
-                            await Connectivity()
-                                .checkConnectivity()) {
-                          if (!bloc.isSendSMSloading) {
-                            bloc.add(SendSMSEvent(context,
-                                type: Constants.repaymentInfoType));
-                          }
-                        } else {
-                          AppUtils.noInternetSnackbar(context);
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 11.2),
-                        decoration: BoxDecoration(
-                          color: ColorResource.color23375A,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                              color: ColorResource.colorECECEC),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SvgPicture.asset(ImageResource.sms),
-                            const SizedBox(width: 7),
-                            CustomText(Languages.of(context)!.sendSMS,
-                                fontSize: FontSize.eleven,
-                                fontWeight: FontWeight.w700,
-                                lineHeight: 1.3,
-                                color: ColorResource.colorffffff),
-                          ],
-                        ),
-                      ),
-                    ),
+                            ? Container(
+                                margin: const EdgeInsets.only(left: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : GestureDetector(
+                                onTap: () async {
+                                  if (ConnectivityResult.none !=
+                                      await Connectivity()
+                                          .checkConnectivity()) {
+                                    if (!bloc.isSendSMSloading) {
+                                      bloc.add(SendSMSEvent(context,
+                                          type: Constants.repaymentInfoType));
+                                    }
+                                  } else {
+                                    AppUtils.noInternetSnackbar(context);
+                                  }
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 11.2),
+                                  decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: ColorResource.colorECECEC),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      SvgPicture.asset(ImageResource.sms),
+                                      const SizedBox(width: 7),
+                                      CustomText(Languages.of(context)!.sendSMS,
+                                          fontSize: FontSize.eleven,
+                                          fontWeight: FontWeight.w700,
+                                          lineHeight: 1.3,
+                                          color: ColorResource.colorffffff),
+                                    ],
+                                  ),
+                                ),
+                              ),
                     const SizedBox(width: 30),
                     CheckWhatsappButtonEnable.checkWAbutton(
+                            whatsappTemplate: Singleton
+                                .instance
+                                .contractorInformations
+                                ?.result
+                                ?.repaymentWhatsappTemplate,
+                            whatsappTemplateName: Singleton
+                                .instance
+                                .contractorInformations
+                                ?.result
+                                ?.sendRepaymentInfoWhatsappTemplateName,
+                            whatsappKey: bloc
+                                .campaingnConfigModel.result?.whatsappApiKey)
+                        // Singleton.instance.contractorInformations?.result
+                        //             ?.hideSendRepaymentInfoWhatsappButton ==
+                        //         false
+                        ? bloc.isSendWhatsappLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    bloc.add(SendWhatsAppEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 11.2),
+                                    decoration: BoxDecoration(
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        SvgPicture.asset(
+                                          ImageResource.whatsApp,
+                                          height: 17,
+                                        ),
+                                        const SizedBox(width: 7),
+                                        Expanded(
+                                          child: CustomText(
+                                              Languages.of(context)!
+                                                  .sendWhatsapp,
+                                              fontSize: FontSize.eleven,
+                                              fontWeight: FontWeight.w700,
+                                              lineHeight: 1.3,
+                                              color: ColorResource.colorffffff),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                        : bloc.isGeneratePaymentLink
+                            ? bloc.isGeneratePaymentLinkLoading
+                                ? Container(
+                                    margin: const EdgeInsets.only(right: 50),
+                                    height: 37,
+                                    width: 37,
+                                    decoration: BoxDecoration(
+                                        color: ColorResource.color23375A,
+                                        borderRadius:
+                                            BorderRadius.circular(25)),
+                                    child: const CustomLoadingWidget(
+                                      radius: 11,
+                                      strokeWidth: 2,
+                                    ),
+                                  )
+                                : Flexible(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        if (await Connectivity()
+                                                .checkConnectivity() !=
+                                            ConnectivityResult.none) {
+                                          setState(() {
+                                            bloc.isGeneratePaymentLinkLoading =
+                                                true;
+                                          });
+                                        } else {
+                                          AppUtils.noInternetSnackbar(context);
+                                        }
+                                        bloc.add(GeneratePaymenLinktEvent(
+                                            context,
+                                            caseID: bloc.caseDetailsAPIValue
+                                                .result!.caseDetails!.caseId!));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 13),
+                                        decoration: BoxDecoration(
+                                          color: ColorResource.color23375A,
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: ColorResource.colorECECEC),
+                                        ),
+                                        child: CustomText(
+                                            Languages.of(context)!
+                                                .generatePaymentLink
+                                                .toUpperCase(),
+                                            fontSize: FontSize.eleven,
+                                            fontWeight: FontWeight.w700,
+                                            // isSingleLine: true,
+                                            lineHeight: 1.3,
+                                            color: ColorResource.colorffffff),
+                                      ),
+                                    ),
+                                  )
+                            : const SizedBox(),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                CheckWhatsappButtonEnable.checkWAbutton(
                         whatsappTemplate: Singleton
                             .instance
                             .contractorInformations
@@ -1825,191 +1909,63 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                             .contractorInformations
                             ?.result
                             ?.sendRepaymentInfoWhatsappTemplateName,
-                        whatsappKey: bloc
-                            .campaingnConfigModel.result?.whatsappApiKey)
+                        whatsappKey:
+                            bloc.campaingnConfigModel.result?.whatsappApiKey)
                     // Singleton.instance.contractorInformations?.result
                     //             ?.hideSendRepaymentInfoWhatsappButton ==
                     //         false
-                        ? bloc.isSendWhatsappLoading
-                        ? Container(
-                      margin: const EdgeInsets.only(right: 50),
-                      height: 37,
-                      width: 37,
-                      decoration: BoxDecoration(
-                          color: ColorResource.color23375A,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: const CustomLoadingWidget(
-                        radius: 11,
-                        strokeWidth: 2,
-                      ),
-                    )
-                        : Flexible(
-                      child: GestureDetector(
-                        onTap: () {
-                          bloc.add(SendWhatsAppEvent(context,
-                              caseID: bloc.caseDetailsAPIValue.result!
-                                  .caseDetails!.caseId!));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 11.2),
-                          decoration: BoxDecoration(
-                            color: ColorResource.color23375A,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                                color: ColorResource.colorECECEC),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SvgPicture.asset(
-                                ImageResource.whatsApp,
-                                height: 17,
-                              ),
-                              const SizedBox(width: 7),
-                              Expanded(
-                                child: CustomText(
-                                    Languages.of(context)!
-                                        .sendWhatsapp,
-                                    fontSize: FontSize.eleven,
-                                    fontWeight: FontWeight.w700,
-                                    lineHeight: 1.3,
-                                    color: ColorResource.colorffffff),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                        : bloc.isGeneratePaymentLink
-                        ? bloc.isGeneratePaymentLinkLoading
-                        ? Container(
-                      margin: const EdgeInsets.only(right: 50),
-                      height: 37,
-                      width: 37,
-                      decoration: BoxDecoration(
-                          color: ColorResource.color23375A,
-                          borderRadius:
-                          BorderRadius.circular(25)),
-                      child: const CustomLoadingWidget(
-                        radius: 11,
-                        strokeWidth: 2,
-                      ),
-                    )
-                        : Flexible(
-                      child: GestureDetector(
-                        onTap: () async {
-                          if (await Connectivity()
-                              .checkConnectivity() !=
-                              ConnectivityResult.none) {
-                            setState(() {
-                              bloc.isGeneratePaymentLinkLoading =
-                              true;
-                            });
-                          } else {
-                            AppUtils.noInternetSnackbar(context);
-                          }
-                          bloc.add(GeneratePaymenLinktEvent(
-                              context,
-                              caseID: bloc.caseDetailsAPIValue
-                                  .result!.caseDetails!.caseId!));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 13),
-                          decoration: BoxDecoration(
-                            color: ColorResource.color23375A,
-                            borderRadius:
-                            BorderRadius.circular(8),
-                            border: Border.all(
-                                color: ColorResource.colorECECEC),
-                          ),
-                          child: CustomText(
-                              Languages.of(context)!
-                                  .generatePaymentLink
-                                  .toUpperCase(),
-                              fontSize: FontSize.eleven,
-                              fontWeight: FontWeight.w700,
-                              // isSingleLine: true,
-                              lineHeight: 1.3,
-                              color: ColorResource.colorffffff),
-                        ),
-                      ),
-                    )
-                        : const SizedBox(),
-                  ],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                CheckWhatsappButtonEnable.checkWAbutton(
-                    whatsappTemplate: Singleton
-                        .instance
-                        .contractorInformations
-                        ?.result
-                        ?.repaymentWhatsappTemplate,
-                    whatsappTemplateName: Singleton
-                        .instance
-                        .contractorInformations
-                        ?.result
-                        ?.sendRepaymentInfoWhatsappTemplateName,
-                    whatsappKey:
-                    bloc.campaingnConfigModel.result?.whatsappApiKey)
-                // Singleton.instance.contractorInformations?.result
-                //             ?.hideSendRepaymentInfoWhatsappButton ==
-                //         false
                     ? bloc.isGeneratePaymentLink
-                    ? bloc.isGeneratePaymentLinkLoading
-                    ? Container(
-                  margin: const EdgeInsets.only(right: 50),
-                  height: 37,
-                  width: 37,
-                  decoration: BoxDecoration(
-                      color: ColorResource.color23375A,
-                      borderRadius: BorderRadius.circular(25)),
-                  child: const CustomLoadingWidget(
-                    radius: 11,
-                    strokeWidth: 2,
-                  ),
-                )
-                    : Flexible(
-                  child: GestureDetector(
-                    onTap: () async {
-                      if (await Connectivity()
-                          .checkConnectivity() !=
-                          ConnectivityResult.none) {
-                        setState(() {
-                          bloc.isGeneratePaymentLinkLoading =
-                          true;
-                        });
-                      } else {
-                        AppUtils.noInternetSnackbar(context);
-                      }
-                      bloc.add(GeneratePaymenLinktEvent(context,
-                          caseID: bloc.caseDetailsAPIValue.result!
-                              .caseDetails!.caseId!));
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 13),
-                      decoration: BoxDecoration(
-                        color: ColorResource.color23375A,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                            color: ColorResource.colorECECEC),
-                      ),
-                      child: CustomText(
-                          Languages.of(context)!
-                              .generatePaymentLink
-                              .toUpperCase(),
-                          fontSize: FontSize.eleven,
-                          fontWeight: FontWeight.w700,
-                          lineHeight: 1.3,
-                          color: ColorResource.colorffffff),
-                    ),
-                  ),
-                )
-                    : const SizedBox()
+                        ? bloc.isGeneratePaymentLinkLoading
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 50),
+                                height: 37,
+                                width: 37,
+                                decoration: BoxDecoration(
+                                    color: ColorResource.color23375A,
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: const CustomLoadingWidget(
+                                  radius: 11,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : Flexible(
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    if (await Connectivity()
+                                            .checkConnectivity() !=
+                                        ConnectivityResult.none) {
+                                      setState(() {
+                                        bloc.isGeneratePaymentLinkLoading =
+                                            true;
+                                      });
+                                    } else {
+                                      AppUtils.noInternetSnackbar(context);
+                                    }
+                                    bloc.add(GeneratePaymenLinktEvent(context,
+                                        caseID: bloc.caseDetailsAPIValue.result!
+                                            .caseDetails!.caseId!));
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 13),
+                                    decoration: BoxDecoration(
+                                      color: ColorResource.color23375A,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                          color: ColorResource.colorECECEC),
+                                    ),
+                                    child: CustomText(
+                                        Languages.of(context)!
+                                            .generatePaymentLink
+                                            .toUpperCase(),
+                                        fontSize: FontSize.eleven,
+                                        fontWeight: FontWeight.w700,
+                                        lineHeight: 1.3,
+                                        color: ColorResource.colorffffff),
+                                  ),
+                                ),
+                              )
+                        : const SizedBox()
                     : const SizedBox(),
               ],
             )
@@ -2048,7 +2004,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     );
     if (postResult[Constants.success]) {
       final AudioConvertModel audioConvertyData =
-      AudioConvertModel.fromJson(postResult['data']);
+          AudioConvertModel.fromJson(postResult['data']);
       final String base64 = const Base64Encoder()
           .convert(List<int>.from(audioConvertyData.result!.body!.data!));
 
@@ -2058,10 +2014,9 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           <String, dynamic>{'filePath': filePath}).then((dynamic value) {
         if (value) {
           setState(
-                  () =>
-              bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
+              () => bloc.eventDetailsPlayAudioModel[index].isPlaying = true);
           setState(() =>
-          bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
+              bloc.eventDetailsPlayAudioModel[index].loadingAudio = false);
         }
       });
       await platform.invokeMethod('completeRecordAudio',
@@ -2169,132 +2124,97 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 ),
                 if (expandedList[index].createdBy != null)
                   CustomText(
-                    '${Languages.of(context)!.agent} : ${expandedList[index]
-                        .createdBy}',
+                    '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (
-                // expandedList[index].eventType?.toLowerCase() ==
-                //       Constants.ptp.toLowerCase() &&
-                expandedList[index].eventAttr?.ptpAmount != null)
+                    // expandedList[index].eventType?.toLowerCase() ==
+                    //       Constants.ptp.toLowerCase() &&
+                    expandedList[index].eventAttr?.ptpAmount != null)
                   CustomText(
-                    '${Languages.of(context)!.ptpAmount.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.ptpAmount
-                        .toString()}',
+                    '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.date != null)
                   CustomText(
                     expandedList[index].eventType == 'RECEIPT' ||
-                        expandedList[index].eventType == 'TC : RECEIPT'
-                        ? '${Languages.of(context)!.date.replaceAll(
-                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
-                        expandedList[index].eventAttr!.date.toString())}'
-                        : '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
-                        expandedList[index].eventAttr!.date.toString())}',
+                            expandedList[index].eventType == 'TC : RECEIPT'
+                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}'
+                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.time != null)
                   CustomText(
-                    '${Languages.of(context)!.time.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.time
-                        .toString()}',
+                    '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.mode != null)
                   CustomText(
-                    '${Languages.of(context)!.paymentMode.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.mode
-                        .toString()}',
+                    '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.remarks != null)
                   CustomText(
-                    '${Languages.of(context)!.remarks.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.remarks
-                        .toString()}',
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.amountCollected != null)
                   CustomText(
-                    '${Languages.of(context)!.amountCollected.replaceAll(
-                        '*', '')}: ${expandedList[index].eventAttr
-                        ?.amountCollected.toString()}',
+                    '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.reminderDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
-                        expandedList[index].eventAttr?.reminderDate
-                            .toString() ?? '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.chequeRefNo != null)
                   CustomText(
-                    '${Languages.of(context)!.refCheque.replaceAll('*', '')
-                        .toLowerCase()
-                        .replaceAll('r', 'R')} : ${expandedList[index].eventAttr
-                        ?.chequeRefNo.toString()}',
+                    '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.amntOts != null)
                   CustomText(
-                    'OTS ${Languages.of(context)!
-                        .amount} : ${expandedList[index].eventAttr?.amntOts
-                        .toString()}',
+                    'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.nextActionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
-                        expandedList[index].eventAttr?.nextActionDate
-                            .toString() ?? '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.actionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll(
-                        '*', '')} : ${DateFormatUtils2.followUpDateFormat2(
-                        expandedList[index].eventAttr?.actionDate.toString() ??
-                            '')}',
+                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.reasons != null)
                   CustomText(
-                    '${Languages.of(context)!.rtpDenialReason.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.reasons
-                        .toString() ?? ''}',
+                    '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.disputereasons != null)
                   CustomText(
-                    '${Languages.of(context)!.disputeReason.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr
-                        ?.disputereasons.toString() ?? ''}',
+                    '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.remarkOts != null)
                   CustomText(
-                    '${Languages.of(context)!.remarks.replaceAll(
-                        '*', '')} : ${expandedList[index].eventAttr?.remarkOts
-                        .toString()}',
+                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
@@ -2304,92 +2224,70 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                     children: [
                       if (expandedList[index].eventAttr?.modelMake != null)
                         CustomText(
-                          '${Languages.of(context)!.modelMake.replaceAll(
-                              '*', '')} : ${expandedList[index].eventAttr!
-                              .modelMake}',
+                          '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.chassisNo != null)
                         CustomText(
-                          '${Languages.of(context)!.chassisNo.replaceAll(
-                              '*', '')} : ${expandedList[index].eventAttr!
-                              .chassisNo}',
+                          '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.vehicleRegNo != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .vehicleRegistrationNo} : ${expandedList[index]
-                              .eventAttr!.vehicleRegNo}',
+                          '${Languages.of(context)!.vehicleRegistrationNo} : ${expandedList[index].eventAttr!.vehicleRegNo}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.dealerName != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .dealerName} : ${expandedList[index].eventAttr!
-                              .dealerName}',
+                          '${Languages.of(context)!.dealerName} : ${expandedList[index].eventAttr!.dealerName}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.dealerAddress != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .dealerAddress} : ${expandedList[index].eventAttr!
-                              .dealerAddress}',
+                          '${Languages.of(context)!.dealerAddress} : ${expandedList[index].eventAttr!.dealerAddress}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.ref1 != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .referenceOneName} ${expandedList[index]
-                              .eventAttr!.ref1}',
+                          '${Languages.of(context)!.referenceOneName} ${expandedList[index].eventAttr!.ref1}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.ref1No != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .referenceOneNo}: ${expandedList[index].eventAttr!
-                              .ref1No}',
+                          '${Languages.of(context)!.referenceOneNo}: ${expandedList[index].eventAttr!.ref1No}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.ref2 != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .referenceTwoName}: ${expandedList[index]
-                              .eventAttr!.ref2}',
+                          '${Languages.of(context)!.referenceTwoName}: ${expandedList[index].eventAttr!.ref2}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.ref2No != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .referenceTwoNo}: ${expandedList[index].eventAttr!
-                              .ref2No}',
+                          '${Languages.of(context)!.referenceTwoNo}: ${expandedList[index].eventAttr!.ref2No}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index]
-                          .eventAttr
-                          ?.vehicleIdentificationNo !=
+                              .eventAttr
+                              ?.vehicleIdentificationNo !=
                           null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .vehicleIdentificationNo}: ${expandedList[index]
-                              .eventAttr!.vehicleIdentificationNo}',
+                          '${Languages.of(context)!.vehicleIdentificationNo}: ${expandedList[index].eventAttr!.vehicleIdentificationNo}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.batteryID != null)
                         CustomText(
-                          '${Languages.of(context)!
-                              .batterId}: ${expandedList[index].eventAttr!
-                              .batteryID}',
+                          '${Languages.of(context)!.batterId}: ${expandedList[index].eventAttr!.batteryID}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
@@ -2401,7 +2299,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   remarkS2TaudioWidget(
                     reginalText: expandedList[index].eventAttr?.reginalText,
                     translatedText:
-                    expandedList[index].eventAttr?.translatedText,
+                        expandedList[index].eventAttr?.translatedText,
                     audioPath: expandedList[index].eventAttr?.audioS3Path,
                     index: index,
                   ),
@@ -2503,19 +2401,19 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 child: Center(
                   child: bloc.eventDetailsPlayAudioModel[index].loadingAudio
                       ? CustomLoadingWidget(
-                    radius: 11,
-                    strokeWidth: 3.0,
-                    gradientColors: <Color>[
-                      ColorResource.colorFFFFFF,
-                      ColorResource.colorFFFFFF.withOpacity(0.7),
-                    ],
-                  )
+                          radius: 11,
+                          strokeWidth: 3.0,
+                          gradientColors: <Color>[
+                            ColorResource.colorFFFFFF,
+                            ColorResource.colorFFFFFF.withOpacity(0.7),
+                          ],
+                        )
                       : Icon(
-                    bloc.eventDetailsPlayAudioModel[index].isPlaying
-                        ? Icons.stop
-                        : Icons.play_arrow,
-                    color: ColorResource.colorFFFFFF,
-                  ),
+                          bloc.eventDetailsPlayAudioModel[index].isPlaying
+                              ? Icons.stop
+                              : Icons.play_arrow,
+                          color: ColorResource.colorFFFFFF,
+                        ),
                 ),
               ),
             ),

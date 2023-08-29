@@ -14,7 +14,6 @@ import 'package:origa/src/features/allocation/presentation/priority_list_view/pr
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_format_utils.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -57,7 +56,7 @@ class _AllocationViewState extends State<AllocationView> {
           }
         },
         child: Scaffold(
-            backgroundColor: primaryColor,
+            backgroundColor: ColorResourceDesign.primaryColor,
             body: PagedListView<int, PriorityCaseListModel>(
                 pagingController: _pagingController,
                 builderDelegate:
@@ -90,9 +89,9 @@ class _AllocationViewState extends State<AllocationView> {
         width: 400,
         height: 50,
         decoration: BoxDecoration(
-          color: whiteColor,
+          color: ColorResourceDesign.whiteColor,
           border: Border.all(
-            color: whiteGray,
+            color: ColorResourceDesign.whiteGray,
           ),
           borderRadius: BorderRadius.circular(Sizes.p10),
         ),
@@ -104,23 +103,23 @@ class _AllocationViewState extends State<AllocationView> {
               width: Sizes.p18,
               height: Sizes.p20,
             ),
-            const Text(atOffice,
+            const Text(ConstantsResourceDesign.atOffice,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: Sizes.p12,
-                  color: blackOne,
+                  color: ColorResourceDesign.blackOne,
                 )),
             ToolbarRectBtnWidget(
-              btnText: yes,
+              btnText: ConstantsResourceDesign.yes,
               isBorder: false,
               onPressed: () {},
             ),
             ToolbarRectBtnWidget(
               onPressed: () {},
-              btnText: no,
+              btnText: ConstantsResourceDesign.no,
               isBorder: true,
-              btnBackgroundColor: secondaryButtonBg,
-              btnTextColor: secondaryButtonTextColor,
+              btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+              btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
             ),
           ],
         ));
@@ -133,23 +132,23 @@ class _AllocationViewState extends State<AllocationView> {
         height: 70,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: greyColor,
+          color: ColorResourceDesign.greyColor,
         ),
         child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(searchBasedOn,
+            Text(ConstantsResourceDesign.searchBasedOn,
                 style: TextStyle(
-                  fontWeight: textFontWeightNormal,
+                  fontWeight: FontResourceDesign.textFontWeightNormal,
                   fontSize: Sizes.p10,
-                  color: blackTwo,
+                  color: ColorResourceDesign.blackTwo,
                 )),
-            Text(pincode,
+            Text(ConstantsResourceDesign.pincode,
                 style: TextStyle(
-                  fontWeight: textFontWeightSemiBold,
+                  fontWeight: FontResourceDesign.textFontWeightSemiBold,
                   fontSize: Sizes.p14,
-                  color: blackTwo,
+                  color: ColorResourceDesign.blackTwo,
                 ))
           ],
         ));
@@ -160,7 +159,7 @@ class _AllocationViewState extends State<AllocationView> {
       children: [
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: priority,
+          btnText: ConstantsResourceDesign.priority,
           isBorder: false,
           btnWidth: 84,
           btnHeight: 30,
@@ -168,22 +167,22 @@ class _AllocationViewState extends State<AllocationView> {
         gapW12,
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: buildRoute,
+          btnText: ConstantsResourceDesign.buildRoute,
           isBorder: true,
           btnWidth: 84,
           btnHeight: 30,
-          btnBackgroundColor: secondaryButtonBg,
-          btnTextColor: secondaryButtonTextColor,
+          btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+          btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
         ),
         gapW12,
         ToolbarRectBtnWidget(
           onPressed: () {},
-          btnText: mapView,
+          btnText: ConstantsResourceDesign.mapView,
           isBorder: true,
           btnWidth: 84,
           btnHeight: 30,
-          btnBackgroundColor: secondaryButtonBg,
-          btnTextColor: secondaryButtonTextColor,
+          btnBackgroundColor: ColorResourceDesign.secondaryButtonBg,
+          btnTextColor: ColorResourceDesign.secondaryButtonTextColor,
         ),
       ],
     );
@@ -323,7 +322,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                     // bloc.totalCases.toString() +
                     // resultData.length.toString() +
                     ' ' + LanguageEn().allocation,
-                    color: ColorResource.color000000,
+                    color: ColorResourceDesign.color0066cc,
                     fontWeight: FontWeight.w700,
                   ),
                   const SizedBox(
@@ -341,7 +340,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                     //     ' ' +
                     LanguageEn().hignPriority,
                     fontSize: FontSize.ten,
-                    color: ColorResource.color101010,
+                    color: ColorResourceDesign.color101010,
                     fontWeight: FontWeight.w700,
                   ),
                 ],
@@ -367,9 +366,9 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                      color: ColorResource.colorffffff,
+                      color: ColorResourceDesign.colorffffff,
                       border: Border.all(
-                          color: ColorResource.colorDADADA, width: 0.5),
+                          color: ColorResourceDesign.colorDADADA, width: 0.5),
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: const [
                         BoxShadow(
@@ -390,7 +389,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                           child: CustomText(
                             widget.item.agrRef!,
                             fontSize: FontSize.twelve,
-                            color: ColorResource.color101010,
+                            color: ColorResourceDesign.color101010,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -407,14 +406,14 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                       Constants.inr +
                                           widget.item.due.toString(),
                                       fontSize: FontSize.eighteen,
-                                      color: ColorResource.color101010,
+                                      color: ColorResourceDesign.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
                                     const SizedBox(height: 3.0),
                                     CustomText(
                                       widget.item.cust!,
                                       fontSize: FontSize.sixteen,
-                                      color: ColorResource.color101010,
+                                      color: ColorResourceDesign.color101010,
                                     ),
                                   ],
                                 ),
@@ -430,8 +429,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                         context,
                                         text: widget.item.collSubStatus ?? '',
                                       ),
-                              if ("TELECALLE" ==
-                                  Constants.telecaller)
+                              if ("TELECALLE" == Constants.telecaller)
                                 widget.item.telSubStatus == 'new'
                                     ? CaseStatusWidget.satusTextWidget(
                                         context,
@@ -454,7 +452,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                   padding:
                                       const EdgeInsets.fromLTRB(20, 5, 15, 5),
                                   decoration: BoxDecoration(
-                                    color: ColorResource.colorF8F9FB,
+                                    color: ColorResourceDesign.colorF8F9FB,
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: Column(
@@ -463,7 +461,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                     children: [
                                       CustomText(
                                         addressValue ?? '',
-                                        color: ColorResource.color484848,
+                                        color: ColorResourceDesign.color484848,
                                       ),
                                     ],
                                   ),
@@ -477,13 +475,15 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 17, vertical: 6),
                                         decoration: BoxDecoration(
-                                          color: ColorResource.colorF8F9FB,
+                                          color:
+                                              ColorResourceDesign.colorF8F9FB,
                                           borderRadius:
                                               BorderRadius.circular(30),
                                         ),
                                         child: CustomText(
                                           item,
-                                          color: ColorResource.color484848,
+                                          color:
+                                              ColorResourceDesign.color484848,
                                           lineHeight: 1.0,
                                         ),
                                       )
@@ -502,12 +502,11 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                             children: [
                               CustomText(
                                 LanguageEn().followUpDate,
-                                color: ColorResource.color101010,
+                                color: ColorResourceDesign.color101010,
                               ),
                               Row(
                                 children: [
-                                  if ("FIELDAGENT" ==
-                                      Constants.fieldagent)
+                                  if ("FIELDAGENT" == Constants.fieldagent)
                                     CustomText(
                                       widget.item.fieldfollowUpDate != null &&
                                               (widget.item.fieldfollowUpDate
@@ -516,17 +515,16 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                           ? DateFormatUtils.followUpDateFormate(
                                               widget.item.fieldfollowUpDate!)
                                           : '-',
-                                      color: ColorResource.color101010,
+                                      color: ColorResourceDesign.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
-                                  if ("TELECALLER" ==
-                                      Constants.telecaller)
+                                  if ("TELECALLER" == Constants.telecaller)
                                     CustomText(
                                       widget.item.followUpDate != null
                                           ? DateFormatUtils.followUpDateFormate(
                                               widget.item.followUpDate!)
                                           : '-',
-                                      color: ColorResource.color101010,
+                                      color: ColorResourceDesign.color101010,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   const Spacer(),
@@ -535,7 +533,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                       CustomText(
                                         LanguageEn().view,
                                         lineHeight: 1,
-                                        color: ColorResource.color23375A,
+                                        color: ColorResourceDesign.color23375A,
                                         fontWeight: FontWeight.w700,
                                       ),
                                       const SizedBox(

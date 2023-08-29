@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/mohammedsalim/Desktop/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/mohammedsalim/Desktop/Dev/origa-mobile-app/core/repository"
+export "FLUTTER_ROOT=/Users/krishnakant.chouhan/Documents/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/krishnakant.chouhan/Documents/origa-mobile-app/core/repository"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

@@ -81,7 +81,7 @@ class _HomeViewState extends State<HomeView>
   Widget getHome() {
     return Material(
         child: Scaffold(
-            backgroundColor: primaryColor,
+            backgroundColor: ColorResourceDesign.primaryColor,
             body: BlocBuilder<HomeBloc, HomeState>(
               bloc: BlocProvider.of<HomeBloc>(context),
               builder: (context, state) {
@@ -89,13 +89,13 @@ class _HomeViewState extends State<HomeView>
                   return const CustomLoadingWidget();
                 }
                 return Scaffold(
-                  backgroundColor: ColorResource.colorF7F8FA,
+                  backgroundColor: ColorResourceDesign.colorF7F8FA,
                   bottomNavigationBar: Visibility(
                     visible: internetAvailability != 'none' ? false : true,
                     child: Container(
                       alignment: Alignment.center,
                       height: 30,
-                      color: ColorResource.colorE72C30,
+                      color: ColorResourceDesign.colorE72C30,
                       width: MediaQuery.of(context).size.width,
                       child: CustomText(
                         "You are offline",
@@ -125,7 +125,8 @@ class _HomeViewState extends State<HomeView>
                                           title!,
                                           fontSize: FontSize.sixteen,
                                           fontWeight: FontWeight.w700,
-                                          color: ColorResource.color23375A,
+                                          color:
+                                              ColorResourceDesign.color23375A,
                                         )),
                                     Expanded(
                                       flex: 7,
@@ -175,9 +176,10 @@ class _HomeViewState extends State<HomeView>
                                             }
                                           },
                                           controller: _controller,
-                                          labelColor: ColorResource.color23375A,
+                                          labelColor:
+                                              ColorResourceDesign.color23375A,
                                           unselectedLabelColor:
-                                              ColorResource.color23375A,
+                                              ColorResourceDesign.color23375A,
                                           labelStyle: const TextStyle(
                                               fontSize: 8.0,
                                               fontWeight: FontWeight.w600),
@@ -190,9 +192,10 @@ class _HomeViewState extends State<HomeView>
                                                       bottomLeft:
                                                           Radius.circular(12)),
                                               border: Border.all(
-                                                  color: ColorResource
+                                                  color: ColorResourceDesign
                                                       .colorECECEC),
-                                              color: ColorResource.colorffffff),
+                                              color: ColorResourceDesign
+                                                  .colorffffff),
                                           tabs: <Widget>[
                                             Tab(
                                               child: Column(
@@ -273,8 +276,9 @@ class _HomeViewState extends State<HomeView>
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(10),
-                                                        color: ColorResource
-                                                            .colorD5344C,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .colorD5344C,
                                                       ),
                                                       height: 19,
                                                       width: 19,
@@ -289,8 +293,9 @@ class _HomeViewState extends State<HomeView>
                                                                     context)
                                                                 .notificationCount
                                                                 .toString(),
-                                                        color: ColorResource
-                                                            .colorFFFFFF,
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .colorFFFFFF,
                                                         fontSize: 8,
                                                         lineHeight: 1,
                                                         fontWeight:
@@ -356,8 +361,9 @@ class _HomeViewState extends State<HomeView>
               },
             ),
             floatingActionButton: FloatingActionButton(
-              backgroundColor: blackOne,
-              tooltip: search, // used by assistive technologies
+              backgroundColor: ColorResourceDesign.blackOne,
+              tooltip: ConstantsResourceDesign.search,
+              // used by assistive technologies
               onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const SearchView())),
               child: const Icon(

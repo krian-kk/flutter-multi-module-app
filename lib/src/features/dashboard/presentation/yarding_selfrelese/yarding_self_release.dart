@@ -7,7 +7,6 @@ import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/date_format_utils.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';

@@ -20,6 +20,7 @@ class PriorityFollowUpBottomSheet extends StatefulWidget {
 
 class PriorityFollowUpBottomSheetState
     extends State<PriorityFollowUpBottomSheet> {
+
   @override
   void initState() {
     super.initState();
@@ -108,7 +109,7 @@ class PriorityFollowUpBottomSheetState
                               ),
                             ),
                           )
-                  ],
+                  ] ,
                 ),
               ),
             ),

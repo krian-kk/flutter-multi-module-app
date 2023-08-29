@@ -10,8 +10,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/agentInfoPublic/agent_info.dart';
 import 'package:origa/models/agent_detail_error_model.dart';
-import 'package:origa/models/agent_details_model.dart';
-import 'package:origa/models/agent_information_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';

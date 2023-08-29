@@ -1,25 +1,8 @@
 import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 
 class CustomText extends StatelessWidget {
-
-  final String text;
-  final double fontSize;
-  final Font font;
-  final Color color;
-  final double lineHeight;
-  final TextAlign textAlign;
-  final GestureTapCallback? onTap;
-  final bool isUnderLine;
-  final bool isSingleLine;
-  final int? maxLines;
-  final FontWeight? fontWeight;
-  final FontStyle fontStyle;
-  final double? letterSpacing;
-  final TextStyle? style;
-
   const CustomText(
     this.text, {
     Key? key,
@@ -37,7 +20,20 @@ class CustomText extends StatelessWidget {
     this.style,
     this.maxLines,
   }) : super(key: key);
-
+  final String text;
+  final double fontSize;
+  final Font font;
+  final Color color;
+  final double lineHeight;
+  final TextAlign textAlign;
+  final GestureTapCallback? onTap;
+  final bool isUnderLine;
+  final bool isSingleLine;
+  final int? maxLines;
+  final FontWeight? fontWeight;
+  final FontStyle fontStyle;
+  final double? letterSpacing;
+  final TextStyle? style;
 
   @override
   Widget build(BuildContext context) {

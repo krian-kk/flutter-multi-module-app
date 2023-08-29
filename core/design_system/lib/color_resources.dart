@@ -1,49 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ColorResourceDesign {
-  //Primary
-  static const Color primaryColor = Color(0xFFE5E5E5);
-  static const Color secondaryColor = Color(0xFF000000);
-  static const Color logoColor = Color(0xFFCE2229);
-  static const Color textColor = Color(0xFF23375A);
-
-//Button
-  static const Color primaryButtonBg = Color(0xFF151515);
-  static const Color secondaryButtonBg = Color(0xFFFFFFFF);
-  static const Color primaryButtonTextColor = Color(0xFFFFFFFF);
-  static const Color secondaryButtonTextColor = Color(0xFF151515);
-
-//Text
-  static const Color appTextPrimaryColor = Color(0xFF101010);
-  static const Color appTextSecondaryColor = Color(0xFFFFFFFF);
-  static const Color borderColor = Color(0xFFDADADA);
-  static const Color textFieldBorder = Color(0xFFDADADA);
-
-//Widgets
-  static const Color primaryLabelBg = Color(0xFF32A64D);
-  static const Color starActiveBg = Color(0xFFFFB800);
-
-//General Colors
-  static const Color redColor = Color(0xFFD5344C);
-  static const Color blueColor = Color(0xFF23375A);
-  static const Color orangeColor = Color(0xFFEA6D48);
-  static const Color greyColor = Color(0xFFDDDDDD);
-  static const Color orangeMain = Color(0xFFFFC23B);
-  static const Color transparentColor = Colors.transparent;
-  static const Color blackOne = Color(0xFF151515);
-  static const Color blackTwo = Color(0xFF000000);
-  static const Color whiteColor = Color(0xFFFFFFFF);
-  static const Color darkGray = Color(0xFF484848);
-  static const Color grayColor = Color(0xffC4C4C4);
-  static const Color grayTwo = Color(0xFFBEC4CF);
-  static const Color grayThree = Color(0xffC5C8CE);
-  static const Color lightGray = Color(0xFFDADADA);
-  static const Color lightGrayTwo = Color(0xffD8D8D8);
-  static const Color whiteGray = Color(0xFFECECEC);
-  static const Color lightWhiteGray = Color(0xFFF8F9FB);
-  static const Color whiteTwo = Color(0xffF7F8FA);
-  static const Color whiteThree = Color(0xFFFEFFFF);
-
+class ColorResource {
   static const Color color23375A = Color(0xff000000);
   static const Color color000000 = Color(0xff000000);
   static const Color colorffffff = Color(0xffffffff);
@@ -107,5 +64,4 @@ class ColorResourceDesign {
   static const Color red = Colors.red;
   static const Color grey = Colors.grey;
   static const Color orange = Colors.orange;
-
 }

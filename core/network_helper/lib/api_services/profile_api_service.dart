@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:domain_models/response_models/profile/profile_data.dart';
-import 'package:network/network.dart';
 import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';

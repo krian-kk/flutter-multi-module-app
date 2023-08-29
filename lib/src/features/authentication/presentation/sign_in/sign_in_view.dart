@@ -97,8 +97,10 @@ class _SignInViewState extends State<SignInView> {
     return BlocBuilder<SignInBloc, SignInState>(
       builder: (context, state) {
         return TextFormFieldValidateWidget(
-          placeholder: username,
-          validator: (value) => state.isValidUsername ? null : invalidUsername,
+          placeholder: ConstantsResourceDesign.username,
+          validator: (value) => state.isValidUsername
+              ? null
+              : ConstantsResourceDesign.invalidUsername,
           onChanged: (value) => context
               .read<SignInBloc>()
               .add(SignInUsernameChanged(username: value)),
@@ -130,9 +132,9 @@ class _SignInViewState extends State<SignInView> {
         return state.formStatus is FormSubmitting
             ? const CircularProgressIndicator()
             : LongRoundedBtn(
-                btnText: signIn,
+                btnText: ConstantsResourceDesign.signIn,
                 isBorder: false,
-                btnBackgroundColor: orangeMain,
+                btnBackgroundColor: ColorResourceDesign.orangeMain,
                 onPressed: () {
                   _signIn(context);
                 },
@@ -153,7 +155,7 @@ class _SignInViewState extends State<SignInView> {
 
   Widget _signInDiffUser() {
     return LongRoundedBtn(
-      btnText: loginDiffUser,
+      btnText: ConstantsResourceDesign.loginDiffUser,
       isBorder: true,
       onPressed: () {},
     );
@@ -172,7 +174,7 @@ class _SignInViewState extends State<SignInView> {
         isDismissible: false,
         enableDrag: false,
         isScrollControlled: true,
-        backgroundColor: ColorResource.colorF8F9FB,
+        backgroundColor: ColorResourceDesign.colorF8F9FB,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(20),
@@ -208,7 +210,7 @@ class _SignInViewState extends State<SignInView> {
                                   isBorder: true,
                                   isLabel: true,
                                   errorMaxLine: 5,
-                                  borderColor: ColorResource.colorFFFFFF,
+                                  borderColor: ColorResourceDesign.colorFFFFFF,
                                   validationRules: const <String>['password'],
                                   // maximumWordCount: 10,
                                   focusNode: newPasswordFocusNode,
@@ -224,7 +226,7 @@ class _SignInViewState extends State<SignInView> {
                                   isFill: true,
                                   isBorder: true,
                                   isLabel: true,
-                                  borderColor: ColorResource.colorFFFFFF,
+                                  borderColor: ColorResourceDesign.colorFFFFFF,
                                   validationRules: const <String>['required'],
                                   maximumWordCount: 10,
                                   focusNode: confirmPasswordFocusNode,
@@ -241,8 +243,8 @@ class _SignInViewState extends State<SignInView> {
                                     isLeading: !isSaveNewPasswordLoad,
                                     trailingWidget: CustomLoadingWidget(
                                       gradientColors: <Color>[
-                                        ColorResource.colorFFFFFF,
-                                        ColorResource.colorFFFFFF
+                                        ColorResourceDesign.colorFFFFFF,
+                                        ColorResourceDesign.colorFFFFFF
                                             .withOpacity(0.7),
                                       ],
                                     ),
@@ -278,9 +280,10 @@ class _SignInViewState extends State<SignInView> {
                                                 isSaveNewPasswordLoad = true);
                                           }
                                         : () {},
-                                    borderColor: ColorResource.colorBEC4CF,
+                                    borderColor:
+                                        ColorResourceDesign.colorBEC4CF,
                                     buttonBackgroundColor:
-                                        ColorResource.color23375A,
+                                        ColorResourceDesign.color23375A,
                                   ),
                                 ),
                               ],
@@ -322,7 +325,7 @@ class _ResetPasswordButtonState extends State<ResetPasswordButton> {
   @override
   Widget build(BuildContext context) {
     return TextBtnWidget(
-      btnText: resetPwd,
+      btnText: ConstantsResourceDesign.resetPwd,
       onPressed: () => _showModalBottomSheet(context),
     );
   }

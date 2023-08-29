@@ -1,6 +1,6 @@
+import 'package:design_system/color_resources.dart';
+import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 
 class CustomText extends StatelessWidget {
   const CustomText(
@@ -42,9 +42,8 @@ class CustomText extends StatelessWidget {
         overflow: isSingleLine ? TextOverflow.ellipsis : null,
         maxLines: maxLines,
         style: TextStyle(
-            decoration: isUnderLine
-                ? TextDecoration.underline
-                : TextDecoration.none,
+            decoration:
+                isUnderLine ? TextDecoration.underline : TextDecoration.none,
             color: color,
             fontFamily: font.value,
             fontSize: fontSize,
