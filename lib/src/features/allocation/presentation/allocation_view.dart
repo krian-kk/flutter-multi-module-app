@@ -63,25 +63,7 @@ class _AllocationViewState extends State<AllocationView> {
                     PagedChildBuilderDelegate<PriorityCaseListModel>(
                   itemBuilder: (context, item, index) =>
                       PriorityCaseItemWidget(item, index),
-                )
-                // body: Column(
-                //   children: [
-                //     gapH8,
-                //     // _officeChecker(),
-                //     gapH12,
-                //     // _searchByPincode(),
-                //     gapH16,
-                //     _buttonList(),
-                //     gapH16,
-                //     // _allocationBloc(),
-                //     PagedListView<int, PriorityCaseListModel>(
-                //         pagingController: _pagingController,
-                //         builderDelegate:
-                //             PagedChildBuilderDelegate<PriorityCaseListModel>(
-                //           itemBuilder: (context, item, index) => _allocationBloc(),
-                //         ))
-                //   ],
-                )));
+                ))));
   }
 
   Widget _officeChecker() {
@@ -202,6 +184,8 @@ class PriorityCaseItemWidget extends StatefulWidget {
 class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
   @override
   Widget build(BuildContext context) {
+    //todo move to repository
+
     final int listCount = widget.index + 1;
     String? distanceValues;
     // if (resultData.length >= index && widget.item.distanceMeters != null) {
@@ -210,6 +194,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
     //       : '${(widget.item.distanceMeters / 1000).toStringAsFixed(2)} Km';
     // }
     final List<Address>? address = widget.item.address;
+    //todo move to repository
     List<String> maskedNumbers = [];
     // final ContractorResult? informationModel =
     //     Singleton.instance.contractorInformations?.result;
@@ -226,6 +211,8 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
     //     }
     //   }
     // }
+    //todo move to repository
+
     String? addressValue = '';
     if ("FIELDAGENT" == Constants.fieldagent) {
       if (widget.item.address?.isNotEmpty == true) {
