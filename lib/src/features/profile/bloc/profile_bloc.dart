@@ -183,21 +183,5 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     //   yield ClickMarkAsHomeState();
     // }
     //
-    // if (event is PostProfileImageEvent) {
-    //   isProfileImageUpdating = true;
-    //   final Map<String, dynamic> postResult = await APIRepository.apiRequest(
-    //     APIRequestType.singleFileUpload,
-    //     HttpUrl.changeProfileImage,
-    //     imageFile: event.postValue,
-    //   );
-    //   if (postResult[Constants.success]) {
-    //     isProfileImageUpdating = false;
-    //     yield PostDataApiSuccessState();
-    //   } else {
-    //     isProfileImageUpdating = false;
-    //     image = null;
-    //     AppUtils.showErrorToast('Uploding Failed!');
-    //   }
-    // }
   }
 }

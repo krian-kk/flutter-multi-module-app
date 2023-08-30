@@ -26,3 +26,8 @@ Locale _locale(String languageCode) {
 }
 
 
+changeLanguage(BuildContext context, String selectedLanguageCode) async {
+  print(selectedLanguageCode);
+  final Locale _locale = await setLocale(selectedLanguageCode);
+  MyApp.setLocale(context, _locale);
+}

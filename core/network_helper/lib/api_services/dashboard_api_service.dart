@@ -134,7 +134,8 @@ class DashboardApiProvider {
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(dashboardYardingAndSelfReleaseUrl);
       ListResponse<List<YardingResult>> mappedResponse =
-          ListResponse.fromJson(response, YardingResult.fromJson);
+
+      ListResponse.fromJson(response, YardingResult.fromJson);
       return ApiResult.success(data: mappedResponse.result as dynamic);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));

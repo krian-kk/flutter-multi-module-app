@@ -1,3 +1,4 @@
+import 'package:design_system/widgets/case_status_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -13,14 +14,15 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-import '../../widgets/case_status_widget.dart';
 
 class CustomCardList {
-  static Widget buildListView(AllocationBloc bloc,
+  static Widget buildListView(dynamic bloc,
       {List<Result>? resultData,
-      required ScrollController listViewController}) {
+       // ScrollController listViewController
+
+      }) {
     return ListView.builder(
-        controller: listViewController,
+        // controller: listViewController,
         itemCount: resultData!.length,
         // shrinkWrap: true,
         physics: const BouncingScrollPhysics(),

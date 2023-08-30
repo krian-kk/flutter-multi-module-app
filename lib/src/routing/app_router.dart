@@ -1,7 +1,7 @@
+import 'package:domain_models/common/searching_data_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:origa/models/searching_data_model.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/sign_in_view.dart';
