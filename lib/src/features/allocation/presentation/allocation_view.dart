@@ -63,7 +63,10 @@ class _AllocationViewState extends State<AllocationView> {
                     PagedChildBuilderDelegate<PriorityCaseListModel>(
                   itemBuilder: (context, item, index) =>
                       PriorityCaseItemWidget(item, index),
-                ))));
+                )),
+
+
+        ));
   }
 
   Widget _officeChecker() {

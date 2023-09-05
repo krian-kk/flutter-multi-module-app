@@ -2,7 +2,8 @@ import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
+
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/yarding_selfrelese/repo_status.dart';
 import 'package:origa/utils/app_utils.dart';

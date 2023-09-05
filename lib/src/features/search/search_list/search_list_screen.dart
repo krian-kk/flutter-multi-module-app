@@ -1,8 +1,8 @@
-import 'package:design_system/widgets/custom_card_list.dart';
 import 'package:domain_models/common/searching_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
+import 'package:origa/src/features/search/search_list/custom_card_list.dart';
 import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/no_case_available.dart';
 

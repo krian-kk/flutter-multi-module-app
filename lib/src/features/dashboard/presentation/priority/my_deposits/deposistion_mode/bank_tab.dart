@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/bank_deposit_post_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';

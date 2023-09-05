@@ -1,6 +1,5 @@
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
-import 'package:design_system/strings.dart';
 import 'package:design_system/widgets/longRoundedBtn_widget.dart';
 import 'package:design_system/widgets/textBtn_widget.dart';
 import 'package:design_system/widgets/textFormFieldValidate_widget.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:languages/app_languages.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/gen/assets.gen.dart';
 import 'package:origa/src/features/authentication/bloc/form_submission_status.dart';
@@ -97,10 +97,10 @@ class _SignInViewState extends State<SignInView> {
     return BlocBuilder<SignInBloc, SignInState>(
       builder: (context, state) {
         return TextFormFieldValidateWidget(
-          placeholder: ConstantsResourceDesign.username,
-          validator: (value) => state.isValidUsername
-              ? null
-              : ConstantsResourceDesign.invalidUsername,
+          placeholder: Languages.of(context)!.userName,
+          validator: (value) =>
+              state.isValidUsername ? null : 'Invalid username',
+          // : Languages.of(context).invalidUsername,
           onChanged: (value) => context
               .read<SignInBloc>()
               .add(SignInUsernameChanged(username: value)),
@@ -114,7 +114,7 @@ class _SignInViewState extends State<SignInView> {
     return BlocBuilder<SignInBloc, SignInState>(
       builder: (context, state) {
         return TextFormFieldValidateWidget(
-          placeholder: 'Password',
+          placeholder: Languages.of(context)!.password,
           validator: (value) =>
               state.isValidPassword ? null : 'Invalid Password',
           onChanged: (value) => context
@@ -132,7 +132,7 @@ class _SignInViewState extends State<SignInView> {
         return state.formStatus is FormSubmitting
             ? const CircularProgressIndicator()
             : LongRoundedBtn(
-                btnText: ConstantsResourceDesign.signIn,
+                btnText: Languages.of(context)!.signin.toUpperCase(),
                 isBorder: false,
                 btnBackgroundColor: ColorResourceDesign.orangeMain,
                 onPressed: () {
@@ -155,7 +155,7 @@ class _SignInViewState extends State<SignInView> {
 
   Widget _signInDiffUser() {
     return LongRoundedBtn(
-      btnText: ConstantsResourceDesign.loginDiffUser,
+      btnText: Languages.of(context)!.loginViaDifferentUser,
       isBorder: true,
       onPressed: () {},
     );
@@ -325,7 +325,7 @@ class _ResetPasswordButtonState extends State<ResetPasswordButton> {
   @override
   Widget build(BuildContext context) {
     return TextBtnWidget(
-      btnText: ConstantsResourceDesign.resetPwd,
+      btnText: Languages.of(context)!.resetPasswordModelViaOTP,
       onPressed: () => _showModalBottomSheet(context),
     );
   }

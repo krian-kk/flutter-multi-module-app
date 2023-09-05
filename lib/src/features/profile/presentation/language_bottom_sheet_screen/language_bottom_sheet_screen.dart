@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/languages/app_languages.dart';
-import 'package:origa/languages/app_locale_constant.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
+import 'package:origa/src/locale/locale_cubit.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
-import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
@@ -147,8 +146,9 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
                       child: CustomButton(
                         Languages.of(context)!.okay.toUpperCase(),
                         onTap: () {
-                          print(setLanguageCode);
-                          changeLanguage(context, setLanguageCode!);
+                          // changeLanguage(context, setLanguageCode!);
+                          BlocProvider.of<LocaleCubit>(widget.mcontext)
+                              .changeLang(setLanguageCode ?? 'en');
                           BlocProvider.of<ProfileBloc>(widget.mcontext)
                               .ratioIndex = ratioIndex;
                           BlocProvider.of<ProfileBloc>(widget.mcontext)

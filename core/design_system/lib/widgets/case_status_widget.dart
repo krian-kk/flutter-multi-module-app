@@ -63,13 +63,13 @@ class CaseStatusWidget {
   ];
 
   static Color getStatusColor(String text) {
-    Color color = ColorResource.green;
+    Color color = ColorResourceDesign.green;
     if (health_1.contains(text.toLowerCase())) {
-      color = ColorResource.orange;
+      color = ColorResourceDesign.orange;
     } else if (health_0.contains(text.toLowerCase())) {
-      color = ColorResource.red;
+      color = ColorResourceDesign.red;
     } else {
-      color = ColorResource.green;
+      color = ColorResourceDesign.green;
     }
     return color;
   }

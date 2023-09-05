@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/languages/app_locale_constant.dart';
+import 'package:origa/main.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';
-import 'package:origa/src/main_migrate.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/preference_helper.dart';
@@ -189,7 +188,8 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     );
   }
 
-  Future<Locale> changeLanguage(BuildContext context, String selectedLanguageCode) async {
+  Future<Locale> changeLanguage(
+      BuildContext context, String selectedLanguageCode) async {
     return await setLocale(selectedLanguageCode);
   }
 }

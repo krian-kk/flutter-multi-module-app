@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/yarding_selfrelese/self_release_tab.dart';
 import 'package:origa/src/features/dashboard/presentation/yarding_selfrelese/yarding_tab.dart';

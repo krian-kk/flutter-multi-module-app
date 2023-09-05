@@ -1,4 +1,4 @@
-class PreferenceConstants{
+class PreferenceConstants {
   static const String userType = 'userType';
   static const String userId = 'userId';
   static const String accessToken = 'accessToken';
@@ -21,5 +21,9 @@ class PreferenceConstants{
   static const String s2tLangSelectedIndex = 's2tLangSelectedIndex';
   static const String s2tLangcode = 's2tLangcode';
 
-
+  //Profile
+  static const String appDataLoadedFromFirebase = 'appDataLoadedFromFirebase';
+  static const String appDataLoadedFromFirebaseTime =
+      'appDataLoadedFromFirebaseTime';
+  static const String atOffice = 'areyouatOffice';
 }

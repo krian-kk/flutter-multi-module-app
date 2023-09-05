@@ -6,7 +6,11 @@ import 'package:preference_helper/preference_constants.dart';
 import 'package:preference_helper/preference_helper.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 
+
 abstract class ProfileRepository {
+
+  Future<void> logoutEvent();
+
   Future<ApiResult<BaseResponse>> uploadImageToServer(File? imageFile);
 
   Future<ApiResult<ProfileResponse>> getProfileData();
@@ -26,6 +30,18 @@ class ProfileRepositoryImpl extends ProfileRepository {
     return await PreferenceHelper.getString(
             keyPair: PreferenceConstants.accessToken) ??
         '';
+  }
+
+  @override
+  Future<void> logoutEvent() async {
+    await PreferenceHelper.setPreference(PreferenceConstants.accessToken, '');
+    await PreferenceHelper.setPreference(PreferenceConstants.userType, '');
+    await PreferenceHelper.setPreference(
+        PreferenceConstants.appDataLoadedFromFirebase, false);
+    await PreferenceHelper.setPreference(
+        PreferenceConstants.appDataLoadedFromFirebaseTime, '');
+    await PreferenceHelper.setPreference(PreferenceConstants.addressValue, '');
+    await PreferenceHelper.setPreference(PreferenceConstants.atOffice, true);
   }
 
   @override

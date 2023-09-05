@@ -1,7 +1,7 @@
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/utils/app_utils.dart';

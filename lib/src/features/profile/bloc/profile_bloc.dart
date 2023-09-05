@@ -164,21 +164,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     // if (event is ChangePasswordEvent) {
     //   yield ClickChangePasswordState();
     // }
-    // if (event is LoginEvent) {
-    //   yield ProfileLoadingState();
-    //   Singleton.instance.isOfflineStorageFeatureEnabled = false;
-    //   await FirebaseFirestore.instance.terminate();
-    //   // await _prefs.clear();
-    //   await PreferenceHelper.setPreference(Constants.accessToken, '');
-    //   await PreferenceHelper.setPreference(Constants.userType, '');
-    //   await PreferenceHelper.setPreference(
-    //       Constants.appDataLoadedFromFirebase, false);
-    //   await PreferenceHelper.setPreference(
-    //       Constants.appDataLoadedFromFirebaseTime, '');
-    //   await PreferenceHelper.setPreference('addressValue', '');
-    //   await PreferenceHelper.setPreference('areyouatOffice', true);
-    //   yield LoginState();
-    // }
+    if (event is LoginEvent) {
+      emit(ProfileLoadingState());
+      // Singleton.instance.isOfflineStorageFeatureEnabled = false;
+      // await FirebaseFirestore.instance.terminate();
+      // await _prefs.clear();
+
+      await repository.logoutEvent();
+
+      emit(LoginState());
+    }
     // if (event is ClickMarkAsHomeEvent) {
     //   yield ClickMarkAsHomeState();
     // }

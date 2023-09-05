@@ -19,8 +19,6 @@ abstract class Languages {
 
   String get resetPassword;
 
-  String get loginViaDiffrentUser;
-
   String get hignPriority;
 
   String get allocation;

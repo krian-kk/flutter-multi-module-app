@@ -3,7 +3,7 @@ import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';

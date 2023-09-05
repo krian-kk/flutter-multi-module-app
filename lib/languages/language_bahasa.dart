@@ -22,8 +22,6 @@ class LanguageBa extends Languages {
   @override
   String get resetPassword =>  'Reset password';
 
-  @override
-  String get loginViaDiffrentUser =>  'Login dengan user lain';
 
   @override
   String get allocation =>  'Alokasi';

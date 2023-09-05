@@ -29,9 +29,6 @@ class LanguageEn extends Languages {
   String get resetPassword => 'Reset password';
 
   @override
-  String get loginViaDiffrentUser => 'Login via diffrent user';
-
-  @override
   String get allocation => 'Allocation';
 
   @override
@@ -1202,5 +1199,4 @@ class LanguageEn extends Languages {
 
   @override
   String get lender => 'Lender';
-
 }

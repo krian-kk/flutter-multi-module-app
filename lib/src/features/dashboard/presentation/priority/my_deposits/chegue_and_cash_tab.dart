@@ -1,6 +1,6 @@
 import 'package:domain_models/response_models/dashboard/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/priority/my_deposits/deposistion_mode/deposistion_mode.dart';
 import 'package:origa/utils/app_utils.dart';

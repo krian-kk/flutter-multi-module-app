@@ -2,7 +2,7 @@ import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/common_widgets/case_list_widget.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -20,7 +20,6 @@ class PriorityFollowUpBottomSheet extends StatefulWidget {
 
 class PriorityFollowUpBottomSheetState
     extends State<PriorityFollowUpBottomSheet> {
-
   @override
   void initState() {
     super.initState();
@@ -109,7 +108,7 @@ class PriorityFollowUpBottomSheetState
                               ),
                             ),
                           )
-                  ] ,
+                  ],
                 ),
               ),
             ),

@@ -540,7 +540,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                               userIdController.text);
                                         } else {
                                           AppUtils.showErrorToast(
-                                              "OTP does't match");
+                                              "OTP doesn't match");
                                         }
                                       }
                                     }

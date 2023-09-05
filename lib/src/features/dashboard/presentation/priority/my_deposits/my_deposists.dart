@@ -3,7 +3,7 @@ import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/priority/my_deposits/chegue_and_cash_tab.dart';
 import 'package:origa/utils/constants.dart';
