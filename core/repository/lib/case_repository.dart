@@ -33,4 +33,12 @@ class CaseRepositoryImpl implements CaseRepository {
         await collectApiProvider.getCases(accessToken, limit, pageNo);
     return response;
   }
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
+      int limit, int pageNo) async {
+    String? accessToken = await getAccessToken();
+    ApiResult<List<PriorityCaseListModel>> response =
+        await collectApiProvider.getBuildCases(accessToken, limit, pageNo);
+    return response;
+  }
 }

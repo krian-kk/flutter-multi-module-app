@@ -354,9 +354,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> priorityListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                HttpUrl.priorityCaseListV1 +
-                    'pageNo=${Constants.pageNo}' +
-                    '&limit=${Constants.limit}',
+                '${HttpUrl.priorityCaseListV1}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: true);
 
         resultList.clear();
@@ -408,9 +406,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> priorityListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                HttpUrl.priorityCaseListV1 +
-                    'pageNo=$page' +
-                    '&limit=${Constants.limit}',
+                '${HttpUrl.priorityCaseListV1}pageNo=$page&limit=${Constants.limit}',
                 encrypt: true);
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(priorityListData['data']);
@@ -474,12 +470,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                HttpUrl.buildRouteCaseList +
-                    'lat=${event.paramValues.lat}&' +
-                    'lng=${event.paramValues.long}&' +
-                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
-                    'page=${Constants.pageNo}&' +
-                    'limit=${Constants.limit}',
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: true);
 
         resultList.clear();
@@ -516,12 +507,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                HttpUrl.buildRouteCaseList +
-                    'lat=${event.paramValues.lat}&' +
-                    'lng=${event.paramValues.long}&' +
-                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
-                    'page=$page&' +
-                    'limit=${Constants.limit}',
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=$page&limit=${Constants.limit}',
                 encrypt: true);
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(buildRouteListData['data']);
@@ -577,12 +563,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final Map<String, dynamic> buildRouteListData =
             await APIRepository.apiRequest(
                 APIRequestType.get,
-                HttpUrl.buildRouteCaseList +
-                    'lat=${event.paramValues.lat}&' +
-                    'lng=${event.paramValues.long}&' +
-                    'maxDistMeters=${event.paramValues.maxDistMeters}&' +
-                    'page=${Constants.pageNo}&' +
-                    'limit=${Constants.limit}',
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: true);
         if (buildRouteListData['data']['result'] != null) {
           buildRouteListData['data']['result'].forEach((element) {
@@ -629,54 +610,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         if (data.isStarCases! && data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              HttpUrl.searchUrl +
-                  'starredOnly=${data.isStarCases}&' +
-                  'recentActivity=${data.isMyRecentActivity}&' +
-                  'accNo=${data.accountNumber}&' +
-                  'cust=${data.customerName}&' +
-                  'bankName=${data.bankName}&' +
-                  'dpdStr=${data.dpdBucket}&' +
-                  'customerId=${data.customerID}&' +
-                  'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              HttpUrl.searchUrl +
-                  'starredOnly=${data.isStarCases}&' +
-                  'accNo=${data.accountNumber}&' +
-                  'cust=${data.customerName}&' +
-                  'bankName=${data.bankName}&' +
-                  'dpdStr=${data.dpdBucket}&' +
-                  'customerId=${data.customerID}&' +
-                  'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              HttpUrl.searchUrl +
-                  'recentActivity=${data.isMyRecentActivity}&' +
-                  'accNo=${data.accountNumber}&' +
-                  'cust=${data.customerName}&' +
-                  'bankName=${data.bankName}&' +
-                  'dpdStr=${data.dpdBucket}&' +
-                  'customerId=${data.customerID}&' +
-                  'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              HttpUrl.searchUrl +
-                  'accNo=${data.accountNumber}&' +
-                  'cust=${data.customerName}&' +
-                  'bankName=${data.bankName}&' +
-                  'dpdStr=${data.dpdBucket}&' +
-                  'customerId=${data.customerID}&' +
-                  'pincode=${data.pincode}&' +
-                  'collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         }
 

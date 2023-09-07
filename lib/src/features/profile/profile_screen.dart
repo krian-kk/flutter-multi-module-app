@@ -1,30 +1,27 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:go_router/go_router.dart';
 
 import 'package:design_system/app_sizes.dart';
-import 'package:design_system/widgets/longRoundedBtnIcon_widget.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
+import 'package:design_system/widgets/longRoundedBtnIcon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:languages/app_languages.dart';
-
 import 'package:origa/gen/assets.gen.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/profile_navigation_button_model.dart';
-import 'package:origa/router.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
 import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
-
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
+import 'package:origa/src/features/profile/location_maps.dart';
 import 'package:origa/src/features/profile/presentation/customer_language_preference/customer_language_preference.dart';
 import 'package:origa/src/features/profile/presentation/language_bottom_sheet_screen/language_bottom_sheet_screen.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -81,7 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         'encryptedData': text,
       },
     );
-    if (await postResult[Constants.success]) {} else {
+    if (await postResult[Constants.success]) {
+    } else {
       AppUtils.showToast('Some Issue in OTP Send, Please Try Again Later');
     }
     return returnValue;
@@ -128,7 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
               side:
-              BorderSide(width: 0.5, color: ColorResourceDesign.lightGray),
+                  BorderSide(width: 0.5, color: ColorResourceDesign.lightGray),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
@@ -158,7 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           return AlertDialog(
             shape: const RoundedRectangleBorder(
               side:
-              BorderSide(width: 0.5, color: ColorResourceDesign.lightGray),
+                  BorderSide(width: 0.5, color: ColorResourceDesign.lightGray),
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
             ),
             contentPadding: const EdgeInsets.all(20),
@@ -296,24 +294,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
           context.pushReplacement(context.namedLocation('login'));
         }
-              // if (state is ClickChangeSecurityPinState) {
-              //   if (await requestOTP(BlocProvider.of<ProfileBloc>(context)
-              //           .profileAPIValue
-              //           .result
-              //           ?.first
-              //           .aRef
-              //           .toString() ??
-              //       '')) {
-              //     await showForgorSecurePinDialogBox(
-              //         BlocProvider.of<ProfileBloc>(context)
-              //             .profileAPIValue
-              //             .result!
-              //             .first
-              //             .aRef
-              //             .toString());
-              //   }
-              // }
-          },
+        // if (state is ClickChangeSecurityPinState) {
+        //   if (await requestOTP(BlocProvider.of<ProfileBloc>(context)
+        //           .profileAPIValue
+        //           .result
+        //           ?.first
+        //           .aRef
+        //           .toString() ??
+        //       '')) {
+        //     await showForgorSecurePinDialogBox(
+        //         BlocProvider.of<ProfileBloc>(context)
+        //             .profileAPIValue
+        //             .result!
+        //             .first
+        //             .aRef
+        //             .toString());
+        //   }
+        // }
+      },
       child: BlocBuilder<ProfileBloc, ProfileState>(
           bloc: BlocProvider.of<ProfileBloc>(context),
           builder: (BuildContext context, ProfileState state) {
@@ -335,460 +333,456 @@ class _ProfileScreenState extends State<ProfileScreen> {
               //       .first
               //       .profileImgUrl!);
             }
-            return BlocProvider
-                .of<ProfileBloc>(context)
-                .isNoInternetAndServerError
+            return BlocProvider.of<ProfileBloc>(context)
+                    .isNoInternetAndServerError
                 ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CustomText(BlocProvider
-                      .of<ProfileBloc>(context)
-                      .noInternetAndServerErrorMsg!),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  IconButton(
-                      onPressed: () {
-                        BlocProvider.of<ProfileBloc>(context)
-                            .add(ProfileInitialEvent());
-                      },
-                      icon: const Icon(Icons.refresh)),
-                ],
-              ),
-            )
-                : Scaffold(
-              backgroundColor: ColorResourceDesign.whiteTwo,
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: ColorResourceDesign.whiteColor,
-                            boxShadow: <BoxShadow>[
-                              BoxShadow(
-                                color: ColorResourceDesign.blackTwo
-                                    .withOpacity(0.2),
-                                blurRadius: 2.0,
-                                offset: const Offset(1.0, 1.0),
-                              )
-                            ],
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(10.0))),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 19.0),
-                          child: Column(
-                            children: <Widget>[
-                              Row(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Stack(
-                                    children: <Widget>[
-                                      GestureDetector(
-                                        onTap: () =>
-                                            BlocProvider.of<
-                                                ProfileBloc>(context)
-                                                .add(InitialImageTapEvent()),
-                                        child: BlocProvider
-                                            .of<ProfileBloc>(
-                                            context)
-                                            .image !=
-                                            null
-                                            ? CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage: FileImage(File(
-                                                BlocProvider
-                                                    .of<ProfileBloc>(
-                                                    context)
-                                                    .image!
-                                                    .path)))
-                                            : profileImage != null
-                                            ? CircleAvatar(
-                                            radius: 25,
-                                            backgroundImage:
-                                            Image
-                                                .memory(
-                                                profileImage!)
-                                                .image)
-                                            : Container(
-                                            width: 45,
-                                            height: 45,
-                                            decoration:
-                                            BoxDecoration(
-                                              color:
-                                              ColorResourceDesign
-                                                  .blueColor,
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  52.5),
-                                            ),
-                                            child: SvgPicture.asset(
-                                                ImageResource
-                                                    .profileImagePicker)),
-                                      ),
-                                      if (BlocProvider
-                                          .of<ProfileBloc>(
-                                          context)
-                                          .isProfileImageUpdating)
-                                        const CircleAvatar(
-                                          radius: 25,
-                                          backgroundColor:
-                                          ColorResourceDesign
-                                              .blueColor,
-                                          child: Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: CustomLoadingWidget(
-                                              strokeWidth: 3.0,
-                                            ),
-                                          ),
-                                        )
-                                    ],
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width *
-                                          0.013),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      CustomText(
-                                        BlocProvider
-                                            .of<ProfileBloc>(
-                                            context)
-                                            .profileAPIValue
-                                            .aRef
-                                            .toString() ??
-                                            '_',
-                                        fontSize: Sizes.p18,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorResourceDesign
-                                            .appTextPrimaryColor,
-                                      ),
-                                      const SizedBox(height: 11),
-                                      CustomText(
-                                        BlocProvider
-                                            .of<ProfileBloc>(
-                                            context)
-                                            .profileAPIValue
-                                            .name
-                                            .toString() ??
-                                            '_',
-                                        fontSize: Sizes.p16,
-                                        color: ColorResourceDesign
-                                            .appTextPrimaryColor,
-                                      ),
-                                      CustomText(
-                                        BlocProvider
-                                            .of<ProfileBloc>(
-                                            context)
-                                            .profileAPIValue
-                                            .defMobileNumber
-                                            .toString() ??
-                                            '_',
-                                        fontSize: Sizes.p16,
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorResourceDesign
-                                            .appTextPrimaryColor,
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 30),
-                              const Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Spacer(),
-                                  // CustomText(
-                                  //   Languages.of(context)!
-                                  //       .homeAddress
-                                  //       .toUpperCase(),
-                                  //   fontSize: FontSize.fourteen,
-                                  //   fontStyle: FontStyle.normal,
-                                  //   fontWeight: FontWeight.w700,
-                                  //   color:
-                                  //       ColorResource.color101010,
-                                  // ),
-                                  // GestureDetector(
-                                  //   onTap: () => bloc.add(
-                                  //       ClickMarkAsHomeEvent()),
-                                  //   child: SizedBox(
-                                  //     child: CustomText(
-                                  //       Languages.of(context)!
-                                  //           .markAsHome,
-                                  //       fontSize: FontSize.twelve,
-                                  //       isUnderLine: true,
-                                  //       fontWeight: FontWeight.w700,
-                                  //       color: ColorResource
-                                  //           .color101010,
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
-                              )
-                              //     : const SizedBox(),
-                              // const SizedBox(height: 5),
-                              // Singleton.instance.usertype ==
-                              //         Constants.fieldagent
-                              //     ? Container(
-                              //         width: double.infinity,
-                              //         margin: const EdgeInsets.symmetric(
-                              //             vertical: 5.0),
-                              //         decoration: const BoxDecoration(
-                              //             color:
-                              //                 ColorResource.colorF8F9FB,
-                              //             borderRadius: BorderRadius.all(
-                              //                 Radius.circular(10.0))),
-                              //         child: Padding(
-                              //           padding:
-                              //               const EdgeInsets.symmetric(
-                              //             horizontal: 20,
-                              //             vertical: 16.0,
-                              //           ),
-                              //           child: Column(
-                              //             crossAxisAlignment:
-                              //                 CrossAxisAlignment.start,
-                              //             children: <Widget>[
-                              //               Row(
-                              //                 children: <Widget>[
-                              //                   CustomText(
-                              //                     Languages.of(context)!
-                              //                         .homeAddress
-                              //                         .toUpperCase(),
-                              //                     fontWeight:
-                              //                         FontWeight.w700,
-                              //                     color: ColorResource
-                              //                         .color101010,
-                              //                   ),
-                              //                   const SizedBox(width: 8),
-                              //                   SvgPicture.asset(
-                              //                       ImageResource
-                              //                           .location),
-                              //                 ],
-                              //               ),
-                              //               const SizedBox(height: 5),
-                              //               CustomText(
-                              //                 addressValue != ''
-                              //                     ? addressValue
-                              //                     : bloc
-                              //                             .profileAPIValue
-                              //                             .result
-                              //                             ?.first
-                              //                             .homeAddress ??
-                              //                         Languages.of(
-                              //                                 context)!
-                              //                             .homeAddressNotAvailable,
-                              //                 color: ColorResource
-                              //                     .color484848,
-                              //               ),
-                              //             ],
-                              //           ),
-                              //         ),
-                              //)
-                              ,
-                              ListView.builder(
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: profileNavigationList.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return profileNavigationList[index]
-                                        .isEnable
-                                        ? GestureDetector(
-                                      onTap: profileNavigationList[
-                                      index]
-                                          .onTap,
-                                      child: Container(
-                                        width: double.infinity,
-                                        margin: const EdgeInsets
-                                            .symmetric(
-                                            vertical: 5.0),
-                                        padding:
-                                        const EdgeInsets.only(
-                                            bottom: 4),
-                                        decoration: const BoxDecoration(
-                                            color:
-                                            ColorResourceDesign
-                                                .lightWhiteGray,
-                                            borderRadius:
-                                            BorderRadius.all(
-                                                Radius.circular(
-                                                    10.0))),
-                                        child: ListTile(
-                                          title: SizedBox(
-                                            // width: 260,
-                                            child: CustomText(
-                                              profileNavigationList[
-                                              index]
-                                                  .title
-                                                  .toUpperCase(),
-                                              lineHeight: 1.4,
-                                              fontSize: Sizes.p16,
-                                              fontWeight:
-                                              FontWeight.w700,
-                                              color:
-                                              ColorResourceDesign
-                                                  .textColor,
-                                            ),
-                                          ),
-                                          trailing: Row(
-                                            mainAxisSize:
-                                            MainAxisSize.min,
-                                            children: <Widget>[
-                                              SvgPicture.asset(
-                                                  ImageResource
-                                                      .forwardArrow),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                        : const SizedBox();
-                                  }),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 22),
-                      GestureDetector(
-                        onTap: () =>
-                            BlocProvider.of<ProfileBloc>(context)
-                                .add(LoginEvent()),
-                        child: Container(
-                          width: 125,
-                          height: 40,
-                          decoration: BoxDecoration(
-                              color: ColorResourceDesign.whiteColor,
-                              border: Border.all(
-                                  color: ColorResourceDesign.blueColor,
-                                  width: 0.5),
-                              borderRadius: const BorderRadius.all(
-                                  Radius.circular(75.0))),
-                          child: Center(
-                            child: CustomText(
-                              Languages.of(context)!.logout.toUpperCase(),
-                              fontSize: Sizes.p12,
-                              color: ColorResourceDesign.textColor,
-                              fontWeight: FontWeight.w700,
-                              lineHeight: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                    ],
-                  ),
-                ),
-              ),
-              // bottomNavigationBar: Container(
-              //   width: double.infinity,
-              //   color: ColorResource.colorFFFFFF,
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(vertical: 11.0),
-              //     child: Row(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: <Widget>[
-              //         SizedBox(
-              //           width: 200,
-              //           child: CustomButton(
-              //             Languages.of(context)!.chat.toUpperCase(),
-              //             onTap: () => bloc.add(ClickMessageEvent(
-              //               fromId: bloc.profileAPIValue.result![0].aRef,
-              //               toId: bloc.profileAPIValue.result![0].parent,
-              //             )),
-              //             fontSize: FontSize.twenty,
-              //             cardShape: 5,
-              //             isTrailing:
-              //                 bloc.newMsgCount != 0 ? true : false,
-              //             leadingWidget: CircleAvatar(
-              //               radius: 13,
-              //               backgroundColor: ColorResource.colorFFFFFF,
-              //               child: CustomText(
-              //                 bloc.newMsgCount >= 100
-              //                     ? '100+'
-              //                     : bloc.newMsgCount.toString(),
-              //                 fontSize: FontSize.twelve,
-              //                 lineHeight: 1,
-              //                 color: ColorResource.colorEA6D48,
-              //                 fontWeight: FontWeight.w700,
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
-              floatingActionButton: Visibility(
-                visible: false,
-                child: GestureDetector(
-                  onTap: () {
-                    webViewScreen(context,
-                        urlAddress: 'https://origahelpdesk.w3spaces.com');
-                  },
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(5)),
-                      color: ColorResourceDesign.blueColor,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white),
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(100),
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(2),
-                          child: const Icon(
-                            Icons.question_mark_rounded,
-                            size: 14.0,
-                            color: Colors.white,
-                          ),
-                        ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CustomText(BlocProvider.of<ProfileBloc>(context)
+                            .noInternetAndServerErrorMsg!),
                         const SizedBox(
-                          width: 10,
+                          height: 5,
                         ),
-                        Text(
-                          Languages.of(context)!.help,
-                          textScaleFactor: 3,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .titleMedium!
-                              .copyWith(
-                              color: Colors.white,
-                              fontSize: 6,
-                              backgroundColor: Colors.transparent),
-                        )
+                        IconButton(
+                            onPressed: () {
+                              BlocProvider.of<ProfileBloc>(context)
+                                  .add(ProfileInitialEvent());
+                            },
+                            icon: const Icon(Icons.refresh)),
                       ],
                     ),
-                  ),
-                ),
-              ),
-            );
+                  )
+                : Scaffold(
+                    backgroundColor: ColorResourceDesign.whiteTwo,
+                    body: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 9, 20, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: ColorResourceDesign.whiteColor,
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(
+                                      color: ColorResourceDesign.blackTwo
+                                          .withOpacity(0.2),
+                                      blurRadius: 2.0,
+                                      offset: const Offset(1.0, 1.0),
+                                    )
+                                  ],
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10.0))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0, vertical: 19.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Stack(
+                                          children: <Widget>[
+                                            GestureDetector(
+                                              onTap: () => BlocProvider.of<
+                                                      ProfileBloc>(context)
+                                                  .add(InitialImageTapEvent()),
+                                              child: BlocProvider.of<ProfileBloc>(
+                                                              context)
+                                                          .image !=
+                                                      null
+                                                  ? CircleAvatar(
+                                                      radius: 25,
+                                                      backgroundImage: FileImage(File(
+                                                          BlocProvider.of<ProfileBloc>(
+                                                                  context)
+                                                              .image!
+                                                              .path)))
+                                                  : profileImage != null
+                                                      ? CircleAvatar(
+                                                          radius: 25,
+                                                          backgroundImage:
+                                                              Image.memory(
+                                                                      profileImage!)
+                                                                  .image)
+                                                      : Container(
+                                                          width: 45,
+                                                          height: 45,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color:
+                                                                ColorResourceDesign
+                                                                    .blueColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        52.5),
+                                                          ),
+                                                          child: SvgPicture.asset(
+                                                              ImageResource
+                                                                  .profileImagePicker)),
+                                            ),
+                                            if (BlocProvider.of<ProfileBloc>(
+                                                    context)
+                                                .isProfileImageUpdating)
+                                              const CircleAvatar(
+                                                radius: 25,
+                                                backgroundColor:
+                                                    ColorResourceDesign
+                                                        .blueColor,
+                                                child: Padding(
+                                                  padding: EdgeInsets.all(8.0),
+                                                  child: CustomLoadingWidget(
+                                                    strokeWidth: 3.0,
+                                                  ),
+                                                ),
+                                              )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.013),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            CustomText(
+                                              BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .profileAPIValue
+                                                      .aRef
+                                                      .toString() ??
+                                                  '_',
+                                              fontSize: Sizes.p18,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                            ),
+                                            const SizedBox(height: 11),
+                                            CustomText(
+                                              BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .profileAPIValue
+                                                      .name
+                                                      .toString() ??
+                                                  '_',
+                                              fontSize: Sizes.p16,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                            ),
+                                            CustomText(
+                                              BlocProvider.of<ProfileBloc>(
+                                                          context)
+                                                      .profileAPIValue
+                                                      .defMobileNumber
+                                                      .toString() ??
+                                                  '_',
+                                              fontSize: Sizes.p16,
+                                              fontWeight: FontWeight.w700,
+                                              color: ColorResourceDesign
+                                                  .appTextPrimaryColor,
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 30),
+                                    const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Spacer(),
+                                        // CustomText(
+                                        //   Languages.of(context)!
+                                        //       .homeAddress
+                                        //       .toUpperCase(),
+                                        //   fontSize: FontSize.fourteen,
+                                        //   fontStyle: FontStyle.normal,
+                                        //   fontWeight: FontWeight.w700,
+                                        //   color:
+                                        //       ColorResource.color101010,
+                                        // ),
+                                        // GestureDetector(
+                                        //   onTap: () => bloc.add(
+                                        //       ClickMarkAsHomeEvent()),
+                                        //   child: SizedBox(
+                                        //     child: CustomText(
+                                        //       Languages.of(context)!
+                                        //           .markAsHome,
+                                        //       fontSize: FontSize.twelve,
+                                        //       isUnderLine: true,
+                                        //       fontWeight: FontWeight.w700,
+                                        //       color: ColorResource
+                                        //           .color101010,
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                      ],
+                                    )
+                                    //     : const SizedBox(),
+                                    // const SizedBox(height: 5),
+                                    // Singleton.instance.usertype ==
+                                    //         Constants.fieldagent
+                                    //     ? Container(
+                                    //         width: double.infinity,
+                                    //         margin: const EdgeInsets.symmetric(
+                                    //             vertical: 5.0),
+                                    //         decoration: const BoxDecoration(
+                                    //             color:
+                                    //                 ColorResource.colorF8F9FB,
+                                    //             borderRadius: BorderRadius.all(
+                                    //                 Radius.circular(10.0))),
+                                    //         child: Padding(
+                                    //           padding:
+                                    //               const EdgeInsets.symmetric(
+                                    //             horizontal: 20,
+                                    //             vertical: 16.0,
+                                    //           ),
+                                    //           child: Column(
+                                    //             crossAxisAlignment:
+                                    //                 CrossAxisAlignment.start,
+                                    //             children: <Widget>[
+                                    //               Row(
+                                    //                 children: <Widget>[
+                                    //                   CustomText(
+                                    //                     Languages.of(context)!
+                                    //                         .homeAddress
+                                    //                         .toUpperCase(),
+                                    //                     fontWeight:
+                                    //                         FontWeight.w700,
+                                    //                     color: ColorResource
+                                    //                         .color101010,
+                                    //                   ),
+                                    //                   const SizedBox(width: 8),
+                                    //                   SvgPicture.asset(
+                                    //                       ImageResource
+                                    //                           .location),
+                                    //                 ],
+                                    //               ),
+                                    //               const SizedBox(height: 5),
+                                    //               CustomText(
+                                    //                 addressValue != ''
+                                    //                     ? addressValue
+                                    //                     : bloc
+                                    //                             .profileAPIValue
+                                    //                             .result
+                                    //                             ?.first
+                                    //                             .homeAddress ??
+                                    //                         Languages.of(
+                                    //                                 context)!
+                                    //                             .homeAddressNotAvailable,
+                                    //                 color: ColorResource
+                                    //                     .color484848,
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //)
+                                    ,
+                                    ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: profileNavigationList.length,
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return profileNavigationList[index]
+                                                  .isEnable
+                                              ? GestureDetector(
+                                                  onTap: profileNavigationList[
+                                                          index]
+                                                      .onTap,
+                                                  child: Container(
+                                                    width: double.infinity,
+                                                    margin: const EdgeInsets
+                                                            .symmetric(
+                                                        vertical: 5.0),
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 4),
+                                                    decoration: const BoxDecoration(
+                                                        color:
+                                                            ColorResourceDesign
+                                                                .lightWhiteGray,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    10.0))),
+                                                    child: ListTile(
+                                                      title: SizedBox(
+                                                        // width: 260,
+                                                        child: CustomText(
+                                                          profileNavigationList[
+                                                                  index]
+                                                              .title
+                                                              .toUpperCase(),
+                                                          lineHeight: 1.4,
+                                                          fontSize: Sizes.p16,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color:
+                                                              ColorResourceDesign
+                                                                  .textColor,
+                                                        ),
+                                                      ),
+                                                      trailing: Row(
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: <Widget>[
+                                                          SvgPicture.asset(
+                                                              ImageResource
+                                                                  .forwardArrow),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox();
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 22),
+                            GestureDetector(
+                              onTap: () => BlocProvider.of<ProfileBloc>(context)
+                                  .add(LoginEvent()),
+                              child: Container(
+                                width: 125,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: ColorResourceDesign.whiteColor,
+                                    border: Border.all(
+                                        color: ColorResourceDesign.blueColor,
+                                        width: 0.5),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(75.0))),
+                                child: Center(
+                                  child: CustomText(
+                                    Languages.of(context)!.logout.toUpperCase(),
+                                    fontSize: Sizes.p12,
+                                    color: ColorResourceDesign.textColor,
+                                    fontWeight: FontWeight.w700,
+                                    lineHeight: 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 25),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                  return const CurrentLocationScreen();
+                                }));
+
+                              },
+                              child: const Text('Current Location'),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    // bottomNavigationBar: Container(
+                    //   width: double.infinity,
+                    //   color: ColorResource.colorFFFFFF,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.symmetric(vertical: 11.0),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         SizedBox(
+                    //           width: 200,
+                    //           child: CustomButton(
+                    //             Languages.of(context)!.chat.toUpperCase(),
+                    //             onTap: () => bloc.add(ClickMessageEvent(
+                    //               fromId: bloc.profileAPIValue.result![0].aRef,
+                    //               toId: bloc.profileAPIValue.result![0].parent,
+                    //             )),
+                    //             fontSize: FontSize.twenty,
+                    //             cardShape: 5,
+                    //             isTrailing:
+                    //                 bloc.newMsgCount != 0 ? true : false,
+                    //             leadingWidget: CircleAvatar(
+                    //               radius: 13,
+                    //               backgroundColor: ColorResource.colorFFFFFF,
+                    //               child: CustomText(
+                    //                 bloc.newMsgCount >= 100
+                    //                     ? '100+'
+                    //                     : bloc.newMsgCount.toString(),
+                    //                 fontSize: FontSize.twelve,
+                    //                 lineHeight: 1,
+                    //                 color: ColorResource.colorEA6D48,
+                    //                 fontWeight: FontWeight.w700,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                    floatingActionButton: Visibility(
+                      visible: false,
+                      child: GestureDetector(
+                        onTap: () {
+                          webViewScreen(context,
+                              urlAddress: 'https://origahelpdesk.w3spaces.com');
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(30),
+                                bottomRight: Radius.circular(30),
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(5)),
+                            color: ColorResourceDesign.blueColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 5),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(100),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(2),
+                                child: const Icon(
+                                  Icons.question_mark_rounded,
+                                  size: 14.0,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                Languages.of(context)!.help,
+                                textScaleFactor: 3,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium!
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontSize: 6,
+                                        backgroundColor: Colors.transparent),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
           }),
     );
   }
@@ -815,10 +809,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       builder: (BuildContext context) {
         return SizedBox(
-          height: MediaQuery
-              .of(context)
-              .size
-              .height * 0.9,
+          height: MediaQuery.of(context).size.height * 0.9,
           // child: WebViewWidget(urlAddress: urlAddress),
         );
       },
@@ -856,8 +847,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) =>
-            StatefulBuilder(
+        builder: (BuildContext context) => StatefulBuilder(
               builder: (BuildContext buildContext, StateSetter setState) =>
                   LanguageBottomSheetScreen(mcontext: mContext),
             ));
@@ -912,10 +902,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) =>
-            StatefulBuilder(
-                builder: (BuildContext buildContext, StateSetter setState) =>
-                    CustomerLanguagePreference(mcontext: mContext)));
+        builder: (BuildContext context) => StatefulBuilder(
+            builder: (BuildContext buildContext, StateSetter setState) =>
+                CustomerLanguagePreference(mcontext: mContext)));
   }
 
   messageShowBottomSheet({String? fromID, String? toID}) {
@@ -931,24 +920,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       clipBehavior: Clip.antiAliasWithSaveLayer,
-      builder: (BuildContext context) =>
-          StatefulBuilder(
-            builder: (BuildContext buildContext, StateSetter setState) =>
-                SizedBox(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.86,
-                  child: ChatScreen(
-                      fromARefId: fromID,
-                      toARefId: toID,
-                      agentImage: profileImage != null
-                          ? Image
-                          .memory(profileImage!)
-                          .image
-                          : null),
-                ),
-          ),
+      builder: (BuildContext context) => StatefulBuilder(
+        builder: (BuildContext buildContext, StateSetter setState) => SizedBox(
+          height: MediaQuery.of(context).size.height * 0.86,
+          child: ChatScreen(
+              fromARefId: fromID,
+              toARefId: toID,
+              agentImage: profileImage != null
+                  ? Image.memory(profileImage!).image
+                  : null),
+        ),
+      ),
     );
   }
 
@@ -965,8 +947,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        builder: (BuildContext context) =>
-            StatefulBuilder(
+        builder: (BuildContext context) => StatefulBuilder(
               builder: (BuildContext buildContext, StateSetter setState) =>
                   Container(),
               // NotificationBottomSheetScreen(
@@ -983,13 +964,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(Sizes.p20),
-          )),
+        top: Radius.circular(Sizes.p20),
+      )),
       backgroundColor: Colors.transparent,
     );
   }
 
-/// Removed For now as api needs API key for google maps.
+  /// Removed For now as api needs API key for google maps.
 // markAsHomeShowBottomSheet(BuildContext context) {
 //   showModalBottomSheet(
 
@@ -1247,77 +1228,74 @@ class GetPhotoView extends StatelessWidget {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       initialChildSize: 0.35,
-      builder: (_, controller) =>
-          Container(
-              decoration: const BoxDecoration(
-                color: ColorResourceDesign.whiteColor,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20),
-                  topRight: Radius.circular(20),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.p20),
-                child: Column(
+      builder: (_, controller) => Container(
+          decoration: const BoxDecoration(
+            color: ColorResourceDesign.whiteColor,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              topRight: Radius.circular(20),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.p20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(Languages.of(context)!.captureImage.toUpperCase(),
-                            style: const TextStyle(
-                              color: ColorResourceDesign.textColor,
-                              fontSize: Sizes.p14,
-                              fontWeight: FontResourceDesign
-                                  .textFontWeightSemiBold,
-                            )),
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.transparent,
-                            elevation: 0,
-                            minimumSize: Size.zero,
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: SvgPicture.asset(
-                              Assets.images.resetPasswordCross),
-                          onPressed: () => Navigator.pop(context),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 60),
-                    LongRoundedBtnIcon(
-                      btnText: Languages.of(context)!.captureImage,
-                      isBorder: false,
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        BlocProvider.of<ProfileBloc>(mContext).add(
-                            InitialImageEvent(
-                                imageType: ImagePickerType.camera.toString()));
-                      },
-                      // btnImage: SvgPicture.asset(Assets.images.captureImage),
-                      btnImage: SvgPicture.asset(ImageResource.captureImage),
-                      btnBackgroundColor: ColorResourceDesign.lightGray,
-                      btnTextColor: ColorResourceDesign.textColor,
-                      btnWidth: 340,
-                    ),
-                    gapH20,
-                    LongRoundedBtnIcon(
-                      btnText: Languages.of(context)!.uploadPhoto,
-                      isBorder: false,
-                      onPressed: () async {
-                        Navigator.pop(context);
-                        BlocProvider.of<ProfileBloc>(mContext).add(
-                            InitialImageEvent(
-                                imageType: ImagePickerType.gallery.toString()));
-                      },
-                      btnImage: SvgPicture.asset(ImageResource.uploadPhoto),
-                      // btnImage: SvgPicture.asset(Assets.images.uploadPhoto),
-                      btnBackgroundColor: ColorResourceDesign.lightGray,
-                      btnTextColor: ColorResourceDesign.textColor,
-                      btnWidth: 340,
+                    Text(Languages.of(context)!.captureImage.toUpperCase(),
+                        style: const TextStyle(
+                          color: ColorResourceDesign.textColor,
+                          fontSize: Sizes.p14,
+                          fontWeight: FontResourceDesign.textFontWeightSemiBold,
+                        )),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        elevation: 0,
+                        minimumSize: Size.zero,
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: SvgPicture.asset(Assets.images.resetPasswordCross),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ],
                 ),
-              )),
+                const SizedBox(height: 60),
+                LongRoundedBtnIcon(
+                  btnText: Languages.of(context)!.captureImage,
+                  isBorder: false,
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    BlocProvider.of<ProfileBloc>(mContext).add(
+                        InitialImageEvent(
+                            imageType: ImagePickerType.camera.toString()));
+                  },
+                  // btnImage: SvgPicture.asset(Assets.images.captureImage),
+                  btnImage: SvgPicture.asset(ImageResource.captureImage),
+                  btnBackgroundColor: ColorResourceDesign.lightGray,
+                  btnTextColor: ColorResourceDesign.textColor,
+                  btnWidth: 340,
+                ),
+                gapH20,
+                LongRoundedBtnIcon(
+                  btnText: Languages.of(context)!.uploadPhoto,
+                  isBorder: false,
+                  onPressed: () async {
+                    Navigator.pop(context);
+                    BlocProvider.of<ProfileBloc>(mContext).add(
+                        InitialImageEvent(
+                            imageType: ImagePickerType.gallery.toString()));
+                  },
+                  btnImage: SvgPicture.asset(ImageResource.uploadPhoto),
+                  // btnImage: SvgPicture.asset(Assets.images.uploadPhoto),
+                  btnBackgroundColor: ColorResourceDesign.lightGray,
+                  btnTextColor: ColorResourceDesign.textColor,
+                  btnWidth: 340,
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

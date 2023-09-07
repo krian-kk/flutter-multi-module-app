@@ -10,3 +10,9 @@ class AllocationLoadingState extends AllocationState {}
 class AllocationLoadedState extends AllocationState {}
 
 class NavigateSearchPageState extends AllocationState {}
+
+class AllocationTabChangedState extends AllocationState {
+  int selectedIndex = 0;
+
+  AllocationTabChangedState(this.selectedIndex);
+}

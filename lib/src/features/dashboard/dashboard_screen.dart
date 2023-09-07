@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
@@ -183,11 +184,7 @@ class DashboardScreenState extends State<DashboardScreen> {
           }
 
           if (state is NavigateSearchState) {
-            final dynamic returnValue =
-                await Navigator.pushNamed(context, AppRouter.searchScreen);
-            if (returnValue != null) {
-              // bloc.add(SearchReturnDataEvent(returnValue: returnValue));
-            }
+            context.push(context.namedLocation('search'));
           }
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(

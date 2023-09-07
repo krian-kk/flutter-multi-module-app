@@ -1,18 +1,16 @@
-import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
-import 'package:design_system/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_event.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_state.dart';
-import 'package:origa/src/features/home/presentation/search_view.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
 import 'package:origa/src/features/profile/profile_screen.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -107,10 +105,10 @@ class _HomeViewState extends State<HomeView>
                 height: 30,
                 color: ColorResourceDesign.colorE72C30,
                 width: MediaQuery.of(context).size.width,
-                child: CustomText(
-                  "You are offline",
+                child: const CustomText(
+                  'You are offline',
                   color: Colors.white,
-                  style: const TextStyle(
+                  style: TextStyle(
                       overflow: TextOverflow.ellipsis, color: Colors.white),
                 ),
               ),
@@ -324,10 +322,19 @@ class _HomeViewState extends State<HomeView>
                                 children: <Widget>[
                                   RepositoryProvider(
                                     create: (context) => CaseRepositoryImpl(),
-                                    child: BlocProvider(
-                                        create: (context) => PriorityBloc(
-                                            repository: CaseRepositoryImpl()),
-                                        child: const AllocationView()),
+                                    child: MultiBlocProvider(
+                                      providers: [
+                                        BlocProvider(
+                                            create: (context) => PriorityBloc(
+                                                repository:
+                                                    CaseRepositoryImpl())),
+                                        BlocProvider(
+                                            create: (context) => BuildRouteBloc(
+                                                repository:
+                                                    CaseRepositoryImpl())),
+                                      ],
+                                      child: const AllocationView(),
+                                    ),
                                   ), //1
                                   DashboardScreen(), //2
                                   ProfileScreen(), //3

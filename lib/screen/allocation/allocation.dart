@@ -51,7 +51,6 @@ import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../../models/event_details_model/result.dart';
 import 'bloc/allocation_bloc.dart';
 import 'custom_card_list.dart';
 
