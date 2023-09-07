@@ -1,49 +1,49 @@
 import 'package:flutter/cupertino.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/utils/constants.dart';
 
 class ConvertString {
   static String convertLanguageToConstant(String text, BuildContext context) {
     String constantValue = text;
-    if (text == Languages.of(context)!.lineBusy) {
+    if (text == LanguageEn().lineBusy) {
       constantValue = Constants.telsubstatuslineBusy;
-    } else if (text == Languages.of(context)!.switchOff) {
+    } else if (text == LanguageEn().switchOff) {
       constantValue = Constants.telsubstatusswitchOff;
-    } else if (text == Languages.of(context)!.rnr) {
+    } else if (text == LanguageEn().rnr) {
       constantValue = Constants.telsubstatusrnr;
-    } else if (text == Languages.of(context)!.outOfNetwork) {
+    } else if (text == LanguageEn().outOfNetwork) {
       constantValue = Constants.telsubstatusoutOfNetwork;
-    } else if (text == Languages.of(context)!.disConnecting) {
+    } else if (text == LanguageEn().disConnecting) {
       constantValue = Constants.telsubstatusdisconnecting;
-    } else if (text == Languages.of(context)!.leftMessage) {
+    } else if (text == LanguageEn().leftMessage) {
       constantValue = Constants.leftMessage;
-    } else if (text == Languages.of(context)!.doorLocked) {
+    } else if (text == LanguageEn().doorLocked) {
       constantValue = Constants.doorLocked;
-    } else if (text == Languages.of(context)!.entryRestricted) {
+    } else if (text == LanguageEn().entryRestricted) {
       constantValue = Constants.entryRestricted;
-    } else if (text == Languages.of(context)!.doesNotExist) {
+    } else if (text == LanguageEn().doesNotExist) {
       constantValue = Constants.telsubstatusdoesNotExist;
-    } else if (text == Languages.of(context)!.incorrectNumber) {
+    } else if (text == LanguageEn().incorrectNumber) {
       constantValue = Constants.telsubstatusincorrectNumber;
-    } else if (text == Languages.of(context)!.notOperational) {
+    } else if (text == LanguageEn().notOperational) {
       constantValue = Constants.telsubstatusnotOpeartional;
-    } else if (text == Languages.of(context)!.numberNotWorking) {
+    } else if (text == LanguageEn().numberNotWorking) {
       constantValue = Constants.telsubstatusnumberNotWorking;
-    } else if (text == Languages.of(context)!.wrongAddress) {
+    } else if (text == LanguageEn().wrongAddress) {
       constantValue = Constants.wrongAddress;
-    } else if (text == Languages.of(context)!.shifted) {
+    } else if (text == LanguageEn().shifted) {
       constantValue = Constants.shifted;
-    } else if (text == Languages.of(context)!.addressNotFound) {
+    } else if (text == LanguageEn().addressNotFound) {
       constantValue = Constants.addressNotFound;
-    } else if (text == Languages.of(context)!.cheque) {
+    } else if (text == LanguageEn().cheque) {
       constantValue = Constants.cheque;
-    } else if (text == Languages.of(context)!.selfPay) {
+    } else if (text == LanguageEn().selfPay) {
       constantValue = Constants.selfPay;
-    } else if (text == Languages.of(context)!.cash) {
+    } else if (text == LanguageEn().cash) {
       constantValue = Constants.cash;
-    } else if (text == Languages.of(context)!.digital) {
+    } else if (text == LanguageEn().digital) {
       constantValue = Constants.digital;
-    } else if (text == Languages.of(context)!.pickUp) {
+    } else if (text == LanguageEn().pickUp) {
       constantValue = Constants.pickUp;
     }
     return constantValue;

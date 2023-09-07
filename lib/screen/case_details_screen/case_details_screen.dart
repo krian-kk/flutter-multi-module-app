@@ -78,7 +78,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    bloc = CaseDetailsBloc(widget.allocationBloc)
+    bloc = CaseDetailsBloc()
       ..add(CaseDetailsInitialEvent(
           paramValues: widget.paramValues, context: context));
 
@@ -1330,336 +1330,336 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
       String? selectedContact,
       required bool isCallFromCallDetails,
       String? callId}) {
-    debugPrint('callTitle---->$cardTitle');
-    showModalBottomSheet(
-      isScrollControlled: true,
-      isDismissible: false,
-      enableDrag: false,
-      context: buildContext,
-      backgroundColor: ColorResource.colorFFFFFF,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30),
-        ),
-      ),
-      builder: (BuildContext context) {
-        switch (cardTitle) {
-          case Constants.ptp:
-            return CustomPtpBottomSheet(
-              Languages.of(context)!.ptp,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.rtp:
-            return CustomRtpBottomSheet(
-              Languages.of(context)!.rtp,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.dispute:
-            return CustomDisputeBottomSheet(
-              Languages.of(context)!.dispute,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.remainder:
-            return CustomRemainderBottomSheet(
-              Languages.of(context)!.remainderCb,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.collections:
-            return CustomCollectionsBottomSheet(
-              Languages.of(context)!.collections,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              isCall: isCall,
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              bloc: bloc,
-              custName:
-                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.ots:
-            return CustomOtsBottomSheet(
-              Languages.of(context)!.ots,
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              caseId: bloc.caseId.toString(),
-              userType: bloc.userType.toString(),
-              isCall: isCall,
-              postValue: list[bloc.indexValue!],
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.repo:
-            return CustomRepoBottomSheet(
-              Languages.of(context)!.repo,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              health: health ?? ConstantEventValues.healthTwo,
-              bloc: bloc,
-            );
-          case Constants.captureImage:
-            return CustomCaptureImageBottomSheet(
-              Languages.of(context)!.captureImage,
-              customerLoanUserDetailsWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              bloc: bloc,
-            );
-          case Constants.otherFeedback:
-            return CustomOtherFeedBackBottomSheet(
-              Languages.of(context)!.otherFeedBack,
-              bloc,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              health: health ?? ConstantEventValues.healthTwo,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-          case Constants.eventDetails:
-            return CustomEventDetailsBottomSheet(
-              Languages.of(context)!.eventDetails,
-              bloc,
-              customeLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-            );
-          case Constants.addressDetails:
-            return AddressDetailsBottomSheetScreen(bloc: bloc);
-          case Constants.callDetails:
-            return CallDetailsBottomSheetScreen(bloc: bloc);
-          case Constants.callCustomer:
-            final List<String> s1 = <String>[];
-            bloc.caseDetailsAPIValue.result?.callDetails
-                ?.forEach((dynamic element) {
-              // if (element['cType'].contains('mobile')) {
-              //   if (!(s1.contains(element['value']))) {
-              s1.add(element['value']);
-              // }
-              // } else {}
-            });
-            return CallCustomerBottomSheet(
-              caseDetailsAPIValue: bloc.caseDetailsAPIValue,
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              listOfMobileNo: s1,
-              userType: bloc.userType.toString(),
-              caseId: bloc.caseId != null
-                  ? bloc.caseId!
-                  : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
-              custName:
-                  bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
-              contactNumber: selectedContact,
-              isCallFromCallDetails: isCallFromCallDetails,
-              caseDetailsBloc: bloc,
-            );
-          case Constants.addNewContact:
-            return AddNewContactBottomSheet(
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-            );
-          // this events only visible based on contractor
-          case Constants.notInterested:
-            return CustomNotIntrestedBottomSheet(
-              Languages.of(context)!.notInterested,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-
-          case Constants.notEligible:
-            return CustomNotEligibleBottomSheet(
-              Languages.of(context)!.notEligible,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-
-          case Constants.login:
-            return CustomLoginConnectedBottomSheet(
-              Languages.of(context)!.login,
-              caseId: bloc.caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName:
-                    bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
-                        ?.toDouble() ??
-                    0.0,
-              ),
-              userType: bloc.userType.toString(),
-              postValue: list[bloc.indexValue!],
-              isCall: isCall,
-              bloc: bloc,
-              isCallFromCaseDetails: isCallFromCallDetails,
-              callId: callId,
-            );
-
-          default:
-            return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.89,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: const <Widget>[
-                    BottomSheetAppbar(
-                        title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
-                    Expanded(child: CustomLoadingWidget()),
-                  ],
-                ));
-        }
-      },
-    );
+    // debugPrint('callTitle---->$cardTitle');
+    // showModalBottomSheet(
+    //   isScrollControlled: true,
+    //   isDismissible: false,
+    //   enableDrag: false,
+    //   context: buildContext,
+    //   backgroundColor: ColorResource.colorFFFFFF,
+    //   shape: const RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.vertical(
+    //       top: Radius.circular(30),
+    //     ),
+    //   ),
+    //   builder: (BuildContext context) {
+    //     switch (cardTitle) {
+    //       case Constants.ptp:
+    //         return CustomPtpBottomSheet(
+    //           Languages.of(context)!.ptp,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.rtp:
+    //         return CustomRtpBottomSheet(
+    //           Languages.of(context)!.rtp,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.dispute:
+    //         return CustomDisputeBottomSheet(
+    //           Languages.of(context)!.dispute,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.remainder:
+    //         return CustomRemainderBottomSheet(
+    //           Languages.of(context)!.remainderCb,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.collections:
+    //         return CustomCollectionsBottomSheet(
+    //           Languages.of(context)!.collections,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           isCall: isCall,
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           bloc: bloc,
+    //           custName:
+    //               bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.ots:
+    //         return CustomOtsBottomSheet(
+    //           Languages.of(context)!.ots,
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           caseId: bloc.caseId.toString(),
+    //           userType: bloc.userType.toString(),
+    //           isCall: isCall,
+    //           postValue: list[bloc.indexValue!],
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.repo:
+    //         return CustomRepoBottomSheet(
+    //           Languages.of(context)!.repo,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           health: health ?? ConstantEventValues.healthTwo,
+    //           bloc: bloc,
+    //         );
+    //       case Constants.captureImage:
+    //         return CustomCaptureImageBottomSheet(
+    //           Languages.of(context)!.captureImage,
+    //           customerLoanUserDetailsWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           bloc: bloc,
+    //         );
+    //       case Constants.otherFeedback:
+    //         return CustomOtherFeedBackBottomSheet(
+    //           Languages.of(context)!.otherFeedBack,
+    //           bloc,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           health: health ?? ConstantEventValues.healthTwo,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //       case Constants.eventDetails:
+    //         return CustomEventDetailsBottomSheet(
+    //           Languages.of(context)!.eventDetails,
+    //           bloc,
+    //           customeLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //         );
+    //       case Constants.addressDetails:
+    //         return AddressDetailsBottomSheetScreen(bloc: bloc);
+    //       case Constants.callDetails:
+    //         return CallDetailsBottomSheetScreen(bloc: bloc);
+    //       case Constants.callCustomer:
+    //         final List<String> s1 = <String>[];
+    //         bloc.caseDetailsAPIValue.result?.callDetails
+    //             ?.forEach((dynamic element) {
+    //           // if (element['cType'].contains('mobile')) {
+    //           //   if (!(s1.contains(element['value']))) {
+    //           s1.add(element['value']);
+    //           // }
+    //           // } else {}
+    //         });
+    //         return CallCustomerBottomSheet(
+    //           caseDetailsAPIValue: bloc.caseDetailsAPIValue,
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           listOfMobileNo: s1,
+    //           userType: bloc.userType.toString(),
+    //           caseId: bloc.caseId != null
+    //               ? bloc.caseId!
+    //               : bloc.caseDetailsAPIValue.result!.caseDetails!.caseId!,
+    //           custName:
+    //               bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //           sid: bloc.caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+    //           contactNumber: selectedContact,
+    //           isCallFromCallDetails: isCallFromCallDetails,
+    //           caseDetailsBloc: bloc,
+    //         );
+    //       case Constants.addNewContact:
+    //         return AddNewContactBottomSheet(
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //         );
+    //       // this events only visible based on contractor
+    //       case Constants.notInterested:
+    //         return CustomNotIntrestedBottomSheet(
+    //           Languages.of(context)!.notInterested,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //
+    //       case Constants.notEligible:
+    //         return CustomNotEligibleBottomSheet(
+    //           Languages.of(context)!.notEligible,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //
+    //       case Constants.login:
+    //         return CustomLoginConnectedBottomSheet(
+    //           Languages.of(context)!.login,
+    //           caseId: bloc.caseId.toString(),
+    //           customerLoanUserWidget: CustomLoanUserDetails(
+    //             userName:
+    //                 bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+    //             userId:
+    //                 '${bloc.caseDetailsAPIValue.result?.caseDetails?.bankName} / ${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+    //             userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
+    //                     ?.toDouble() ??
+    //                 0.0,
+    //           ),
+    //           userType: bloc.userType.toString(),
+    //           postValue: list[bloc.indexValue!],
+    //           isCall: isCall,
+    //           bloc: bloc,
+    //           isCallFromCaseDetails: isCallFromCallDetails,
+    //           callId: callId,
+    //         );
+    //
+    //       default:
+    //         return SizedBox(
+    //             height: MediaQuery.of(context).size.height * 0.89,
+    //             child: Column(
+    //               mainAxisSize: MainAxisSize.min,
+    //               children: const <Widget>[
+    //                 BottomSheetAppbar(
+    //                     title: '', padding: EdgeInsets.fromLTRB(23, 16, 15, 5)),
+    //                 Expanded(child: CustomLoadingWidget()),
+    //               ],
+    //             ));
+    //     }
+    //   },
+    // );
   }
 
   Widget caseStatusWidget({String? text}) {

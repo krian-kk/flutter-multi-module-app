@@ -6,14 +6,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/reminder_post_model/reminder_post_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -112,20 +113,20 @@ class _CustomRemainderBottomSheetState
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -170,7 +171,7 @@ class _CustomRemainderBottomSheetState
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       // CustomText(
-                                      //   Languages.of(context)!.nextActionDate,
+                                      //   LanguageEn().nextActionDate,
                                       //   fontSize: FontSize.twelve,
                                       //   fontWeight: FontWeight.w400,
                                       //   color: ColorResource.color666666,
@@ -182,7 +183,7 @@ class _CustomRemainderBottomSheetState
                                                 .width) /
                                             2,
                                         child: CustomReadOnlyTextField(
-                                          Languages.of(context)!.nextActionDate,
+                                          LanguageEn().nextActionDate,
                                           nextActionDateControlller,
                                           validationRules: const <String>[
                                             'required'
@@ -221,7 +222,7 @@ class _CustomRemainderBottomSheetState
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       // CustomText(
-                                      //   Languages.of(context)!.nextActionTime,
+                                      //   LanguageEn().nextActionTime,
                                       //   fontSize: FontSize.twelve,
                                       //   fontWeight: FontWeight.w400,
                                       //   color: ColorResource.color666666,
@@ -233,7 +234,7 @@ class _CustomRemainderBottomSheetState
                                                 .width) /
                                             2,
                                         child: CustomReadOnlyTextField(
-                                          Languages.of(context)!.nextActionTime,
+                                          LanguageEn().nextActionTime,
                                           nextActionTimeControlller,
                                           validationRules: const <String>[
                                             'required'
@@ -263,7 +264,7 @@ class _CustomRemainderBottomSheetState
                               const SizedBox(height: 15),
                               Flexible(
                                   child: CustomReadOnlyTextField(
-                                Languages.of(context)!.remarks,
+                                LanguageEn().remarks,
                                 remarksControlller,
                                 isVoiceRecordWidget: true,
                                 returnS2Tresponse: (dynamic val) {
@@ -330,11 +331,11 @@ class _CustomRemainderBottomSheetState
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? Languages.of(context)!
+                                    ? LanguageEn()
                                             .stop
                                             .toUpperCase() +
                                         ' & \n' +
-                                        Languages.of(context)!
+                                        LanguageEn()
                                             .submit
                                             .toUpperCase()
                                     : null,
@@ -368,7 +369,7 @@ class _CustomRemainderBottomSheetState
                             : 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
+                              ? LanguageEn().submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -472,11 +473,11 @@ class _CustomRemainderBottomSheetState
               latitude: latLng.latitude,
               accuracy: position.accuracy,
               followUpPriority: EventFollowUpPriority.connectedFollowUpPriority(
-                currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                    .caseDetails!.telSubStatus!,
+                currentCaseStatus:
+                    widget.bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
                 eventType: 'Reminder',
-                currentFollowUpPriority: widget.bloc.caseDetailsAPIValue.result!
-                    .caseDetails!.followUpPriority!,
+                currentFollowUpPriority: widget
+                    .bloc.caseDetailsAPIValue.caseDetails!.followUpPriority!,
               ),
               reginalText: returnS2Tdata.result?.reginalText,
               translatedText: returnS2Tdata.result?.translatedText,
@@ -496,15 +497,15 @@ class _CustomRemainderBottomSheetState
 
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            await FirebaseUtils.storeEvents(
-                    eventsDetails: requestBodyData.toJson(),
-                    caseId: widget.caseId,
-                    selectedFollowUpDate: nextActionDateControlller.text,
-                    selectedClipValue: Constants.remainder,
-                    bloc: widget.bloc)
-                .whenComplete(() {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            });
+            // await FirebaseUtils.storeEvents(
+            //         eventsDetails: requestBodyData.toJson(),
+            //         caseId: widget.caseId,
+            //         selectedFollowUpDate: nextActionDateControlller.text,
+            //         selectedClipValue: Constants.remainder,
+            //         bloc: widget.bloc)
+            //     .whenComplete(() {
+            //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            // });
           } else {
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(
@@ -513,18 +514,17 @@ class _CustomRemainderBottomSheetState
               requestBodydata: jsonEncode(requestBodyData),
             );
             if (postResult[Constants.success]) {
-              await FirebaseUtils.storeEvents(
-                      eventsDetails: requestBodyData.toJson(),
-                      caseId: widget.caseId,
-                      selectedFollowUpDate: nextActionDateControlller.text,
-                      selectedClipValue: Constants.remainder,
-                      bloc: widget.bloc)
-                  .whenComplete(() {
-                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              });
+              // await FirebaseUtils.storeEvents(
+              //         eventsDetails: requestBodyData.toJson(),
+              //         caseId: widget.caseId,
+              //         selectedFollowUpDate: nextActionDateControlller.text,
+              //         selectedClipValue: Constants.remainder,
+              //         bloc: widget.bloc)
+              //     .whenComplete(() {
+              //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              // });
               // here update followUpPriority value.
-              widget.bloc.caseDetailsAPIValue.result!.caseDetails!
-                      .followUpPriority =
+              widget.bloc.caseDetailsAPIValue.caseDetails!.followUpPriority =
                   requestBodyData.eventAttr.followUpPriority;
 
               widget.bloc.add(

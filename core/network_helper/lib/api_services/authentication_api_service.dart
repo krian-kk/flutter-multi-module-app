@@ -3,9 +3,9 @@ import 'package:domain_models/request_body/authentication/set_password_request.d
 import 'package:flutter/cupertino.dart';
 import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:network_helper/network_base_models/api_result.dart';
 
 class AuthenticationApiProvider {
   static const String loginEndPoint = "${mobileBackendUrl}login";

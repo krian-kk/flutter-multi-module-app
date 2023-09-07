@@ -2,22 +2,21 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:domain_models/response_models/events/ptp/ptp_request_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:location/location.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/language_english.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
-import 'package:origa/models/ptp_post_model/ptp_post_model.dart';
 import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -26,18 +25,17 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
-import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
-
-import '../../utils/language_to_constant_convert.dart';
-import '../../widgets/get_followuppriority_value.dart';
+import 'package:origa/widgets/get_followuppriority_value.dart'
+    show EventFollowUpPriority;
+import 'package:repository/case_repository.dart';
 
 class CustomPtpBottomSheet extends StatefulWidget {
   const CustomPtpBottomSheet(
@@ -50,7 +48,7 @@ class CustomPtpBottomSheet extends StatefulWidget {
     this.postValue,
     this.isCall,
     this.isAutoCalling = false,
-    this.allocationBloc,
+    // this.allocationBloc,
     this.paramValue,
     this.callId,
     this.isCallFromCaseDetails = false,
@@ -62,7 +60,9 @@ class CustomPtpBottomSheet extends StatefulWidget {
   final bool? isCall;
   final dynamic postValue;
   final bool isAutoCalling;
-  final AllocationBloc? allocationBloc;
+
+  //todo
+  // final AllocationBloc? allocationBloc;
   final dynamic paramValue;
   final CaseDetailsBloc bloc;
   final bool isCallFromCaseDetails;
@@ -73,11 +73,11 @@ class CustomPtpBottomSheet extends StatefulWidget {
 }
 
 class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
-  late TextEditingController ptpDateControlller;
-  late TextEditingController ptpTimeControlller;
-  late TextEditingController ptpAmountControlller;
-  late TextEditingController referenceControlller;
-  late TextEditingController remarksControlller;
+  late TextEditingController ptpDateController;
+  late TextEditingController ptpTimeController;
+  late TextEditingController ptpAmountController;
+  late TextEditingController referenceController;
+  late TextEditingController remarksController;
   late TextEditingController loanDurationController;
 
   String? isRecord;
@@ -102,12 +102,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     ptpAmountFocusNode = FocusNode();
     ptpReferenceFocusNode = FocusNode();
     ptpRemarksFocusNode = FocusNode();
-    ptpTimeControlller = TextEditingController();
-    ptpAmountControlller = TextEditingController();
-    referenceControlller = TextEditingController();
-    remarksControlller = TextEditingController();
+    ptpTimeController = TextEditingController();
+    ptpAmountController = TextEditingController();
+    referenceController = TextEditingController();
+    remarksController = TextEditingController();
     loanDurationController = TextEditingController();
-    ptpDateControlller = TextEditingController();
+    ptpDateController = TextEditingController();
     super.initState();
   }
 
@@ -116,12 +116,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     ptpAmountFocusNode.dispose();
     ptpReferenceFocusNode.dispose();
     ptpRemarksFocusNode.dispose();
-    ptpTimeControlller.dispose();
-    ptpAmountControlller.dispose();
-    referenceControlller.dispose();
-    remarksControlller.dispose();
+    ptpTimeController.dispose();
+    ptpAmountController.dispose();
+    referenceController.dispose();
+    remarksController.dispose();
     loanDurationController.dispose();
-    ptpDateControlller.dispose();
+    ptpDateController.dispose();
     super.dispose();
   }
 
@@ -129,8 +129,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
   Widget build(BuildContext context) {
     final List<PaymentModeButtonModel> paymentModeButtonList =
         <PaymentModeButtonModel>[
-      PaymentModeButtonModel(Languages.of(context)!.pickUp),
-      PaymentModeButtonModel(Languages.of(context)!.selfPay),
+      PaymentModeButtonModel(LanguageEn().pickUp),
+      PaymentModeButtonModel(LanguageEn().selfPay),
     ];
 
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
@@ -142,20 +142,20 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -202,115 +202,12 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                               children: <Widget>[
                                 widget.customerLoanUserWidget,
                                 const SizedBox(height: 11),
-                                // Row(
-                                //   children: [
-                                //     Flexible(
-                                //         child: Column(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.start,
-                                //       crossAxisAlignment:
-                                //           CrossAxisAlignment.start,
-                                //       mainAxisSize: MainAxisSize.min,
-                                //       children: [
-                                //         // CustomText(
-                                //         //   Languages.of(context)!.ptpDate,
-                                //         //   fontSize: FontSize.twelve,
-                                //         //   fontWeight: FontWeight.w400,
-                                //         //   color: ColorResource.color666666,
-                                //         //   fontStyle: FontStyle.normal,
-                                //         // ),
-                                //         SizedBox(
-                                //           width: (MediaQuery.of(context)
-                                //                   .size
-                                //                   .width) /
-                                //               2,
-                                //           child: CustomReadOnlyTextField(
-                                //             // Languages.of(context)!.ptpDate,
-                                //             Languages.of(context)!.ptpDate,
-                                //             ptpDateControlller,
-                                //             // isLabel: true,
-                                //             isReadOnly: true,
-                                //             validationRules: const ['required'],
-                                //             onTapped: () =>
-                                //                 PickDateAndTimeUtils.pickDate(
-                                //                     context,
-                                //                     (newDate, followUpDate) {
-                                //               if (newDate != null &&
-                                //                   followUpDate != null) {
-                                //                 setState(() {
-                                //                   ptpDateControlller.text =
-                                //                       newDate;
-                                //                 });
-                                //                 widget.bloc.add(
-                                //                     ChangeFollowUpDateEvent(
-                                //                         followUpDate:
-                                //                             followUpDate));
-                                //               }
-                                //             }),
-                                //             suffixWidget: SvgPicture.asset(
-                                //               ImageResource.calendar,
-                                //               fit: BoxFit.scaleDown,
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     )),
-                                //     const SizedBox(width: 7),
-                                //     Flexible(
-                                //         child: Column(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.start,
-                                //       crossAxisAlignment:
-                                //           CrossAxisAlignment.start,
-                                //       mainAxisSize: MainAxisSize.min,
-                                //       children: [
-                                //         // CustomText(
-                                //         //   Languages.of(context)!.ptpTime,
-                                //         //   fontSize: FontSize.twelve,
-                                //         //   fontWeight: FontWeight.w400,
-                                //         //   color: ColorResource.color666666,
-                                //         //   fontStyle: FontStyle.normal,
-                                //         // ),
-                                //         SizedBox(
-                                //           width: (MediaQuery.of(context)
-                                //                   .size
-                                //                   .width) /
-                                //               2,
-                                //           child: CustomReadOnlyTextField(
-                                //             // Languages.of(context)!.ptpTime,
-                                //             Languages.of(context)!.ptpTime,
-                                //             ptpTimeControlller,
-                                //             // isLabel: true,
-                                //             validatorCallBack: () {},
-                                //             isReadOnly: true,
-                                //             isLabel: true,
-                                //             validationRules: const ['required'],
-                                //             onTapped: () =>
-                                //                 PickDateAndTimeUtils.pickTime(
-                                //                     context, (newTime) {
-                                //               if (newTime != null) {
-                                //                 setState(() {
-                                //                   ptpTimeControlller.text =
-                                //                       newTime;
-                                //                 });
-                                //               }
-                                //             }),
-                                //             suffixWidget: SvgPicture.asset(
-                                //               ImageResource.clock,
-                                //               fit: BoxFit.scaleDown,
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ],
-                                //     )),
-                                //   ],
-                                // ),
                                 Row(
                                   children: <Widget>[
                                     Flexible(
                                       child: CustomReadOnlyTextField(
-                                        Languages.of(context)!.ptpDate,
-                                        ptpDateControlller,
+                                        LanguageEn().ptpDate,
+                                        ptpDateController,
                                         isLabel: true,
                                         isReadOnly: true,
                                         validationRules: const <String>[
@@ -323,7 +220,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                           if (newDate != null &&
                                               followUpDate != null) {
                                             setState(() {
-                                              ptpDateControlller.text = newDate;
+                                              ptpDateController.text = newDate;
                                             });
                                             widget.bloc.add(
                                                 ChangeFollowUpDateEvent(
@@ -340,8 +237,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                     const SizedBox(width: 7),
                                     Flexible(
                                         child: CustomReadOnlyTextField(
-                                      Languages.of(context)!.ptpTime,
-                                      ptpTimeControlller,
+                                      LanguageEn().ptpTime,
+                                      ptpTimeController,
                                       validatorCallBack: () {},
                                       isReadOnly: true,
                                       isLabel: true,
@@ -353,7 +250,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                               (String? newTime) {
                                         if (newTime != null) {
                                           setState(() {
-                                            ptpTimeControlller.text = newTime;
+                                            ptpTimeController.text = newTime;
                                           });
                                         }
                                       }),
@@ -367,8 +264,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 const SizedBox(height: 15),
                                 Flexible(
                                     child: CustomReadOnlyTextField(
-                                  Languages.of(context)!.ptpAmount,
-                                  ptpAmountControlller,
+                                  LanguageEn().ptpAmount,
+                                  ptpAmountController,
                                   focusNode: ptpAmountFocusNode,
                                   validatorCallBack: () {},
                                   keyBoardType: TextInputType.number,
@@ -388,7 +285,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 )),
                                 const SizedBox(height: 15),
                                 CustomText(
-                                  Languages.of(context)!.paymentMode,
+                                  LanguageEn().paymentMode,
                                   fontWeight: FontWeight.w700,
                                   color: ColorResource.color101010,
                                 ),
@@ -401,13 +298,9 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 ),
                                 const SizedBox(height: 21),
                                 CustomReadOnlyTextField(
-                                    Languages.of(context)!.reference.substring(
-                                        0,
-                                        Languages.of(context)!
-                                                .reference
-                                                .length -
-                                            1),
-                                    referenceControlller,
+                                    LanguageEn().reference.substring(
+                                        0, LanguageEn().reference.length - 1),
+                                    referenceController,
                                     focusNode: ptpReferenceFocusNode,
                                     isLabel: true,
                                     validatorCallBack: () {}, onEditing: () {
@@ -416,8 +309,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                 }),
                                 const SizedBox(height: 20),
                                 CustomReadOnlyTextField(
-                                    Languages.of(context)!.remarks,
-                                    remarksControlller,
+                                    LanguageEn().remarks, remarksController,
                                     focusNode: ptpRemarksFocusNode,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -491,13 +383,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? Languages.of(context)!
-                                            .stop
-                                            .toUpperCase() +
-                                        ' & \n' +
-                                        Languages.of(context)!
-                                            .submit
-                                            .toUpperCase()
+                                    ? '${LanguageEn().stop.toUpperCase()} & \n${LanguageEn().submit.toUpperCase()}'
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
@@ -528,9 +414,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
                             ? 150
                             : 191,
                         child: CustomButton(
-                          isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
-                              : null,
+                          isSubmit ? LanguageEn().submit.toUpperCase() : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
                             gradientColors: <Color>[
@@ -572,7 +456,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
     } else {
       if (isRecord == Constants.submit) {
         setState(() {
-          remarksControlller.text = translateText;
+          remarksController.text = translateText;
           isTranslate = false;
         });
       }
@@ -580,6 +464,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
         if (selectedPaymentModeButton != '') {
           setState(() => isSubmit = false);
           bool isNotAutoCalling = true;
+          //todo
           if (widget.isAutoCalling ||
               (widget.isCallFromCaseDetails && widget.callId != null)) {
             await CallCustomerStatus.callStatusCheck(
@@ -619,20 +504,20 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               caseId: widget.caseId,
               eventAttr: EventAttr(
                 pTPType: ConstantEventValues.ptpType,
-                date: ptpDateControlller.text,
-                time: ptpTimeControlller.text,
-                remarks: remarksControlller.text,
-                ptpAmount: int.parse(ptpAmountControlller.text),
-                reference: referenceControlller.text,
+                date: ptpDateController.text,
+                time: ptpTimeController.text,
+                remarks: remarksController.text,
+                ptpAmount: int.parse(ptpAmountController.text),
+                reference: referenceController.text,
                 mode: ConvertString.convertLanguageToConstant(
                     selectedPaymentModeButton, context),
                 followUpPriority:
                     EventFollowUpPriority.connectedFollowUpPriority(
-                  currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                      .caseDetails!.telSubStatus!,
+                  currentCaseStatus: widget
+                      .bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
                   eventType: 'PTP',
-                  currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                      .result!.caseDetails!.followUpPriority!,
+                  currentFollowUpPriority: widget
+                      .bloc.caseDetailsAPIValue.caseDetails!.followUpPriority!,
                 ),
                 // followUpPriority: 'PTP',
                 longitude: position.longitude,
@@ -653,9 +538,7 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               agentName: Singleton.instance.agentName ?? '',
               contractor: Singleton.instance.contractor ?? '',
               eventModule: widget.isCall! ? 'Telecalling' : 'Field Allocation',
-              agrRef:
-                  widget.bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef ??
-                      '',
+              agrRef: widget.bloc.caseDetailsAPIValue.caseDetails?.agrRef ?? '',
               contact: PTPContact(
                 cType: widget.postValue['cType'],
                 value: widget.postValue['value'],
@@ -671,87 +554,86 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               await FirebaseUtils.storeEvents(
                       eventsDetails: requestBodyData.toJson(),
                       caseId: widget.caseId,
-                      selectedFollowUpDate: ptpDateControlller.text,
+                      selectedFollowUpDate: ptpDateController.text,
                       selectedClipValue: Constants.ptp,
                       bloc: widget.bloc)
                   .whenComplete(() {
                 AppUtils.topSnackBar(context, Constants.successfullySubmitted);
               });
             } else {
-              final Map<String, dynamic> postResult =
-                  await APIRepository.apiRequest(
-                APIRequestType.post,
-                HttpUrl.ptpPostUrl(
-                  'ptp',
-                  widget.userType,
-                ),
-                requestBodydata: jsonEncode(requestBodyData),
-              );
-              if (postResult[Constants.success]) {
-                await FirebaseUtils.storeEvents(
-                        eventsDetails: requestBodyData.toJson(),
-                        caseId: widget.caseId,
-                        selectedFollowUpDate: ptpDateControlller.text,
-                        selectedClipValue: Constants.ptp,
-                        bloc: widget.bloc)
-                    .whenComplete(() {});
-                // here update followUpPriority value.
-                widget.bloc.caseDetailsAPIValue.result!.caseDetails!
-                        .followUpPriority =
-                    requestBodyData.eventAttr.followUpPriority;
-                // set speech to text data is null
-                returnS2Tdata.result?.reginalText = null;
-                returnS2Tdata.result?.translatedText = null;
-                returnS2Tdata.result?.audioS3Path = null;
+              final CaseRepositoryImpl caseRepositoryImpl =
+                  CaseRepositoryImpl();
+              final ApiResult<BaseResponse> eventResult =
+                  await caseRepositoryImpl
+                      .postPTPEvent(jsonEncode(requestBodyData));
+              await eventResult.when(
+                  success: (BaseResponse? result) async {
+                    await FirebaseUtils.storeEvents(
+                            eventsDetails: requestBodyData.toJson(),
+                            caseId: widget.caseId,
+                            selectedFollowUpDate: ptpDateController.text,
+                            selectedClipValue: Constants.ptp,
+                            bloc: widget.bloc)
+                        .whenComplete(() {});
+                    // here update followUpPriority value.
+                    widget.bloc.caseDetailsAPIValue.caseDetails!
+                            .followUpPriority =
+                        requestBodyData.eventAttr.followUpPriority;
+                    // set speech to text data is null
+                    returnS2Tdata.result?.reginalText = null;
+                    returnS2Tdata.result?.translatedText = null;
+                    returnS2Tdata.result?.audioS3Path = null;
 
-                widget.bloc.add(
-                  ChangeIsSubmitForMyVisitEvent(
-                    Constants.ptp,
-                  ),
-                );
-                if (!(widget.userType == Constants.fieldagent &&
-                    widget.isCall!)) {
-                  widget.bloc.add(
-                    ChangeIsSubmitEvent(
-                      selectedClipValue: Constants.ptp,
-                      chageFollowUpDate: ptpDateControlller.text,
-                    ),
-                  );
-                }
+                    widget.bloc.add(
+                      ChangeIsSubmitForMyVisitEvent(
+                        Constants.ptp,
+                      ),
+                    );
+                    if (!(widget.userType == Constants.fieldagent &&
+                        widget.isCall!)) {
+                      widget.bloc.add(
+                        ChangeIsSubmitEvent(
+                          selectedClipValue: Constants.ptp,
+                          chageFollowUpDate: ptpDateController.text,
+                        ),
+                      );
+                    }
 
-                widget.bloc.add(
-                  ChangeHealthStatusEvent(),
-                );
+                    widget.bloc.add(
+                      ChangeHealthStatusEvent(),
+                    );
 
-                if (widget.isAutoCalling) {
-                  Navigator.pop(widget.paramValue['context']);
-                  Navigator.pop(widget.paramValue['context']);
-                  Singleton.instance.startCalling = false;
-                  if (!stopValue) {
-                    widget.allocationBloc!.add(StartCallingEvent(
-                      customerIndex: widget.paramValue['customerIndex'] + 1,
-                      phoneIndex: 0,
-                      isIncreaseCount: true,
-                    ));
-                  } else {
-                    widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                      customerIndex: widget.paramValue['customerIndex'],
-                    ));
-                  }
-                } else {
-                  AppUtils.topSnackBar(
-                      context, Constants.successfullySubmitted);
-                  Navigator.pop(context);
-                }
-                setState(() {
-                  remarksControlller.clear();
-                  translateText = '';
-                });
-              }
+                    if (widget.isAutoCalling) {
+                      //todo
+                      Navigator.pop(widget.paramValue['context']);
+                      Navigator.pop(widget.paramValue['context']);
+                      // Singleton.instance.startCalling = false;
+                      // if (!stopValue) {
+                      //   widget.allocationBloc!.add(StartCallingEvent(
+                      //     customerIndex: widget.paramValue['customerIndex'] + 1,
+                      //     phoneIndex: 0,
+                      //     isIncreaseCount: true,
+                      //   ));
+                      // } else {
+                      //   widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                      //     customerIndex: widget.paramValue['customerIndex'],
+                      //   ));
+                      // }
+                    } else {
+                      AppUtils.topSnackBar(
+                          context, Constants.successfullySubmitted);
+                      Navigator.pop(context);
+                    }
+                    setState(() {
+                      remarksController.clear();
+                      translateText = '';
+                    });
+                  },
+                  failure: (NetworkExceptions? error) async {});
             }
           }
         } else {
-          AppUtils.showToast(Languages.of(context)!.pleaseSelectPaymentMode);
+          AppUtils.showToast(LanguageEn().pleaseSelectPaymentMode);
         }
       }
     }

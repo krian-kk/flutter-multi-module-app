@@ -10,6 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -19,8 +20,8 @@ import 'package:origa/models/ots_post_model/ots_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -119,7 +120,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
-          Languages.of(context)!.pleaseSelectMaximum5MbFile,
+          LanguageEn().pleaseSelectMaximum5MbFile,
           gravity: ToastGravity.CENTER,
         );
       } else {
@@ -128,7 +129,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
         AppUtils.showToast(StringResource.fileUploadMessage);
       }
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled);
+      AppUtils.showToast(LanguageEn().canceled);
     }
   }
 
@@ -136,9 +137,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   Widget build(BuildContext context) {
     final List<PaymentModeButtonModel> paymentModeButtonList =
         <PaymentModeButtonModel>[
-      PaymentModeButtonModel(Languages.of(context)!.cheque),
-      PaymentModeButtonModel(Languages.of(context)!.cash),
-      PaymentModeButtonModel(Languages.of(context)!.digital),
+      PaymentModeButtonModel(LanguageEn().cheque),
+      PaymentModeButtonModel(LanguageEn().cash),
+      PaymentModeButtonModel(LanguageEn().digital),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
@@ -149,20 +150,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -216,7 +213,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 25),
                                   Flexible(
                                       child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.otsProposedAmount,
+                                    LanguageEn().otsProposedAmount,
                                     otsProposedAmountControlller,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -234,7 +231,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           // CustomText(
-                                          //   Languages.of(context)!
+                                          //   LanguageEn()
                                           //       .otsPaymentDate,
                                           //   fontSize: FontSize.twelve,
                                           //   fontWeight: FontWeight.w400,
@@ -247,7 +244,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     .width) /
                                                 2,
                                             child: CustomReadOnlyTextField(
-                                              Languages.of(context)!
+                                              LanguageEn()
                                                   .otsPaymentDate,
                                               otsPaymentDateControlller,
                                               validationRules: const <String>[
@@ -285,7 +282,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 15),
                                   Flexible(
                                       child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.remarks,
+                                    LanguageEn().remarks,
                                     remarksControlller,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -313,7 +310,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   )),
                                   const SizedBox(height: 15),
                                   CustomText(
-                                    Languages.of(context)!.paymentMode,
+                                    LanguageEn().paymentMode,
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
@@ -352,7 +349,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
                                                     CustomText(
-                                                      Languages.of(context)!
+                                                      LanguageEn()
                                                           .uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
@@ -365,7 +362,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   ],
                                                 ),
                                                 CustomText(
-                                                  Languages.of(context)!
+                                                  LanguageEn()
                                                       .upto5mb,
                                                   lineHeight: 1,
                                                   color:
@@ -423,11 +420,11 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     : 191,
                                 child: CustomButton(
                                   isSubmit
-                                      ? Languages.of(context)!
+                                      ? LanguageEn()
                                               .stop
                                               .toUpperCase() +
                                           ' & \n' +
-                                          Languages.of(context)!
+                                          LanguageEn()
                                               .submit
                                               .toUpperCase()
                                       : null,
@@ -462,7 +459,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               : 191,
                           child: CustomButton(
                             isSubmit
-                                ? Languages.of(context)!.submit.toUpperCase()
+                                ? LanguageEn().submit.toUpperCase()
                                 : null,
                             isLeading: !isSubmit,
                             trailingWidget: CustomLoadingWidget(
@@ -510,7 +507,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton == '') {
-          AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
+          AppUtils.showToast(LanguageEn().pleaseSelectOptions);
         } else {
           setState(() => isSubmit = false);
           bool isNotAutoCalling = true;
@@ -617,15 +614,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               } catch (e) {
                 debugPrint('Exception while converting base64 ${e.toString()}');
               }
-              await FirebaseUtils.storeEvents(
-                      eventsDetails: firebaseObject,
-                      caseId: widget.caseId,
-                      selectedFollowUpDate: otsPaymentDateControlller.text,
-                      selectedClipValue: Constants.ots,
-                      bloc: widget.bloc)
-                  .whenComplete(() {
-                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              });
+              //todo
+              // await FirebaseUtils.storeEvents(
+              //         eventsDetails: firebaseObject,
+              //         caseId: widget.caseId,
+              //         selectedFollowUpDate: otsPaymentDateControlller.text,
+              //         selectedClipValue: Constants.ots,
+              //         bloc: widget.bloc)
+              //     .whenComplete(() {
+              //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              // });
             } else {
               final Map<String, dynamic> postResult =
                   await APIRepository.apiRequest(
@@ -644,13 +642,14 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                   debugPrint(
                       'Exception while converting base64 ${e.toString()}');
                 }
-                await FirebaseUtils.storeEvents(
-                        eventsDetails: firebaseObject,
-                        caseId: widget.caseId,
-                        selectedFollowUpDate: otsPaymentDateControlller.text,
-                        selectedClipValue: Constants.ots,
-                        bloc: widget.bloc)
-                    .whenComplete(() {});
+                //todo
+                // await FirebaseUtils.storeEvents(
+                //         eventsDetails: firebaseObject,
+                //         caseId: widget.caseId,
+                //         selectedFollowUpDate: otsPaymentDateControlller.text,
+                //         selectedClipValue: Constants.ots,
+                //         bloc: widget.bloc)
+                //     .whenComplete(() {});
                 widget.bloc.add(
                   ChangeIsSubmitForMyVisitEvent(
                     Constants.ots,

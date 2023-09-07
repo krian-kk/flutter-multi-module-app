@@ -152,31 +152,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ClickChangeLanguageState());
     }
 
-    //
-    // if (event is ClickChangePassswordEvent) {
-    //   yield ClickChangePasswordState();
-    // }
-    //
-
-    // if (event is ClickChangeSecurityPinEvent) {
-    //   yield ClickChangeSecurityPinState();
-    // }
-    // if (event is ChangePasswordEvent) {
-    //   yield ClickChangePasswordState();
-    // }
     if (event is LoginEvent) {
       emit(ProfileLoadingState());
-      // Singleton.instance.isOfflineStorageFeatureEnabled = false;
-      // await FirebaseFirestore.instance.terminate();
-      // await _prefs.clear();
-
       await repository.logoutEvent();
-
       emit(LoginState());
     }
-    // if (event is ClickMarkAsHomeEvent) {
-    //   yield ClickMarkAsHomeState();
-    // }
-    //
   }
 }

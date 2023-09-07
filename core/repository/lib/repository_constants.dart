@@ -1,5 +1,1 @@
-
-class RepositoryConstants{
-
-
-}
+class RepositoryConstants {}

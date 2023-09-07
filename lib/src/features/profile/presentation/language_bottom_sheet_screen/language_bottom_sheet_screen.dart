@@ -12,12 +12,11 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_text.dart';
 
 class LanguageBottomSheetScreen extends StatefulWidget {
-  final BuildContext mcontext;
-
   const LanguageBottomSheetScreen({
     Key? key,
     required this.mcontext,
   }) : super(key: key);
+  final BuildContext mcontext;
 
   @override
   State<LanguageBottomSheetScreen> createState() =>
@@ -35,8 +34,6 @@ class _LanguageBottomSheetScreenState extends State<LanguageBottomSheetScreen> {
     ratioIndex = BlocProvider.of<ProfileBloc>(widget.mcontext).ratioIndex ?? 0;
     setLanguageCode =
         BlocProvider.of<ProfileBloc>(widget.mcontext).setLangCode ?? 'en';
-    // print(ratioIndex);
-    // print(setLanguageCode);
   }
 
   @override

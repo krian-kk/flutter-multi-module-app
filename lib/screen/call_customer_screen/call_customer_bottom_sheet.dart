@@ -1,17 +1,18 @@
 import 'dart:convert';
 
+import 'package:domain_models/response_models/case/case_detail_models/case_details_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
-import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -44,7 +45,7 @@ class CallCustomerBottomSheet extends StatefulWidget {
   final String caseId;
   final String sid;
   final List<String> listOfMobileNo;
-  final CaseDetailsApiModel? caseDetailsAPIValue;
+  final CaseDetailsResultModel? caseDetailsAPIValue;
   final String? custName;
   final String? contactNumber;
   final bool? isCallFromCallDetails;
@@ -67,6 +68,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
   String customerContactNoDropDownValue = '';
 
   bool? isMaskingEnabled = false;
+
   @override
   void initState() {
     super.initState();
@@ -141,7 +143,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       BottomSheetAppbar(
-                        title: Languages.of(context)!.callCustomer,
+                        title: LanguageEn().callCustomer,
                         padding: const EdgeInsets.symmetric(
                                 horizontal: 20, vertical: 15)
                             .copyWith(bottom: 5),
@@ -166,7 +168,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         CustomText(
-                                          Languages.of(context)!.agentContactNo,
+                                          LanguageEn().agentContactNo,
                                           fontSize: FontSize.twelve,
                                           color: ColorResource.color666666,
                                         ),
@@ -187,7 +189,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     const SizedBox(width: 5),
                                     Flexible(
                                       child: MaskedCustomDropDownButton(
-                                          Languages.of(context)!
+                                          LanguageEn()
                                               .customerContactNo,
                                           customerContactNoDropdownList,
                                           selectedValue:
@@ -209,7 +211,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 const SizedBox(height: 15),
                                 Flexible(
                                     child: CustomDropDownButton(
-                                  Languages.of(context)!.serviceProvidersList,
+                                  LanguageEn().serviceProvidersList,
                                   bloc.serviceProviderListDropdownList,
                                   selectedValue: bloc.serviceProviderListValue,
                                   onChanged: (String? newValue) {
@@ -225,7 +227,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                 const SizedBox(height: 20),
                                 Flexible(
                                     child: CustomDropDownButton(
-                                  Languages.of(context)!.callersId,
+                                  LanguageEn().callersId,
                                   bloc.callersIDDropdownList,
                                   selectedValue: bloc.callersIDDropdownValue,
                                   onChanged: (String? newValue) {
@@ -267,7 +269,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                       children: <Widget>[
                         Expanded(
                             child: CustomButton(
-                          Languages.of(context)!.done.toUpperCase(),
+                          LanguageEn().done.toUpperCase(),
                           buttonBackgroundColor: Colors.white,
                           borderColor: Colors.white,
                           textColor: ColorResource.colorEA6D48,
@@ -278,7 +280,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                         SizedBox(
                           width: 191,
                           child: CustomButton(
-                            Languages.of(context)!.call.toUpperCase(),
+                            LanguageEn().call.toUpperCase(),
                             fontSize: FontSize.sixteen,
                             isLeading: true,
                             isEnabled: bloc.isSubmit,
@@ -323,8 +325,8 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     contractor: Singleton.instance.contractor,
                                     caseId: widget.caseId,
                                     sId: widget.sid,
-                                    agrRef: widget.caseDetailsAPIValue!.result!
-                                            .caseDetails!.agrRef ??
+                                    agrRef: widget.caseDetailsAPIValue
+                                            ?.caseDetails?.agrRef ??
                                         '',
                                     agentName:
                                         Singleton.instance.agentName ?? '',
@@ -342,7 +344,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                         jsonEncode(requestBodyData),
                                   );
                                   if (postResult[Constants.success]) {
-                                    AppUtils.showToast(Languages.of(context)!
+                                    AppUtils.showToast(LanguageEn()
                                         .callConnectedPleaseWait);
                                     if (widget.isCallFromCallDetails ?? false) {
                                       bloc.add(NavigationPhoneBottomSheetEvent(

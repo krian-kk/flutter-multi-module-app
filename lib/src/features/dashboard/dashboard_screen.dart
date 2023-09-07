@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:languages/language_english.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
@@ -33,55 +33,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class DashboardScreenState extends State<DashboardScreen> {
-  Widget userActivity(
-      {String? header,
-      String? count,
-      Color? backgroundColor,
-      required Color leadingColor}) {
-    return Container(
-      height: 65,
-      decoration: BoxDecoration(
-          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          Container(
-            width: 5,
-            decoration: BoxDecoration(
-              color: leadingColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10),
-              ),
-            ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CustomText(
-                  header!,
-                  color: ColorResource.color23375A,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1.0,
-                ),
-                CustomText(
-                  count ?? '0',
-                  color: ColorResource.color23375A,
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                ),
-              ],
-            ),
-          ))
-        ],
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -95,100 +46,7 @@ class DashboardScreenState extends State<DashboardScreen> {
     return BlocListener<DashboardBloc, DashboardState>(
         bloc: BlocProvider.of<DashboardBloc>(context),
         listener: (BuildContext context, DashboardState state) async {
-          if (state is SetTimeperiodValueState) {
-            BlocProvider.of<DashboardBloc>(context).selectedFilter =
-                Constants.today;
-            BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '0';
-          }
-
-          if (state is ClickToCardLoadingState) {
-            BlocProvider.of<DashboardBloc>(context).isClickToCardLoading =
-                !BlocProvider.of<DashboardBloc>(context).isClickToCardLoading;
-          }
-
-          if (state is PostDataApiSuccessState) {
-            while (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-            AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-          }
-          if (state is NoInternetConnectionState) {
-            AppUtils.noInternetSnackbar(context);
-          }
-          if (state is PriorityFollowState) {
-            priorityFollowUpSheet(context);
-          }
-          if (state is UntouchedCasesState) {
-            untouchedCasesSheet(context);
-          }
-          if (state is UpdateSuccessfulState) {
-            setState(() {});
-          }
-          if (state is BrokenPTPState) {
-            brokenPTPSheet(context);
-          }
-          if (state is MyReceiptsState) {
-            myReceiptsSheet(context);
-          }
-
-          if (state is MyVisitsState) {
-            myVisitsSheet(context);
-          }
-
-          if (state is MyDepositState) {
-            myDepositsSheet(context);
-          }
-
-          if (state is YardingAndSelfRelease) {
-            yardingSelfReleaseSheet(context);
-          }
-
-          if (state is NavigateCaseDetailState) {
-            final dynamic returnValue = await Navigator.pushNamed(
-              context,
-              AppRouter.caseDetailsScreen,
-              arguments: CaseDetailsNaviagationModel(state.paramValues),
-            );
-            final RetrunValueModel retrunModelValue = RetrunValueModel.fromJson(
-                Map<String, dynamic>.from(returnValue));
-
-            if (retrunModelValue.isSubmitForMyVisit) {
-              BlocProvider.of<DashboardBloc>(context).add(
-                  UpdateMyVisitCasesEvent(retrunModelValue.caseId,
-                      retrunModelValue.returnCaseAmount,
-                      isNotMyReceipts: !(state.isMyReceipts)));
-              if (state.unTouched) {
-                BlocProvider.of<DashboardBloc>(context).add(
-                    UpdateUnTouchedCasesEvent(retrunModelValue.caseId,
-                        retrunModelValue.returnCaseAmount));
-              }
-              if (state.isPriorityFollowUp) {
-                BlocProvider.of<DashboardBloc>(context).add(
-                    UpdatePriorityFollowUpCasesEvent(retrunModelValue.caseId,
-                        retrunModelValue.returnCaseAmount));
-              }
-              if (state.isBrokenPTP) {
-                BlocProvider.of<DashboardBloc>(context)
-                    .add(UpdateBrokenCasesEvent(
-                  retrunModelValue.caseId,
-                  retrunModelValue.returnCaseAmount,
-                ));
-              }
-              if (retrunModelValue.eventType == Constants.collections) {
-                BlocProvider.of<DashboardBloc>(context).add(
-                    UpdateMyReceiptsCasesEvent(retrunModelValue.caseId,
-                        retrunModelValue.returnCollectionAmount));
-              }
-            }
-          }
-
-          if (state is NavigateSearchState) {
-            final dynamic returnValue =
-                await Navigator.pushNamed(context, AppRouter.searchScreen);
-            if (returnValue != null) {
-              // bloc.add(SearchReturnDataEvent(returnValue: returnValue));
-            }
-          }
+          await manageDashboardState(context, state);
         },
         child: BlocBuilder<DashboardBloc, DashboardState>(
             builder: (BuildContext context, DashboardState state) {
@@ -255,8 +113,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? LanguageEn().customerMet
-                                                      : LanguageEn()
+                                                      ? Languages.of(context)!
+                                                          .customerMet
+                                                      : Languages.of(context)!
                                                           .connected
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -279,9 +138,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? LanguageEn()
+                                                      ? Languages.of(context)!
                                                           .customerNotMet
-                                                      : LanguageEn()
+                                                      : Languages.of(context)!
                                                           .unreachable
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -299,8 +158,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Expanded(
                                             child: userActivity(
-                                              header:
-                                                  LanguageEn().invalid.trim(),
+                                              header: Languages.of(context)!
+                                                  .invalid
+                                                  .trim(),
                                               count: BlocProvider.of<
                                                       DashboardBloc>(context)
                                                   .invalid
@@ -325,7 +185,8 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn().mtdResolutionProgress,
+                                            Languages.of(context)!
+                                                .mtdResolutionProgress,
                                             fontSize: FontSize.twelve,
                                             fontWeight: FontWeight.w700,
                                             color: ColorResource.color23375A,
@@ -334,7 +195,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            LanguageEn().customer.toUpperCase(),
+                                            Languages.of(context)!
+                                                .customer
+                                                .toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,
@@ -418,7 +281,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn().amount.toUpperCase(),
+                                            Languages.of(context)!
+                                                .amount
+                                                .toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,
@@ -846,6 +711,55 @@ class DashboardScreenState extends State<DashboardScreen> {
         }));
   }
 
+  Widget userActivity(
+      {String? header,
+      String? count,
+      Color? backgroundColor,
+      required Color leadingColor}) {
+    return Container(
+      height: 65,
+      decoration: BoxDecoration(
+          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: BoxDecoration(
+              color: leadingColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topLeft: Radius.circular(10),
+              ),
+            ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomText(
+                  header!,
+                  color: ColorResource.color23375A,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  lineHeight: 1.0,
+                ),
+                CustomText(
+                  count ?? '0',
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
+  }
+
   void priorityFollowUpSheet(BuildContext buildContext) {
     showCupertinoModalPopup(
         context: buildContext,
@@ -921,5 +835,99 @@ class DashboardScreenState extends State<DashboardScreen> {
               child: YardingAndSelfRelease(
                   BlocProvider.of<DashboardBloc>(buildContext)));
         });
+  }
+
+  Future<void> manageDashboardState(
+      BuildContext context, DashboardState state) async {
+    if (state is SetTimeperiodValueState) {
+      BlocProvider.of<DashboardBloc>(context).selectedFilter = Constants.today;
+      BlocProvider.of<DashboardBloc>(context).selectedFilterIndex = '0';
+    }
+
+    if (state is ClickToCardLoadingState) {
+      BlocProvider.of<DashboardBloc>(context).isClickToCardLoading =
+          !BlocProvider.of<DashboardBloc>(context).isClickToCardLoading;
+    }
+
+    if (state is PostDataApiSuccessState) {
+      while (Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+      AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+    }
+    if (state is NoInternetConnectionState) {
+      AppUtils.noInternetSnackbar(context);
+    }
+    if (state is PriorityFollowState) {
+      priorityFollowUpSheet(context);
+    }
+    if (state is UntouchedCasesState) {
+      untouchedCasesSheet(context);
+    }
+    if (state is UpdateSuccessfulState) {
+      setState(() {});
+    }
+    if (state is BrokenPTPState) {
+      brokenPTPSheet(context);
+    }
+    if (state is MyReceiptsState) {
+      myReceiptsSheet(context);
+    }
+
+    if (state is MyVisitsState) {
+      myVisitsSheet(context);
+    }
+
+    if (state is MyDepositState) {
+      myDepositsSheet(context);
+    }
+
+    if (state is YardingAndSelfRelease) {
+      yardingSelfReleaseSheet(context);
+    }
+
+    if (state is NavigateCaseDetailState) {
+      final dynamic returnValue = await Navigator.pushNamed(
+        context,
+        AppRouter.caseDetailsScreen,
+        arguments: CaseDetailsNaviagationModel(state.paramValues),
+      );
+      final RetrunValueModel retrunModelValue =
+          RetrunValueModel.fromJson(Map<String, dynamic>.from(returnValue));
+
+      if (retrunModelValue.isSubmitForMyVisit) {
+        BlocProvider.of<DashboardBloc>(context).add(UpdateMyVisitCasesEvent(
+            retrunModelValue.caseId, retrunModelValue.returnCaseAmount,
+            isNotMyReceipts: !(state.isMyReceipts)));
+        if (state.unTouched) {
+          BlocProvider.of<DashboardBloc>(context).add(UpdateUnTouchedCasesEvent(
+              retrunModelValue.caseId, retrunModelValue.returnCaseAmount));
+        }
+        if (state.isPriorityFollowUp) {
+          BlocProvider.of<DashboardBloc>(context).add(
+              UpdatePriorityFollowUpCasesEvent(
+                  retrunModelValue.caseId, retrunModelValue.returnCaseAmount));
+        }
+        if (state.isBrokenPTP) {
+          BlocProvider.of<DashboardBloc>(context).add(UpdateBrokenCasesEvent(
+            retrunModelValue.caseId,
+            retrunModelValue.returnCaseAmount,
+          ));
+        }
+        if (retrunModelValue.eventType == Constants.collections) {
+          BlocProvider.of<DashboardBloc>(context).add(
+              UpdateMyReceiptsCasesEvent(retrunModelValue.caseId,
+                  retrunModelValue.returnCollectionAmount));
+        }
+      }
+    }
+
+    if (state is NavigateSearchState) {
+      final dynamic returnValue =
+          await Navigator.pushNamed(context, AppRouter.searchScreen);
+      if (returnValue != null) {
+        // bloc.add(SearchReturnDataEvent(returnValue: returnValue));
+      }
+    }
   }
 }

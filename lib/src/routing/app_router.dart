@@ -2,19 +2,20 @@ import 'package:domain_models/common/searching_data_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/sign_in_view.dart';
-import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/case_details_screen.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/src/features/home/presentation/home_view.dart';
 import 'package:origa/src/features/search/bloc/search_bloc.dart';
-import 'package:origa/src/features/search/search_list/search_list_screen.dart';
 import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
+import 'package:origa/src/features/search/search_list/search_list_screen.dart';
 import 'package:origa/src/features/search/search_screen.dart';
-import 'package:repository/search_list_repository.dart';
 import 'package:repository/auth_repository.dart';
+import 'package:repository/case_repository.dart';
+import 'package:repository/search_list_repository.dart';
 
 class AppRouter {
   static const String splashScreen = 'splash_screen';
@@ -59,7 +60,13 @@ class AppRouter {
           GoRoute(
             path: caseDetailsScreen,
             builder: (BuildContext context, GoRouterState state) {
-              return const AllocationView();
+              return RepositoryProvider(
+                create: (context) => CaseRepositoryImpl(),
+                child: BlocProvider(
+                    create: (BuildContext context) =>
+                        CaseDetailsBloc(context.read<CaseRepositoryImpl>()),
+                    child: CaseDetailsScreen(paramValues: state.extra)),
+              );
             },
           ),
           GoRoute(

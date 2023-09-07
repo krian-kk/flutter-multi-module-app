@@ -7,10 +7,12 @@ import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/gen/assets.gen.dart';
 import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
+import 'package:origa/src/routing/app_router.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_format_utils.dart';
@@ -56,16 +58,13 @@ class _AllocationViewState extends State<AllocationView> {
           }
         },
         child: Scaffold(
-            backgroundColor: ColorResourceDesign.primaryColor,
-            body: PagedListView<int, PriorityCaseListModel>(
-                pagingController: _pagingController,
-                builderDelegate:
-                    PagedChildBuilderDelegate<PriorityCaseListModel>(
-                  itemBuilder: (context, item, index) =>
-                      PriorityCaseItemWidget(item, index),
-                )),
-
-
+          backgroundColor: ColorResourceDesign.primaryColor,
+          body: PagedListView<int, PriorityCaseListModel>(
+              pagingController: _pagingController,
+              builderDelegate: PagedChildBuilderDelegate<PriorityCaseListModel>(
+                itemBuilder: (context, item, index) =>
+                    PriorityCaseItemWidget(item, index),
+              )),
         ));
   }
 
@@ -518,20 +517,24 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
                                       fontWeight: FontWeight.w700,
                                     ),
                                   const Spacer(),
-                                  Row(
-                                    children: [
-                                      CustomText(
-                                        LanguageEn().view,
-                                        lineHeight: 1,
-                                        color: ColorResourceDesign.color23375A,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      SvgPicture.asset(
-                                          ImageResource.forwardArrow)
-                                    ],
+                                  GestureDetector(
+                                    onTap: _openCaseDetails,
+                                    child: Row(
+                                      children: [
+                                        CustomText(
+                                          LanguageEn().view,
+                                          lineHeight: 1,
+                                          color:
+                                              ColorResourceDesign.color23375A,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        SvgPicture.asset(
+                                            ImageResource.forwardArrow)
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -573,5 +576,10 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
         ],
       ),
     );
+  }
+
+  void _openCaseDetails() {
+    context.go('/${AppRouter.caseDetailsScreen}',
+        extra: {'caseID': widget.item.caseId, 'isOffline': false});
   }
 }

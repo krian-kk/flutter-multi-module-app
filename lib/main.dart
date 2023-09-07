@@ -10,8 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:origa/authentication/authentication_event.dart';
+import 'package:origa/firebase_options.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_locale_constant.dart';
 import 'package:origa/languages/app_localizations_delegate.dart';
 import 'package:origa/models/notification_data_model.dart';
 import 'package:origa/router.dart';
@@ -32,8 +32,8 @@ late FirebaseApp firebaseApp;
 Future<void> main({String? env = 'uat'}) async {
   // bloc = AuthenticationBloc();
   WidgetsFlutterBinding.ensureInitialized();
-  // firebaseApp = await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform);
+  firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform);
   await HttpUrl.loadValue(env ?? '');
   // await Firebase.initializeApp();
   // Requesting Push Notification Permission
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
     bloc = BlocProvider.of<AuthenticationBloc>(context);
     // androidAndIOSNotification();
-    //
+
     // final scoresRef =
     //     FirebaseDatabase.instanceFor(app: firebaseApp).ref(Singleton.instance.firebaseDatabaseName);
     // scoresRef.keepSynced(true);
@@ -267,11 +267,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void didChangeDependencies() {
-    getLocale().then((Locale locale) {
-      setState(() {
-        _locale = locale;
-      });
-    });
+    // getLocale().then((Locale locale) {
+    //   setState(() {
+    //     _locale = locale;
+    //   });
+    // });
     super.didChangeDependencies();
   }
 

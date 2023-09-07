@@ -11,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -19,8 +20,8 @@ import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/receipt_sendsms_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -112,7 +113,7 @@ class _CustomCollectionsBottomSheetState
           result.paths.map((String? path) => File(path!)).toList();
       AppUtils.showToast(StringResource.imageUploadMessage);
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled);
+      AppUtils.showToast(LanguageEn().canceled);
     }
   }
 
@@ -148,9 +149,9 @@ class _CustomCollectionsBottomSheetState
   Widget build(BuildContext context) {
     final List<PaymentModeButtonModel> paymentModeButtonList =
         <PaymentModeButtonModel>[
-      PaymentModeButtonModel(Languages.of(context)!.cheque),
-      PaymentModeButtonModel(Languages.of(context)!.cash),
-      PaymentModeButtonModel(Languages.of(context)!.digital),
+      PaymentModeButtonModel(LanguageEn().cheque),
+      PaymentModeButtonModel(LanguageEn().cash),
+      PaymentModeButtonModel(LanguageEn().digital),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
@@ -162,20 +163,20 @@ class _CustomCollectionsBottomSheetState
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -244,7 +245,7 @@ class _CustomCollectionsBottomSheetState
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
-                                            Languages.of(context)!
+                                            LanguageEn()
                                                 .amountCollected,
                                             amountCollectedControlller,
                                             onChanged: () {
@@ -322,14 +323,14 @@ class _CustomCollectionsBottomSheetState
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           // CustomText(
-                                          //   Languages.of(context)!.date,
+                                          //   LanguageEn().date,
                                           //   fontSize: FontSize.twelve,
                                           //   fontWeight: FontWeight.w400,
                                           //   color: ColorResource.color666666,
                                           //   fontStyle: FontStyle.normal,
                                           // ),
                                           CustomReadOnlyTextField(
-                                            Languages.of(context)!.date,
+                                            LanguageEn().date,
                                             dateControlller,
                                             isLabel: true,
                                             validationRules: const <String>[
@@ -365,7 +366,7 @@ class _CustomCollectionsBottomSheetState
                                 ),
                                 const SizedBox(height: 15),
                                 CustomText(
-                                  Languages.of(context)!.paymentMode,
+                                  LanguageEn().paymentMode,
                                   fontWeight: FontWeight.w700,
                                   color: ColorResource.color101010,
                                 ),
@@ -379,7 +380,7 @@ class _CustomCollectionsBottomSheetState
                                 const SizedBox(height: 15),
                                 Flexible(
                                     child: CustomReadOnlyTextField(
-                                  Languages.of(context)!.refCheque,
+                                  LanguageEn().refCheque,
                                   chequeControlller,
                                   focusNode: chequeFocusNode,
                                   isLabel: true,
@@ -388,7 +389,7 @@ class _CustomCollectionsBottomSheetState
                                 )),
                                 const SizedBox(height: 15),
                                 CustomReadOnlyTextField(
-                                  Languages.of(context)!.remarks,
+                                  LanguageEn().remarks,
                                   remarksControlller,
                                   focusNode: remarksFocusNode,
                                   validationRules: const <String>['required'],
@@ -417,7 +418,7 @@ class _CustomCollectionsBottomSheetState
                                 ),
                                 const SizedBox(height: 15),
                                 CustomButton(
-                                  Languages.of(context)!.customUpload,
+                                  LanguageEn().customUpload,
                                   fontWeight: FontWeight.w700,
                                   onTap: () => getFiles(),
                                   trailingWidget:
@@ -475,11 +476,11 @@ class _CustomCollectionsBottomSheetState
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? Languages.of(context)!
+                                    ? LanguageEn()
                                             .stop
                                             .toUpperCase() +
                                         ' & \n' +
-                                        Languages.of(context)!
+                                        LanguageEn()
                                             .submit
                                             .toUpperCase()
                                     : null,
@@ -514,7 +515,7 @@ class _CustomCollectionsBottomSheetState
                             : 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
+                              ? LanguageEn().submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -562,7 +563,7 @@ class _CustomCollectionsBottomSheetState
       }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton == '') {
-          AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
+          AppUtils.showToast(LanguageEn().pleaseSelectOptions);
         } else {
           bool isNotAutoCalling = true;
           if (widget.isAutoCalling ||
@@ -626,11 +627,11 @@ class _CustomCollectionsBottomSheetState
                   // followUpPriority: 'REVIEW',
                   followUpPriority:
                       EventFollowUpPriority.connectedFollowUpPriority(
-                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                        .caseDetails!.telSubStatus!,
+                    currentCaseStatus: widget
+                        .bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
                     eventType: 'Receipt',
                     currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                        .result!.caseDetails!.followUpPriority!,
+                        .caseDetails!.followUpPriority!,
                   ),
                   imageLocation: <String>[],
                   longitude: position.longitude,
@@ -697,7 +698,7 @@ class _CustomCollectionsBottomSheetState
                   //     postResult['data']['result']['error']);
                 } else {
                   // here update followUpPriority value.
-                  widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                  widget.bloc.caseDetailsAPIValue.caseDetails!
                           .followUpPriority =
                       requestBodyData.eventAttr.followUpPriority;
 
@@ -734,12 +735,12 @@ class _CustomCollectionsBottomSheetState
                     );
                     if (postResult[Constants.success]) {
                       AppUtils.showToast(
-                        Languages.of(context)!.successfullySMSsend,
+                        LanguageEn().successfullySMSsend,
                       );
                     }
                   } else {
                     AppUtils.showErrorToast(
-                        Languages.of(context)!.sendSMSerror);
+                        LanguageEn().sendSMSerror);
                   }
                   Navigator.pop(context);
                 }
@@ -791,11 +792,11 @@ class _CustomCollectionsBottomSheetState
                   // followUpPriority: 'REVIEW',
                   followUpPriority:
                       EventFollowUpPriority.connectedFollowUpPriority(
-                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                        .caseDetails!.telSubStatus!,
+                    currentCaseStatus: widget
+                        .bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
                     eventType: 'Receipt',
                     currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                        .result!.caseDetails!.followUpPriority!,
+                        .caseDetails!.followUpPriority!,
                   ),
                   imageLocation: <String>[],
                   longitude: position.longitude,
@@ -836,10 +837,10 @@ class _CustomCollectionsBottomSheetState
               setState(() => isSubmit = true);
               await DialogUtils.showDialog(
                 buildContext: context,
-                title: Languages.of(context)!.reciptsAlertMesg,
+                title: LanguageEn().reciptsAlertMesg,
                 description: '',
-                okBtnText: Languages.of(context)!.submit.toUpperCase(),
-                cancelBtnText: Languages.of(context)!.cancel.toUpperCase(),
+                okBtnText: LanguageEn().submit.toUpperCase(),
+                cancelBtnText: LanguageEn().cancel.toUpperCase(),
                 okBtnFunction: (String val) async {
                   // pop or remove the AlertDialouge Box
                   Navigator.pop(context);
@@ -857,12 +858,13 @@ class _CustomCollectionsBottomSheetState
                           'Exception while converting base64 ${e.toString()}');
                     }
                     setState(() => isSubmit = true);
-                    await FirebaseUtils.storeEvents(
-                        eventsDetails: firebaseObject,
-                        caseId: widget.caseId,
-                        selectedFollowUpDate: dateControlller.text,
-                        selectedClipValue: Constants.collections,
-                        bloc: widget.bloc);
+                    //todo
+                    // await FirebaseUtils.storeEvents(
+                    //     eventsDetails: firebaseObject,
+                    //     caseId: widget.caseId,
+                    //     selectedFollowUpDate: dateControlller.text,
+                    //     selectedClipValue: Constants.collections,
+                    //     bloc: widget.bloc);
                     AppUtils.topSnackBar(
                         context, Constants.successfullySubmitted);
                     widget.bloc.add(ChangeHealthStatusEvent());
@@ -885,12 +887,13 @@ class _CustomCollectionsBottomSheetState
                         debugPrint(
                             'Exception while converting base64 ${e.toString()}');
                       }
-                      await FirebaseUtils.storeEvents(
-                          eventsDetails: firebaseObject,
-                          caseId: widget.caseId,
-                          selectedFollowUpDate: dateControlller.text,
-                          selectedClipValue: Constants.collections,
-                          bloc: widget.bloc);
+                      // //todo
+                      // await FirebaseUtils.storeEvents(
+                      //     eventsDetails: firebaseObject,
+                      //     caseId: widget.caseId,
+                      //     selectedFollowUpDate: dateControlller.text,
+                      //     selectedClipValue: Constants.collections,
+                      //     bloc: widget.bloc);
 
                       widget.bloc.add(
                         ChangeIsSubmitForMyVisitEvent(
@@ -927,7 +930,7 @@ class _CustomCollectionsBottomSheetState
                               postResult['data']['result']['error']);
                         } else {
                           // here update followUpPriority value.
-                          widget.bloc.caseDetailsAPIValue.result!.caseDetails!
+                          widget.bloc.caseDetailsAPIValue.caseDetails!
                                   .followUpPriority =
                               requestBodyData.eventAttr.followUpPriority;
 
@@ -955,12 +958,13 @@ class _CustomCollectionsBottomSheetState
                               paymentMode: selectedPaymentModeButton,
                               messageBody: 'message',
                             );
-                            await FirebaseUtils.storeEvents(
-                                eventsDetails: requestBodyData.toJson(),
-                                caseId: widget.caseId,
-                                selectedFollowUpDate: dateControlller.text,
-                                selectedClipValue: Constants.collections,
-                                bloc: widget.bloc);
+                            //todo
+                            // await FirebaseUtils.storeEvents(
+                            //     eventsDetails: requestBodyData.toJson(),
+                            //     caseId: widget.caseId,
+                            //     selectedFollowUpDate: dateControlller.text,
+                            //     selectedClipValue: Constants.collections,
+                            //     bloc: widget.bloc);
                             if (ConnectivityResult.none ==
                                 await Connectivity().checkConnectivity()) {
                             } else {
@@ -972,13 +976,13 @@ class _CustomCollectionsBottomSheetState
                               );
                               if (postResult[Constants.success]) {
                                 AppUtils.showToast(
-                                  Languages.of(context)!.successfullySMSsend,
+                                  LanguageEn().successfullySMSsend,
                                 );
                               }
                             }
                           } else {
                             AppUtils.showErrorToast(
-                                Languages.of(context)!.sendSMSerror);
+                                LanguageEn().sendSMSerror);
                           }
                           Navigator.pop(context);
                         }

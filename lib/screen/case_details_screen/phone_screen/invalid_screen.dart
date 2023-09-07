@@ -3,7 +3,7 @@ import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/models/speech2text_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -32,6 +32,7 @@ class PhonenInvalidScreen extends StatefulWidget {
 class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
   double bottomHeight = 0.0;
   String selectedOptionBottomSheetButton = '';
+
   @override
   Widget build(BuildContext context) {
     final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
@@ -118,8 +119,7 @@ class _PhonenInvalidScreenState extends State<PhonenInvalidScreen> {
                               });
                               widget.bloc.add(EventDetailsEvent(
                                 element.stringResourceValue,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.callDetails,
+                                widget.bloc.caseDetailsAPIValue.callDetails,
                                 true,
                                 health: ConstantEventValues.healthZero,
                                 isCallFromCallDetails:

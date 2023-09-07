@@ -2,11 +2,11 @@ part of 'locale_cubit.dart';
 
 @immutable
 abstract class LocaleState {
-  final Locale locale;
+  const LocaleState(this.locale);
 
-  LocaleState(this.locale);
+  final Locale locale;
 }
 
 class SelectedLocale extends LocaleState {
-  SelectedLocale(Locale locale) : super(locale);
+  const SelectedLocale(Locale locale) : super(locale);
 }

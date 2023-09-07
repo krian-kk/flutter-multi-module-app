@@ -64,6 +64,7 @@ dependencies:
   cloud_firestore: ^4.9.1
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
+  firebase_database: ^10.2.3
 
 dev_dependencies:
   equatable: ^2.0.3

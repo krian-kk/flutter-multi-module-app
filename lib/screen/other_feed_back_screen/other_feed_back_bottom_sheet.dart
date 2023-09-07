@@ -13,6 +13,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -22,8 +23,8 @@ import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_mod
 import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -122,7 +123,7 @@ class _CustomOtherFeedBackBottomSheetState
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
-          Languages.of(context)!.pleaseSelectMaximum5MbFile,
+          LanguageEn().pleaseSelectMaximum5MbFile,
           gravity: ToastGravity.CENTER,
         );
       } else {
@@ -131,7 +132,7 @@ class _CustomOtherFeedBackBottomSheetState
         AppUtils.showToast(StringResource.fileUploadMessage);
       }
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled);
+      AppUtils.showToast(LanguageEn().canceled);
     }
   }
 
@@ -139,6 +140,7 @@ class _CustomOtherFeedBackBottomSheetState
   void initState() {
     dateControlller = TextEditingController();
     remarksController = TextEditingController();
+    //todo
     Singleton.instance.feedbackTemplate!.result!.feedbackTemplate
         ?.forEach((element) {
       dynamicEventAttr.addAll({element.data![0].name!: ''});
@@ -172,20 +174,20 @@ class _CustomOtherFeedBackBottomSheetState
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -226,7 +228,7 @@ class _CustomOtherFeedBackBottomSheetState
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   // CustomText(
-                                  //   Languages.of(context)!.nextActionDate,
+                                  //   LanguageEn().nextActionDate,
                                   //   fontSize: FontSize.twelve,
                                   //   fontWeight: FontWeight.w400,
                                   //   color: ColorResource.color666666,
@@ -237,7 +239,7 @@ class _CustomOtherFeedBackBottomSheetState
                                             44) /
                                         2,
                                     child: CustomReadOnlyTextField(
-                                      Languages.of(context)!.nextActionDate,
+                                      LanguageEn().nextActionDate,
                                       dateControlller,
                                       validationRules: const <String>[
                                         'required'
@@ -270,10 +272,10 @@ class _CustomOtherFeedBackBottomSheetState
                               expandList(
                                   <FeedbackTemplate>[
                                     FeedbackTemplate(
-                                        name: Languages.of(context)!
+                                        name: LanguageEn()
                                             .addNewContact,
                                         expanded: false,
-                                        label: Languages.of(context)!
+                                        label: LanguageEn()
                                             .addNewContact,
                                         data: <Data>[
                                           Data(name: 'addNewContact')
@@ -319,7 +321,7 @@ class _CustomOtherFeedBackBottomSheetState
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 13),
                                 child: CustomReadOnlyTextField(
-                                  Languages.of(context)!.remark + '*',
+                                  LanguageEn().remark + '*',
                                   remarksController,
                                   validationRules: const <String>['required'],
                                   isLabel: true,
@@ -374,7 +376,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                   const SizedBox(width: 7),
                                                   Flexible(
                                                     child: CustomText(
-                                                      Languages.of(context)!
+                                                      LanguageEn()
                                                           .uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
@@ -391,7 +393,7 @@ class _CustomOtherFeedBackBottomSheetState
                                               ),
                                               const SizedBox(height: 3),
                                               CustomText(
-                                                Languages.of(context)!.upto5mb,
+                                                LanguageEn().upto5mb,
                                                 lineHeight: 1,
                                                 color:
                                                     ColorResource.colorFFFFFF,
@@ -448,11 +450,11 @@ class _CustomOtherFeedBackBottomSheetState
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? Languages.of(context)!
+                                    ? LanguageEn()
                                             .stop
                                             .toUpperCase() +
                                         ' & \n' +
-                                        Languages.of(context)!
+                                        LanguageEn()
                                             .submit
                                             .toUpperCase()
                                     : null,
@@ -486,7 +488,7 @@ class _CustomOtherFeedBackBottomSheetState
                             : 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
+                              ? LanguageEn().submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -533,7 +535,7 @@ class _CustomOtherFeedBackBottomSheetState
             cTypeFinal = element.cType!;
           }
         }
-        debugPrint("cTypeFinal---"+cTypeFinal);
+        debugPrint("cTypeFinal---" + cTypeFinal);
         otherFeedbackContact.add(OtherFeedBackContact(
             cType: cTypeFinal.toString(),
             value: listOfContact[i].controller.text,
@@ -642,11 +644,11 @@ class _CustomOtherFeedBackBottomSheetState
             speed: position.speed,
             altitudeAccuracy: 0,
             followUpPriority: EventFollowUpPriority.connectedFollowUpPriority(
-              currentCaseStatus: widget
-                  .bloc.caseDetailsAPIValue.result!.caseDetails!.telSubStatus!,
+              currentCaseStatus:
+                  widget.bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
               eventType: 'Feedback',
-              currentFollowUpPriority: widget.bloc.caseDetailsAPIValue.result!
-                  .caseDetails!.followUpPriority!,
+              currentFollowUpPriority: widget
+                  .bloc.caseDetailsAPIValue.caseDetails!.followUpPriority!,
             ),
             contact:
                 otherFeedbackContact.isNotEmpty ? otherFeedbackContact : null,
@@ -691,15 +693,16 @@ class _CustomOtherFeedBackBottomSheetState
               debugPrint('Exception while converting base64 ${e.toString()}');
             }
 
-            await FirebaseUtils.storeEvents(
-                    eventsDetails: firebaseObject,
-                    caseId: widget.caseId,
-                    selectedFollowUpDate: dateControlller.text,
-                    selectedClipValue: Constants.otherFeedback,
-                    bloc: widget.bloc)
-                .whenComplete(() {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            });
+            //todo
+            // await FirebaseUtils.storeEvents(
+            //         eventsDetails: firebaseObject,
+            //         caseId: widget.caseId,
+            //         selectedFollowUpDate: dateControlller.text,
+            //         selectedClipValue: Constants.otherFeedback,
+            //         bloc: widget.bloc)
+            //     .whenComplete(() {
+            //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            // });
           } else {
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(
@@ -719,16 +722,18 @@ class _CustomOtherFeedBackBottomSheetState
               } catch (e) {
                 debugPrint('Exception while converting base64 ${e.toString()}');
               }
-              await FirebaseUtils.storeEvents(
-                      eventsDetails: firebaseObject,
-                      caseId: widget.caseId,
-                      selectedFollowUpDate: dateControlller.text,
-                      selectedClipValue: Constants.otherFeedback,
-                      bloc: widget.bloc)
-                  .whenComplete(() {});
+              //todo
+              // await FirebaseUtils.storeEvents(
+              //         eventsDetails: firebaseObject,
+              //         caseId: widget.caseId,
+              //         selectedFollowUpDate: dateControlller.text,
+              //         selectedClipValue: Constants.otherFeedback,
+              //         bloc: widget.bloc)
+              //     .whenComplete(() {});
               // here update followUpPriority value.
-              widget.bloc.caseDetailsAPIValue.result!.caseDetails!
-                  .followUpPriority = eventVal.followUpPriority;
+
+              widget.bloc.caseDetailsAPIValue.caseDetails!.followUpPriority =
+                  eventVal.followUpPriority;
 
               widget.bloc.add(
                 ChangeIsSubmitForMyVisitEvent(
@@ -880,7 +885,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   children: <Widget>[
                                     Flexible(
                                         child: CustomDropDownButton(
-                                      Languages.of(context)!
+                                      LanguageEn()
                                           .customerContactType,
                                       contactTypeList,
                                       underlineColor: ColorResource.color000000,
@@ -927,7 +932,7 @@ class _CustomOtherFeedBackBottomSheetState
                                         if (listOfContact[index].formValue ==
                                             '') {
                                           AppUtils.showToast(
-                                            Languages.of(context)!
+                                            LanguageEn()
                                                 .pleaseSelectCustomerContactType,
                                           );
                                         }
@@ -937,7 +942,7 @@ class _CustomOtherFeedBackBottomSheetState
                                             listOfContact[index].focusNode,
                                         child: CustomReadOnlyTextField(
                                           (listOfContact[index].formValue == '')
-                                              ? Languages.of(context)!.contact
+                                              ? LanguageEn().contact
                                               : 'Enter ${listOfContact[index].formValue}',
                                           listOfContact[index].controller,
                                           isLabel: true,
@@ -1028,7 +1033,7 @@ class _CustomOtherFeedBackBottomSheetState
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 11),
                                 child: CustomText(
-                                  Languages.of(context)!.addMoreContact,
+                                  LanguageEn().addMoreContact,
                                   fontWeight: FontWeight.w700,
                                   fontSize: FontSize.thirteen,
                                 ),

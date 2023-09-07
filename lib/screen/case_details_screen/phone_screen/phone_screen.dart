@@ -85,18 +85,18 @@ class _PhoneScreenState extends State<PhoneScreen>
   }
 
   Future<void> autoCallingTriggering() async {
-    if (await CallCustomerStatus.callStatusCheckForAutoJump(
-        callId: widget.bloc.paramValue['callId'], context: context)) {
-      widget.bloc.allocationBloc.add(StartCallingEvent(
-        customerIndex: widget.bloc.paramValue['customerIndex'] + 1,
-        phoneIndex: 0,
-        isIncreaseCount: true,
-      ));
-      AppUtils.showToast(
-        'Call will connect next customer/next number',
-      );
-      Navigator.pop(context);
-    }
+    // if (await CallCustomerStatus.callStatusCheckForAutoJump(
+    //     callId: widget.bloc.paramValue['callId'], context: context)) {
+    //   widget.bloc.allocationBloc.add(StartCallingEvent(
+    //     customerIndex: widget.bloc.paramValue['customerIndex'] + 1,
+    //     phoneIndex: 0,
+    //     isIncreaseCount: true,
+    //   ));
+    //   AppUtils.showToast(
+    //     'Call will connect next customer/next number',
+    //   );
+    //   Navigator.pop(context);
+    // }
   }
 
   Future<bool> willPopCallback() async {
@@ -450,27 +450,27 @@ class _PhoneScreenState extends State<PhoneScreen>
                                           const NeverScrollableScrollPhysics(),
                                       controller: _controller,
                                       children: <Widget>[
-                                        PhoneConnectedScreen(
-                                          bloc: widget.bloc,
-                                          context: context,
-                                          isCallFromCaseDetails:
-                                              widget.isCallFromCaseDetails,
-                                          callId: widget.callId,
-                                        ),
-                                        PhoneUnreachableScreen(
-                                          bloc: widget.bloc,
-                                          context: context,
-                                          isCallFromCaseDetails:
-                                              widget.isCallFromCaseDetails,
-                                          callId: widget.callId,
-                                        ),
-                                        PhonenInvalidScreen(
-                                          bloc: widget.bloc,
-                                          context: context,
-                                          isCallFromCaseDetails:
-                                              widget.isCallFromCaseDetails,
-                                          callId: widget.callId,
-                                        ),
+                                        // PhoneConnectedScreen(
+                                        //   bloc: widget.bloc,
+                                        //   context: context,
+                                        //   isCallFromCaseDetails:
+                                        //       widget.isCallFromCaseDetails,
+                                        //   callId: widget.callId,
+                                        // ),
+                                        // PhoneUnreachableScreen(
+                                        //   bloc: widget.bloc,
+                                        //   context: context,
+                                        //   isCallFromCaseDetails:
+                                        //       widget.isCallFromCaseDetails,
+                                        //   callId: widget.callId,
+                                        // ),
+                                        // PhonenInvalidScreen(
+                                        //   bloc: widget.bloc,
+                                        //   context: context,
+                                        //   isCallFromCaseDetails:
+                                        //       widget.isCallFromCaseDetails,
+                                        //   callId: widget.callId,
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -513,16 +513,16 @@ class _PhoneScreenState extends State<PhoneScreen>
                                                   callId: widget.bloc
                                                       .paramValue['callId'],
                                                   context: context)) {
-                                            widget.bloc.allocationBloc
-                                                .add(StartCallingEvent(
-                                              customerIndex:
-                                                  widget.bloc.paramValue[
-                                                          'customerIndex'] +
-                                                      1,
-                                              phoneIndex: 0,
-                                              isIncreaseCount: true,
-                                            ));
-                                            Navigator.pop(context);
+                                            // widget.bloc.allocationBloc
+                                            //     .add(StartCallingEvent(
+                                            //   customerIndex:
+                                            //       widget.bloc.paramValue[
+                                            //               'customerIndex'] +
+                                            //           1,
+                                            //   phoneIndex: 0,
+                                            //   isIncreaseCount: true,
+                                            // ));
+                                            // Navigator.pop(context);
                                           }
                                         } else {
                                           Navigator.pop(context);

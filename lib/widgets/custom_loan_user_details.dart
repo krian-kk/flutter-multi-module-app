@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
@@ -63,7 +64,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
                               ? Column(
                                   children: <Widget>[
                                     CustomText(
-                                      Languages.of(context)!.accountNo,
+                                      LanguageEn().accountNo,
                                       fontSize: FontSize.twelve,
                                       color: ColorResource.color666666,
                                     ),
@@ -79,7 +80,7 @@ class _CustomLoanUserDetailsState extends State<CustomLoanUserDetails> {
                           ),
                           const SizedBox(height: 17),
                           CustomText(
-                            Languages.of(context)!.overdueAmount,
+                            LanguageEn().overdueAmount,
                             fontSize: FontSize.twelve,
                             color: ColorResource.color666666,
                           ),

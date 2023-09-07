@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:origa/languages/app_languages.dart';
-import 'package:origa/languages/app_locale_constant.dart';
+import 'package:languages/app_languages.dart';
+import 'package:languages/app_locale_constant.dart';
 import 'package:origa/main.dart';
 import 'package:origa/models/language_model.dart';
 import 'package:origa/screen/profile_screen.dart/bloc/profile_bloc.dart';

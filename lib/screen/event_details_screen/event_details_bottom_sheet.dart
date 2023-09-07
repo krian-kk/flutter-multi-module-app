@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/play_audio_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -333,7 +332,7 @@ class _CustomEventDetailsBottomSheetState
                 SizedBox(
                   width: 190,
                   child: CustomButton(
-                    Languages.of(context)!.okay.toUpperCase(),
+                    LanguageEn().okay.toUpperCase(),
                     onTap: () => Navigator.pop(context),
                     fontSize: FontSize.sixteen,
                     cardShape: 5,
@@ -394,16 +393,16 @@ class _CustomEventDetailsBottomSheetState
                 ),
                 if (expandedList[index].createdBy != null)
                   CustomText(
-                    '${Languages.of(context)!.agent} : ${expandedList[index].createdBy}',
+                    '${LanguageEn().agent} : ${expandedList[index].createdBy}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (
-                // expandedList[index].eventType?.toLowerCase() ==
-                //       Constants.ptp.toLowerCase() &&
-                expandedList[index].eventAttr?.ptpAmount != null)
+                    // expandedList[index].eventType?.toLowerCase() ==
+                    //       Constants.ptp.toLowerCase() &&
+                    expandedList[index].eventAttr?.ptpAmount != null)
                   CustomText(
-                    '${Languages.of(context)!.ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
+                    '${LanguageEn().ptpAmount.replaceAll('*', '')} : ${expandedList[index].eventAttr?.ptpAmount.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
@@ -411,80 +410,80 @@ class _CustomEventDetailsBottomSheetState
                   CustomText(
                     expandedList[index].eventType == 'RECEIPT' ||
                             expandedList[index].eventType == 'TC : RECEIPT'
-                        ? '${Languages.of(context)!.date.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}'
-                        : '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}',
+                        ? '${LanguageEn().date.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}'
+                        : '${LanguageEn().followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr!.date.toString())}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.time != null)
                   CustomText(
-                    '${Languages.of(context)!.time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
+                    '${LanguageEn().time.replaceAll('*', '')} : ${expandedList[index].eventAttr?.time.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.mode != null)
                   CustomText(
-                    '${Languages.of(context)!.paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
+                    '${LanguageEn().paymentMode.replaceAll('*', '')} : ${expandedList[index].eventAttr?.mode.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.remarks != null)
                   CustomText(
-                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
+                    '${LanguageEn().remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarks.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.amountCollected != null)
                   CustomText(
-                    '${Languages.of(context)!.amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
+                    '${LanguageEn().amountCollected.replaceAll('*', '')}: ${expandedList[index].eventAttr?.amountCollected.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.reminderDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
+                    '${LanguageEn().followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.reminderDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.chequeRefNo != null)
                   CustomText(
-                    '${Languages.of(context)!.refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
+                    '${LanguageEn().refCheque.replaceAll('*', '').toLowerCase().replaceAll('r', 'R')} : ${expandedList[index].eventAttr?.chequeRefNo.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.amntOts != null)
                   CustomText(
-                    'OTS ${Languages.of(context)!.amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
+                    'OTS ${LanguageEn().amount} : ${expandedList[index].eventAttr?.amntOts.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.nextActionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
+                    '${LanguageEn().followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.nextActionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.actionDate != null)
                   CustomText(
-                    '${Languages.of(context)!.followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
+                    '${LanguageEn().followUpDate.replaceAll('*', '')} : ${DateFormatUtils2.followUpDateFormat2(expandedList[index].eventAttr?.actionDate.toString() ?? '')}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.reasons != null)
                   CustomText(
-                    '${Languages.of(context)!.rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
+                    '${LanguageEn().rtpDenialReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.reasons.toString() ?? ''}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.disputereasons != null)
                   CustomText(
-                    '${Languages.of(context)!.disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
+                    '${LanguageEn().disputeReason.replaceAll('*', '')} : ${expandedList[index].eventAttr?.disputereasons.toString() ?? ''}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
                 if (expandedList[index].eventAttr?.remarkOts != null)
                   CustomText(
-                    '${Languages.of(context)!.remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
+                    '${LanguageEn().remarks.replaceAll('*', '')} : ${expandedList[index].eventAttr?.remarkOts.toString()}',
                     fontWeight: FontWeight.w700,
                     color: ColorResource.color000000,
                   ),
@@ -494,19 +493,19 @@ class _CustomEventDetailsBottomSheetState
                     children: [
                       if (expandedList[index].eventAttr?.modelMake != null)
                         CustomText(
-                          '${Languages.of(context)!.modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
+                          '${LanguageEn().modelMake.replaceAll('*', '')} : ${expandedList[index].eventAttr!.modelMake}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.registrationNo != null)
                         CustomText(
-                          '${Languages.of(context)!.registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
+                          '${LanguageEn().registrationNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.registrationNo}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
                       if (expandedList[index].eventAttr?.chassisNo != null)
                         CustomText(
-                          '${Languages.of(context)!.chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
+                          '${LanguageEn().chassisNo.replaceAll('*', '')} : ${expandedList[index].eventAttr!.chassisNo}',
                           fontWeight: FontWeight.w700,
                           color: ColorResource.color000000,
                         ),
@@ -657,7 +656,7 @@ class _CustomEventDetailsBottomSheetState
                     vertical: 11,
                   ),
                   child: CustomText(
-                    Languages.of(context)!.remarksRecording,
+                    LanguageEn().remarksRecording,
                     color: ColorResource.colorFFFFFF,
                     lineHeight: 1,
                   ),

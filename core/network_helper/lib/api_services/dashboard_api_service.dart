@@ -9,9 +9,9 @@ import 'package:domain_models/response_models/dashboard/dashboard_yardingandSelf
 import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:network_helper/dio/dio_client.dart';
-import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 
 class DashboardApiProvider {
   static const String dashboardUrl = '${mobileBackendUrl}profile/dashboard?';
@@ -134,8 +134,7 @@ class DashboardApiProvider {
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(dashboardYardingAndSelfReleaseUrl);
       ListResponse<List<YardingResult>> mappedResponse =
-
-      ListResponse.fromJson(response, YardingResult.fromJson);
+          ListResponse.fromJson(response, YardingResult.fromJson);
       return ApiResult.success(data: mappedResponse.result as dynamic);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));

@@ -1,20 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
-import 'package:origa/utils/app_config.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -26,7 +24,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/string_resource.dart';
@@ -93,7 +90,7 @@ class _CustomCaptureImageBottomSheetState
         }
       } else {
         AppUtils.showToast(
-          Languages.of(context)!.canceled,
+          LanguageEn().canceled,
         );
       }
       setState(() {});
@@ -151,7 +148,7 @@ class _CustomCaptureImageBottomSheetState
     //   );
     // } else {
     //   AppUtils.showToast(
-    //     Languages.of(context)!.canceled,
+    //     LanguageEn().canceled,
     //   );
     // }
   }
@@ -198,7 +195,7 @@ class _CustomCaptureImageBottomSheetState
                               widget.customerLoanUserDetailsWidget,
                               const SizedBox(height: 11),
                               CustomButton(
-                                Languages.of(context)!.uploadImage,
+                                LanguageEn().uploadImage,
                                 fontWeight: FontWeight.w700,
                                 trailingWidget:
                                     SvgPicture.asset(ImageResource.upload),
@@ -220,7 +217,7 @@ class _CustomCaptureImageBottomSheetState
                               const SizedBox(height: 15),
                               // Flexible(
                               //     child: CustomReadOnlyTextField(
-                              //   Languages.of(context)!.remarks,
+                              //   LanguageEn().remarks,
                               //   remarksControlller,
                               //   validationRules: const ['required'],
                               //   isLabel: true,
@@ -229,7 +226,7 @@ class _CustomCaptureImageBottomSheetState
                                   child: Stack(
                                 children: <Widget>[
                                   CustomReadOnlyTextField(
-                                    Languages.of(context)!.remarks,
+                                    LanguageEn().remarks,
                                     remarksControlller,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -291,7 +288,7 @@ class _CustomCaptureImageBottomSheetState
                         width: 191,
                         child: CustomButton(
                           isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
+                              ? LanguageEn().submit.toUpperCase()
                               : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
@@ -417,7 +414,7 @@ class _CustomCaptureImageBottomSheetState
                                                     context: context));
                                           } else {
                                             AppUtils.showToast(
-                                              Languages.of(context)!
+                                              LanguageEn()
                                                   .uploadImage,
                                               gravity: ToastGravity.CENTER,
                                             );

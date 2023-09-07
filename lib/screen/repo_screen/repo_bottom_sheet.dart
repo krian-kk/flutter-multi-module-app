@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -27,7 +27,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/string_resource.dart';
@@ -130,27 +129,26 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
     vehicleIdentificationNoController = TextEditingController();
 
     modelMakeControlller.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.modelMake ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.modelMake ?? '';
     vehicleRegistrationNoController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.vehicleRegNo ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.vehicleRegNo ?? '';
     dealerNameController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.dealerName ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.dealerName ?? '';
     dealerAddressController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.dealerAddress ??
-            '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.dealerAddress ?? '';
     referenceOneNameController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref1 ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.ref1 ?? '';
     referenceTwoNameController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref2 ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.ref2 ?? '';
     referenceOneNoController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref1No ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.ref1No ?? '';
     referenceTwoNoController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.ref2No ?? '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.ref2No ?? '';
     batterIdController.text =
-        widget.bloc.caseDetailsAPIValue.result?.caseDetails?.batteryID ?? '';
-    vehicleIdentificationNoController.text = widget.bloc.caseDetailsAPIValue
-            .result?.caseDetails?.vehicleIdentificationNo ??
-        '';
+        widget.bloc.caseDetailsAPIValue.caseDetails?.batteryID ?? '';
+    vehicleIdentificationNoController.text =
+        widget.bloc.caseDetailsAPIValue.caseDetails?.vehicleIdentificationNo ??
+            '';
     super.initState();
   }
 
@@ -194,7 +192,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
           result.paths.map((String? path) => File(path!)).toList();
       AppUtils.showToast(StringResource.fileUploadMessage);
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled);
+      AppUtils.showToast(LanguageEn().canceled);
     }
   }
 
@@ -231,7 +229,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 // CustomText(
-                                //   Languages.of(context)!.date,
+                                //   LanguageEn().date,
                                 //   fontSize: FontSize.twelve,
                                 //   fontWeight: FontWeight.w400,
                                 //   color: ColorResource.color666666,
@@ -241,7 +239,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   width:
                                       (MediaQuery.of(context).size.width) / 2,
                                   child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.date,
+                                    LanguageEn().date,
                                     dateControlller,
                                     validationRules: const <String>['required'],
                                     isReadOnly: true,
@@ -274,7 +272,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 // CustomText(
-                                //   Languages.of(context)!.time,
+                                //   LanguageEn().time,
                                 //   fontSize: FontSize.twelve,
                                 //   fontWeight: FontWeight.w400,
                                 //   color: ColorResource.color666666,
@@ -284,7 +282,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                   width:
                                       (MediaQuery.of(context).size.width) / 2,
                                   child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.time,
+                                    LanguageEn().time,
                                     timeControlller,
                                     isReadOnly: true,
                                     isLabel: true,
@@ -311,7 +309,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.modelMake,
+                          LanguageEn().modelMake,
                           modelMakeControlller,
                           focusNode: modelMakeFocusNode,
                           validationRules: const <String>['required'],
@@ -320,15 +318,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                                Languages.of(context)!.chassisNo,
-                                chassisNoControlller,
+                                LanguageEn().chassisNo, chassisNoControlller,
                                 focusNode: chassisNoFocusNode,
                                 validationRules: const <String>['required'],
                                 isLabel: true)),
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.vehicleRegistrationNo,
+                          LanguageEn().vehicleRegistrationNo,
                           vehicleRegistrationNoController,
                           focusNode: vehicleRegistrationNoNode,
                           isLabel: true,
@@ -336,7 +333,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.dealerName,
+                          LanguageEn().dealerName,
                           dealerNameController,
                           focusNode: dealerNameNode,
                           isLabel: true,
@@ -344,7 +341,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.dealerAddress,
+                          LanguageEn().dealerAddress,
                           dealerAddressController,
                           focusNode: dealerAddressNode,
                           isLabel: true,
@@ -352,7 +349,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.referenceOneName,
+                          LanguageEn().referenceOneName,
                           referenceOneNameController,
                           focusNode: referenceOneNameNode,
                           isLabel: true,
@@ -360,7 +357,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.referenceOneNo,
+                          LanguageEn().referenceOneNo,
                           referenceOneNoController,
                           focusNode: referenceOneNoNode,
                           isLabel: true,
@@ -368,7 +365,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.referenceTwoName,
+                          LanguageEn().referenceTwoName,
                           referenceTwoNameController,
                           focusNode: referenceTwoNameNode,
                           isLabel: true,
@@ -376,7 +373,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.referenceTwoNo,
+                          LanguageEn().referenceTwoNo,
                           referenceTwoNoController,
                           focusNode: referenceTwoNoNode,
                           isLabel: true,
@@ -384,7 +381,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.batterId,
+                          LanguageEn().batterId,
                           batterIdController,
                           focusNode: batterIdNode,
                           isLabel: true,
@@ -392,14 +389,14 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.vehicleIdentificationNo,
+                          LanguageEn().vehicleIdentificationNo,
                           vehicleIdentificationNoController,
                           focusNode: vehicleIdentificationNoNode,
                           isLabel: true,
                         )),
                         const SizedBox(height: 21),
                         CustomButton(
-                          Languages.of(context)!.customUpload,
+                          LanguageEn().customUpload,
                           onTap: () => getFiles(),
                           fontWeight: FontWeight.w700,
                           trailingWidget:
@@ -414,7 +411,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                         const SizedBox(height: 17),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks,
+                          LanguageEn().remarks,
                           remarksControlller,
                           validationRules: const <String>['required'],
                           isVoiceRecordWidget: true,
@@ -471,9 +468,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                 SizedBox(
                   width: 191,
                   child: CustomButton(
-                    isSubmit
-                        ? Languages.of(context)!.submit.toUpperCase()
-                        : null,
+                    isSubmit ? LanguageEn().submit.toUpperCase() : null,
                     isLeading: !isSubmit,
                     trailingWidget: CustomLoadingWidget(
                       gradientColors: <Color>[
@@ -504,7 +499,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                       timeControlller.text != '') {
                                     if (uploadFileLists.isEmpty) {
                                       AppUtils.showToast(
-                                        Languages.of(context)!.uploadImage,
+                                        LanguageEn().uploadImage,
                                         gravity: ToastGravity.CENTER,
                                       );
                                     } else {
@@ -623,7 +618,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                                   currentCaseStatus: widget
                                                       .bloc
                                                       .caseDetailsAPIValue
-                                                      .result!
                                                       .caseDetails!
                                                       .telSubStatus!,
                                                   eventType: 'REPO',
@@ -631,7 +625,6 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                                       widget
                                                           .bloc
                                                           .caseDetailsAPIValue
-                                                          .result!
                                                           .caseDetails!
                                                           .followUpPriority!,
                                                 ),
@@ -680,18 +673,19 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           debugPrint(
                                               'Exception while converting base64 ${e.toString()}');
                                         }
-                                        await FirebaseUtils.storeEvents(
-                                                eventsDetails: firebaseObject,
-                                                caseId: widget.caseId,
-                                                selectedFollowUpDate:
-                                                    dateControlller.text,
-                                                selectedClipValue:
-                                                    Constants.repo,
-                                                bloc: widget.bloc)
-                                            .whenComplete(() {
-                                          AppUtils.topSnackBar(context,
-                                              Constants.successfullySubmitted);
-                                        });
+                                        //todo
+                                        // await FirebaseUtils.storeEvents(
+                                        //         eventsDetails: firebaseObject,
+                                        //         caseId: widget.caseId,
+                                        //         selectedFollowUpDate:
+                                        //             dateControlller.text,
+                                        //         selectedClipValue:
+                                        //             Constants.repo,
+                                        //         bloc: widget.bloc)
+                                        //     .whenComplete(() {
+                                        //   AppUtils.topSnackBar(context,
+                                        //       Constants.successfullySubmitted);
+                                        // });
                                       } else {
                                         final Map<String, dynamic> postResult =
                                             await APIRepository.apiRequest(
@@ -713,20 +707,20 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                             debugPrint(
                                                 'Exception while converting base64 ${e.toString()}');
                                           }
-                                          await FirebaseUtils.storeEvents(
-                                                  eventsDetails: firebaseObject,
-                                                  caseId: widget.caseId,
-                                                  selectedFollowUpDate:
-                                                      dateControlller.text,
-                                                  selectedClipValue:
-                                                      Constants.repo,
-                                                  bloc: widget.bloc)
-                                              .whenComplete(() {});
+                                          //todo
+                                          // await FirebaseUtils.storeEvents(
+                                          //         eventsDetails: firebaseObject,
+                                          //         caseId: widget.caseId,
+                                          //         selectedFollowUpDate:
+                                          //             dateControlller.text,
+                                          //         selectedClipValue:
+                                          //             Constants.repo,
+                                          //         bloc: widget.bloc)
+                                          //     .whenComplete(() {});
                                           // here update followUpPriority value.
                                           widget
                                                   .bloc
                                                   .caseDetailsAPIValue
-                                                  .result!
                                                   .caseDetails!
                                                   .followUpPriority =
                                               requestBodyData

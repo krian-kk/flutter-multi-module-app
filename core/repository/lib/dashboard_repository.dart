@@ -76,16 +76,19 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
   Future<ApiResult<MyVisitResult>> getVisitsOrCallData(
       String? selectedFilter) async {
     String? accessToken = await getAccessToken();
+    String userType = await getUserType();
+
     final ApiResult<MyVisitResult> response = await provider
-        .getVisitsOrCallDataFromApi(accessToken, selectedFilter!, 'FIELDAGENT');
+        .getVisitsOrCallDataFromApi(accessToken, selectedFilter!, userType);
     return response;
   }
 
   @override
   Future<ApiResult<DepositResult>> getMyDeposits(String? selectedFilter) async {
     String? accessToken = await getAccessToken();
+    String userType = await getUserType();
     final ApiResult<DepositResult> response = await provider
-        .getMyDepositsFromApi(accessToken, selectedFilter!, 'FIELDAGENT');
+        .getMyDepositsFromApi(accessToken, selectedFilter!, userType);
     return response;
   }
 
@@ -101,8 +104,9 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
   Future<dynamic> postBankDepositData(
       List<File>? fileData, dynamic postFormData) async {
     String? accessToken = await getAccessToken();
+    String userType = await getUserType();
     final ApiResult<dynamic> response = await provider.syncPostBankDepositData(
-        accessToken, fileData, postFormData, "FIELDAGENT");
+        accessToken, fileData, postFormData, userType);
     return response;
   }
 
@@ -110,8 +114,9 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
   Future<dynamic> postCompanyBranchData(
       List<File>? fileData, dynamic postFormData) async {
     String? accessToken = await getAccessToken();
+    String userType = await getUserType();
     final ApiResult<dynamic> response = await provider.syncCompanyBranchData(
-        accessToken, fileData, postFormData, "FIELDAGENT");
+        accessToken, fileData, postFormData, userType);
     return response;
   }
 
@@ -119,8 +124,9 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
   Future<dynamic> yardReleaseData(
       List<File>? fileData, dynamic postFormData, String event) async {
     String? accessToken = await getAccessToken();
+    String userType = await getUserType();
     final ApiResult<dynamic> response = await provider.syncYardReleaseData(
-        accessToken, fileData, postFormData, "FIELDAGENT", event);
+        accessToken, fileData, postFormData, userType, event);
     return response;
   }
 }

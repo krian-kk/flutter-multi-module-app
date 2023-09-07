@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/models/update_health_model.dart';
@@ -248,38 +249,45 @@ class _AddressScreenState extends State<AddressScreen>
                                         AppUtils.noInternetSnackbar(context);
                                       }
                                     },
-                                    child: showVisit ? SizedBox(
-                                      width: 10,
-                                      child: Container(
-                                        decoration: const BoxDecoration(
-                                            color: ColorResource.colorBEC4CF,
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(75.0))),
-                                        child: Row(
-                                          children: <Widget>[
-                                            CircleAvatar(
-                                              backgroundColor:
-                                                  ColorResource.color23375A,
-                                              radius: 20,
-                                              child: Center(
-                                                child: SvgPicture.asset(
-                                                  ImageResource.direction,
-                                                ),
+                                    child: showVisit
+                                        ? SizedBox(
+                                            width: 10,
+                                            child: Container(
+                                              decoration: const BoxDecoration(
+                                                  color:
+                                                      ColorResource.colorBEC4CF,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              75.0))),
+                                              child: Row(
+                                                children: <Widget>[
+                                                  CircleAvatar(
+                                                    backgroundColor:
+                                                        ColorResource
+                                                            .color23375A,
+                                                    radius: 20,
+                                                    child: Center(
+                                                      child: SvgPicture.asset(
+                                                        ImageResource.direction,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 10),
+                                                  CustomText(
+                                                    LanguageEn()
+                                                        .viewMap
+                                                        .toUpperCase(),
+                                                    lineHeight: 1,
+                                                    fontWeight: FontWeight.w700,
+                                                    color: ColorResource
+                                                        .color23375A,
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            const SizedBox(width: 10),
-                                            CustomText(
-                                              Languages.of(context)!
-                                                  .viewMap
-                                                  .toUpperCase(),
-                                              lineHeight: 1,
-                                              fontWeight: FontWeight.w700,
-                                              color: ColorResource.color23375A,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ): const SizedBox(),
+                                          )
+                                        : const SizedBox(),
                                   ),
                                 ),
                                 // const SizedBox(width: 30),
@@ -308,7 +316,7 @@ class _AddressScreenState extends State<AddressScreen>
                                 //         )),
                                 //     child: Center(
                                 //       child: CustomText(
-                                //         Languages.of(context)!.eventDetails,
+                                //         LanguageEn().eventDetails,
                                 //         fontSize: FontSize.twelve,
                                 //         color: ColorResource.color23375A,
                                 //         lineHeight: 1,
@@ -326,7 +334,7 @@ class _AddressScreenState extends State<AddressScreen>
                                     isTrailing: true,
                                     isRemoveExtraPadding: true,
                                     leadingWidget: CustomText(
-                                      Languages.of(context)!.eventDetails,
+                                      LanguageEn().eventDetails,
                                       fontSize: FontSize.twelve,
                                       color: ColorResource.color23375A,
                                       lineHeight: 1,
@@ -387,9 +395,9 @@ class _AddressScreenState extends State<AddressScreen>
                                 .unfocus();
                           },
                           tabs: <Widget>[
-                            Tab(text: Languages.of(context)!.customerMet),
-                            Tab(text: Languages.of(context)!.customerNotMet),
-                            Tab(text: Languages.of(context)!.invalid)
+                            Tab(text: LanguageEn().customerMet),
+                            Tab(text: LanguageEn().customerNotMet),
+                            Tab(text: LanguageEn().invalid)
                           ],
                         ),
                       ),
@@ -405,12 +413,12 @@ class _AddressScreenState extends State<AddressScreen>
                                   controller: _controller,
                                   physics: const NeverScrollableScrollPhysics(),
                                   children: <Widget>[
-                                    CustomerMetScreen(
-                                        bloc: widget.bloc, context: context),
-                                    CustomerNotMetScreen(
-                                        context: context, bloc: widget.bloc),
-                                    AddressInvalidScreen(
-                                        context: context, bloc: widget.bloc),
+                                    // CustomerMetScreen(
+                                    //     bloc: widget.bloc, context: context),
+                                    // CustomerNotMetScreen(
+                                    //     context: context, bloc: widget.bloc),
+                                    // AddressInvalidScreen(
+                                    //     context: context, bloc: widget.bloc),
                                   ],
                                 ),
                               ),
@@ -445,7 +453,7 @@ class _AddressScreenState extends State<AddressScreen>
                             SizedBox(
                               width: 190,
                               child: CustomButton(
-                                Languages.of(context)!.done.toUpperCase(),
+                                LanguageEn().done.toUpperCase(),
                                 onTap: () => Navigator.pop(context),
                                 cardShape: 5,
                               ),
@@ -481,9 +489,7 @@ class _AddressScreenState extends State<AddressScreen>
                               child: _controller.index == 1
                                   ? CustomButton(
                                       isSubmitFirst
-                                          ? Languages.of(context)!
-                                              .submit
-                                              .toUpperCase()
+                                          ? LanguageEn().submit.toUpperCase()
                                           : null,
                                       isLeading: !isSubmitFirst,
                                       trailingWidget: CustomLoadingWidget(
@@ -538,7 +544,7 @@ class _AddressScreenState extends State<AddressScreen>
                                                                 context));
                                                       } else {
                                                         AppUtils.showToast(
-                                                          Languages.of(context)!
+                                                          LanguageEn()
                                                               .pleaseSelectOptions,
                                                         );
                                                       }
@@ -552,9 +558,7 @@ class _AddressScreenState extends State<AddressScreen>
                                     )
                                   : CustomButton(
                                       isSubmitSecond
-                                          ? Languages.of(context)!
-                                              .submit
-                                              .toUpperCase()
+                                          ? LanguageEn().submit.toUpperCase()
                                           : null,
                                       isLeading: !isSubmitSecond,
                                       trailingWidget: CustomLoadingWidget(
@@ -714,7 +718,7 @@ class _AddressScreenState extends State<AddressScreen>
 //               Container(
 //                 padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
 //                 child: BottomSheetAppbar(
-//                   title: Languages.of(context)!.mapView,
+//                   title: LanguageEn().mapView,
 //                   padding:
 //                       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
 //                 ),
