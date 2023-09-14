@@ -5,9 +5,9 @@ import 'package:flutter/material.dart'; // Stores the Google Maps API Key
 // import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:languages/app_languages.dart';
 // import 'dart:math' show cos, sqrt, asin;
 
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/router.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map_model.dart';
@@ -20,8 +20,9 @@ import 'package:origa/widgets/custom_dialog.dart';
 // enum TravelModes { driving, bicycling, transit, walking }
 
 class MapNavigation extends StatefulWidget {
-  const MapNavigation({Key? key, this.multipleLatLong}) : super(key: key);
-  final List<dynamic>? multipleLatLong;
+  const MapNavigation({Key? key, required this.multipleLatLong})
+      : super(key: key);
+  final List<dynamic> multipleLatLong;
 
   @override
   _MapNavigationState createState() => _MapNavigationState();
@@ -77,7 +78,7 @@ class _MapNavigationState extends State<MapNavigation> {
       });
       await createMarker();
     }).catchError((e) {
-      debugPrint(e);
+      debugPrint(e.toString());
     });
   }
 
@@ -105,12 +106,10 @@ class _MapNavigationState extends State<MapNavigation> {
       );
       // Adding the markers to the list
       markers.add(startMarker);
-      final result = jsonDecode(jsonEncode(widget.multipleLatLong!));
+      final result = jsonDecode(jsonEncode(widget.multipleLatLong));
       for (var element in result) {
         markers.add(Marker(
-          markerId: MarkerId(element['latitude'].toString() +
-              ', ' +
-              element['longitude'].toString()),
+          markerId: MarkerId('${element['latitude']}, ${element['longitude']}'),
           position: LatLng(element['latitude'], element['longitude']),
           onTap: () {
             DialogUtils.showDialog(

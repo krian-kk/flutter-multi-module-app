@@ -11,6 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  domain_models:
+    path: ../domain_models
+
   geolocator:
   google_maps_flutter:
 

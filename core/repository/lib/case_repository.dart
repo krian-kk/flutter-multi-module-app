@@ -3,11 +3,18 @@ import 'dart:async';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:network_helper/api_services/cases_api_services.dart';
 import 'package:network_helper/errors/network_exception.dart';
+import 'package:domain_models/common/buildroute_data.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:repository/repo_utils.dart';
 
 abstract class CaseRepository {
   Future<dynamic> getCaseLists(int limit, int pageNo, bool isOffline);
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
+      int limit, int pageNo);
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
+      int limit, int pageNo, BuildRouteDataModel paramValues);
 }
 
 class CaseRepositoryImpl implements CaseRepository {
@@ -26,6 +33,7 @@ class CaseRepositoryImpl implements CaseRepository {
     //todo
   }
 
+  @override
   Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
       int limit, int pageNo) async {
     String? accessToken = await getAccessToken();
@@ -34,11 +42,12 @@ class CaseRepositoryImpl implements CaseRepository {
     return response;
   }
 
+  @override
   Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
-      int limit, int pageNo) async {
+      int limit, int pageNo, BuildRouteDataModel paramValues) async {
     String? accessToken = await getAccessToken();
-    ApiResult<List<PriorityCaseListModel>> response =
-        await collectApiProvider.getBuildCases(accessToken, limit, pageNo);
+    ApiResult<List<PriorityCaseListModel>> response = await collectApiProvider
+        .getBuildCases(accessToken, limit, pageNo, paramValues);
     return response;
   }
 }

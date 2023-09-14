@@ -3,6 +3,7 @@ import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
+import 'package:domain_models/common/buildroute_data.dart';
 
 class CasesApiService {
   static String priorityCasesV1 =
@@ -18,7 +19,8 @@ class CasesApiService {
     dynamic response;
     try {
       String url = priorityCasesV1;
-      url = "${url}pageNo=$pageNo&limit=$limit";
+      url = "${url}pageNo=${pageNo + 1}&limit=$limit";
+      print("dis is the url${url}");
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
       final mappedResponse =
@@ -32,12 +34,16 @@ class CasesApiService {
   }
 
   Future<ApiResult<List<PriorityCaseListModel>>> getBuildCases(
-      String accessToken, int limit, int pageNo) async {
+      String accessToken,
+      int limit,
+      int pageNo,
+      BuildRouteDataModel paramValues) async {
     dynamic response;
     try {
       String url = buildRouteCaseList;
       url =
-          "${url}lat=13.0187&lng=77.6427&maxDistMeters=1000000&page=$pageNo&limit=$limit";
+          "${url}lat=${paramValues.lat}&lng=${paramValues.long}&maxDistMeters=${paramValues.maxDistMeters}&page=${pageNo+1}&limit=$limit";
+      print("dis is the url BUILD${url}");
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
       final mappedResponse =

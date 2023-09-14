@@ -5,6 +5,8 @@ abstract class BuildRouteState {}
 
 class BuildRouteInitial extends BuildRouteState {}
 
+class BuildRouteLoadingState extends BuildRouteState {}
+
 class BuildRouteCasesCompletedState extends BuildRouteState {
   final List<PriorityCaseListModel> listItems;
   final int? nextPageKey;

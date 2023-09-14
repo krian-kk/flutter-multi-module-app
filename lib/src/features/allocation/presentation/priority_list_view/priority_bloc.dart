@@ -17,16 +17,21 @@ class PriorityBloc extends Bloc<PriorityEvent, PriorityState> {
   }
 
   CaseRepositoryImpl repository;
-  static const _pageSize = 20;
+  static const _pageSize = 10;
+  List<PriorityCaseListModel> priorityResultList = <PriorityCaseListModel>[];
 
   Future<void> _onEvent(
       PriorityEvent event, Emitter<PriorityState> emit) async {
     if (event is LoadPriorityList) {
+      emit(PriorityLoadingState());
       final newItems =
           await repository.getCasesFromServer(_pageSize, event.pageKey);
       await newItems.when(
           success: (List<PriorityCaseListModel>? result) async {
             if (result?.isNotEmpty == true && result != null) {
+              priorityResultList.clear();
+              priorityResultList = result;
+
               final isLastPage = result.length < _pageSize;
               if (isLastPage) {
                 emit(PriorityCompletedState(result));

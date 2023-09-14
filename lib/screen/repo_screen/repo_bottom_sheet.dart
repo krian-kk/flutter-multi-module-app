@@ -331,6 +331,7 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                           Languages.of(context)!.vehicleRegistrationNo,
                           vehicleRegistrationNoController,
                           focusNode: vehicleRegistrationNoNode,
+                          validationRules: const <String>['required'],
                           isLabel: true,
                         )),
                         const SizedBox(height: 17),

@@ -19,6 +19,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/allocation_repository.dart';
 import 'package:repository/case_repository.dart';
 import 'package:repository/dashboard_repository.dart';
 import 'package:repository/file_repository.dart';
@@ -66,11 +67,17 @@ class _HomeViewState extends State<HomeView>
         RepositoryProvider(create: (context) => DashBoardRepositoryImpl()),
         RepositoryProvider(create: (context) => FileRepositoryImpl()),
         RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
+        RepositoryProvider(create: (context) => CaseRepositoryImpl()),
+        RepositoryProvider(create: (context) => AllocationRepositoryImpl()),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => HomeBloc()),
-          BlocProvider(create: (context) => AllocationBloc()),
+          BlocProvider(
+              create: (context) => AllocationBloc(
+                    repository: context.read<AllocationRepositoryImpl>(),
+                    caseRepository: context.read<CaseRepositoryImpl>(),
+                  )),
           BlocProvider(
             create: (context) => DashboardBloc(
                 repository: context.read<DashBoardRepositoryImpl>()),
@@ -300,47 +307,24 @@ class _HomeViewState extends State<HomeView>
                           ),
                         ),
                         Expanded(
-                            child: MultiRepositoryProvider(
-                          providers: [
-                            RepositoryProvider(
-                                create: (context) => DashBoardRepositoryImpl()),
-                          ],
-                          child: MultiBlocProvider(
-                            providers: [
-                              BlocProvider(
-                                  create: (context) => DashboardBloc(
-                                      repository: context
-                                          .read<DashBoardRepositoryImpl>())),
-                              BlocProvider(
-                                  create: (context) => DashboardBloc(
-                                      repository: context
-                                          .read<DashBoardRepositoryImpl>()))
-                            ],
                             child: TabBarView(
                                 controller: _controller,
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  RepositoryProvider(
-                                    create: (context) => CaseRepositoryImpl(),
-                                    child: MultiBlocProvider(
-                                      providers: [
-                                        BlocProvider(
-                                            create: (context) => PriorityBloc(
-                                                repository:
-                                                    CaseRepositoryImpl())),
-                                        BlocProvider(
-                                            create: (context) => BuildRouteBloc(
-                                                repository:
-                                                    CaseRepositoryImpl())),
-                                      ],
-                                      child: const AllocationView(),
-                                    ),
-                                  ), //1
-                                  DashboardScreen(), //2
-                                  ProfileScreen(), //3
-                                ]),
-                          ),
-                        ))
+                              MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                      create: (context) => PriorityBloc(
+                                          repository: CaseRepositoryImpl())),
+                                  BlocProvider(
+                                      create: (context) => BuildRouteBloc(
+                                          repository: CaseRepositoryImpl())),
+                                ],
+                                child: const AllocationView(),
+                              ), //1
+                              DashboardScreen(), //2
+                              ProfileScreen(), //3
+                            ]))
                       ]),
                     ),
                   ),

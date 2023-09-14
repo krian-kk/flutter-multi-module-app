@@ -11,8 +11,16 @@ class AllocationLoadedState extends AllocationState {}
 
 class NavigateSearchPageState extends AllocationState {}
 
-class AllocationTabChangedState extends AllocationState {
-  int selectedIndex = 0;
+class MapViewLoadingState extends AllocationState {}
 
-  AllocationTabChangedState(this.selectedIndex);
+class AllocationTabLoadedState extends AllocationState {
+  final String loadedTab;
+
+  AllocationTabLoadedState(this.loadedTab);
 }
+
+class MapViewState extends AllocationState {}
+
+class AllocationTabClickedState extends AllocationState {}
+
+class BuildRouteFilterClickedState extends AllocationState {}
