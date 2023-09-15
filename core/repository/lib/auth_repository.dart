@@ -11,6 +11,8 @@ abstract class AuthRepository {
   Future<ApiResult<LoginResponse>> login(
       String userName, String password, String fcmToken);
 
+  Future<void> intialSetPref();
+
   Future<ApiResult<bool>?> sendOtpRequestToServer(String agentRef);
 
   Future<ApiResult<ShortAgentDetails>?> getAgentDataForPrefill(String agentRef);
@@ -86,9 +88,44 @@ class AuthRepositoryImpl extends AuthRepository {
       });
       ShortAgentDetails agentMiniDetails = ShortAgentDetails(
           agentData?.name ?? '', email ?? '', phoneNumber ?? '');
+      if (agentData?.type == 'COLLECTOR') {
+        await PreferenceHelper.setPreference(
+            PreferenceConstants.userType, PreferenceConstants.fieldagent);
+      } else {
+        await PreferenceHelper.setPreference(
+            PreferenceConstants.userType, PreferenceConstants.telecaller);
+      }
+
       return ApiResult.success(data: agentMiniDetails);
     } catch (error) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
+    }
+  }
+
+  @override
+  Future<void> intialSetPref() async {
+    try {
+      String agentRef = await PreferenceHelper.getString(
+              keyPair: PreferenceConstants.agentRef) ??
+          "";
+      print("agent type repooo ...${agentRef}\n\n\n\n");
+      final ApiResult<dynamic> response =
+          await provider.getAgentDataFromApi(agentRef);
+      PublicAgentInfoModel? agentData;
+      response.map(
+          success: (value) {
+            agentData = PublicAgentInfoModel.fromJson(value.data);
+          },
+          failure: (error) => throw error);
+      if ((agentData?.type).toString() == 'COLLECTOR') {
+        await PreferenceHelper.setPreference(
+            PreferenceConstants.userType, PreferenceConstants.fieldagent);
+      } else {
+        await PreferenceHelper.setPreference(
+            PreferenceConstants.userType, PreferenceConstants.telecaller);
+      }
+    } catch (error) {
+      // return ApiResult.failure(error: NetworkExceptions.getDioException(error));
     }
   }
 

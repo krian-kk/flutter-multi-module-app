@@ -1,3 +1,4 @@
+
 import 'package:origa/utils/base_equatable.dart';
 
 abstract class AuthenticationState extends BaseEquatable {}

@@ -107,25 +107,19 @@ class AuthenticationBloc
               // final Map<String, dynamic> agentDetail =
               //     await APIRepository.apiRequest(APIRequestType.get,
               //         HttpUrl.agentInformation + 'aRef=$getUserName', encrypt: true);
-              const MethodChannel platform = MethodChannel('recordAudioChannel');
+              const MethodChannel platform =
+                  MethodChannel('recordAudioChannel');
 
-              final object = <String, dynamic>{
-                'aRef': getUserName
-              };
+              final object = <String, dynamic>{'aRef': getUserName};
               final Map<String, dynamic> requestData = {
                 'data': jsonEncode(object)
               };
-              String text = await platform.invokeMethod(
-                  'sendEncryptedData', requestData);
-              final Map<String, dynamic>
-              agentDetail =
-              await APIRepository.apiRequest(
-                  APIRequestType.post,
-                  HttpUrl.getPublicAgentInfo(),
-                  encrypt: true,
-                  requestBodydata: {
-                    'encryptedData': text
-                  });
+              String text =
+                  await platform.invokeMethod('sendEncryptedData', requestData);
+              final Map<String, dynamic> agentDetail =
+                  await APIRepository.apiRequest(
+                      APIRequestType.post, HttpUrl.getPublicAgentInfo(),
+                      encrypt: true, requestBodydata: {'encryptedData': text});
 
               if (agentDetail[Constants.success] == false) {
                 yield AuthenticationUnAuthenticated(
@@ -174,24 +168,22 @@ class AuthenticationBloc
                 }
 
                 if (agentInfo.type != null) {
-                  Singleton.instance.agentName =
-                      agentInfo.name;
+                  Singleton.instance.agentName = agentInfo.name;
                   await PreferenceHelper.setPreference(
                       Constants.agentName, agentInfo.name);
                   // await PreferenceHelper.setPreference(
                   //     Constants.mobileNo, agentDetails.result!.first.mobNo!);
                   // await PreferenceHelper.setPreference(
                   //     Constants.email, agentDetails.data![0].email!);
-                  await PreferenceHelper.setPreference(Constants.contractor,
-                      agentInfo.contractor);
-                  Singleton.instance.contractor =
-                      agentInfo.contractor;
+                  await PreferenceHelper.setPreference(
+                      Constants.contractor, agentInfo.contractor);
+                  Singleton.instance.contractor = agentInfo.contractor;
                   await PreferenceHelper.setPreference(
                       Constants.status, agentInfo.status);
                   // await PreferenceHelper.setPreference(
                   //     Constants.code, agentDetails.code!);
-                  await PreferenceHelper.setPreference(Constants.userAdmin,
-                      agentInfo.userAdmin);
+                  await PreferenceHelper.setPreference(
+                      Constants.userAdmin, agentInfo.userAdmin);
                   yield AuthenticationAuthenticated(
                       notificationData: event.notificationData);
                 } else {

@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:domain_models/common/buildroute_data.dart';
-import 'package:domain_models/response_models/mapView/map_model.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
+import 'package:domain_models/response_models/mapView/map_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
@@ -27,11 +27,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationRepository repository;
   CaseRepository caseRepository;
 
-  List<String> filterBuildRoute = <String>[
-    StringResource.all,
-    StringResource.under5km,
-    StringResource.more5km,
-  ];
+  late List<String> filterBuildRoute;
 
   int pageKey = 0;
   int tab = 0;
@@ -51,9 +47,37 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   String? currentAddress;
   static const _pageSize = 20;
   List<dynamic> multipleLatLong = <dynamic>[];
+  String? userType;
 
   Future<void> _onEvent(
       AllocationEvent event, Emitter<AllocationState> emit) async {
+    if (event is AllocationInitialEvent) {
+      emit(AllocationLoadingState());
+
+      List<String> initialData = await repository.allocationInitialData();
+      userType = initialData[0];
+      print("oi popopo ${initialData[0]}\n\n\n\n");
+
+      filterBuildRoute = <String>[
+        StringResource.all,
+        StringResource.under5km,
+        StringResource.more5km,
+      ];
+
+      // if (userType == Constants.fieldagent) {
+      //   if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
+      //     selectOptions = [
+      //       Languages.of(event.context)!.priority,
+      //     ];
+      //   } else {
+      //     debugPrint('into the google key');
+      //     await _setGoogleMapApiKey(googleMapsApiKey);
+      //   }
+      // }
+
+      emit(AllocationLoadedState(initialData[0]));
+    }
+
     if (event is InitialCurrentLocationEvent) {
       await Permission.location.request();
       if (await Permission.location.isGranted) {
@@ -67,7 +91,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         currentAddress =
             '${placeMarks.toList().first.street}, ${placeMarks.toList().first.subLocality}, ${placeMarks.toList().first.postalCode}';
 
-        // await repository.putCurrentLocation(event.position.latitude,event.position.longitude);
+// await repository.putCurrentLocation(event.position.latitude,event.position.longitude);
       } else {
         await openAppSettings();
       }
@@ -82,12 +106,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is AllocationTabClicked) {
-      isRefresh=true;
+      isRefresh = true;
       tab = event.tab;
       emit(AllocationTabClickedState());
     }
     if (event is BuildRouteFilterClickedEvent) {
-      isRefresh=true;
+      isRefresh = true;
       buildRouteSubTab = event.index;
       emit(BuildRouteFilterClickedState());
     }

@@ -22,6 +22,7 @@ class SearchReturnDataEvent extends AllocationEvent {
 class InitialCurrentLocationEvent extends AllocationEvent {}
 
 class AllocationTabClicked extends AllocationEvent {
+
   int tab;
 
   AllocationTabClicked({required this.tab});

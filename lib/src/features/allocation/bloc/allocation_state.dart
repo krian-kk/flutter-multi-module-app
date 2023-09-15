@@ -7,7 +7,11 @@ class AllocationInitial extends AllocationState {}
 
 class AllocationLoadingState extends AllocationState {}
 
-class AllocationLoadedState extends AllocationState {}
+class AllocationLoadedState extends AllocationState {
+  String? userType;
+
+  AllocationLoadedState(this.userType);
+}
 
 class NavigateSearchPageState extends AllocationState {}
 
