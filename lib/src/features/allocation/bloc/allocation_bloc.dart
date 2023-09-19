@@ -56,7 +56,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       List<String> initialData = await repository.allocationInitialData();
       userType = initialData[0];
-      print("oi popopo ${initialData[0]}\n\n\n\n");
 
       filterBuildRoute = <String>[
         StringResource.all,

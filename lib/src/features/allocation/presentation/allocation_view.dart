@@ -78,19 +78,6 @@ class _AllocationViewState extends State<AllocationView> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> _buildAllocationFilterOptions(
-        List<void Function()> onPressed) {
-      final List<Widget> widgets = [];
-      filterOptions.asMap().forEach((index, element) {
-        widgets.add(AllocationFilterOptionsWidget(
-          index: index,
-          filterName: element,
-          onPressed: onPressed[index],
-        ));
-      });
-      return widgets;
-    }
-
     return MultiBlocListener(
         listeners: [
           BlocListener<AllocationBloc, AllocationState>(
@@ -176,219 +163,131 @@ class _AllocationViewState extends State<AllocationView> {
                   child: Column(
                     children: [
                       gapH12,
-                      Row(
-                          // children: _buildAllocationFilterOptions(BlocProvider.of<
-                          //                 AllocationBloc>(context)
-                          //             .userType ==
-                          //         Constants.fieldagent
-                          //     ? [
-                          //         () {
-                          //           BlocProvider.of<AllocationBloc>(context)
-                          //               .add(AllocationTabClicked(tab: 0));
-                          //           BlocProvider.of<PriorityBloc>(context).add(
-                          //               LoadPriorityList(
-                          //                   BlocProvider.of<AllocationBloc>(
-                          //                           context)
-                          //                       .pageKey));
-                          //         },
-                          //         () {
-                          //           BlocProvider.of<AllocationBloc>(context)
-                          //               .add(AllocationTabClicked(tab: 1));
-                          //
-                          //           BlocProvider.of<BuildRouteBloc>(context).add(
-                          //               LoadBuildRouteCases(
-                          //                   paramValues: BuildRouteDataModel(
-                          //                       lat: BlocProvider.of<
-                          //                               AllocationBloc>(context)
-                          //                           .position
-                          //                           .latitude
-                          //                           .toString(),
-                          //                       long: BlocProvider.of<
-                          //                               AllocationBloc>(context)
-                          //                           .position
-                          //                           .longitude
-                          //                           .toString(),
-                          //                       maxDistMeters:
-                          //                           Constants.allDisMeters),
-                          //                   pageKey:
-                          //                       BlocProvider.of<AllocationBloc>(
-                          //                               context)
-                          //                           .pageKey));
-                          //         },
-                          //         () {
-                          //           BlocProvider.of<AllocationBloc>(context).add(
-                          //               MapViewEvent(
-                          //                   paramValues: BuildRouteDataModel(
-                          //                       lat:
-                          //                           BlocProvider.of<
-                          //                                       AllocationBloc>(
-                          //                                   context)
-                          //                               .position
-                          //                               .latitude
-                          //                               .toString(),
-                          //                       long: BlocProvider.of<
-                          //                               AllocationBloc>(context)
-                          //                           .position
-                          //                           .longitude
-                          //                           .toString(),
-                          //                       maxDistMeters:
-                          //                           Constants.allDisMeters),
-                          //                   pageKey:
-                          //                       BlocProvider.of<AllocationBloc>(
-                          //                               context)
-                          //                           .pageKey));
-                          //         }
-                          //       ]
-                          //     : [
-                          //         () {
-                          //           BlocProvider.of<AllocationBloc>(context)
-                          //               .add(AllocationTabClicked(tab: 0));
-                          //           BlocProvider.of<PriorityBloc>(context).add(
-                          //               LoadPriorityList(
-                          //                   BlocProvider.of<AllocationBloc>(
-                          //                           context)
-                          //                       .pageKey));
-                          //         }
-                          //       ]),
-                          children: [
-                            ToolbarRectBtnWidget(
-                              onPressed: () {
-                                BlocProvider.of<AllocationBloc>(context)
-                                    .add(AllocationTabClicked(tab: 0));
-                                BlocProvider.of<PriorityBloc>(context).add(
-                                    LoadPriorityList(
-                                        BlocProvider.of<AllocationBloc>(context)
-                                            .pageKey));
-                              },
-                              btnBackgroundColor:
-                                  BlocProvider.of<AllocationBloc>(context)
-                                              .tab ==
-                                          0
-                                      ? ColorResourceDesign.primaryButtonBg
-                                      : ColorResourceDesign.secondaryButtonBg,
-                              btnTextColor: BlocProvider.of<AllocationBloc>(
-                                              context)
-                                          .tab ==
-                                      0
+                      Row(children: [
+                        ToolbarRectBtnWidget(
+                          onPressed: () {
+                            BlocProvider.of<AllocationBloc>(context)
+                                .add(AllocationTabClicked(tab: 0));
+                            BlocProvider.of<PriorityBloc>(context).add(
+                                LoadPriorityList(
+                                    BlocProvider.of<AllocationBloc>(context)
+                                        .pageKey));
+                          },
+                          btnBackgroundColor:
+                              BlocProvider.of<AllocationBloc>(context).tab == 0
+                                  ? ColorResourceDesign.primaryButtonBg
+                                  : ColorResourceDesign.secondaryButtonBg,
+                          btnTextColor:
+                              BlocProvider.of<AllocationBloc>(context).tab == 0
                                   ? ColorResourceDesign.appTextSecondaryColor
                                   : ColorResourceDesign.appTextPrimaryColor,
-                              btnText: Languages.of(context)!.priority,
-                              isBorder: false,
-                              btnWidth: 84,
-                              btnHeight: 30,
-                            ),
-                            gapW12,
-                            BlocProvider.of<AllocationBloc>(context).userType ==
-                                    Constants.fieldagent
-                                ? ToolbarRectBtnWidget(
-                                    onPressed: () {
-                                      BlocProvider.of<AllocationBloc>(context)
-                                          .add(AllocationTabClicked(tab: 1));
+                          btnText: Languages.of(context)!.priority,
+                          isBorder: false,
+                          btnWidth: 84,
+                          btnHeight: 30,
+                        ),
+                        gapW12,
+                        BlocProvider.of<AllocationBloc>(context).userType ==
+                                Constants.fieldagent
+                            ? ToolbarRectBtnWidget(
+                                onPressed: () {
+                                  BlocProvider.of<AllocationBloc>(context)
+                                      .add(AllocationTabClicked(tab: 1));
 
-                                      BlocProvider.of<BuildRouteBloc>(context)
-                                          .add(LoadBuildRouteCases(
-                                              paramValues: BuildRouteDataModel(
-                                                  lat: BlocProvider.of<
+                                  BlocProvider.of<BuildRouteBloc>(context).add(
+                                      LoadBuildRouteCases(
+                                          paramValues: BuildRouteDataModel(
+                                              lat: BlocProvider.of<
+                                                      AllocationBloc>(context)
+                                                  .position
+                                                  .latitude
+                                                  .toString(),
+                                              long: BlocProvider.of<
+                                                      AllocationBloc>(context)
+                                                  .position
+                                                  .longitude
+                                                  .toString(),
+                                              maxDistMeters:
+                                                  Constants.allDisMeters),
+                                          pageKey:
+                                              BlocProvider.of<AllocationBloc>(
+                                                      context)
+                                                  .pageKey));
+                                },
+                                btnText: Languages.of(context)!.buildRoute,
+                                isBorder: true,
+                                btnWidth: 84,
+                                btnHeight: 30,
+                                btnBackgroundColor:
+                                    BlocProvider.of<AllocationBloc>(context)
+                                                .tab ==
+                                            1
+                                        ? ColorResourceDesign.primaryButtonBg
+                                        : ColorResourceDesign.secondaryButtonBg,
+                                btnTextColor: BlocProvider.of<AllocationBloc>(
+                                                context)
+                                            .tab ==
+                                        1
+                                    ? ColorResourceDesign.appTextSecondaryColor
+                                    : ColorResourceDesign.appTextPrimaryColor,
+                              )
+                            : ToolbarRectBtnWidget(
+                                onPressed: () {},
+                                btnBackgroundColor:
+                                    BlocProvider.of<AllocationBloc>(context)
+                                                .tab ==
+                                            1
+                                        ? ColorResourceDesign.primaryButtonBg
+                                        : ColorResourceDesign.secondaryButtonBg,
+                                btnTextColor: BlocProvider.of<AllocationBloc>(
+                                                context)
+                                            .tab ==
+                                        1
+                                    ? ColorResourceDesign.appTextSecondaryColor
+                                    : ColorResourceDesign.appTextPrimaryColor,
+                                btnText: Languages.of(context)!.autoCalling,
+                                isBorder: false,
+                                btnWidth: 84,
+                                btnHeight: 30,
+                              ),
+                        gapW12,
+                        BlocProvider.of<AllocationBloc>(context).userType ==
+                                Constants.fieldagent
+                            ? ToolbarRectBtnWidget(
+                                onPressed: () {
+                                  BlocProvider.of<AllocationBloc>(context).add(
+                                      MapViewEvent(
+                                          paramValues: BuildRouteDataModel(
+                                              lat:
+                                                  BlocProvider.of<
                                                               AllocationBloc>(
                                                           context)
                                                       .position
                                                       .latitude
                                                       .toString(),
-                                                  long: BlocProvider.of<
-                                                              AllocationBloc>(
-                                                          context)
-                                                      .position
-                                                      .longitude
-                                                      .toString(),
-                                                  maxDistMeters:
-                                                      Constants.allDisMeters),
-                                              pageKey: BlocProvider.of<
+                                              long: BlocProvider.of<
                                                       AllocationBloc>(context)
+                                                  .position
+                                                  .longitude
+                                                  .toString(),
+                                              maxDistMeters:
+                                                  Constants.allDisMeters),
+                                          pageKey:
+                                              BlocProvider.of<AllocationBloc>(
+                                                      context)
                                                   .pageKey));
-                                    },
-                                    btnText: Languages.of(context)!.buildRoute,
-                                    isBorder: true,
-                                    btnWidth: 84,
-                                    btnHeight: 30,
-                                    btnBackgroundColor:
-                                        BlocProvider.of<AllocationBloc>(context)
-                                                    .tab ==
-                                                1
-                                            ? ColorResourceDesign
-                                                .primaryButtonBg
-                                            : ColorResourceDesign
-                                                .secondaryButtonBg,
-                                    btnTextColor:
-                                        BlocProvider.of<AllocationBloc>(
-                                                        context)
-                                                    .tab ==
-                                                1
-                                            ? ColorResourceDesign
-                                                .appTextSecondaryColor
-                                            : ColorResourceDesign
-                                                .appTextPrimaryColor,
-                                  )
-                                : ToolbarRectBtnWidget(
-                                    onPressed: () {},
-                                    btnBackgroundColor:
-                                        BlocProvider.of<AllocationBloc>(context)
-                                                    .tab ==
-                                                1
-                                            ? ColorResourceDesign
-                                                .primaryButtonBg
-                                            : ColorResourceDesign
-                                                .secondaryButtonBg,
-                                    btnTextColor:
-                                        BlocProvider.of<AllocationBloc>(
-                                                        context)
-                                                    .tab ==
-                                                1
-                                            ? ColorResourceDesign
-                                                .appTextSecondaryColor
-                                            : ColorResourceDesign
-                                                .appTextPrimaryColor,
-                                    btnText: Languages.of(context)!.autoCalling,
-                                    isBorder: false,
-                                    btnWidth: 84,
-                                    btnHeight: 30,
-                                  ),
-                            gapW12,
-                            BlocProvider.of<AllocationBloc>(context).userType ==
-                                    Constants.fieldagent
-                                ? ToolbarRectBtnWidget(
-                                    onPressed: () {
-                                      BlocProvider.of<AllocationBloc>(context)
-                                          .add(MapViewEvent(
-                                              paramValues: BuildRouteDataModel(
-                                                  lat: BlocProvider.of<
-                                                              AllocationBloc>(
-                                                          context)
-                                                      .position
-                                                      .latitude
-                                                      .toString(),
-                                                  long: BlocProvider.of<
-                                                              AllocationBloc>(
-                                                          context)
-                                                      .position
-                                                      .longitude
-                                                      .toString(),
-                                                  maxDistMeters:
-                                                      Constants.allDisMeters),
-                                              pageKey: BlocProvider.of<
-                                                      AllocationBloc>(context)
-                                                  .pageKey));
-                                    },
-                                    btnText: Languages.of(context)!.mapView,
-                                    isBorder: true,
-                                    btnWidth: 84,
-                                    btnHeight: 30,
-                                    btnBackgroundColor:
-                                        ColorResourceDesign.secondaryButtonBg,
-                                    btnTextColor:
-                                        ColorResourceDesign.appTextPrimaryColor,
-                                  )
-                                : const SizedBox(),
-                          ]),
+                                },
+                                btnText: Languages.of(context)!.mapView,
+                                isBorder: true,
+                                btnWidth: 84,
+                                btnHeight: 30,
+                                btnBackgroundColor:
+                                    ColorResourceDesign.secondaryButtonBg,
+                                btnTextColor:
+                                    ColorResourceDesign.appTextPrimaryColor,
+                              )
+                            : const SizedBox(),
+                      ]),
                       isPageLoading
                           ? const Expanded(child: SkeletonLoading())
                           : BlocBuilder<AllocationBloc, AllocationState>(
@@ -651,35 +550,6 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
           CaseItemStackWidget(item: widget.item),
         ],
       ),
-    );
-  }
-}
-
-class AllocationFilterOptionsWidget extends StatelessWidget {
-  final int index;
-  final String filterName;
-  final Function() onPressed;
-
-  const AllocationFilterOptionsWidget(
-      {super.key,
-      required this.index,
-      required this.filterName,
-      required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return ToolbarRectBtnWidget(
-      onPressed: onPressed,
-      btnText: filterName,
-      isBorder: true,
-      btnWidth: 84,
-      btnHeight: 30,
-      btnBackgroundColor: BlocProvider.of<AllocationBloc>(context).tab == index
-          ? ColorResourceDesign.primaryButtonBg
-          : ColorResourceDesign.secondaryButtonBg,
-      btnTextColor: BlocProvider.of<AllocationBloc>(context).tab == index
-          ? ColorResourceDesign.appTextSecondaryColor
-          : ColorResourceDesign.appTextPrimaryColor,
     );
   }
 }

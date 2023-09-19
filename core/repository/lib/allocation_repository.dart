@@ -24,7 +24,6 @@ class AllocationRepositoryImpl extends AllocationRepository {
     await PreferenceHelper.getString(keyPair: PreferenceConstants.userType)
         .then((value) {
       initialData.add(value.toString());
-      print("Hello there....${value.toString()}\n\n\n\n");
     });
     await PreferenceHelper.getString(keyPair: PreferenceConstants.agentName)
         .then((value) {

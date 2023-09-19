@@ -108,10 +108,11 @@ class AuthRepositoryImpl extends AuthRepository {
       String agentRef = await PreferenceHelper.getString(
               keyPair: PreferenceConstants.agentRef) ??
           "";
-      print("agent type repooo ...${agentRef}\n\n\n\n");
       final ApiResult<dynamic> response =
           await provider.getAgentDataFromApi(agentRef);
+
       PublicAgentInfoModel? agentData;
+
       response.map(
           success: (value) {
             agentData = PublicAgentInfoModel.fromJson(value.data);
