@@ -36,6 +36,12 @@ class CaseRepositoryImpl implements CaseRepository {
   @override
   Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
       int limit, int pageNo) async {
+    if (pageNo % 10 == 0) {
+      pageNo = (pageNo % 10) + 1;
+    } else {
+      print("pagekey val here ..${pageNo}\n\n\n\n");
+      pageNo = pageNo % 10;
+    }
     String? accessToken = await getAccessToken();
     ApiResult<List<PriorityCaseListModel>> response =
         await collectApiProvider.getCases(accessToken, limit, pageNo);

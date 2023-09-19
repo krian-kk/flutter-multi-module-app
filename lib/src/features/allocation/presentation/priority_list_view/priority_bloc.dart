@@ -24,6 +24,7 @@ class PriorityBloc extends Bloc<PriorityEvent, PriorityState> {
       PriorityEvent event, Emitter<PriorityState> emit) async {
     if (event is LoadPriorityList) {
       emit(PriorityLoadingState());
+
       final newItems =
           await repository.getCasesFromServer(_pageSize, event.pageKey);
       await newItems.when(

@@ -33,8 +33,8 @@ class AllocationView extends StatefulWidget {
 }
 
 class _AllocationViewState extends State<AllocationView> {
-  final _pagingController =
-      PagingController<int, PriorityCaseListModel>(firstPageKey: 1);
+  final PagingController<int, PriorityCaseListModel> _pagingController =
+      PagingController(firstPageKey: 1);
 
   bool isPageLoading = true;
   List<String> filterOptions = <String>[];
@@ -43,11 +43,35 @@ class _AllocationViewState extends State<AllocationView> {
   void initState() {
     BlocProvider.of<AllocationBloc>(context).add(AllocationInitialEvent());
     BlocProvider.of<AllocationBloc>(context).add(InitialCurrentLocationEvent());
+    BlocProvider.of<PriorityBloc>(context).add(LoadPriorityList(1));
     _pagingController.addPageRequestListener((pageKey) {
+      if (BlocProvider.of<AllocationBloc>(context).tab == 1) {
+        String dist = Constants.allDisMeters;
+        if (BlocProvider.of<AllocationBloc>(context).buildRouteSubTab == 1) {
+          dist = Constants.maxDisMeters;
+        } else if (BlocProvider.of<AllocationBloc>(context).buildRouteSubTab ==
+            2) {
+          dist = Constants.minDisMeters;
+        } else {
+          dist = Constants.allDisMeters;
+        }
+        BlocProvider.of<BuildRouteBloc>(context).add(LoadBuildRouteCases(
+            paramValues: BuildRouteDataModel(
+                lat: BlocProvider.of<AllocationBloc>(context)
+                    .position
+                    .latitude
+                    .toString(),
+                long: BlocProvider.of<AllocationBloc>(context)
+                    .position
+                    .longitude
+                    .toString(),
+                maxDistMeters: dist),
+            pageKey: BlocProvider.of<AllocationBloc>(context).pageKey));
+      } else {
+        BlocProvider.of<PriorityBloc>(context).add(LoadPriorityList(pageKey));
+      }
       BlocProvider.of<AllocationBloc>(context).pageKey = pageKey;
     });
-    BlocProvider.of<PriorityBloc>(context).add(
-        LoadPriorityList(BlocProvider.of<AllocationBloc>(context).pageKey));
 
     super.initState();
   }
@@ -168,10 +192,8 @@ class _AllocationViewState extends State<AllocationView> {
                           onPressed: () {
                             BlocProvider.of<AllocationBloc>(context)
                                 .add(AllocationTabClicked(tab: 0));
-                            BlocProvider.of<PriorityBloc>(context).add(
-                                LoadPriorityList(
-                                    BlocProvider.of<AllocationBloc>(context)
-                                        .pageKey));
+                            BlocProvider.of<PriorityBloc>(context)
+                                .add(LoadPriorityList(1));
                           },
                           btnBackgroundColor:
                               BlocProvider.of<AllocationBloc>(context).tab == 0
@@ -209,10 +231,7 @@ class _AllocationViewState extends State<AllocationView> {
                                                   .toString(),
                                               maxDistMeters:
                                                   Constants.allDisMeters),
-                                          pageKey:
-                                              BlocProvider.of<AllocationBloc>(
-                                                      context)
-                                                  .pageKey));
+                                          pageKey: 1));
                                 },
                                 btnText: Languages.of(context)!.buildRoute,
                                 isBorder: true,
