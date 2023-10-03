@@ -330,7 +330,7 @@ class _CustomCaptureImageBottomSheetState
                                               altitude: 0,
                                               heading: 0,
                                               speed: 0,
-                                              speedAccuracy: 0,
+                                              speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
                                             );
                                             final GeolocatorPlatform
                                                 geolocatorPlatform =

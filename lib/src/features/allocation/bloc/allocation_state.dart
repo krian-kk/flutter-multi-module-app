@@ -28,3 +28,9 @@ class MapViewState extends AllocationState {}
 class AllocationTabClickedState extends AllocationState {}
 
 class BuildRouteFilterClickedState extends AllocationState {}
+
+class AreYouAtOfficeLoadingState extends AllocationState {}
+
+class TapAreYouAtOfficeOptionsSuccessState extends AllocationState {}
+
+class TapAreYouAtOfficeOptionsFailureState extends AllocationState {}

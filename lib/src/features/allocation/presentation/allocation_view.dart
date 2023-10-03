@@ -2,8 +2,10 @@ import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:design_system/strings.dart';
+import 'package:design_system/widgets/custom_button.dart';
 import 'package:domain_models/common/buildroute_data.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,6 +26,7 @@ import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:workmanager/workmanager.dart';
 
 class AllocationView extends StatefulWidget {
   const AllocationView({Key? key}) : super(key: key);
@@ -38,6 +41,26 @@ class _AllocationViewState extends State<AllocationView> {
 
   bool isPageLoading = true;
   List<String> filterOptions = <String>[];
+
+
+  void callbackDispatcher() {
+    Workmanager().executeTask((task, inputData) async {
+      if (kDebugMode) {
+        AppUtils.showToast('Work manager triggered ');
+        print('Native called background task: $task');
+      }
+      if (await Permission.location.isGranted) {
+        final Position result = await Geolocator.getCurrentPosition();
+        await APIRepository.apiRequest(
+            APIRequestType.put,
+            HttpUrl.updateDeviceLocation +
+                'lat=${result.latitude}&lng=${result.longitude}');
+      }
+      return Future.value(true);
+    });
+  }
+
+
 
   @override
   void initState() {
@@ -122,6 +145,11 @@ class _AllocationViewState extends State<AllocationView> {
                 }
               }
 
+              if (state is TapAreYouAtOfficeOptionsSuccessState) {
+                AppUtils.showToast(
+                    Languages.of(context)!.successfullySubmitted);
+              }
+
               if (state is MapViewState) {
                 mapView(context);
               }
@@ -186,6 +214,137 @@ class _AllocationViewState extends State<AllocationView> {
                   padding: const EdgeInsets.only(left: Sizes.p10),
                   child: Column(
                     children: [
+                      Visibility(
+                        visible: BlocProvider.of<AllocationBloc>(context)
+                            .areYouAtOffice,
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10.0, vertical: 5.0),
+                          decoration: BoxDecoration(
+                            color: ColorResourceDesign.colorffffff,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: ColorResourceDesign.colorECECEC),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(ImageResource.location),
+                                    const SizedBox(width: 8),
+                                    Flexible(
+                                      child: CustomText(
+                                        Languages.of(context)!.areYouAtOffice,
+                                        fontSize: FontSize.twelve,
+                                        fontWeight: FontWeight.w700,
+                                        color: ColorResourceDesign.color000000,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: BlocProvider.of<AllocationBloc>(context)
+                                        .isSubmitRUOffice
+                                    ? const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.all(6.0),
+                                          child: CustomLoadingWidget(
+                                            radius: 14,
+                                            strokeWidth: 3,
+                                          ),
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          SizedBox(
+                                              width: Languages.of(context)!
+                                                          .no
+                                                          .length ==
+                                                      2
+                                                  ? 75
+                                                  : 64,
+                                              height: 40,
+                                              child: CustomButton(
+                                                Languages.of(context)!.yes,
+                                                fontSize: FontSize.twelve,
+                                                cardShape: 5,
+                                                borderColor: ColorResourceDesign
+                                                    .color23375A,
+                                                buttonBackgroundColor:
+                                                    ColorResourceDesign
+                                                        .color23375A,
+                                                isRemoveExtraPadding: true,
+                                                onTap: () {
+                                                  BlocProvider.of<
+                                                              AllocationBloc>(
+                                                          context)
+                                                      .add(
+                                                          TapAreYouAtOfficeOptionsEvent());
+                                                },
+                                              )),
+                                          Languages.of(context)!.no.length == 2
+                                              ? SizedBox(
+                                                  width: 74,
+                                                  height: 40,
+                                                  child: CustomButton(
+                                                    Languages.of(context)!.no,
+                                                    fontSize: FontSize.twelve,
+                                                    borderColor:
+                                                        ColorResourceDesign
+                                                            .color23375A,
+                                                    textColor:
+                                                        ColorResourceDesign
+                                                            .color23375A,
+                                                    buttonBackgroundColor:
+                                                        ColorResourceDesign
+                                                            .colorffffff,
+                                                    cardShape: 5,
+                                                    onTap: () {
+                                                      BlocProvider.of<
+                                                                  AllocationBloc>(
+                                                              context)
+                                                          .add(
+                                                              TapAreYouAtOfficeOptionsEvent());
+                                                    },
+                                                  ))
+                                              : Expanded(
+                                                  child: SizedBox(
+                                                      height: 40,
+                                                      child: CustomButton(
+                                                        Languages.of(context)!
+                                                            .no,
+                                                        fontSize:
+                                                            FontSize.twelve,
+                                                        borderColor:
+                                                            ColorResourceDesign
+                                                                .color23375A,
+                                                        textColor:
+                                                            ColorResourceDesign
+                                                                .color23375A,
+                                                        buttonBackgroundColor:
+                                                            ColorResourceDesign
+                                                                .colorffffff,
+                                                        cardShape: 5,
+                                                        onTap: () {
+                                                          BlocProvider.of<
+                                                                      AllocationBloc>(
+                                                                  context)
+                                                              .add(
+                                                                  TapAreYouAtOfficeOptionsEvent());
+                                                        },
+                                                      )),
+                                                ),
+                                        ],
+                                      ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       gapH12,
                       Row(children: [
                         ToolbarRectBtnWidget(

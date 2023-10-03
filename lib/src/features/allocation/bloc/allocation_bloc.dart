@@ -1,16 +1,22 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:design_system/constant_event_values.dart';
 import 'package:domain_models/common/buildroute_data.dart';
+import 'package:domain_models/request_body/allocation/are_you_at_office_model.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:domain_models/response_models/mapView/map_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
 import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:preference_helper/preference_helper.dart';
 import 'package:repository/allocation_repository.dart';
 import 'package:repository/case_repository.dart';
 
@@ -33,6 +39,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   int tab = 0;
   int buildRouteSubTab = 0;
   bool isRefresh = false;
+  bool areYouAtOffice = true;
+  bool isSubmitRUOffice = false;
 
   Position position = Position(
     longitude: 0,
@@ -43,6 +51,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     heading: 0,
     speed: 0,
     speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
   );
   String? currentAddress;
   static const _pageSize = 20;
@@ -90,7 +100,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         currentAddress =
             '${placeMarks.toList().first.street}, ${placeMarks.toList().first.subLocality}, ${placeMarks.toList().first.postalCode}';
 
-// await repository.putCurrentLocation(event.position.latitude,event.position.longitude);
+        await repository.putCurrentLocation(
+            position.latitude, position.longitude);
       } else {
         await openAppSettings();
       }
@@ -113,6 +124,62 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       isRefresh = true;
       buildRouteSubTab = event.index;
       emit(BuildRouteFilterClickedState());
+    }
+
+    if (event is TapAreYouAtOfficeOptionsEvent) {
+//this wont work
+      isSubmitRUOffice = true;
+      emit(AreYouAtOfficeLoadingState());
+
+      Position positions = Position(
+        longitude: 0,
+        latitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0,
+        altitudeAccuracy: 0,
+        headingAccuracy: 0,
+      );
+      if (Geolocator.checkPermission().toString() !=
+          PermissionStatus.granted.toString()) {
+        final Position res = await Geolocator.getCurrentPosition();
+        positions = res;
+      }
+      final requestBodyData = AreYouAtOfficeModel(
+        eventId: ConstantEventValues.areYouAtOfficeEventId,
+        eventType: 'Office Check In',
+        eventAttr: AreYouAtOfficeEventAttr(
+          altitude: positions.altitude,
+          accuracy: positions.accuracy,
+          heading: positions.heading,
+          speed: positions.speed,
+          latitude: positions.latitude,
+          longitude: positions.longitude,
+        ),
+        createdBy: Singleton.instance.agentRef ?? '',
+        agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
+        eventModule: 'Field Allocation',
+        eventCode: ConstantEventValues.areYouAtOfficeEvenCode,
+      );
+
+      final ApiResult<BaseResponse> data =
+          await repository.areYouAtOffice(requestBodyData);
+      await data.when(success: (BaseResponse? data) async {
+        isSubmitRUOffice = false;
+        areYouAtOffice = false;
+        PreferenceHelper.setPreference('areyouatOffice', false);
+        PreferenceHelper.setPreference(
+            'ruAtOfficeDay', DateTime.now().day.toString());
+        emit(TapAreYouAtOfficeOptionsSuccessState());
+      }, failure: (NetworkExceptions? error) async {
+        isSubmitRUOffice = false;
+        areYouAtOffice = true;
+        emit(TapAreYouAtOfficeOptionsFailureState());
+      });
     }
 
     if (event is MapViewEvent) {

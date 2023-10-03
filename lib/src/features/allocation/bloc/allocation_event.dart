@@ -40,3 +40,5 @@ class BuildRouteFilterClickedEvent extends AllocationEvent {
 
   BuildRouteFilterClickedEvent(this.index);
 }
+
+class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}

@@ -675,16 +675,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 25),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                  return const CurrentLocationScreen();
-                                }));
-
-                              },
-                              child: const Text('Current Location'),
-                            )
                           ],
                         ),
                       ),

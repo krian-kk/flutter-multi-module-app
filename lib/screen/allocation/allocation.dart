@@ -97,6 +97,8 @@ class _AllocationScreenState extends State<AllocationScreen>
     heading: 0,
     speed: 0,
     speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
   );
   List<Result> resultList = [];
   String? searchBasedOnValue;
@@ -928,6 +930,8 @@ class _AllocationScreenState extends State<AllocationScreen>
             heading: 0,
             speed: 0,
             speedAccuracy: 0,
+            altitudeAccuracy: 0,
+            headingAccuracy: 0,
           );
           if (Geolocator.checkPermission().toString() !=
               PermissionStatus.granted.toString()) {
