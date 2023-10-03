@@ -33,17 +33,12 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<void> putCurrentLocation(double lat, double long) async {
-
+  Future<ApiResult<BaseResponse>> putCurrentLocation(
+      double lat, double long) async {
     String? accessToken = await getAccessToken();
     final ApiResult<BaseResponse> response =
-    await apiProvider.putCurrentLocation(double lat, double long);
+        await apiProvider.putCurrentLocation(accessToken, lat, long);
     return response;
-
-    // await APIRepository.apiRequest(
-    //     APIRequestType.put,
-    //     HttpUrl.updateDeviceLocation +
-    //         'lat=${result.latitude}&lng=${result.longitude}');
   }
 
   @override

@@ -26,6 +26,7 @@ import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
 class AllocationView extends StatefulWidget {
@@ -35,30 +36,31 @@ class AllocationView extends StatefulWidget {
   State<AllocationView> createState() => _AllocationViewState();
 }
 
+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    if (kDebugMode) {
+      AppUtils.showToast('Work manager triggered ');
+      print('Native called background task: $task');
+    }
+    if (await Permission.location.isGranted) {
+      final Position result = await Geolocator.getCurrentPosition();
+      await APIRepository.apiRequest(
+          APIRequestType.put,
+          HttpUrl.updateDeviceLocation +
+              'lat=${result.latitude}&lng=${result.longitude}');
+    }
+    return Future.value(true);
+  });
+}
+
+
 class _AllocationViewState extends State<AllocationView> {
   final PagingController<int, PriorityCaseListModel> _pagingController =
       PagingController(firstPageKey: 1);
 
   bool isPageLoading = true;
   List<String> filterOptions = <String>[];
-
-
-  void callbackDispatcher() {
-    Workmanager().executeTask((task, inputData) async {
-      if (kDebugMode) {
-        AppUtils.showToast('Work manager triggered ');
-        print('Native called background task: $task');
-      }
-      if (await Permission.location.isGranted) {
-        final Position result = await Geolocator.getCurrentPosition();
-        await APIRepository.apiRequest(
-            APIRequestType.put,
-            HttpUrl.updateDeviceLocation +
-                'lat=${result.latitude}&lng=${result.longitude}');
-      }
-      return Future.value(true);
-    });
-  }
 
 
 

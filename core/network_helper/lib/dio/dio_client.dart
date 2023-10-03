@@ -118,15 +118,15 @@ class DioClient {
 
   Future<dynamic> put(String uri,
       {data,
-        Map<String, dynamic>? queryParameters,
-        Options? options,
-        CancelToken? cancelToken,
-        ProgressCallback? onSendProgress,
-        ProgressCallback? onReceiveProgress,
-        bool decryptResponse = false,
-        bool encryptRequestBody = false}) async {
+      Map<String, dynamic>? queryParameters,
+      Options? options,
+      CancelToken? cancelToken,
+      ProgressCallback? onSendProgress,
+      ProgressCallback? onReceiveProgress,
+      bool decryptResponse = false,
+      bool encryptRequestBody = false}) async {
     try {
-      var response = await dio.post(
+      var response = await dio.put(
         uri,
         data: await _cryptoPlugin.checkForRequestBody(encryptRequestBody, data),
         queryParameters: queryParameters,
@@ -140,8 +140,6 @@ class DioClient {
       rethrow;
     }
   }
-
-
 
   Future<dynamic> patch(
     String uri, {
