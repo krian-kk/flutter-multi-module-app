@@ -6,12 +6,14 @@ import 'package:preference_helper/preference_constants.dart';
 import 'package:preference_helper/preference_helper.dart';
 
 abstract class AllocationRepository {
-  Future<void> putCurrentLocation(double lat, double long);
+  Future<ApiResult<BaseResponse>> putCurrentLocation(double lat, double long);
 
   Future<ApiResult<BaseResponse>> areYouAtOffice(
       AreYouAtOfficeModel requestBodyData);
 
-  Future<List<String>> allocationInitialData();
+  Future<List<String?>> allocationInitialData();
+
+  Future<bool?> areYouAtOfficeCheck();
 }
 
 class AllocationRepositoryImpl extends AllocationRepository {
@@ -42,21 +44,37 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<List<String>> allocationInitialData() async {
-    List<String> initialData = [];
+  Future<List<String?>> allocationInitialData() async {
+    List<String?> initialData = [];
 
     await PreferenceHelper.getString(keyPair: PreferenceConstants.userType)
         .then((value) {
       initialData.add(value.toString());
     });
     await PreferenceHelper.getString(keyPair: PreferenceConstants.agentName)
+        .then((value) {});
+    await PreferenceHelper.getString(keyPair: PreferenceConstants.agentRef)
         .then((value) {
       initialData.add(value.toString());
     });
-    await PreferenceHelper.getString(keyPair: PreferenceConstants.agentRef)
-        .then((value) {
-      String agrRef = value.toString();
-    });
+
     return initialData;
+  }
+
+  @override
+  Future<bool?> areYouAtOfficeCheck() async {
+    await PreferenceHelper.getString(keyPair: 'ruAtOfficeDay')
+        .then((value) async {
+      if (value != DateTime.now().day.toString()) {
+        await PreferenceHelper.getBool(keyPair: 'areyouatOffice').then((value) {
+          return value;
+        });
+      } else {
+        return false;
+      }
+    }).catchError((e) {
+      print("Error Occurred ${e}");
+      return null;
+    });
   }
 }

@@ -38,7 +38,7 @@ class AllocationApiProvider {
       );
 
       final mappedResponse =
-      SingleResponse.fromJson(response, BaseResponse.fromJson);
+          SingleResponse.fromJson(response, BaseResponse.fromJson);
 
       return ApiResult.success(data: mappedResponse.result);
     } catch (e) {
@@ -46,20 +46,16 @@ class AllocationApiProvider {
     }
   }
 
-  Future
-
-  <
-
-  ApiResult<BaseResponse> putCurrentLocation(String accessToken, double lat,
-      double long) async {
+  Future<ApiResult<BaseResponse>> putCurrentLocation(
+      String accessToken, double lat, double long) async {
     dynamic response;
     try {
       response = await DioClient(baseUrl, accessToken: accessToken).put(
-        "${areYouAtOfficeUrl}lat=$lat&lng=$long",
+        "${updateDeviceLocation}lat=$lat&lng=$long",
       );
 
       final mappedResponse =
-      SingleResponse.fromJson(response, BaseResponse.fromJson);
+          SingleResponse.fromJson(response, BaseResponse.fromJson);
 
       return ApiResult.success(data: mappedResponse.result);
     } catch (e) {

@@ -7,11 +7,7 @@ class AllocationInitial extends AllocationState {}
 
 class AllocationLoadingState extends AllocationState {}
 
-class AllocationLoadedState extends AllocationState {
-  String? userType;
-
-  AllocationLoadedState(this.userType);
-}
+class AllocationLoadedState extends AllocationState {}
 
 class NavigateSearchPageState extends AllocationState {}
 
@@ -34,3 +30,5 @@ class AreYouAtOfficeLoadingState extends AllocationState {}
 class TapAreYouAtOfficeOptionsSuccessState extends AllocationState {}
 
 class TapAreYouAtOfficeOptionsFailureState extends AllocationState {}
+
+class UpdatedCurrentLocationState extends AllocationState {}

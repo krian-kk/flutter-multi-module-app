@@ -39,7 +39,6 @@ class CaseRepositoryImpl implements CaseRepository {
     if (pageNo % 10 == 0) {
       pageNo = (pageNo % 10) + 1;
     } else {
-      print("pagekey val here ..${pageNo}\n\n\n\n");
       pageNo = pageNo % 10;
     }
     String? accessToken = await getAccessToken();

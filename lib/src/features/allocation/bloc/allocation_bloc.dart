@@ -64,8 +64,20 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     if (event is AllocationInitialEvent) {
       emit(AllocationLoadingState());
 
-      List<String> initialData = await repository.allocationInitialData();
-      userType = initialData[0];
+      List<String?> initialData = await repository.allocationInitialData();
+      userType = initialData[0]!;
+
+      await PreferenceHelper.getString(keyPair: 'ruAtOfficeDay')
+          .then((value) async {
+        if (value != DateTime.now().day.toString()) {
+          await PreferenceHelper.getBool(keyPair: 'areyouatOffice')
+              .then((value) {
+            areYouAtOffice = value;
+          });
+        } else {
+          areYouAtOffice = false;
+        }
+      });
 
       filterBuildRoute = <String>[
         StringResource.all,
@@ -73,18 +85,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         StringResource.more5km,
       ];
 
-      // if (userType == Constants.fieldagent) {
-      //   if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
-      //     selectOptions = [
-      //       Languages.of(event.context)!.priority,
-      //     ];
-      //   } else {
-      //     debugPrint('into the google key');
-      //     await _setGoogleMapApiKey(googleMapsApiKey);
-      //   }
-      // }
-
-      emit(AllocationLoadedState(initialData[0]));
+      emit(AllocationLoadedState());
     }
 
     if (event is InitialCurrentLocationEvent) {
@@ -102,6 +103,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         await repository.putCurrentLocation(
             position.latitude, position.longitude);
+        emit(UpdatedCurrentLocationState());
       } else {
         await openAppSettings();
       }
@@ -127,7 +129,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     }
 
     if (event is TapAreYouAtOfficeOptionsEvent) {
-//this wont work
       isSubmitRUOffice = true;
       emit(AreYouAtOfficeLoadingState());
 

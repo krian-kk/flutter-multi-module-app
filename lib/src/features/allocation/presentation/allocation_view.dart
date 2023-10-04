@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
@@ -9,11 +12,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:languages/app_languages.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/src/common_widgets/toolbar_rect_btn_widget.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -27,6 +32,7 @@ import 'package:origa/widgets/case_status_widget.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:repository/allocation_repository.dart';
 import 'package:workmanager/workmanager.dart';
 
 class AllocationView extends StatefulWidget {
@@ -36,7 +42,6 @@ class AllocationView extends StatefulWidget {
   State<AllocationView> createState() => _AllocationViewState();
 }
 
-
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     if (kDebugMode) {
@@ -45,15 +50,12 @@ void callbackDispatcher() {
     }
     if (await Permission.location.isGranted) {
       final Position result = await Geolocator.getCurrentPosition();
-      await APIRepository.apiRequest(
-          APIRequestType.put,
-          HttpUrl.updateDeviceLocation +
-              'lat=${result.latitude}&lng=${result.longitude}');
+      await AllocationRepositoryImpl()
+          .putCurrentLocation(result.latitude, result.longitude);
     }
     return Future.value(true);
   });
 }
-
 
 class _AllocationViewState extends State<AllocationView> {
   final PagingController<int, PriorityCaseListModel> _pagingController =
@@ -62,12 +64,17 @@ class _AllocationViewState extends State<AllocationView> {
   bool isPageLoading = true;
   List<String> filterOptions = <String>[];
 
-
+  @override
+  void dispose() {
+    super.dispose();
+    _pagingController.dispose();
+  }
 
   @override
   void initState() {
+    super.initState();
     BlocProvider.of<AllocationBloc>(context).add(AllocationInitialEvent());
-    BlocProvider.of<AllocationBloc>(context).add(InitialCurrentLocationEvent());
+
     BlocProvider.of<PriorityBloc>(context).add(LoadPriorityList(1));
     _pagingController.addPageRequestListener((pageKey) {
       if (BlocProvider.of<AllocationBloc>(context).tab == 1) {
@@ -97,14 +104,46 @@ class _AllocationViewState extends State<AllocationView> {
       }
       BlocProvider.of<AllocationBloc>(context).pageKey = pageKey;
     });
-
-    super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _pagingController.dispose();
+  Future<void> locationTracker() async {
+    await Workmanager().initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
+    if (Platform.isAndroid) {
+      if (kDebugMode) {
+        AppUtils.showToast('Platform.isAndroid');
+      }
+      await Workmanager().registerPeriodicTask(
+        'uniqueNameIdentifier',
+        'uniqueNamePeriodicTask',
+        constraints: Constraints(
+            networkType: NetworkType.connected,
+            requiresBatteryNotLow: true,
+            requiresCharging: true,
+            requiresDeviceIdle: true,
+            requiresStorageNotLow: true),
+        initialDelay: const Duration(seconds: 5),
+        frequency: const Duration(minutes: 15),
+      );
+    } else {
+      if (kDebugMode) {
+        AppUtils.showToast('Platform.isIOS');
+      }
+      await Workmanager().registerPeriodicTask(
+        'uniqueNameIdentifier',
+        'uniqueNamePeriodicTask',
+        frequency: const Duration(minutes: 15),
+        initialDelay: const Duration(seconds: 5),
+        constraints: Constraints(
+            networkType: NetworkType.connected,
+            requiresBatteryNotLow: true,
+            requiresCharging: true,
+            requiresDeviceIdle: true,
+            requiresStorageNotLow: true),
+      );
+    }
   }
 
   mapView(BuildContext buildContext) {
@@ -131,9 +170,16 @@ class _AllocationViewState extends State<AllocationView> {
         listeners: [
           BlocListener<AllocationBloc, AllocationState>(
             bloc: BlocProvider.of<AllocationBloc>(context),
-            listener: (BuildContext context, AllocationState state) {
+            listener: (BuildContext context, AllocationState state) async {
               if (state is AllocationLoadedState) {
-                if (state.userType == Constants.fieldagent) {
+                if (BlocProvider.of<AllocationBloc>(context).userType ==
+                    Constants.fieldagent) {
+                  BlocProvider.of<AllocationBloc>(context)
+                      .add(InitialCurrentLocationEvent());
+                }
+
+                if (BlocProvider.of<AllocationBloc>(context).userType ==
+                    Constants.fieldagent) {
                   filterOptions = [
                     Languages.of(context)!.priority,
                     Languages.of(context)!.buildRoute,
@@ -144,7 +190,12 @@ class _AllocationViewState extends State<AllocationView> {
                     Languages.of(context)!.priority,
                     Languages.of(context)!.autoCalling,
                   ];
+                  BlocProvider.of<AllocationBloc>(context).areYouAtOffice =
+                      false;
                 }
+              }
+              if (state is UpdatedCurrentLocationState) {
+                await locationTracker();
               }
 
               if (state is TapAreYouAtOfficeOptionsSuccessState) {

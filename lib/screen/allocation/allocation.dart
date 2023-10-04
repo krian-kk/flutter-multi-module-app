@@ -72,10 +72,8 @@ void callbackDispatcher() {
     } //simpleTask will be emitted here.
     if (await Permission.location.isGranted) {
       final Position result = await Geolocator.getCurrentPosition();
-      await APIRepository.apiRequest(
-          APIRequestType.put,
-          HttpUrl.updateDeviceLocation +
-              'lat=${result.latitude}&lng=${result.longitude}');
+      await APIRepository.apiRequest(APIRequestType.put,
+          '${HttpUrl.updateDeviceLocation}lat=${result.latitude}&lng=${result.longitude}');
     }
     return Future.value(true);
   });
