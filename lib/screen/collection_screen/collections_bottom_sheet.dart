@@ -14,7 +14,6 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/receipt_sendsms_model.dart';
@@ -39,7 +38,6 @@ import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
@@ -245,8 +243,7 @@ class _CustomCollectionsBottomSheetState
                                                   .width) /
                                               2,
                                           child: CustomReadOnlyTextField(
-                                            LanguageEn()
-                                                .amountCollected,
+                                            LanguageEn().amountCollected,
                                             amountCollectedControlller,
                                             onChanged: () {
                                               if (_formKey.currentState!
@@ -476,13 +473,9 @@ class _CustomCollectionsBottomSheetState
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? LanguageEn()
-                                            .stop
-                                            .toUpperCase() +
+                                    ? LanguageEn().stop.toUpperCase() +
                                         ' & \n' +
-                                        LanguageEn()
-                                            .submit
-                                            .toUpperCase()
+                                        LanguageEn().submit.toUpperCase()
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
@@ -514,9 +507,7 @@ class _CustomCollectionsBottomSheetState
                             ? 150
                             : 191,
                         child: CustomButton(
-                          isSubmit
-                              ? LanguageEn().submit.toUpperCase()
-                              : null,
+                          isSubmit ? LanguageEn().submit.toUpperCase() : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
                             gradientColors: <Color>[
@@ -583,15 +574,16 @@ class _CustomCollectionsBottomSheetState
               setState(() => isSubmit = false);
 
               Position position = Position(
-                longitude: 0,
-                latitude: 0,
-                timestamp: DateTime.now(),
-                accuracy: 0,
-                altitude: 0,
-                heading: 0,
-                speed: 0,
-                speedAccuracy: 0,
-              );
+                  longitude: 0,
+                  latitude: 0,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  heading: 0,
+                  speed: 0,
+                  speedAccuracy: 0,
+                  headingAccuracy: 0,
+                  altitudeAccuracy: 0);
 
               final GeolocatorPlatform geolocatorPlatform =
                   GeolocatorPlatform.instance;
@@ -739,8 +731,7 @@ class _CustomCollectionsBottomSheetState
                       );
                     }
                   } else {
-                    AppUtils.showErrorToast(
-                        LanguageEn().sendSMSerror);
+                    AppUtils.showErrorToast(LanguageEn().sendSMSerror);
                   }
                   Navigator.pop(context);
                 }
@@ -748,15 +739,16 @@ class _CustomCollectionsBottomSheetState
             } else {
               setState(() => isSubmit = false);
               Position position = Position(
-                longitude: 0,
-                latitude: 0,
-                timestamp: DateTime.now(),
-                accuracy: 0,
-                altitude: 0,
-                heading: 0,
-                speed: 0,
-                speedAccuracy: 0,
-              );
+                  longitude: 0,
+                  latitude: 0,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  heading: 0,
+                  speed: 0,
+                  speedAccuracy: 0,
+                  headingAccuracy: 0,
+                  altitudeAccuracy: 0);
 
               final GeolocatorPlatform geolocatorPlatform =
                   GeolocatorPlatform.instance;
@@ -981,8 +973,7 @@ class _CustomCollectionsBottomSheetState
                               }
                             }
                           } else {
-                            AppUtils.showErrorToast(
-                                LanguageEn().sendSMSerror);
+                            AppUtils.showErrorToast(LanguageEn().sendSMSerror);
                           }
                           Navigator.pop(context);
                         }

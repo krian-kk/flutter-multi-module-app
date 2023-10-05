@@ -24,7 +24,7 @@ const jsonContentType = 'application/json';
 const multiPartContentType = 'multipart/form-data';
 const authTypeBearer = 'Bearer';
 
-const String baseUrl = 'https://uat-sbic-collect.m2pfintech.com/';
+const String baseUrl = 'https://dev-collect.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
 const String version = 'v1/';
 const String apiType = 'mobile-backend/';

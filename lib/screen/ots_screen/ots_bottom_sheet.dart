@@ -13,7 +13,6 @@ import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
@@ -37,7 +36,6 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
@@ -150,16 +148,20 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -244,8 +246,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     .width) /
                                                 2,
                                             child: CustomReadOnlyTextField(
-                                              LanguageEn()
-                                                  .otsPaymentDate,
+                                              LanguageEn().otsPaymentDate,
                                               otsPaymentDateControlller,
                                               validationRules: const <String>[
                                                 'required'
@@ -349,8 +350,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
                                                     CustomText(
-                                                      LanguageEn()
-                                                          .uploadFile,
+                                                      LanguageEn().uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
@@ -362,8 +362,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   ],
                                                 ),
                                                 CustomText(
-                                                  LanguageEn()
-                                                      .upto5mb,
+                                                  LanguageEn().upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -420,13 +419,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     : 191,
                                 child: CustomButton(
                                   isSubmit
-                                      ? LanguageEn()
-                                              .stop
-                                              .toUpperCase() +
+                                      ? LanguageEn().stop.toUpperCase() +
                                           ' & \n' +
-                                          LanguageEn()
-                                              .submit
-                                              .toUpperCase()
+                                          LanguageEn().submit.toUpperCase()
                                       : null,
                                   isLeading: !isSubmit,
                                   trailingWidget: CustomLoadingWidget(
@@ -458,9 +453,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               ? 150
                               : 191,
                           child: CustomButton(
-                            isSubmit
-                                ? LanguageEn().submit.toUpperCase()
-                                : null,
+                            isSubmit ? LanguageEn().submit.toUpperCase() : null,
                             isLeading: !isSubmit,
                             trailingWidget: CustomLoadingWidget(
                               gradientColors: <Color>[
@@ -524,15 +517,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           }
           if (isNotAutoCalling) {
             Position position = Position(
-              longitude: 0,
-              latitude: 0,
-              timestamp: DateTime.now(),
-              accuracy: 0,
-              altitude: 0,
-              heading: 0,
-              speed: 0,
-              speedAccuracy: 0,
-            );
+                longitude: 0,
+                latitude: 0,
+                timestamp: DateTime.now(),
+                accuracy: 0,
+                altitude: 0,
+                heading: 0,
+                speed: 0,
+                speedAccuracy: 0,
+                headingAccuracy: 0,
+                altitudeAccuracy: 0);
 
             final GeolocatorPlatform geolocatorPlatform =
                 GeolocatorPlatform.instance;

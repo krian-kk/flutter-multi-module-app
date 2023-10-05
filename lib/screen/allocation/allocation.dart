@@ -85,15 +85,16 @@ class _AllocationScreenState extends State<AllocationScreen>
   bool isCaseDetailLoading = false;
   bool isOffline = false;
   Position position = Position(
-    longitude: 0,
-    latitude: 0,
-    timestamp: DateTime.now(),
-    accuracy: 0,
-    altitude: 0,
-    heading: 0,
-    speed: 0,
-    speedAccuracy: 0,
-  );
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 0,
+      altitude: 0,
+      heading: 0,
+      speed: 0,
+      speedAccuracy: 0,
+      headingAccuracy: 0,
+      altitudeAccuracy: 0);
   List<Result> resultList = [];
   String? searchBasedOnValue;
   String version = '';
@@ -913,15 +914,16 @@ class _AllocationScreenState extends State<AllocationScreen>
             isSubmitRUOffice = true;
           });
           Position positions = Position(
-            longitude: 0,
-            latitude: 0,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            heading: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
+              longitude: 0,
+              latitude: 0,
+              timestamp: DateTime.now(),
+              accuracy: 0,
+              altitude: 0,
+              heading: 0,
+              speed: 0,
+              speedAccuracy: 0,
+              headingAccuracy: 0,
+              altitudeAccuracy: 0);
           if (Geolocator.checkPermission().toString() !=
               PermissionStatus.granted.toString()) {
             final Position res = await Geolocator.getCurrentPosition();

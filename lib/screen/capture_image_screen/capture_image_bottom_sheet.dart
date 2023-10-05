@@ -9,7 +9,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
@@ -287,9 +286,7 @@ class _CustomCaptureImageBottomSheetState
                       SizedBox(
                         width: 191,
                         child: CustomButton(
-                          isSubmit
-                              ? LanguageEn().submit.toUpperCase()
-                              : null,
+                          isSubmit ? LanguageEn().submit.toUpperCase() : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
                             gradientColors: <Color>[
@@ -320,15 +317,16 @@ class _CustomCaptureImageBottomSheetState
                                           if (uploadFileLists.isNotEmpty) {
                                             setState(() => isSubmit = false);
                                             Position position = Position(
-                                              longitude: 0,
-                                              latitude: 0,
-                                              timestamp: DateTime.now(),
-                                              accuracy: 0,
-                                              altitude: 0,
-                                              heading: 0,
-                                              speed: 0,
-                                              speedAccuracy: 0,
-                                            );
+                                                longitude: 0,
+                                                latitude: 0,
+                                                timestamp: DateTime.now(),
+                                                accuracy: 0,
+                                                altitude: 0,
+                                                heading: 0,
+                                                speed: 0,
+                                                speedAccuracy: 0,
+                                                headingAccuracy: 0,
+                                                altitudeAccuracy: 0);
                                             final GeolocatorPlatform
                                                 geolocatorPlatform =
                                                 GeolocatorPlatform.instance;
@@ -414,8 +412,7 @@ class _CustomCaptureImageBottomSheetState
                                                     context: context));
                                           } else {
                                             AppUtils.showToast(
-                                              LanguageEn()
-                                                  .uploadImage,
+                                              LanguageEn().uploadImage,
                                               gravity: ToastGravity.CENTER,
                                             );
                                           }

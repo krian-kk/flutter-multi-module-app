@@ -505,15 +505,16 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                     } else {
                                       setState(() => isSubmit = false);
                                       Position position = Position(
-                                        longitude: 0,
-                                        latitude: 0,
-                                        timestamp: DateTime.now(),
-                                        accuracy: 0,
-                                        altitude: 0,
-                                        heading: 0,
-                                        speed: 0,
-                                        speedAccuracy: 0,
-                                      );
+                                          longitude: 0,
+                                          latitude: 0,
+                                          timestamp: DateTime.now(),
+                                          accuracy: 0,
+                                          altitude: 0,
+                                          heading: 0,
+                                          speed: 0,
+                                          speedAccuracy: 0,
+                                          headingAccuracy: 0,
+                                          altitudeAccuracy: 0);
 
                                       final GeolocatorPlatform
                                           geolocatorPlatform =

@@ -7,7 +7,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -16,7 +15,6 @@ import 'package:intl/intl.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
@@ -272,11 +270,9 @@ class _CustomOtherFeedBackBottomSheetState
                               expandList(
                                   <FeedbackTemplate>[
                                     FeedbackTemplate(
-                                        name: LanguageEn()
-                                            .addNewContact,
+                                        name: LanguageEn().addNewContact,
                                         expanded: false,
-                                        label: LanguageEn()
-                                            .addNewContact,
+                                        label: LanguageEn().addNewContact,
                                         data: <Data>[
                                           Data(name: 'addNewContact')
                                         ])
@@ -376,8 +372,7 @@ class _CustomOtherFeedBackBottomSheetState
                                                   const SizedBox(width: 7),
                                                   Flexible(
                                                     child: CustomText(
-                                                      LanguageEn()
-                                                          .uploadFile,
+                                                      LanguageEn().uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
@@ -450,13 +445,9 @@ class _CustomOtherFeedBackBottomSheetState
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? LanguageEn()
-                                            .stop
-                                            .toUpperCase() +
+                                    ? LanguageEn().stop.toUpperCase() +
                                         ' & \n' +
-                                        LanguageEn()
-                                            .submit
-                                            .toUpperCase()
+                                        LanguageEn().submit.toUpperCase()
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
@@ -487,9 +478,7 @@ class _CustomOtherFeedBackBottomSheetState
                             ? 150
                             : 191,
                         child: CustomButton(
-                          isSubmit
-                              ? LanguageEn().submit.toUpperCase()
-                              : null,
+                          isSubmit ? LanguageEn().submit.toUpperCase() : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
                             gradientColors: <Color>[
@@ -580,15 +569,16 @@ class _CustomOtherFeedBackBottomSheetState
         }
         if (isNotAutoCalling) {
           Position position = Position(
-            longitude: 0,
-            latitude: 0,
-            timestamp: DateTime.now(),
-            accuracy: 0,
-            altitude: 0,
-            heading: 0,
-            speed: 0,
-            speedAccuracy: 0,
-          );
+              longitude: 0,
+              latitude: 0,
+              timestamp: DateTime.now(),
+              accuracy: 0,
+              altitude: 0,
+              heading: 0,
+              speed: 0,
+              speedAccuracy: 0,
+              headingAccuracy: 0,
+              altitudeAccuracy: 0);
 
           final GeolocatorPlatform geolocatorPlatform =
               GeolocatorPlatform.instance;
@@ -885,8 +875,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   children: <Widget>[
                                     Flexible(
                                         child: CustomDropDownButton(
-                                      LanguageEn()
-                                          .customerContactType,
+                                      LanguageEn().customerContactType,
                                       contactTypeList,
                                       underlineColor: ColorResource.color000000,
                                       selectedValue:
