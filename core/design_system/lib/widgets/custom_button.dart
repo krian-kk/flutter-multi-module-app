@@ -1,6 +1,6 @@
+import 'package:design_system/color_resources.dart';
+import 'package:design_system/fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/utils/color_resource.dart';
-import 'package:origa/utils/font.dart';
 
 class CustomButton extends StatefulWidget {
   const CustomButton(
