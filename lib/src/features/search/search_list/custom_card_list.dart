@@ -1,8 +1,8 @@
 import 'package:design_system/widgets/case_status_widget.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -14,13 +14,12 @@ import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-
 class CustomCardList {
-  static Widget buildListView(dynamic bloc,
-      {List<Result>? resultData,
-       // ScrollController listViewController
-
-      }) {
+  static Widget buildListView(
+    dynamic bloc, {
+    List<Result>? resultData,
+    // ScrollController listViewController
+  }) {
     return ListView.builder(
         // controller: listViewController,
         itemCount: resultData!.length,
@@ -38,7 +37,7 @@ class CustomCardList {
           final List<Address>? address = resultData[index].address;
           List<String> maskedNumbers = [];
           final ContractorResult? informationModel =
-              Singleton.instance.contractorInformations?.result;
+              Singleton.instance.contractorInformations;
           if (address != null) {
             for (Address item in address) {
               String value = item.value ?? '';

@@ -1,4 +1,7 @@
 import 'package:domain_models/request_body/allocation/are_you_at_office_model.dart';
+import 'package:domain_models/response_models/allocation/communication_channel_model.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
+import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:network_helper/api_services/allocation_api_service.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
@@ -14,6 +17,13 @@ abstract class AllocationRepository {
   Future<List<String?>> allocationInitialData();
 
   Future<bool?> areYouAtOfficeCheck();
+
+  Future<ApiResult<ContractorResult>> getContractorDetails();
+
+  Future<ApiResult<CommunicationChannelModel>> getCommunicationChannels();
+
+  Future<ApiResult<ContractorDetailsModel>> getCustomContractorDetailsData();
+
 }
 
 class AllocationRepositoryImpl extends AllocationRepository {
@@ -24,6 +34,31 @@ class AllocationRepositoryImpl extends AllocationRepository {
             keyPair: PreferenceConstants.accessToken) ??
         '';
   }
+
+  @override
+  Future<ApiResult<ContractorResult>> getContractorDetails()async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<ContractorResult> response =
+        await apiProvider.getContractorDetailsFromApi(accessToken);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<ContractorDetailsModel>> getCustomContractorDetailsData()async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<ContractorDetailsModel> response =
+        await apiProvider.getCustomContractorDetailsDataFromApi(accessToken);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<CommunicationChannelModel>> getCommunicationChannels()async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<CommunicationChannelModel> response =
+        await apiProvider.getCommunicationChannelsFromApi(accessToken);
+    return response;
+  }
+
 
   @override
   Future<ApiResult<BaseResponse>> areYouAtOffice(

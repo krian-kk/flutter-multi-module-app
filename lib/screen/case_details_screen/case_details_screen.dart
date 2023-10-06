@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:domain_models/response_models/allocation/allocation_templates.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
@@ -196,8 +196,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
             bloc: bloc,
             builder: (BuildContext context, CaseDetailsState state) {
               bool showVisit = false;
-              String? key = Singleton
-                  .instance.contractorInformations?.result?.googleMapsApiKey;
+              String? key =
+                  Singleton.instance.contractorInformations?.googleMapsApiKey;
               if (key?.isEmpty == false) {
                 showVisit = true;
               }
@@ -665,8 +665,8 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
         if (caseResultKey == 'repaymentDetails') {
           // childWidgets.add(getSmsButton());
           childWidgets.add(repaymentInfo());
-          if (Singleton.instance.contractorInformations?.result
-                  ?.showSendRepaymentInfo ==
+          if (Singleton
+                  .instance.contractorInformations?.showSendRepaymentInfo ==
               true) {
             shouldShowSection = true;
           }
@@ -1016,8 +1016,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Singleton.instance.contractorInformations?.result
-                    ?.showSendRepaymentInfo ==
+        Singleton.instance.contractorInformations?.showSendRepaymentInfo ==
                 false
             ? const SizedBox()
             : bloc.isSendSMSloading
@@ -1069,10 +1068,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   ),
         const SizedBox(width: 30),
         CheckWhatsappButtonEnable.checkWAbutton(
-                whatsappTemplate: Singleton.instance.contractorInformations
-                    ?.result?.repaymentWhatsappTemplate,
+                whatsappTemplate: Singleton
+                    .instance.contractorInformations?.repaymentWhatsappTemplate,
                 whatsappTemplateName: Singleton.instance.contractorInformations
-                    ?.result?.sendRepaymentInfoWhatsappTemplateName,
+                    ?.sendRepaymentInfoWhatsappTemplateName,
                 whatsappKey: bloc.campaingnConfigModel.result?.whatsappApiKey)
             // Singleton.instance.contractorInformations?.result
             //             ?.hideSendRepaymentInfoWhatsappButton ==
@@ -1716,7 +1715,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Singleton.instance.contractorInformations?.result
+                    Singleton.instance.contractorInformations
                                 ?.showSendRepaymentInfo ==
                             false
                         ? const SizedBox()
@@ -1774,12 +1773,10 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                             whatsappTemplate: Singleton
                                 .instance
                                 .contractorInformations
-                                ?.result
                                 ?.repaymentWhatsappTemplate,
                             whatsappTemplateName: Singleton
                                 .instance
                                 .contractorInformations
-                                ?.result
                                 ?.sendRepaymentInfoWhatsappTemplateName,
                             whatsappKey: bloc
                                 .campaingnConfigModel.result?.whatsappApiKey)
@@ -1899,15 +1896,11 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
                   height: 10,
                 ),
                 CheckWhatsappButtonEnable.checkWAbutton(
-                        whatsappTemplate: Singleton
-                            .instance
-                            .contractorInformations
-                            ?.result
-                            ?.repaymentWhatsappTemplate,
+                        whatsappTemplate: Singleton.instance
+                            .contractorInformations?.repaymentWhatsappTemplate,
                         whatsappTemplateName: Singleton
                             .instance
                             .contractorInformations
-                            ?.result
                             ?.sendRepaymentInfoWhatsappTemplateName,
                         whatsappKey:
                             bloc.campaingnConfigModel.result?.whatsappApiKey)

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
@@ -18,7 +16,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:languages/app_languages.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
-import 'package:origa/singleton.dart';
 import 'package:origa/src/common_widgets/toolbar_rect_btn_widget.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -174,25 +171,39 @@ class _AllocationViewState extends State<AllocationView> {
               if (state is AllocationLoadedState) {
                 if (BlocProvider.of<AllocationBloc>(context).userType ==
                     Constants.fieldagent) {
-                  BlocProvider.of<AllocationBloc>(context)
-                      .add(InitialCurrentLocationEvent());
+                  if (BlocProvider.of<AllocationBloc>(context)
+                          .isGoogleApiKeyNull ==
+                      true) {
+                    filterOptions = [
+                      Languages.of(context)!.priority,
+                    ];
+                  } else {
+                    filterOptions = [
+                      Languages.of(context)!.priority,
+                      Languages.of(context)!.buildRoute,
+                      Languages.of(context)!.mapView,
+                    ];
+                    BlocProvider.of<AllocationBloc>(context)
+                        .add(InitialCurrentLocationEvent());
+                  }
                 }
 
                 if (BlocProvider.of<AllocationBloc>(context).userType ==
-                    Constants.fieldagent) {
-                  filterOptions = [
-                    Languages.of(context)!.priority,
-                    Languages.of(context)!.buildRoute,
-                    Languages.of(context)!.mapView,
-                  ];
-                } else {
-                  filterOptions = [
-                    Languages.of(context)!.priority,
-                    Languages.of(context)!.autoCalling,
-                  ];
-                  BlocProvider.of<AllocationBloc>(context).areYouAtOffice =
-                      false;
+                    Constants.telecaller) {
+                  if (BlocProvider.of<AllocationBloc>(context)
+                          .isCloudTelephony ==
+                      false) {
+                    filterOptions = [
+                      Languages.of(context)!.priority,
+                    ];
+                  } else {
+                    filterOptions = [
+                      Languages.of(context)!.priority,
+                      Languages.of(context)!.autoCalling,
+                    ];
+                  }
                 }
+                BlocProvider.of<AllocationBloc>(context).areYouAtOffice = false;
               }
               if (state is UpdatedCurrentLocationState) {
                 await locationTracker();

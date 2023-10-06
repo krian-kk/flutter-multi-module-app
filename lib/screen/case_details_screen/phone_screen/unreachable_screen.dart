@@ -166,7 +166,7 @@ class _PhoneUnreachableScreenState extends State<PhoneUnreachableScreen> {
                           caseId: widget.bloc.caseId,
                         )),
                         const SizedBox(height: 20),
-                        Singleton.instance.contractorInformations?.result
+                        Singleton.instance.contractorInformations
                                     ?.showCallTriedSmsButton ==
                                 false
                             ? const SizedBox()

@@ -1,9 +1,9 @@
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
@@ -319,7 +319,7 @@ class AutoCalling {
                                                     informationModel = Singleton
                                                         .instance
                                                         .contractorInformations
-                                                        ?.result;
+                                                        ;
                                                 double fontSizeNumber =
                                                     FontSize.fourteen;
                                                 if (informationModel

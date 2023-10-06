@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -17,7 +18,6 @@ import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/add_new_contact_model.dart';
-import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
 import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
@@ -139,8 +139,7 @@ class _CustomOtherFeedBackBottomSheetState
   void initState() {
     dateControlller = TextEditingController();
     remarksController = TextEditingController();
-    Singleton.instance.feedbackTemplate!.result!.feedbackTemplate
-        ?.forEach((element) {
+    Singleton.instance.feedbackTemplate!.feedbackTemplate?.forEach((element) {
       dynamicEventAttr.addAll({element.data![0].name!: ''});
     });
     setState(() {
@@ -285,7 +284,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: Singleton.instance.feedbackTemplate
-                                          ?.result?.feedbackTemplate?.length ??
+                                          ?.feedbackTemplate?.length ??
                                       0,
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -293,7 +292,6 @@ class _CustomOtherFeedBackBottomSheetState
                                     if (Singleton
                                             .instance
                                             .feedbackTemplate!
-                                            .result!
                                             .feedbackTemplate![index]
                                             .data![0]
                                             .type ==
@@ -301,7 +299,6 @@ class _CustomOtherFeedBackBottomSheetState
                                       Singleton
                                           .instance
                                           .feedbackTemplate!
-                                          .result!
                                           .feedbackTemplate![index]
                                           .data![0]
                                           .options
@@ -311,7 +308,7 @@ class _CustomOtherFeedBackBottomSheetState
                                     }
                                     return expandList(
                                         Singleton.instance.feedbackTemplate!
-                                            .result!.feedbackTemplate!,
+                                            .feedbackTemplate!,
                                         index,
                                         dropList);
                                   }),
@@ -533,7 +530,7 @@ class _CustomOtherFeedBackBottomSheetState
             cTypeFinal = element.cType!;
           }
         }
-        debugPrint("cTypeFinal---"+cTypeFinal);
+        debugPrint("cTypeFinal---" + cTypeFinal);
         otherFeedbackContact.add(OtherFeedBackContact(
             cType: cTypeFinal.toString(),
             value: listOfContact[i].controller.text,
@@ -585,7 +582,9 @@ class _CustomOtherFeedBackBottomSheetState
             altitude: 0,
             heading: 0,
             speed: 0,
-            speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
+            speedAccuracy: 0,
+            altitudeAccuracy: 0,
+            headingAccuracy: 0,
           );
 
           final GeolocatorPlatform geolocatorPlatform =

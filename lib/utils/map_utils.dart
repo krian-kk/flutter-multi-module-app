@@ -51,7 +51,7 @@ class MapUtils {
     try {
       LocationConverterModel getLocationLatLng = LocationConverterModel();
       final String geocodeURL =
-          'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Singleton.instance.contractorInformations?.result?.googleMapsApiKey}';
+          'https://maps.googleapis.com/maps/api/geocode/json?address=$address&key=${Singleton.instance.contractorInformations?.googleMapsApiKey}';
 
       final Map<String, dynamic> getAddressToLatlng =
           await APIRepository.apiRequest(APIRequestType.get, geocodeURL);

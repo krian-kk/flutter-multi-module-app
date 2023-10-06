@@ -35,7 +35,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [];
-    if (Singleton.instance.contractorInformations!.result!.contractor !=
+    if (Singleton.instance.contractorInformations!.contractor !=
         Constants.contractorId) {
       optionBottomSheetButtonList = <OptionBottomSheetButtonModel>[
         OptionBottomSheetButtonModel(

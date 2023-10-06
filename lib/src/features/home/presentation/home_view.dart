@@ -2,6 +2,7 @@ import 'package:design_system/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -34,7 +35,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with SingleTickerProviderStateMixin {
-  String? title = StringResource.allocation.toUpperCase();
+  late String? title;
   String? internetAvailability;
   late final TabController? _controller;
   String navigationErrorMsg = 'Bad network connection';
@@ -43,6 +44,7 @@ class _HomeViewState extends State<HomeView>
   @override
   void initState() {
     super.initState();
+
     mContext = context;
     _controller = TabController(
       length: 3,
@@ -58,6 +60,11 @@ class _HomeViewState extends State<HomeView>
       }
     });
     BlocProvider.of<HomeBloc>(context).add(HomeInitialEvent());
+  }
+
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    title = Languages.of(context)!.allocation;
   }
 
   @override
@@ -151,16 +158,16 @@ class _HomeViewState extends State<HomeView>
                                         case 0:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.allocation
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .allocation;
                                             });
                                           }
                                           break;
                                         case 1:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.dashboard
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .dashboard;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(
@@ -170,8 +177,8 @@ class _HomeViewState extends State<HomeView>
                                         case 2:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.profile
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .profile;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(

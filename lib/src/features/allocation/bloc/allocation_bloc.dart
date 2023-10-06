@@ -2,10 +2,15 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:design_system/constant_event_values.dart';
+import 'package:design_system/constants.dart';
 import 'package:domain_models/common/buildroute_data.dart';
 import 'package:domain_models/request_body/allocation/are_you_at_office_model.dart';
+import 'package:domain_models/response_models/allocation/communication_channel_model.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
+import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:domain_models/response_models/mapView/map_model.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
@@ -41,6 +46,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   bool isRefresh = false;
   bool areYouAtOffice = true;
   bool isSubmitRUOffice = false;
+  bool isGoogleApiKeyNull = false;
+  bool isCloudTelephony = false;
+
+  ContractorResult? contractorDetails;
+
+  CommunicationChannelModel? communicationChannel;
+
+  ContractorDetailsModel? customContractorDetails;
 
   Position position = Position(
     longitude: 0,
@@ -84,6 +97,65 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         StringResource.under5km,
         StringResource.more5km,
       ];
+
+      final ApiResult<ContractorResult> data =
+          await repository.getContractorDetails();
+
+      await data.when(
+          success: (ContractorResult? data) async {
+            contractorDetails = data!;
+
+            final ApiResult<ContractorDetailsModel> customContractorData =
+                await repository.getCustomContractorDetailsData();
+            await customContractorData.when(
+                success: (ContractorDetailsModel?
+                    customContractorDataProcessed) async {
+                  customContractorDetails = customContractorDataProcessed!;
+                  Singleton.instance.feedbackTemplate =
+                      customContractorDataProcessed;
+                },
+                failure: (NetworkExceptions? error) async {});
+
+            // check and store cloudTelephony true or false
+            final ApiResult<CommunicationChannelModel> comChannelData =
+                await repository.getCommunicationChannels();
+            await comChannelData.when(
+                success:
+                    (CommunicationChannelModel? comChannelDataProcessed) async {
+                  communicationChannel = comChannelDataProcessed!;
+                },
+                failure: (NetworkExceptions? error) async {});
+
+            Singleton.instance.cloudTelephony =
+                contractorDetails?.cloudTelephony ?? false;
+            Singleton.instance.contractorInformations = contractorDetails;
+            Singleton.instance.allocationTemplateConfig =
+                contractorDetails!.allocationTemplateConfig;
+
+            String? googleMapsApiKey =
+                Singleton.instance.contractorInformations?.googleMapsApiKey;
+            if (userType == Constants.fieldagent) {
+              if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
+                isGoogleApiKeyNull = true;
+              } else {
+                await _setGoogleMapApiKey(googleMapsApiKey);
+              }
+            }
+            // if cloudTelephone false means don't show autoCalling tab
+            if (contractorDetails!.cloudTelephony == false &&
+                communicationChannel!.voiceApiKeyAvailable == false) {
+              if (userType == Constants.telecaller) {
+                isCloudTelephony = false;
+              }
+            }
+            if (contractorDetails!.cloudTelephony == true &&
+                communicationChannel!.voiceApiKeyAvailable == false) {
+              if (userType == Constants.telecaller) {
+                isCloudTelephony = false;
+              }
+            }
+          },
+          failure: (NetworkExceptions? error) async {});
 
       emit(AllocationLoadedState());
     }
@@ -211,5 +283,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         emit(MapViewState());
       }
     }
+  }
+
+  //todo plugin for configurable google map services
+
+  static const MethodChannel platform = MethodChannel('recordAudioChannel');
+
+  Future<void> _setGoogleMapApiKey(String mapKey) async {
+    final Map<String, dynamic> requestData = {'mapKey': mapKey};
+    await platform.invokeMethod('setGoogleMapKey', requestData).then((value) {
+      // getLocation();
+    });
   }
 }

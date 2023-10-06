@@ -1115,7 +1115,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is SendSMSEvent) {
       yield SendSMSloadState();
       if (await Connectivity().checkConnectivity() != ConnectivityResult.none) {
-        if (Singleton.instance.contractorInformations!.result!.sendSms!) {
+        if (Singleton.instance.contractorInformations!.sendSms!) {
           final SendSMS requestBodyData = SendSMS(
             agentRef: Singleton.instance.agentRef,
             agrRef: Singleton.instance.agrRef,

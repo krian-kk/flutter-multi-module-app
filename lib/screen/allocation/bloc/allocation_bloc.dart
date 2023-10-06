@@ -126,10 +126,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       });
       await PreferenceHelper.getString(keyPair: 'ruAtOfficeDay')
           .then((value) async {
-        if (value != DateTime
-            .now()
-            .day
-            .toString()) {
+        if (value != DateTime.now().day.toString()) {
           await PreferenceHelper.getBool(keyPair: 'areyouatOffice')
               .then((value) {
             areyouatOffice = value;
@@ -138,7 +135,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           areyouatOffice = false;
         }
       });
-      areyouatOffice=true;
 
       isShowSearchPincode = false;
       selectedDistance = Languages.of(event.context)!.all;
@@ -176,21 +172,21 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         isPriorityLoadMore = true;
         bool appDataLoadedFromFirebase = false;
         await PreferenceHelper.getBool(
-            keyPair: Constants.appDataLoadedFromFirebase)
+                keyPair: Constants.appDataLoadedFromFirebase)
             .then((value) {
           appDataLoadedFromFirebase = value;
         });
 
         //event.isOfflineAPI! For offline purpose only
         var url = Singleton.instance.isOfflineEnabledContractorBased &&
-            !appDataLoadedFromFirebase &&
-            Singleton.instance.usertype == Constants.fieldagent
+                !appDataLoadedFromFirebase &&
+                Singleton.instance.usertype == Constants.fieldagent
             ? HttpUrl.priorityCaseListV2
             : HttpUrl.priorityCaseListV1;
         final Map<String, dynamic> priorityListData =
-        await APIRepository.apiRequest(APIRequestType.get,
-            '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
-            encrypt: url.contains('v1') ? true : false);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
+                encrypt: url.contains('v1') ? true : false);
 
         resultList.clear();
         starCount = 0;
@@ -214,9 +210,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             debugPrint(priorityListData['data']['result'].toString());
             for (var element in priorityListData['data']['result']) {
               resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-              if (Result
-                  .fromJson(jsonDecode(jsonEncode(element)))
-                  .starredCase ==
+              if (Result.fromJson(jsonDecode(jsonEncode(element)))
+                      .starredCase ==
                   true) {
                 starCount++;
               }
@@ -231,33 +226,33 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             }
             // Get Contractor Details and stored in Singleton
             final Map<String, dynamic> getContractorDetails =
-            await APIRepository.apiRequest(
-                APIRequestType.get, HttpUrl.contractorDetail,
-                encrypt: true);
+                await APIRepository.apiRequest(
+                    APIRequestType.get, HttpUrl.contractorDetail,
+                    encrypt: true);
             // Get Contractor Details and stored in Singleton
             if (getContractorDetails[Constants.success] == true) {
               final Map<String, dynamic> jsonData =
-              getContractorDetails['data'];
+                  getContractorDetails['data'];
               // check and store cloudTelephony true or false
               final Map<String, dynamic> getCommunicationChannels =
-              await APIRepository.apiRequest(
-                  APIRequestType.get, HttpUrl.communicationChannel);
+                  await APIRepository.apiRequest(
+                      APIRequestType.get, HttpUrl.communicationChannel);
               Singleton.instance.cloudTelephony =
                   jsonData['result']['cloudTelephony'] ?? false;
-              Singleton.instance.feedbackTemplate =
-                  ContractorDetailsModel.fromJson(jsonData);
-              Singleton.instance.contractorInformations =
-                  ContractorAllInformationModel.fromJson(jsonData);
-              Singleton.instance.allocationTemplateConfig =
-                  ContractorAllInformationModel
-                      .fromJson(jsonData)
-                      .result
-                      ?.allocationTemplateConfig;
+              // Singleton.instance.feedbackTemplate =
+              //     ContractorDetailsModel.fromJson(jsonData);
+              // Singleton.instance.contractorInformations =
+              //     ContractorAllInformationModel.fromJson(jsonData);
+              // Singleton.instance.allocationTemplateConfig =
+              //     ContractorAllInformationModel
+              //         .fromJson(jsonData)
+              //         .result
+              //         ?.allocationTemplateConfig;
               CommunicationChannelModel communicationChannelModel =
-              CommunicationChannelModel.fromJson(
-                  getCommunicationChannels['data']);
-              String? googleMapsApiKey = Singleton
-                  .instance.contractorInformations?.result?.googleMapsApiKey;
+                  CommunicationChannelModel.fromJson(
+                      getCommunicationChannels['data']);
+              String? googleMapsApiKey =
+                  Singleton.instance.contractorInformations?.googleMapsApiKey;
               if (userType == Constants.fieldagent) {
                 if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
                   selectOptions = [
@@ -359,20 +354,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         final Map<String, dynamic> priorityListData =
-        await APIRepository.apiRequest(
-            APIRequestType.get,
-            '${HttpUrl.priorityCaseListV1}pageNo=${Constants
-                .pageNo}&limit=${Constants.limit}',
-            encrypt: true);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${HttpUrl.priorityCaseListV1}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
+                encrypt: true);
 
         resultList.clear();
         starCount = 0;
 
         for (var element in priorityListData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result
-              .fromJson(jsonDecode(jsonEncode(element)))
-              .starredCase ==
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
             starCount++;
           }
@@ -414,19 +405,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         final Map<String, dynamic> priorityListData =
-        await APIRepository.apiRequest(
-            APIRequestType.get,
-            '${HttpUrl.priorityCaseListV1}pageNo=$page&limit=${Constants
-                .limit}',
-            encrypt: true);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${HttpUrl.priorityCaseListV1}pageNo=$page&limit=${Constants.limit}',
+                encrypt: true);
         final PriorityCaseListModel listOfdata =
-        PriorityCaseListModel.fromJson(priorityListData['data']);
+            PriorityCaseListModel.fromJson(priorityListData['data']);
         if (priorityListData['data']['result'] != null) {
           for (var element in priorityListData['data']['result']) {
             resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-            if (Result
-                .fromJson(jsonDecode(jsonEncode(element)))
-                .starredCase ==
+            if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
               starCount++;
             }
@@ -481,20 +468,16 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         final Map<String, dynamic> buildRouteListData =
-        await APIRepository.apiRequest(
-            APIRequestType.get,
-            '${HttpUrl.buildRouteCaseList}lat=${event.paramValues
-                .lat}&lng=${event.paramValues.long}&maxDistMeters=${event
-                .paramValues.maxDistMeters}&page=${Constants
-                .pageNo}&limit=${Constants.limit}',
-            encrypt: true);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=${Constants.pageNo}&limit=${Constants.limit}',
+                encrypt: true);
 
         resultList.clear();
         multipleLatLong.clear();
         buildRouteListData['data']['result'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
-          Result.fromJson(jsonDecode(jsonEncode(element)));
+              Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
             MapMarkerModel(
               caseId: listOfCases.caseId,
@@ -521,19 +504,15 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield NoInternetConnectionState();
       } else {
         final Map<String, dynamic> buildRouteListData =
-        await APIRepository.apiRequest(
-            APIRequestType.get,
-            '${HttpUrl.buildRouteCaseList}lat=${event.paramValues
-                .lat}&lng=${event.paramValues.long}&maxDistMeters=${event
-                .paramValues.maxDistMeters}&page=$page&limit=${Constants
-                .limit}',
-            encrypt: true);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=$page&limit=${Constants.limit}',
+                encrypt: true);
         final PriorityCaseListModel listOfdata =
-        PriorityCaseListModel.fromJson(buildRouteListData['data']);
+            PriorityCaseListModel.fromJson(buildRouteListData['data']);
         buildRouteListData['data']['result'].forEach((element) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
-          Result.fromJson(jsonDecode(jsonEncode(element)));
+              Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
             MapMarkerModel(
               caseId: listOfCases.caseId,
@@ -580,17 +559,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         yield LoadingState();
         // yield MapInitiateState();
         final Map<String, dynamic> buildRouteListData =
-        await APIRepository.apiRequest(
-            APIRequestType.get,
-            '${HttpUrl.buildRouteCaseList}lat=${event.paramValues
-                .lat}&lng=${event.paramValues.long}&maxDistMeters=${event
-                .paramValues.maxDistMeters}&page=${Constants
-                .pageNo}&limit=${Constants.limit}',
-            encrypt: true);
+            await APIRepository.apiRequest(APIRequestType.get,
+                '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=${Constants.pageNo}&limit=${Constants.limit}',
+                encrypt: true);
         if (buildRouteListData['data']['result'] != null) {
           buildRouteListData['data']['result'].forEach((element) {
             final Result listOfCases =
-            Result.fromJson(jsonDecode(jsonEncode(element)));
+                Result.fromJson(jsonDecode(jsonEncode(element)));
             multipleLatLong.add(
               MapMarkerModel(
                 caseId: listOfCases.caseId,
@@ -632,38 +607,22 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         if (data.isStarCases! && data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              '${HttpUrl.searchUrl}starredOnly=${data
-                  .isStarCases}&recentActivity=${data
-                  .isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data
-                  .customerName}&bankName=${data.bankName}&dpdStr=${data
-                  .dpdBucket}&customerId=${data.customerID}&pincode=${data
-                  .pincode}&collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else if (data.isStarCases!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&accNo=${data
-                  .accountNumber}&cust=${data.customerName}&bankName=${data
-                  .bankName}&dpdStr=${data.dpdBucket}&customerId=${data
-                  .customerID}&pincode=${data.pincode}&collSubStatus=${data
-                  .status}',
+              '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else if (data.isMyRecentActivity!) {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              '${HttpUrl.searchUrl}recentActivity=${data
-                  .isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data
-                  .customerName}&bankName=${data.bankName}&dpdStr=${data
-                  .dpdBucket}&customerId=${data.customerID}&pincode=${data
-                  .pincode}&collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         } else {
           getSearchResultData = await APIRepository.apiRequest(
               APIRequestType.get,
-              '${HttpUrl.searchUrl}accNo=${data.accountNumber}&cust=${data
-                  .customerName}&bankName=${data.bankName}&dpdStr=${data
-                  .dpdBucket}&customerId=${data.customerID}&pincode=${data
-                  .pincode}&collSubStatus=${data.status}',
+              '${HttpUrl.searchUrl}accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
               encrypt: true);
         }
 
@@ -672,9 +631,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
         for (var element in getSearchResultData['data']['result']) {
           resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
-          if (Result
-              .fromJson(jsonDecode(jsonEncode(element)))
-              .starredCase ==
+          if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
             starCount++;
           }
@@ -693,9 +650,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       isShowSearchFloatingButton = false;
 
       final Map<String, dynamic> autoCallingListData =
-      await APIRepository.apiRequest(
-          APIRequestType.get, HttpUrl.autoCallingURL,
-          encrypt: true);
+          await APIRepository.apiRequest(
+              APIRequestType.get, HttpUrl.autoCallingURL,
+              encrypt: true);
       autoCallingResultList.clear();
       if (autoCallingListData[Constants.success] == true) {
         debugPrint(autoCallingListData.toString());
@@ -714,9 +671,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       totalCount = autoCallingListData['data']['totalCases'];
       for (var element in autoCallingResultList) {
         element.address?.removeWhere((element) =>
-        (element.cType == 'office address' ||
-            element.cType == 'residence address' ||
-            element.cType == 'email'));
+            (element.cType == 'office address' ||
+                element.cType == 'residence address' ||
+                element.cType == 'email'));
       }
       yield AutoCallingLoadedState();
     }
@@ -728,13 +685,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         if (Singleton.instance.usertype == Constants.fieldagent) {
           resultList[event.selectedStarIndex].starredCase =
-          !resultList[event.selectedStarIndex].starredCase;
+              !resultList[event.selectedStarIndex].starredCase;
         } else {
           yield NoInternetConnectionState();
         }
       } else {
         resultList[event.selectedStarIndex].starredCase =
-        !resultList[event.selectedStarIndex].starredCase;
+            !resultList[event.selectedStarIndex].starredCase;
       }
 
       yield UpdateStaredCaseState(

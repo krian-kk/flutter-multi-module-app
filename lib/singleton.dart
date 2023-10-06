@@ -1,8 +1,8 @@
+import 'package:domain_models/response_models/allocation/allocation_templates.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
+import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:flutter/material.dart';
 import 'package:origa/models/agent_information_model.dart';
-import 'package:origa/models/allocation_templates/allocation_templates.dart';
-import 'package:origa/models/contractor_detail_model.dart';
-import 'package:origa/models/contractor_information_model.dart';
 
 class Singleton {
   factory Singleton() {
@@ -47,7 +47,7 @@ class Singleton {
   List<ContactType> availableAddContacts = [];
 
 // Contractor All Information
-  ContractorAllInformationModel? contractorInformations;
+  ContractorResult? contractorInformations;
 
 // Agent Information
   AgentInformation? agentDetailsInfo;
