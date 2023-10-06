@@ -6,6 +6,7 @@ import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
+import 'package:domain_models/common/buildroute_data.dart';
 
 class CasesApiService {
   static String priorityCasesV1 =
@@ -61,12 +62,38 @@ class CasesApiService {
   static String notOperationalUrl(String selectValue, String userTypeValue) =>
       '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
 
+  static String buildRouteCaseList =
+      "${getMobileBackendUrl(apiVersion: 'v1/')}case-details/buildRoute?";
+
   Future<ApiResult<List<PriorityCaseListModel>>> getCases(
       String accessToken, int limit, int pageNo) async {
     dynamic response;
     try {
       String url = priorityCasesV1;
-      url = "${url}pageNo=$pageNo&limit=$limit";
+      url = "${url}pageNo=${pageNo}&limit=$limit";
+
+      response = await DioClient(baseUrl, accessToken: accessToken)
+          .get(url, decryptResponse: true);
+      final mappedResponse =
+          ListResponse.fromJson(response, PriorityCaseListModel.fromJson);
+      List<PriorityCaseListModel>? list =
+          mappedResponse.result?.cast<PriorityCaseListModel>();
+      return ApiResult.success(data: list);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getBuildCases(
+      String accessToken,
+      int limit,
+      int pageNo,
+      BuildRouteDataModel paramValues) async {
+    dynamic response;
+    try {
+      String url = buildRouteCaseList;
+      url =
+          "${url}lat=${paramValues.lat}&lng=${paramValues.long}&maxDistMeters=${paramValues.maxDistMeters}&page=${pageNo}&limit=$limit";
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
       final mappedResponse =

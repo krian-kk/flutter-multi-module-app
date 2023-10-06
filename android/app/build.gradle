@@ -1,8 +1,7 @@
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
+    localPropertiesFile.withReader('UTF-8') { reader -> localProperties.load(reader)
     }
 }
 
@@ -70,7 +69,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 33
         versionCode 31
-        versionName "3.0.17.0"
+        versionName "23.10.01"
         multiDexEnabled true
         ndk {
             abiFilters "armeabi", "x86", "armeabi-v7a", "x86_64", "mips",
@@ -112,11 +111,10 @@ android {
         uat {
             dimension "default"
             resValue "string", "app_name", "M2P Collect UAT"
-//            applicationIdSuffix ".uat"
         }
-        uatSbi {
+        dev {
             dimension "default"
-            resValue "string", "app_name", "M2P Collect"
+            resValue "string", "app_name", "M2P Collect Dev"
         }
         prod {
             dimension "default"

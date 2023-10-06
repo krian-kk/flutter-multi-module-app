@@ -119,6 +119,9 @@ class LanguageTa extends Languages {
   String get yardingSelfRelease => 'யார்டிங் & சுய-வெளியீடு';
 
   @override
+  String get mySelfRelease => 'எனது சுய வெளியீடு';
+
+  @override
   String get help => 'உதவி';
 
   @override

@@ -77,6 +77,8 @@ abstract class Languages {
 
   String get yardingSelfRelease;
 
+  String get mySelfRelease;
+
   String get help;
 
   String get count;

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:domain_models/response_models/case/case_detail_models/case_details_response.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -10,6 +11,7 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
+import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
 import 'package:origa/screen/call_customer_screen/bloc/call_customer_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
@@ -75,7 +77,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
     agentContactNoControlller = TextEditingController();
     bloc = CallCustomerBloc()..add(CallCustomerInitialEvent());
     final ContractorResult? informationModel =
-        Singleton.instance.contractorInformations?.result;
+        Singleton.instance.contractorInformations;
     final value = widget.contactNumber!;
     debugPrint(value);
     customerContactNoDropDownValue = widget.contactNumber!;
@@ -297,7 +299,7 @@ class _CallCustomerBottomSheetState extends State<CallCustomerBottomSheet> {
                                     customerContactNoDropDownValue;
                                 final ContractorResult? informationModel =
                                     Singleton.instance.contractorInformations
-                                        ?.result;
+                                ;
                                 if (informationModel?.cloudTelephony == true &&
                                     informationModel?.contactMasking == true) {
                                   selectedCustomerNumberValue =

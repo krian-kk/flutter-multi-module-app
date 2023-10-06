@@ -5,6 +5,8 @@ import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:domain_models/response_models/contractor/contractor_information_model.dart';
 import 'package:domain_models/response_models/events/event_details/event_details_response.dart';
 import 'package:network_helper/api_services/cases_api_services.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:domain_models/common/buildroute_data.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:repository/repo_utils.dart';
@@ -19,6 +21,12 @@ abstract class CaseRepository {
 
   Future<ApiResult<List<EventDetailsResultsModel>>> getEventDetailsFromServer(
       String caseId);
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
+      int limit, int pageNo);
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
+      int limit, int pageNo, BuildRouteDataModel paramValues);
 }
 
 class CaseRepositoryImpl implements CaseRepository {
@@ -35,8 +43,14 @@ class CaseRepositoryImpl implements CaseRepository {
     //todo
   }
 
+  @override
   Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
       int limit, int pageNo) async {
+    if (pageNo % 10 == 0) {
+      pageNo = (pageNo % 10) + 1;
+    } else {
+      pageNo = pageNo % 10;
+    }
     String? accessToken = await getAccessToken();
     ApiResult<List<PriorityCaseListModel>> response =
         await collectApiProvider.getCases(accessToken, limit, pageNo);
@@ -106,6 +120,15 @@ class CaseRepositoryImpl implements CaseRepository {
     ApiResult<BaseResponse> response =
         await collectApiProvider.postImageCaptureEvent(
             accessToken, formData, 'imageCaptured', userType);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
+      int limit, int pageNo, BuildRouteDataModel paramValues) async {
+    String? accessToken = await getAccessToken();
+    ApiResult<List<PriorityCaseListModel>> response = await collectApiProvider
+        .getBuildCases(accessToken, limit, pageNo, paramValues);
     return response;
   }
 }

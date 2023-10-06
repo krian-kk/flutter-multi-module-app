@@ -72,6 +72,7 @@ class PublicAgentInfoModel {
     policeDocument = json['policeDocument'];
     roleLevel = json['roleLevel'];
     sentOtpCounter = json['sentOtpCounter'];
+    type = json['type'];
   }
 
   Audit? audit;

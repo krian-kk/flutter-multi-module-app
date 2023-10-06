@@ -23,7 +23,6 @@ const keyContentType = 'Content-Type';
 const jsonContentType = 'application/json';
 const multiPartContentType = 'multipart/form-data';
 const authTypeBearer = 'Bearer';
-
 const String baseUrl = 'https://uat-collect.m2pfintech.com/';
 const String mobileBackendUrl = '$baseUrl$apiType$version$fieldAgent';
 const String version = 'v1/';
@@ -103,6 +102,31 @@ class DioClient {
       bool encryptRequestBody = false}) async {
     try {
       var response = await dio.post(
+        uri,
+        data: await _cryptoPlugin.checkForRequestBody(encryptRequestBody, data),
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      return _cryptoPlugin.extractResponse(decryptResponse, response);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> put(String uri,
+      {data,
+      Map<String, dynamic>? queryParameters,
+      Options? options,
+      CancelToken? cancelToken,
+      ProgressCallback? onSendProgress,
+      ProgressCallback? onReceiveProgress,
+      bool decryptResponse = false,
+      bool encryptRequestBody = false}) async {
+    try {
+      var response = await dio.put(
         uri,
         data: await _cryptoPlugin.checkForRequestBody(encryptRequestBody, data),
         queryParameters: queryParameters,

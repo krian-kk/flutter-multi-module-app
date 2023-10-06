@@ -1,5 +1,5 @@
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -400,7 +400,7 @@ class ListOfCaseDetails {
                 .toLowerCase() ==
             'mobile') {
           ContractorResult? informationModel =
-              Singleton.instance.contractorInformations?.result;
+              Singleton.instance.contractorInformations;
           if (informationModel?.cloudTelephony == true &&
               informationModel?.contactMasking == true) {
             value = value.replaceRange(2, 7, 'XXXXX');

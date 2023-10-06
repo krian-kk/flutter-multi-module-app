@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/singleton.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
@@ -19,6 +21,7 @@ import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/allocation_repository.dart';
 import 'package:repository/case_repository.dart';
 import 'package:repository/dashboard_repository.dart';
 import 'package:repository/file_repository.dart';
@@ -33,7 +36,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView>
     with SingleTickerProviderStateMixin {
-  String? title = StringResource.allocation.toUpperCase();
+  late String? title;
   String? internetAvailability;
   late final TabController? _controller;
   String navigationErrorMsg = 'Bad network connection';
@@ -62,6 +65,11 @@ class _HomeViewState extends State<HomeView>
     BlocProvider.of<HomeBloc>(context).add(HomeInitialEvent());
   }
 
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    title = Languages.of(context)!.allocation;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
@@ -69,11 +77,17 @@ class _HomeViewState extends State<HomeView>
         RepositoryProvider(create: (context) => DashBoardRepositoryImpl()),
         RepositoryProvider(create: (context) => FileRepositoryImpl()),
         RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
+        RepositoryProvider(create: (context) => CaseRepositoryImpl()),
+        RepositoryProvider(create: (context) => AllocationRepositoryImpl()),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => HomeBloc()),
-          BlocProvider(create: (context) => AllocationBloc()),
+          BlocProvider(
+              create: (context) => AllocationBloc(
+                    repository: context.read<AllocationRepositoryImpl>(),
+                    caseRepository: context.read<CaseRepositoryImpl>(),
+                  )),
           BlocProvider(
             create: (context) => DashboardBloc(
                 repository: context.read<DashBoardRepositoryImpl>()),
@@ -108,10 +122,10 @@ class _HomeViewState extends State<HomeView>
                 height: 30,
                 color: ColorResourceDesign.colorE72C30,
                 width: MediaQuery.of(context).size.width,
-                child: CustomText(
-                  "You are offline",
+                child: const CustomText(
+                  'You are offline',
                   color: Colors.white,
-                  style: const TextStyle(
+                  style: TextStyle(
                       overflow: TextOverflow.ellipsis, color: Colors.white),
                 ),
               ),
@@ -147,16 +161,16 @@ class _HomeViewState extends State<HomeView>
                                         case 0:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.allocation
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .allocation;
                                             });
                                           }
                                           break;
                                         case 1:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.dashboard
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .dashboard;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(
@@ -166,8 +180,8 @@ class _HomeViewState extends State<HomeView>
                                         case 2:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.profile
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .profile;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(
@@ -303,38 +317,24 @@ class _HomeViewState extends State<HomeView>
                           ),
                         ),
                         Expanded(
-                            child: MultiRepositoryProvider(
-                          providers: [
-                            RepositoryProvider(
-                                create: (context) => DashBoardRepositoryImpl()),
-                          ],
-                          child: MultiBlocProvider(
-                            providers: [
-                              BlocProvider(
-                                  create: (context) => DashboardBloc(
-                                      repository: context
-                                          .read<DashBoardRepositoryImpl>())),
-                              BlocProvider(
-                                  create: (context) => DashboardBloc(
-                                      repository: context
-                                          .read<DashBoardRepositoryImpl>()))
-                            ],
                             child: TabBarView(
                                 controller: _controller,
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                                  RepositoryProvider(
-                                    create: (context) => CaseRepositoryImpl(),
-                                    child: BlocProvider(
-                                        create: (context) => PriorityBloc(
-                                            repository: CaseRepositoryImpl()),
-                                        child: const AllocationView()),
-                                  ), //1
-                                  const DashboardScreen(), //2
+                              MultiBlocProvider(
+                                providers: [
+                                  BlocProvider(
+                                      create: (context) => PriorityBloc(
+                                          repository: CaseRepositoryImpl())),
+                                  BlocProvider(
+                                      create: (context) => BuildRouteBloc(
+                                          repository: CaseRepositoryImpl())),
+                                ],
+                                child: const AllocationView(),
+                              ), //1
+                              const DashboardScreen(), //2
                                   const ProfileScreen(), //3
-                                ]),
-                          ),
-                        ))
+                                ]))
                       ]),
                     ),
                   ),

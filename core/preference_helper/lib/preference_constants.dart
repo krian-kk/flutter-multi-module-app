@@ -26,4 +26,8 @@ class PreferenceConstants {
   static const String appDataLoadedFromFirebaseTime =
       'appDataLoadedFromFirebaseTime';
   static const String atOffice = 'areyouatOffice';
+
+  //Allocation
+  static const String fieldagent = 'FIELDAGENT';
+  static const String telecaller = 'TELECALLER';
 }

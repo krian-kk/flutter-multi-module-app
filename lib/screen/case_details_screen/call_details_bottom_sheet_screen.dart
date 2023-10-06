@@ -1,9 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
@@ -117,7 +117,7 @@ class _CallDetailsBottomSheetScreenState
                                   '';
                               debugPrint('Length ${widget.bloc.listOfCallDetails?.length}');
                               ContractorResult? informationModel = Singleton
-                                  .instance.contractorInformations?.result;
+                                  .instance.contractorInformations;
                               if (informationModel?.cloudTelephony == true &&
                                   informationModel?.contactMasking == true) {
                                 value = value.replaceRange(2, 7, 'XXXXX');

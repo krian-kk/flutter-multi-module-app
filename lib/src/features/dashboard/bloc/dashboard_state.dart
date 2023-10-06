@@ -1,7 +1,6 @@
 part of 'dashboard_bloc.dart';
 
-class DashboardState extends BaseEquatable {
-}
+class DashboardState extends BaseEquatable {}
 
 class DashboardInitial extends DashboardState {}
 
@@ -16,6 +15,15 @@ class UntouchedCasesState extends DashboardState {}
 class BrokenPTPState extends DashboardState {}
 
 class MyReceiptsState extends DashboardState {}
+
+class MySelfReleaseState extends DashboardState {}
+
+class ReturnSelfReleaseApiState extends DashboardState {
+  ReturnSelfReleaseApiState({this.returnData});
+
+  final dynamic returnData;
+}
+
 
 class ReturnReceiptsApiState extends DashboardState {
   ReturnReceiptsApiState({this.returnData});

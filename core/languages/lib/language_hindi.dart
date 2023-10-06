@@ -119,6 +119,9 @@ class LanguageHi extends Languages {
   String get yardingSelfRelease => 'यार्डिंग और सेल्फ़-रिलीज़';
 
   @override
+  String get mySelfRelease => 'मेरी आत्म-मुक्ति';
+
+  @override
   String get help => 'मदद';
 
   @override

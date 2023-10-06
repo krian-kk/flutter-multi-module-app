@@ -21,6 +21,7 @@ import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
 import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
+import 'package:origa/src/features/profile/location_maps.dart';
 import 'package:origa/src/features/profile/presentation/customer_language_preference/customer_language_preference.dart';
 import 'package:origa/src/features/profile/presentation/language_bottom_sheet_screen/language_bottom_sheet_screen.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -32,30 +33,43 @@ import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:repository/file_repository.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  ProfileScreenState createState() => ProfileScreenState();
+  _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   late BuildContext mContext;
+
+  // late ProfileBloc bloc;
+  // String addressValue = '';
   Uint8List? profileImage;
 
   @override
   void initState() {
+    // bloc = ProfileBloc()..add(ProfileInitialEvent(context));
+    // getAddress();
     mContext = context;
+    // openChatScreenFromNotificationClick();
     BlocProvider.of<ProfileBloc>(context).add(ProfileInitialEvent());
     super.initState();
   }
 
+  // getAddress() async {
+  //   await PreferenceHelper.getString(keyPair: 'addressValue').then((value) {
+  //     addressValue = value ?? '';
+  //   });
+  // }
+
   Future<bool> requestOTP(String aRef) async {
-    const bool returnValue = false;
+    bool returnValue = false;
     final object = <String, dynamic>{'aRef': aRef};
     final Map<String, dynamic> requestData = {'data': jsonEncode(object)};
-    final String text = '';
+    String text = "";
     // String text = await platform.invokeMethod('sendEncryptedData', requestData);
     final Map<String, dynamic> postResult = await APIRepository.apiRequest(
       APIRequestType.post,
@@ -167,6 +181,33 @@ class ProfileScreenState extends State<ProfileScreen> {
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
     final List<ProfileNavigation> profileNavigationList = <ProfileNavigation>[
+      // if (Singleton.instance.contractorInformations != null &&
+      //     Singleton
+      //         .instance.contractorInformations!.result!.enableAgencyManagement!)
+      // if (Singleton.instance.agentDetailsInfo!.result!.first.agencyAgent!)
+      //   ProfileNavigation(
+      //       title: Languages.of(context)!.authorizationLetter,
+      //       isEnable: true,
+      //       onTap: () {
+      //         BlocProvider.of<ProfileBloc>(context)
+      //             .add(ClickAuthorizationLetterEvent());
+      //       }),
+      // if (Singleton.instance.contractorInformations != null &&
+      //     Singleton
+      //         .instance.contractorInformations!.result!.enableAgencyManagement!)
+      // if (Singleton.instance.agentDetailsInfo!.result!.first.agencyAgent!)
+      //   ProfileNavigation(
+      //       title: Languages.of(context)!.idCard,
+      //       isEnable: true,
+      //       onTap: () {
+      //         BlocProvider.of<ProfileBloc>(context).add(ClickIDCardEvent());
+      //       }),
+      // ProfileNavigation(
+      //     title: Languages.of(context)!.notification,
+      //     notificationCount: 3,
+      //     onTap: () {
+      //       bloc.add(ClickNotificationEvent());
+      //     }),
       ProfileNavigation(
           title: Languages.of(context)!.selectAppLanguage,
           isEnable: true,
@@ -184,6 +225,30 @@ class ProfileScreenState extends State<ProfileScreen> {
             BlocProvider.of<ProfileBloc>(context)
                 .add(InitialCustomerLanguagePreferenceEvent());
           }),
+      // ProfileNavigation(
+      //     title: Languages.of(context)!.changePassword,
+      //     isEnable: true,
+      //     onTap: () {
+      //       BlocProvider.of<ProfileBloc>(context)
+      //           .add(ClickChangePassswordEvent());
+      //     }),
+      // // if (Singleton.instance.usertype == Constants.fieldagent &&
+      // //     Singleton.instance.isOfflineEnabledContractorBased)
+      // ProfileNavigation(
+      //   title: Languages.of(context)!.changeSecurePIN,
+      //   onTap: () {
+      //     BlocProvider.of<ProfileBloc>(context)
+      //         .add(ClickChangeSecurityPinEvent());
+      //   },
+      //   isEnable: true,
+      // ),
+      // ProfileNavigation(
+      //     title: Languages.of(context)!.help,
+      //     isEnable: true,
+      //     onTap: () {
+      //       webViewScreen(context,
+      //           urlAddress: 'https://origahelpdesk.w3spaces.com');
+      //     }),
     ];
     return BlocListener<ProfileBloc, ProfileState>(
       bloc: BlocProvider.of<ProfileBloc>(context),
@@ -200,7 +265,10 @@ class ProfileScreenState extends State<ProfileScreen> {
           customerSupportLanguageBottomSheet();
         }
         if (state is ClickMessageState) {
+          // Navigator.push(
+          //     context, MaterialPageRoute(builder: (context) => ChatScreen()));
           messageShowBottomSheet(fromID: state.fromId, toID: state.toId);
+          // BlocProvider.of<ProfileBloc>(context).newMsgCount = 0;
         }
 
         if (state is SuccessUpdatedProfileImageState) {
@@ -217,12 +285,32 @@ class ProfileScreenState extends State<ProfileScreen> {
         if (state is ClickChangePasswordState) {
           changePasswordBottomSheet(context);
         }
+        if (state is ClickMarkAsHomeState) {
+          // markAsHomeShowBottomSheet(context);
+        }
         if (state is LoginState) {
           while (context.canPop()) {
             context.pop();
           }
           context.pushReplacement(context.namedLocation('login'));
         }
+        // if (state is ClickChangeSecurityPinState) {
+        //   if (await requestOTP(BlocProvider.of<ProfileBloc>(context)
+        //           .profileAPIValue
+        //           .result
+        //           ?.first
+        //           .aRef
+        //           .toString() ??
+        //       '')) {
+        //     await showForgorSecurePinDialogBox(
+        //         BlocProvider.of<ProfileBloc>(context)
+        //             .profileAPIValue
+        //             .result!
+        //             .first
+        //             .aRef
+        //             .toString());
+        //   }
+        // }
       },
       child: BlocBuilder<ProfileBloc, ProfileState>(
           bloc: BlocProvider.of<ProfileBloc>(context),
@@ -232,6 +320,18 @@ class ProfileScreenState extends State<ProfileScreen> {
             }
             if (state is ProfileLoadingState) {
               return const SkeletonLoading();
+            } else {
+              // if (BlocProvider.of<ProfileBloc>(context)
+              //         .profileAPIValue
+              //         .result
+              //         ?.first
+              //         .profileImgUrl !=
+              //     null) {
+              //   profileImage = base64.decode(BlocProvider.of<ProfileBloc>(context)
+              //       .profileAPIValue
+              //       .result!
+              //       .first
+              //       .profileImgUrl!);
             }
             return BlocProvider.of<ProfileBloc>(context)
                     .isNoInternetAndServerError
@@ -354,10 +454,11 @@ class ProfileScreenState extends State<ProfileScreen> {
                                           children: <Widget>[
                                             CustomText(
                                               BlocProvider.of<ProfileBloc>(
-                                                      context)
-                                                  .profileAPIValue
-                                                  .aRef
-                                                  .toString(),
+                                                          context)
+                                                      .profileAPIValue
+                                                      .aRef
+                                                      .toString() ??
+                                                  '_',
                                               fontSize: Sizes.p18,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResourceDesign
@@ -366,20 +467,22 @@ class ProfileScreenState extends State<ProfileScreen> {
                                             const SizedBox(height: 11),
                                             CustomText(
                                               BlocProvider.of<ProfileBloc>(
-                                                      context)
-                                                  .profileAPIValue
-                                                  .name
-                                                  .toString(),
+                                                          context)
+                                                      .profileAPIValue
+                                                      .name
+                                                      .toString() ??
+                                                  '_',
                                               fontSize: Sizes.p16,
                                               color: ColorResourceDesign
                                                   .appTextPrimaryColor,
                                             ),
                                             CustomText(
                                               BlocProvider.of<ProfileBloc>(
-                                                      context)
-                                                  .profileAPIValue
-                                                  .defMobileNumber
-                                                  .toString(),
+                                                          context)
+                                                      .profileAPIValue
+                                                      .defMobileNumber
+                                                      .toString() ??
+                                                  '_',
                                               fontSize: Sizes.p16,
                                               fontWeight: FontWeight.w700,
                                               color: ColorResourceDesign
@@ -396,8 +499,93 @@ class ProfileScreenState extends State<ProfileScreen> {
                                       mainAxisSize: MainAxisSize.min,
                                       children: <Widget>[
                                         Spacer(),
+                                        // CustomText(
+                                        //   Languages.of(context)!
+                                        //       .homeAddress
+                                        //       .toUpperCase(),
+                                        //   fontSize: FontSize.fourteen,
+                                        //   fontStyle: FontStyle.normal,
+                                        //   fontWeight: FontWeight.w700,
+                                        //   color:
+                                        //       ColorResource.color101010,
+                                        // ),
+                                        // GestureDetector(
+                                        //   onTap: () => bloc.add(
+                                        //       ClickMarkAsHomeEvent()),
+                                        //   child: SizedBox(
+                                        //     child: CustomText(
+                                        //       Languages.of(context)!
+                                        //           .markAsHome,
+                                        //       fontSize: FontSize.twelve,
+                                        //       isUnderLine: true,
+                                        //       fontWeight: FontWeight.w700,
+                                        //       color: ColorResource
+                                        //           .color101010,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
-                                    ),
+                                    )
+                                    //     : const SizedBox(),
+                                    // const SizedBox(height: 5),
+                                    // Singleton.instance.usertype ==
+                                    //         Constants.fieldagent
+                                    //     ? Container(
+                                    //         width: double.infinity,
+                                    //         margin: const EdgeInsets.symmetric(
+                                    //             vertical: 5.0),
+                                    //         decoration: const BoxDecoration(
+                                    //             color:
+                                    //                 ColorResource.colorF8F9FB,
+                                    //             borderRadius: BorderRadius.all(
+                                    //                 Radius.circular(10.0))),
+                                    //         child: Padding(
+                                    //           padding:
+                                    //               const EdgeInsets.symmetric(
+                                    //             horizontal: 20,
+                                    //             vertical: 16.0,
+                                    //           ),
+                                    //           child: Column(
+                                    //             crossAxisAlignment:
+                                    //                 CrossAxisAlignment.start,
+                                    //             children: <Widget>[
+                                    //               Row(
+                                    //                 children: <Widget>[
+                                    //                   CustomText(
+                                    //                     Languages.of(context)!
+                                    //                         .homeAddress
+                                    //                         .toUpperCase(),
+                                    //                     fontWeight:
+                                    //                         FontWeight.w700,
+                                    //                     color: ColorResource
+                                    //                         .color101010,
+                                    //                   ),
+                                    //                   const SizedBox(width: 8),
+                                    //                   SvgPicture.asset(
+                                    //                       ImageResource
+                                    //                           .location),
+                                    //                 ],
+                                    //               ),
+                                    //               const SizedBox(height: 5),
+                                    //               CustomText(
+                                    //                 addressValue != ''
+                                    //                     ? addressValue
+                                    //                     : bloc
+                                    //                             .profileAPIValue
+                                    //                             .result
+                                    //                             ?.first
+                                    //                             .homeAddress ??
+                                    //                         Languages.of(
+                                    //                                 context)!
+                                    //                             .homeAddressNotAvailable,
+                                    //                 color: ColorResource
+                                    //                     .color484848,
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //)
+                                    ,
                                     ListView.builder(
                                         physics:
                                             const NeverScrollableScrollPhysics(),
@@ -487,11 +675,49 @@ class ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 25),
                           ],
                         ),
                       ),
                     ),
+                    // bottomNavigationBar: Container(
+                    //   width: double.infinity,
+                    //   color: ColorResource.colorFFFFFF,
+                    //   child: Padding(
+                    //     padding: const EdgeInsets.symmetric(vertical: 11.0),
+                    //     child: Row(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: <Widget>[
+                    //         SizedBox(
+                    //           width: 200,
+                    //           child: CustomButton(
+                    //             Languages.of(context)!.chat.toUpperCase(),
+                    //             onTap: () => bloc.add(ClickMessageEvent(
+                    //               fromId: bloc.profileAPIValue.result![0].aRef,
+                    //               toId: bloc.profileAPIValue.result![0].parent,
+                    //             )),
+                    //             fontSize: FontSize.twenty,
+                    //             cardShape: 5,
+                    //             isTrailing:
+                    //                 bloc.newMsgCount != 0 ? true : false,
+                    //             leadingWidget: CircleAvatar(
+                    //               radius: 13,
+                    //               backgroundColor: ColorResource.colorFFFFFF,
+                    //               child: CustomText(
+                    //                 bloc.newMsgCount >= 100
+                    //                     ? '100+'
+                    //                     : bloc.newMsgCount.toString(),
+                    //                 fontSize: FontSize.twelve,
+                    //                 lineHeight: 1,
+                    //                 color: ColorResource.colorEA6D48,
+                    //                 fontWeight: FontWeight.w700,
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                     floatingActionButton: Visibility(
                       visible: false,
                       child: GestureDetector(
@@ -551,6 +777,14 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  _loadHtmlFromAssets() async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return HelpScreen();
+        });
+  }
+
   webViewScreen(BuildContext context, {required String urlAddress}) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -608,6 +842,42 @@ class ProfileScreenState extends State<ProfileScreen> {
                   LanguageBottomSheetScreen(mcontext: mContext),
             ));
   }
+
+  // authorizationLetterBottomSheet() {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       isDismissible: false,
+  //       enableDrag: false,
+  //       isScrollControlled: true,
+  //       backgroundColor: ColorResource.colorFFFFFF,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(
+  //           top: Radius.circular(20),
+  //         ),
+  //       ),
+  //       clipBehavior: Clip.antiAliasWithSaveLayer,
+  //       builder: (BuildContext context) => StatefulBuilder(
+  //           builder: (BuildContext buildContext, StateSetter setState) =>
+  //               AuthorizationLetterBottomSheetScreen(bloc: BlocProvider.of<ProfileBloc>(context))));
+  // }
+
+  // idCardBottomSheet() {
+  //   showModalBottomSheet(
+  //       context: context,
+  //       isDismissible: false,
+  //       enableDrag: false,
+  //       isScrollControlled: true,
+  //       backgroundColor: ColorResource.colorFFFFFF,
+  //       shape: const RoundedRectangleBorder(
+  //         borderRadius: BorderRadius.vertical(
+  //           top: Radius.circular(20),
+  //         ),
+  //       ),
+  //       clipBehavior: Clip.antiAliasWithSaveLayer,
+  //       builder: (BuildContext context) => StatefulBuilder(
+  //           builder: (BuildContext buildContext, StateSetter setState) =>
+  //               IdCardBottomSheetScreen(bloc: BlocProvider.of<ProfileBloc>(context))));
+  // }
 
   customerSupportLanguageBottomSheet() {
     showModalBottomSheet(
@@ -689,12 +959,260 @@ class ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.transparent,
     );
   }
+
+  /// Removed For now as api needs API key for google maps.
+// markAsHomeShowBottomSheet(BuildContext context) {
+//   showModalBottomSheet(
+
+//       context: context,
+//       isDismissible: false,
+//       enableDrag: false,
+//       isScrollControlled: true,
+//       backgroundColor: ColorResourceDesign.whiteColor,
+//       shape: const RoundedRectangleBorder(
+//         borderRadius: BorderRadius.vertical(
+//           top: Radius.circular(20),
+//         ),
+//       ),
+//       clipBehavior: Clip.antiAliasWithSaveLayer,
+//       builder: (BuildContext context) => StatefulBuilder(
+//         builder: (BuildContext buildContext, StateSetter setState) => SizedBox(
+//           height: MediaQuery.of(context).size.height * 0.86,
+//           child: ChatScreen(
+//               fromARefId: fromID,
+//               toARefId: toID,
+//               agentImage: profileImage != null
+//                   ? Image.memory(profileImage!).image
+//                   : null),
+//         ),
+//       ),
+//     );
+//   }
+//
+//   notificationShowBottomSheet(BuildContext context) {
+//     showModalBottomSheet(
+//         context: context,
+//         isDismissible: false,
+//         enableDrag: false,
+//         isScrollControlled: true,
+//         backgroundColor: ColorResourceDesign.whiteColor,
+//         shape: const RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//             top: Radius.circular(20),
+//           ),
+//         ),
+//         clipBehavior: Clip.antiAliasWithSaveLayer,
+//         builder: (BuildContext context) => StatefulBuilder(
+//               builder: (BuildContext buildContext, StateSetter setState) =>
+//                   Container(),
+//               // NotificationBottomSheetScreen(
+//               //     bloc: BlocProvider.of<ProfileBloc>(context)),
+//             ));
+//   }
+//
+//   void openImagePickerModal() {
+//     showModalBottomSheet(
+//       context: context,
+//       builder: (context) {
+//         return GetPhotoView(mContext: mContext);
+//       },
+//       isScrollControlled: true,
+//       shape: const RoundedRectangleBorder(
+//           borderRadius: BorderRadius.vertical(
+//         top: Radius.circular(Sizes.p20),
+//       )),
+//       backgroundColor: Colors.transparent,
+//     );
+//   }
+//
+//   /// Removed For now as api needs API key for google maps.
+// // markAsHomeShowBottomSheet(BuildContext context) {
+// //   showModalBottomSheet(
+// //       context: context,
+// //       isDismissible: false,
+// //       enableDrag: false,
+// //       isScrollControlled: true,
+// //       backgroundColor: ColorResource.colorFFFFFF,
+// //       shape: const RoundedRectangleBorder(
+// //         borderRadius: BorderRadius.vertical(
+// //           top: Radius.circular(20),
+// //         ),
+// //       ),
+// //       clipBehavior: Clip.antiAliasWithSaveLayer,
+// //       builder: (BuildContext context) => LayoutBuilder(
+// //           builder: (BuildContext buildContext, BoxConstraints settate) =>
+// //               MapViewBottomSheetScreen(
+// //                 title: Languages.of(context)!.markAsHome,
+// //                 onClose: (dynamic value) async {
+// //                   setState(() {
+// //                     addressValue = value;
+// //                     PreferenceHelper.setPreference('addressValue', value);
+// //                   });
+// //                 },
+// //               )));
+// // }
+// }
+//
+// class HelpScreen extends StatefulWidget {
+//   @override
+//   HelpScreenState createState() {
+//     return HelpScreenState();
+//   }
+// }
+//
+// class HelpScreenState extends State<HelpScreen> {
+//   late WebViewController _controller;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Help')),
+//       // body: WebView(
+//       //   javascriptMode: JavascriptMode.unrestricted,
+//       //   initialUrl: 'about:blank',
+//       //   onWebViewCreated: (WebViewController webViewController) {
+//       //     _controller = webViewController;
+//       //   },
+//       // ),
+//     );
+//   }
+// }
+//
+// class GetPhotoView extends StatelessWidget {
+//   final BuildContext mContext;
+//
+//   const GetPhotoView({super.key, required this.mContext});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return DraggableScrollableSheet(
+//       initialChildSize: 0.35,
+//       builder: (_, controller) => Container(
+//           decoration: const BoxDecoration(
+//             color: ColorResourceDesign.whiteColor,
+//             borderRadius: BorderRadius.only(
+//               topLeft: Radius.circular(20),
+//               topRight: Radius.circular(20),
+//             ),
+//           ),
+//           child: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: Sizes.p20),
+//             child: Column(
+//               children: [
+//                 Row(
+//                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                   children: [
+//                     const Text(ConstantsResourceDesign.addDP,
+//                         style: TextStyle(
+//                           color: ColorResourceDesign.textColor,
+//                           fontSize: Sizes.p14,
+//                           fontWeight: FontResourceDesign.textFontWeightSemiBold,
+//                         )),
+//                     ElevatedButton(
+//                       style: ElevatedButton.styleFrom(
+//                         backgroundColor: Colors.transparent,
+//                         elevation: 0,
+//                         minimumSize: Size.zero,
+//                         padding: EdgeInsets.zero,
+//                       ),
+//                       child: SvgPicture.asset(Assets.images.resetPasswordCross),
+//                       onPressed: () => Navigator.pop(context),
+//                     ),
+//                   ],
+//                 ),
+//                 const SizedBox(height: 60),
+//                 LongRoundedBtnIcon(
+//                   btnText: ConstantsResourceDesign.captureImage,
+//                   isBorder: false,
+//                   onPressed: () async {
+//                     Navigator.pop(context);
+//                     BlocProvider.of<ProfileBloc>(mContext).add(
+//                         InitialImageEvent(
+//                             imageType: ImagePickerType.camera.toString()));
+//                   },
+//                   // btnImage: SvgPicture.asset(Assets.images.captureImage),
+//                   btnImage: SvgPicture.asset(Assets.images.caseCallPhone),
+//                   btnBackgroundColor: ColorResourceDesign.lightGray,
+//                   btnTextColor: ColorResourceDesign.textColor,
+//                   btnWidth: 340,
+//                 ),
+//                 gapH20,
+//                 LongRoundedBtnIcon(
+//                   btnText: ConstantsResourceDesign.uploadPhoto,
+//                   isBorder: false,
+//                   onPressed: () async {
+//                     Navigator.pop(context);
+//                     BlocProvider.of<ProfileBloc>(mContext).add(
+//                         InitialImageEvent(
+//                             imageType: ImagePickerType.gallery.toString()));
+//                   },
+//                   btnImage: SvgPicture.asset(Assets.images.caseCollections),
+//                   // btnImage: SvgPicture.asset(Assets.images.uploadPhoto),
+//                   btnBackgroundColor: ColorResourceDesign.lightGray,
+//                   btnTextColor: ColorResourceDesign.textColor,
+//                   btnWidth: 340,
+//                 ),
+//               ],
+//             ),
+//           )),
+//     );
+//   }
+// }
+//
+// ///Stop here
+// // import 'package:flutter/material.dart';
+// //
+// // class ProfileScreen extends StatelessWidget {
+// //   const ProfileScreen({Key? key}) : super(key: key);
+// //
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return const Text('Profile');
+// //   }
+// // }
+//       builder: (BuildContext context) => LayoutBuilder(
+//           builder: (BuildContext buildContext, BoxConstraints settate) =>
+//               MapViewBottomSheetScreen(
+//                 title: Languages.of(context)!.markAsHome,
+//                 onClose: (dynamic value) async {
+//                   setState(() {
+//                     addressValue = value;
+//                     PreferenceHelper.setPreference('addressValue', value);
+//                   });
+//                 },
+//               )));
+// }
+}
+
+class HelpScreen extends StatefulWidget {
+  @override
+  HelpScreenState createState() {
+    return HelpScreenState();
+  }
+}
+
+class HelpScreenState extends State<HelpScreen> {
+  late WebViewController _controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Help')),
+      // body: WebView(
+      //   javascriptMode: JavascriptMode.unrestricted,
+      //   initialUrl: 'about:blank',
+      //   onWebViewCreated: (WebViewController webViewController) {
+      //     _controller = webViewController;
+      //   },
+      // ),
+    );
+  }
 }
 
 class GetPhotoView extends StatelessWidget {
-  const GetPhotoView({super.key, required this.mContext});
-
   final BuildContext mContext;
+
+  const GetPhotoView({super.key, required this.mContext});
 
   @override
   Widget build(BuildContext context) {

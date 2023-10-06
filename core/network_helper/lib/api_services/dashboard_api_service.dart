@@ -7,6 +7,7 @@ import 'package:domain_models/response_models/dashboard/dashboard_mydeposists_mo
 import 'package:domain_models/response_models/dashboard/dashboard_myvisit_model.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
+import 'package:domain_models/response_models/dashboard/my_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:network_helper/dio/dio_client.dart';
 import 'package:network_helper/errors/network_exception.dart';
@@ -29,6 +30,9 @@ class DashboardApiProvider {
       '${mobileBackendUrl}case-details/myCalls?';
   static const String dashboardMyReceiptsUrl =
       '${mobileBackendUrl}case-details/receipts?';
+
+  static const String dashboardMySelfReleaseUrl =
+      '${mobileBackendUrl}case-details/mySelfRelease?';
   static const String dashboardMyDepositsUrl =
       '${mobileBackendUrl}case-details/deposits?';
   static const String dashboardYardingAndSelfReleaseUrl =
@@ -87,6 +91,21 @@ class DashboardApiProvider {
           decryptResponse: true);
       final mappedResponse =
           SingleResponse.fromJson(response, MyReceiptResult.fromJson);
+      return ApiResult.success(data: mappedResponse.result);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<MySelfReleaseResult>> getMySelfReleaseDataFromApi(
+      String accessToken, String selectedFilter) async {
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl, accessToken: accessToken).get(
+          '${dashboardMySelfReleaseUrl}timePeriod=$selectedFilter&skip=0&limit=10',
+          decryptResponse: true);
+      final mappedResponse =
+          SingleResponse.fromJson(response, MySelfReleaseResult.fromJson);
       return ApiResult.success(data: mappedResponse.result);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));

@@ -31,6 +31,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         final ApiResult<LoginResponse> data =
             await authRepo.login(state.username, state.password, '');
         await data.when(success: (LoginResponse? loginData) async {
+          //setting usertype for allocation tabs
+          await authRepo.intialSetPref();
           if (loginData?.setPassword == true) {
             emit(SetPasswordState(name: state.username));
           } else {
