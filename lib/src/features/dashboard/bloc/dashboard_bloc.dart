@@ -7,6 +7,7 @@ import 'package:domain_models/response_models/dashboard/dashboard_mydeposists_mo
 import 'package:domain_models/response_models/dashboard/dashboard_myvisit_model.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
+import 'package:domain_models/response_models/dashboard/my_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   DashboardEventsCaseResults untouchedCasesData = DashboardEventsCaseResults();
   MyVisitResult myVisitsData = MyVisitResult();
   MyReceiptResult myReceiptsData = MyReceiptResult();
+  MySelfReleaseResult mySelfReleaseData = MySelfReleaseResult();
   DepositResult myDepositsData = DepositResult();
   List<YardingResult> yardingAndSelfReleaseData = [];
 
@@ -84,6 +86,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       final String currentDate = DateFormat.yMMMEd().format(currentDateTime);
       todayDate = currentDate;
 
+      filterOption.clear();
       filterOption.addAll(<FilterCasesByTimePeriod>[
         FilterCasesByTimePeriod(timePeriodText: 'today', value: '0'),
         FilterCasesByTimePeriod(timePeriodText: 'weekly', value: '1'),
@@ -170,12 +173,17 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
                   count: '',
                   amountRs: '',
                 ),
+                DashboardListModel(
+                  title: 'mySelfRelease',
+                  subTitle: '',
+                  image: '',
+                  count: '',
+                  amountRs: '',
+                ),
               ]);
               emit(DashboardLoadedState());
             },
-            failure: (NetworkExceptions? error) async {
-
-            });
+            failure: (NetworkExceptions? error) async {});
       }
     }
 
@@ -267,6 +275,26 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
       emit(ClickToCardLoadingState());
     }
 
+    if (event is MySelfReleaseEvent) {
+      emit(ClickToCardLoadingState());
+      searchResultList.clear();
+      isShowSearchResult = false;
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final ApiResult<MySelfReleaseResult> dashBoardData =
+            await repository.getMySelfReleaseData(selectedFilter);
+        await dashBoardData.when(
+            success: (MySelfReleaseResult? result) async {
+              mySelfReleaseData = result!;
+              emit(MySelfReleaseState());
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+      // Disabled loading
+      emit(ClickToCardLoadingState());
+    }
+
     if (event is ReceiptsApiEvent) {
       // Here we clear and false the search resulte
       searchResultList.clear();
@@ -281,6 +309,25 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
             success: (MyReceiptResult? result) async {
               myReceiptsData = result!;
               emit(ReturnReceiptsApiState(returnData: result));
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+      emit(SelectedTimeperiodDataLoadedState());
+    }
+
+    if (event is SelfReleaseApiEvent) {
+      searchResultList.clear();
+      isShowSearchResult = false;
+      emit(SelectedTimeperiodDataLoadingState());
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final ApiResult<MySelfReleaseResult> dashBoardData =
+            await repository.getMySelfReleaseData(event.timePeriod);
+        await dashBoardData.when(
+            success: (MySelfReleaseResult? result) async {
+              mySelfReleaseData = result!;
+              emit(ReturnSelfReleaseApiState(returnData: result));
             },
             failure: (NetworkExceptions? error) async {});
       }

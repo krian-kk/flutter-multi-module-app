@@ -5,6 +5,7 @@ import 'package:domain_models/response_models/dashboard/dashboard_mydeposists_mo
 import 'package:domain_models/response_models/dashboard/dashboard_myvisit_model.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_yardingandSelfRelease_model/dashboard_yardingand_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
+import 'package:domain_models/response_models/dashboard/my_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:network_helper/api_services/dashboard_api_service.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
@@ -19,6 +20,8 @@ abstract class DashBoardRepository {
       String event);
 
   Future<ApiResult<MyReceiptResult>> getMyReceiptData(String? selectedFilter);
+
+  Future<ApiResult<MySelfReleaseResult>> getMySelfReleaseData(String? selectedFilter);
 
   Future<ApiResult<MyVisitResult>> getVisitsOrCallData(String? selectedFilter);
 
@@ -71,6 +74,17 @@ class DashBoardRepositoryImpl extends DashBoardRepository {
         await provider.getMyReceiptDataFromApi(accessToken, selectedFilter!);
     return response;
   }
+
+@override
+Future<ApiResult<MySelfReleaseResult>> getMySelfReleaseData(String? selectedFilter) async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<MySelfReleaseResult> response =
+        await provider.getMySelfReleaseDataFromApi(accessToken, selectedFilter!);
+    return response;
+  }
+
+
+
 
   @override
   Future<ApiResult<MyVisitResult>> getVisitsOrCallData(

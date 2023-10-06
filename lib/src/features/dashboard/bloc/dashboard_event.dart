@@ -14,6 +14,14 @@ class BrokenPTPEvent extends DashboardEvent {}
 
 class MyReceiptsEvent extends DashboardEvent {}
 
+class MySelfReleaseEvent extends DashboardEvent {}
+
+class SelfReleaseApiEvent extends DashboardEvent {
+  SelfReleaseApiEvent({this.timePeriod});
+
+  final dynamic timePeriod;
+}
+
 class ReceiptsApiEvent extends DashboardEvent {
   ReceiptsApiEvent({this.timePeriod});
 
@@ -45,6 +53,7 @@ class NavigateCaseDetailEvent extends DashboardEvent {
     this.isPriorityFollowUp = false,
     this.isBrokenPTP = false,
     this.isMyReceipts = false,
+    this.isMySelfRelease = false,
   });
 
   final dynamic paramValues;
@@ -52,6 +61,7 @@ class NavigateCaseDetailEvent extends DashboardEvent {
   final bool isPriorityFollowUp;
   final bool isBrokenPTP;
   final bool isMyReceipts;
+  final bool isMySelfRelease;
 }
 
 class NavigateSearchEvent extends DashboardEvent {}

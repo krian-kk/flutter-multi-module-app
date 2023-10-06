@@ -2,1142 +2,1157 @@ import 'package:languages/app_languages.dart';
 
 class LanguageBa extends Languages {
   @override
-  String get signin =>  'sign in';
+  String get signin => 'sign in';
 
   @override
-  String get password =>  'Password';
+  String get password => 'Password';
 
   @override
-  String get userId =>  'ID User';
+  String get userId => 'ID User';
 
   @override
-  String get userName =>  'Nama User';
+  String get userName => 'Nama User';
 
   @override
-  String get rememberMe =>  'Ingat Saya';
+  String get rememberMe => 'Ingat Saya';
 
   @override
-  String get passwordNotMatch =>  "Password salah";
+  String get passwordNotMatch => "Password salah";
 
   @override
-  String get resetPassword =>  'Reset password';
+  String get resetPassword => 'Reset password';
 
   @override
-  String get loginViaDiffrentUser =>  'Login dengan user lain';
+  String get loginViaDiffrentUser => 'Login dengan user lain';
 
   @override
-  String get allocation =>  'Alokasi';
+  String get allocation => 'Alokasi';
 
   @override
-  String get dashboard =>  'Dashboard';
+  String get dashboard => 'Dashboard';
 
   @override
-  String get profile =>  'Profil';
+  String get profile => 'Profil';
 
   @override
-  String get areYouAtOffice =>  'Lokasi di Kantor ?';
+  String get areYouAtOffice => 'Lokasi di Kantor ?';
 
   @override
-  String get yes =>  'YA';
+  String get yes => 'YA';
 
   @override
-  String get no =>  'TIDAK';
+  String get no => 'TIDAK';
 
   @override
-  String get pincode =>  'Pincode';
+  String get pincode => 'Pincode';
 
   @override
-  String get priority =>  'Prioritas';
+  String get priority => 'Prioritas';
 
   @override
-  String get buildRoute =>  'Build Rute';
+  String get buildRoute => 'Build Rute';
 
   @override
-  String get mapView =>  'Map View';
+  String get mapView => 'Map View';
 
   @override
-  String get hignPriority =>  'Prioritas Tinggi';
+  String get hignPriority => 'Prioritas Tinggi';
 
   @override
-  String get searchbasedOn =>  'SEARCH BERDASARKAN';
+  String get searchbasedOn => 'SEARCH BERDASARKAN';
 
   @override
-  String get message =>  'PESAN';
+  String get message => 'PESAN';
 
   @override
-  String get followUpDate =>  'Tanggal Follow Up';
+  String get followUpDate => 'Tanggal Follow Up';
 
   @override
-  String get change =>  'Ubah';
+  String get change => 'Ubah';
 
   @override
-  String get all =>  'Semua';
+  String get all => 'Semua';
 
   @override
-  String get under5km =>  'Di Bawah 5Km';
+  String get under5km => 'Di Bawah 5Km';
 
   @override
-  String get more5km =>  'Di Bawah 10Km';
+  String get more5km => 'Di Bawah 10Km';
 
   @override
-  String get mtdResolutionProgress =>  'Kemajuan penyelesaian MTD';
+  String get mtdResolutionProgress => 'Kemajuan penyelesaian MTD';
 
   @override
-  String get customer =>  'Customer';
+  String get customer => 'Customer';
 
   @override
-  String get amount =>  'Jumlah';
+  String get amount => 'Jumlah';
 
   @override
-  String get priorityFollowUp =>  'FOLLOW UP PRIORITAS';
+  String get priorityFollowUp => 'FOLLOW UP PRIORITAS';
 
   @override
-  String get untouchedCases =>  'UNTOUCHED CASES';
+  String get untouchedCases => 'UNTOUCHED CASES';
 
   @override
-  String get brokenPTP =>  'BROKEN PTP';
+  String get brokenPTP => 'BROKEN PTP';
 
   @override
-  String get myReceipts =>  'RECEIPT SAYA';
+  String get myReceipts => 'RECEIPT SAYA';
 
   @override
-  String get myVisits =>  'VISIT SAYA';
+  String get myVisits => 'VISIT SAYA';
 
   @override
-  String get myCalls =>  'CALL SAYA';
+  String get myCalls => 'CALL SAYA';
 
   @override
-  String get myDeposists =>  'SETORAN SAYA';
+  String get myDeposists => 'SETORAN SAYA';
 
   @override
-  String get yardingSelfRelease =>  'PENYIMPANAN & SELF- RELEASE';
+  String get yardingSelfRelease => 'PENYIMPANAN & SELF- RELEASE';
 
   @override
-  String get help =>  'Help';
+  String get mySelfRelease => 'PEMBEBASAN DIRI SAYA';
 
   @override
-  String get count =>  'Count';
+  String get help => 'Help';
 
   @override
-  String get today =>  'HARI INI';
+  String get count => 'Count';
 
   @override
-  String get weekly =>  'MINGGUAN';
+  String get today => 'HARI INI';
 
   @override
-  String get monthly =>  'BULANAN';
+  String get weekly => 'MINGGUAN';
 
   @override
-  String get cheque =>  'CEK';
+  String get monthly => 'BULANAN';
 
   @override
-  String get cash =>  'TUNAI';
+  String get cheque => 'CEK';
 
   @override
-  String get loanAccountNumber =>  'NOMOR REKENING PINJAMAN';
+  String get cash => 'TUNAI';
 
   @override
-  String get receiptDate =>  'TANGGAL RECEIPT';
+  String get loanAccountNumber => 'NOMOR REKENING PINJAMAN';
 
   @override
-  String get selected =>  'DIPILIH';
+  String get receiptDate => 'TANGGAL RECEIPT';
 
   @override
-  String get enterDepositionDetails =>  'MASUKKAN RINCIAN PEMBAYARAN';
+  String get selected => 'DIPILIH';
 
   @override
-  String get enterRepoDetails =>  'MASUKKAN RINCIAN  REPO';
+  String get enterDepositionDetails => 'MASUKKAN RINCIAN PEMBAYARAN';
 
   @override
-  String get depositionMode =>  'CARA PEMBAYARAN';
+  String get enterRepoDetails => 'MASUKKAN RINCIAN  REPO';
 
   @override
-  String get bank =>  'BANK';
+  String get depositionMode => 'CARA PEMBAYARAN';
 
   @override
-  String get companybranch =>  'CABANG PERUSAHAAN';
+  String get bank => 'BANK';
 
   @override
-  String get branchName =>  'Nama Cabang*';
+  String get companybranch => 'CABANG PERUSAHAAN';
 
   @override
-  String get bankName =>  'Nama Bank*';
+  String get branchName => 'Nama Cabang*';
 
   @override
-  String get ifscCode =>  'Kode Cabang*';
+  String get bankName => 'Nama Bank*';
 
   @override
-  String get accNumber =>  'Nomor Rekening*';
+  String get ifscCode => 'Kode Cabang*';
 
   @override
-  String get branchLocation =>  'Lokasi Cabang*';
+  String get accNumber => 'Nomor Rekening*';
 
   @override
-  String get receiptAmount =>  'Nilai Receipt*';
+  String get branchLocation => 'Lokasi Cabang*';
 
   @override
-  String get depositAmount =>  'Nilai Deposit*';
+  String get receiptAmount => 'Nilai Receipt*';
 
   @override
-  String get yarding =>  'PENYIMPANAN';
+  String get depositAmount => 'Nilai Deposit*';
 
   @override
-  String get repoDate =>  'TANGGAL REPO';
+  String get yarding => 'PENYIMPANAN';
 
   @override
-  String get selfRelease =>  'SELF RELEASE';
+  String get repoDate => 'TANGGAL REPO';
 
   @override
-  String get repoStatus =>  'STATUS REPO';
+  String get selfRelease => 'SELF RELEASE';
 
   @override
-  String get yardName =>  'Nama Tempat Penyimpanan*';
+  String get repoStatus => 'STATUS REPO';
 
   @override
-  String get remark =>  'Remarks';
+  String get yardName => 'Nama Tempat Penyimpanan*';
 
   @override
-  String get uploadDepositSlip =>  'UPLOAD SLIP SETORAN';
+  String get remark => 'Remarks';
 
   @override
-  String get send =>  'SEND';
+  String get uploadDepositSlip => 'UPLOAD SLIP SETORAN';
 
   @override
-  String get typeYourMessage =>  'Masukkan pesan anda';
+  String get send => 'SEND';
 
   @override
-  String get cancel =>  'cancel';
+  String get typeYourMessage => 'Masukkan pesan anda';
 
   @override
-  String get search =>  'search';
+  String get cancel => 'cancel';
 
   @override
-  String get searchAllocationDetails =>  'SEARCH RINCIAN ALOKASI';
+  String get search => 'search';
 
   @override
-  String get accountNo =>  'Nomor Rekening';
+  String get searchAllocationDetails => 'SEARCH RINCIAN ALOKASI';
 
   @override
-  String get customerName =>  'Nama Customer';
+  String get accountNo => 'Nomor Rekening';
 
   @override
-  String get dpdBucket =>  'DPD/Bucket';
+  String get customerName => 'Nama Customer';
 
   @override
-  String get status =>  'Status';
+  String get dpdBucket => 'DPD/Bucket';
 
   @override
-  String get customerID =>  'ID Customer';
+  String get status => 'Status';
 
   @override
-  String get myRecentActivity =>  'Aktivitas terakhir';
+  String get customerID => 'ID Customer';
 
   @override
-  String get showOnlyStar =>  'Tampilkan hanya STAR (Prioritas Tinggi)';
+  String get myRecentActivity => 'Aktivitas terakhir';
 
   @override
-  String get new_ =>  'NEW';
+  String get showOnlyStar => 'Tampilkan hanya STAR (Prioritas Tinggi)';
 
   @override
-  String get overdueAmount =>  'Nilai Tunggakan';
+  String get new_ => 'NEW';
 
   @override
-  String get loanAmount =>  'Nilai Pinjaman';
+  String get overdueAmount => 'Nilai Tunggakan';
 
   @override
-  String get loanDuration =>  'Tenor';
+  String get loanAmount => 'Nilai Pinjaman';
 
   @override
-  String get pos =>  'Sisa Pokok Hutang';
+  String get loanDuration => 'Tenor';
 
   @override
-  String get schemeCode =>  'Kode skema';
+  String get pos => 'Sisa Pokok Hutang';
 
   @override
-  String get emiStartDate =>  'Tanggal awal angsuran';
+  String get schemeCode => 'Kode skema';
 
   @override
-  String get repaymentInfo =>  'INFO REPAYMENT';
+  String get emiStartDate => 'Tanggal awal angsuran';
 
   @override
-  String get beneficiaryDetails =>  'Rincian Beneficiary';
+  String get repaymentInfo => 'INFO REPAYMENT';
 
   @override
-  String get repaymentBankName =>  'Nama Bank Repayment';
+  String get beneficiaryDetails => 'Rincian Beneficiary';
 
   @override
-  String get referenceLender =>  'Reference Pemberi Pinjaman';
+  String get repaymentBankName => 'Nama Bank Repayment';
 
   @override
-  String get referenceUrl =>  'Reference URL';
+  String get referenceLender => 'Reference Pemberi Pinjaman';
 
   @override
-  String get caseDetials =>  'RINCIAN KASUS';
+  String get referenceUrl => 'Reference URL';
 
   @override
-  String get sendSms =>  'KIRIM SMS';
+  String get caseDetials => 'RINCIAN KASUS';
 
   @override
-  String get sendWhatsapp =>  'KIRIM WHATSAPP';
+  String get sendSms => 'KIRIM SMS';
 
   @override
-  String get otherLoanOf =>  'PINJAMAN LAIN';
+  String get sendWhatsapp => 'KIRIM WHATSAPP';
 
   @override
-  String get view =>  'VIEW';
+  String get otherLoanOf => 'PINJAMAN LAIN';
 
   @override
-  String get customerMet =>  'Customer bertemu';
+  String get view => 'VIEW';
 
   @override
-  String get customerNotMet =>  'Customer Tidak Bertemu';
+  String get customerMet => 'Customer bertemu';
 
   @override
-  String get logout =>  'logout';
+  String get customerNotMet => 'Customer Tidak Bertemu';
 
   @override
-  String get invalid =>  ' Invalid ';
+  String get logout => 'logout';
 
   @override
-  String get ptp =>  'PTP';
+  String get invalid => ' Invalid ';
 
   @override
-  String get ptpType =>  'Jenis PTP ';
+  String get ptp => 'PTP';
 
   @override
-  String get rtp =>  'MENOLAK MEMBAYAR';
+  String get ptpType => 'Jenis PTP ';
 
   @override
-  String get dispute =>  'DISPUTE';
+  String get rtp => 'MENOLAK MEMBAYAR';
 
   @override
-  String get dropDownDispute =>  'Dispute';
+  String get dispute => 'DISPUTE';
 
   @override
-  String get remainderCb =>  'REMINDER/CB';
+  String get dropDownDispute => 'Dispute';
 
   @override
-  String get collections =>  'COLLECTIONS';
+  String get remainderCb => 'REMINDER/CB';
 
   @override
-  String get ots =>  'Pelunasan sekaligus';
+  String get collections => 'COLLECTIONS';
 
   @override
-  String get product =>  'Produk';
+  String get ots => 'Pelunasan sekaligus';
 
   @override
-  String get batchNo =>  'Nomor Batch';
+  String get product => 'Produk';
 
   @override
-  String get done =>  'done';
+  String get batchNo => 'Nomor Batch';
 
   @override
-  String get select =>  'select';
+  String get done => 'done';
 
   @override
-  String get error =>  'error';
+  String get select => 'select';
 
   @override
-  String get homeAddress =>  'ALAMAT RUMAH';
+  String get error => 'error';
 
   @override
-  String get markAsHome =>  'TANDAI SEBAGAI RUMAH';
+  String get homeAddress => 'ALAMAT RUMAH';
 
   @override
-  String get notification =>  'Notifikasi';
+  String get markAsHome => 'TANDAI SEBAGAI RUMAH';
 
   @override
-  String get changeLanguage =>  'Ubah Bahasa';
+  String get notification => 'Notifikasi';
 
   @override
-  String get changePassword =>  'Ubah Password';
+  String get changeLanguage => 'Ubah Bahasa';
 
   @override
-  String get languages =>  'BAHASA';
+  String get changePassword => 'Ubah Password';
 
   @override
-  String get defaultLanguage =>  'Bahasa Default';
+  String get languages => 'BAHASA';
 
   @override
-  String get english =>  'ENGLISH';
+  String get defaultLanguage => 'Bahasa Default';
 
   @override
-  String get hindi =>  'हिन्दी  / HINDI';
+  String get english => 'ENGLISH';
 
   @override
-  String get tamil =>  'தமிழ்  / TAMIL';
+  String get hindi => 'हिन्दी  / HINDI';
 
   @override
-  String get kannada =>  'ಕನ್ನಡ  / KANNADA';
+  String get tamil => 'தமிழ்  / TAMIL';
 
   @override
-  String get read =>  'read';
+  String get kannada => 'ಕನ್ನಡ  / KANNADA';
 
   @override
-  String get addressDetails =>  'Rincian Alamat';
+  String get read => 'read';
 
   @override
-  String get callDetails =>  'Rincian Call';
+  String get addressDetails => 'Rincian Alamat';
 
   @override
-  String get okay =>  'OK';
+  String get callDetails => 'Rincian Call';
 
   @override
-  String get call =>  'CALL';
+  String get okay => 'OK';
 
   @override
-  String get viewMap =>  'VIEW MAP';
+  String get call => 'CALL';
 
   @override
-  String get captureImage =>  'CAPTURE IMAGE';
+  String get viewMap => 'VIEW MAP';
 
   @override
-  String get uploadPhoto =>  'UPLOAD FOTO';
+  String get captureImage => 'CAPTURE IMAGE';
 
   @override
-  String get choiceOtherLanguages =>  'Pilih BAHASA lain';
+  String get uploadPhoto => 'UPLOAD FOTO';
 
   @override
-  String get addAProfilePhoto =>  'Tambahkan PROFILE PHOTO';
+  String get choiceOtherLanguages => 'Pilih BAHASA lain';
 
   @override
-  String get declinedCall =>  'Panggilan ditolak';
+  String get addAProfilePhoto => 'Tambahkan PROFILE PHOTO';
 
   @override
-  String get leftMessage =>  'MENINGGALKAN PESAN';
+  String get declinedCall => 'Panggilan ditolak';
 
   @override
-  String get doorLocked =>  'PINTU TERKUNCI';
+  String get leftMessage => 'MENINGGALKAN PESAN';
 
   @override
-  String get entryRestricted =>  'AKSES MASUK TERHALANG';
+  String get doorLocked => 'PINTU TERKUNCI';
 
   @override
-  String get addNewContact =>  'Tambahkan contact baru';
+  String get entryRestricted => 'AKSES MASUK TERHALANG';
 
   @override
-  String get repo =>  'REPO';
+  String get addNewContact => 'Tambahkan contact baru';
 
   @override
-  String get otherFeedBack =>  'FEEDBACK LAINNYA';
+  String get repo => 'REPO';
 
   @override
-  String get submit =>  'SUBMIT';
+  String get otherFeedBack => 'FEEDBACK LAINNYA';
 
   @override
-  String get nextActionDate =>  'Tanggal Action berikutnya*';
+  String get submit => 'SUBMIT';
 
   @override
-  String get nextActionTime =>  'Waktu Action Berikutnya*';
+  String get nextActionDate => 'Tanggal Action berikutnya*';
 
   @override
-  String get remarks =>  'Catatan*';
+  String get nextActionTime => 'Waktu Action Berikutnya*';
 
   @override
-  String get ptpDate =>  'Tanggal PTP*';
+  String get remarks => 'Catatan*';
 
   @override
-  String get ptpTime =>  'Waktu PTP*';
+  String get ptpDate => 'Tanggal PTP*';
 
   @override
-  String get ptpAmount =>  'Nilai PTP*';
+  String get ptpTime => 'Waktu PTP*';
 
   @override
-  String get paymentMode =>  'Cara Pembayaran*';
+  String get ptpAmount => 'Nilai PTP*';
 
   @override
-  String get reference =>  'Reference*';
+  String get paymentMode => 'Cara Pembayaran*';
 
   @override
-  String get amountCollected =>  'Nilai yang berhasil di collect*';
+  String get reference => 'Reference*';
 
   @override
-  String get date =>  'Tanggal*';
+  String get amountCollected => 'Nilai yang berhasil di collect*';
 
   @override
-  String get time =>  'Waktu*';
+  String get date => 'Tanggal*';
 
   @override
-  String get refCheque =>  'REF/CEK NO.';
+  String get time => 'Waktu*';
 
   @override
-  String get otsProposedAmount =>  'Usulan Nilai Pelunasan sekaligus';
+  String get refCheque => 'REF/CEK NO.';
 
   @override
-  String get otsPaymentDate =>  'Tanggal Pelunasan sekaligus';
+  String get otsProposedAmount => 'Usulan Nilai Pelunasan sekaligus';
 
   @override
-  String get otsPaymentTime =>  'Waktu Pelunasan sekaligus';
+  String get otsPaymentDate => 'Tanggal Pelunasan sekaligus';
 
   @override
-  String get rtpDenialReason =>  'Alasan Menolak Membayar*';
+  String get otsPaymentTime => 'Waktu Pelunasan sekaligus';
 
   @override
-  String get disputeReason =>  'Alasan Dispute*';
+  String get rtpDenialReason => 'Alasan Menolak Membayar*';
 
   @override
-  String get modelMake =>  'Merk dan Jenis*';
+  String get disputeReason => 'Alasan Dispute*';
 
   @override
-  String get registrationNo =>  'Nomor BPKB*';
+  String get modelMake => 'Merk dan Jenis*';
 
   @override
-  String get chassisNo =>  'Nomor Rangka*';
+  String get registrationNo => 'Nomor BPKB*';
 
   @override
-  String get customUpload =>  'CUSTOM UPLOAD';
+  String get chassisNo => 'Nomor Rangka*';
 
   @override
-  String get eventDetails =>  'RINCIAN EVENT';
+  String get customUpload => 'CUSTOM UPLOAD';
 
   @override
-  String get eventDetailsInfo =>  'Rincian Event ';
+  String get eventDetails => 'RINCIAN EVENT';
 
   @override
-  String get pickUp =>  'PICK-UP';
+  String get eventDetailsInfo => 'Rincian Event ';
 
   @override
-  String get selfPay =>  'BAYAR SENDIRI';
+  String get pickUp => 'PICK-UP';
 
   @override
-  String get digital =>  'DIGITAL';
+  String get selfPay => 'BAYAR SENDIRI';
 
   @override
-  String get qrCode =>  'QR CODE';
+  String get digital => 'DIGITAL';
 
   @override
-  String get wrongAddress =>  'ALAMAT SALAH';
+  String get qrCode => 'QR CODE';
 
   @override
-  String get shifted =>  'SHIFTED';
+  String get wrongAddress => 'ALAMAT SALAH';
 
   @override
-  String get addressNotFound =>  'ALAMAT TIDAK DITEMUKAN';
+  String get shifted => 'SHIFTED';
 
   @override
-  String get callCustomer =>  'CALL CUSTOMER';
+  String get addressNotFound => 'ALAMAT TIDAK DITEMUKAN';
 
   @override
-  String get agentContactNo =>  'Nomor Contact Agen*';
+  String get callCustomer => 'CALL CUSTOMER';
 
   @override
-  String get customerContactNo =>  'Nomor Contact Customer*';
+  String get agentContactNo => 'Nomor Contact Agen*';
 
   @override
-  String get serviceProvidersList =>  'Daftar Service Provider';
+  String get customerContactNo => 'Nomor Contact Customer*';
 
   @override
-  String get callersId =>  'Caller ID’s';
+  String get serviceProvidersList => 'Daftar Service Provider';
 
   @override
-  String get customerMetCategory =>  'Kategori Pertemuan Customer';
+  String get callersId => 'Caller ID’s';
 
   @override
-  String get connected =>  '   Connected   ';
+  String get customerMetCategory => 'Kategori Pertemuan Customer';
 
   @override
-  String get unreachable =>  '   Unreachable   ';
+  String get connected => '   Connected   ';
 
   @override
-  String get writeYourRemarksHere =>  'Tulis catatan disini';
+  String get unreachable => '   Unreachable   ';
 
   @override
-  String get selectAppLanguage =>  'PILIH BAHASA APLIKASI';
+  String get writeYourRemarksHere => 'Tulis catatan disini';
 
   @override
-  String get customerLanguagePreference =>  'Preference Bahasa Customer';
+  String get selectAppLanguage => 'PILIH BAHASA APLIKASI';
 
   @override
-  String get doesNotExist =>  'TIDAK EXIST';
+  String get customerLanguagePreference => 'Preference Bahasa Customer';
 
   @override
-  String get incorrectNumber =>  'NOMOR SALAH';
+  String get doesNotExist => 'TIDAK EXIST';
 
   @override
-  String get numberNotWorking =>  'NOMOR TIDAK ADA';
+  String get incorrectNumber => 'NOMOR SALAH';
 
   @override
-  String get notOperational =>  'TIDAK OPERASIONAL';
+  String get numberNotWorking => 'NOMOR TIDAK ADA';
 
   @override
-  String get lineBusy =>  'SAMBUNGAN SIBUK';
+  String get notOperational => 'TIDAK OPERASIONAL';
 
   @override
-  String get switchOff =>  'DIMATIKAN';
+  String get lineBusy => 'SAMBUNGAN SIBUK';
 
   @override
-  String get rnr =>  'TERSAMBUNG TANPA JAWABAN';
+  String get switchOff => 'DIMATIKAN';
 
   @override
-  String get outOfNetwork =>  'DILUAR JARINGAN';
+  String get rnr => 'TERSAMBUNG TANPA JAWABAN';
 
   @override
-  String get disConnecting =>  'TERPUTUS';
+  String get outOfNetwork => 'DILUAR JARINGAN';
 
   @override
-  String get address =>  'ALAMAT ';
+  String get disConnecting => 'TERPUTUS';
 
   @override
-  String get phoneNumber =>  'NOMOR TELPON ';
+  String get address => 'ALAMAT ';
 
   @override
-  String get letsConnectWithManager =>  'Sambungkan dengan Manager';
+  String get phoneNumber => 'NOMOR TELPON ';
 
   @override
-  String get noAllocation =>  'Tidak ada alokasi';
+  String get letsConnectWithManager => 'Sambungkan dengan Manager';
 
   @override
-  String get noAllocationMessage =>       'Tidak ada assignment Tanpa Alokasi, cek dengan manager';
+  String get noAllocation => 'Tidak ada alokasi';
 
   @override
-  String get caseView =>  'Case View';
+  String get noAllocationMessage =>
+      'Tidak ada assignment Tanpa Alokasi, cek dengan manager';
 
   @override
-  String get stop =>  'Stop';
+  String get caseView => 'Case View';
 
   @override
-  String get startCalling =>  'Mulai Panggilan';
+  String get stop => 'Stop';
 
   @override
-  String get searchErrorMessage =>  'Isi paling sedikit 1 field';
+  String get startCalling => 'Mulai Panggilan';
 
   @override
-  String get mobileNumber =>  'NOMOR PONSEL';
+  String get searchErrorMessage => 'Isi paling sedikit 1 field';
 
   @override
-  String get email =>  'Email';
+  String get mobileNumber => 'NOMOR PONSEL';
 
   @override
-  String get check =>  'Cek';
+  String get email => 'Email';
 
   @override
-  String get resendOTP =>  'Kirim ulang OTP?';
+  String get check => 'Cek';
 
   @override
-  String get submitOTP =>  'Submit OTP';
+  String get resendOTP => 'Kirim ulang OTP?';
 
   @override
-  String get sendOTP =>  'KIRIM OTP';
+  String get submitOTP => 'Submit OTP';
 
   @override
-  String get businessLoss =>  'Kerugian Bisnis';
+  String get sendOTP => 'KIRIM OTP';
 
   @override
-  String get covidImpacted =>  'terkendala Covid';
+  String get businessLoss => 'Kerugian Bisnis';
 
   @override
-  String get financialReason =>  'Alasan Keuangan';
+  String get covidImpacted => 'terkendala Covid';
 
   @override
-  String get incomeLossInTheFamily =>  'Kehilangan penghasilan dalam keluarga';
+  String get financialReason => 'Alasan Keuangan';
 
   @override
-  String get intention =>  'Maksud ';
+  String get incomeLossInTheFamily => 'Kehilangan penghasilan dalam keluarga';
 
   @override
-  String get jobLoss =>  'Kehilangan pekerjaan';
+  String get intention => 'Maksud ';
 
   @override
-  String get jobUncertaintly =>  'Ketidak jelasan pekerjaan';
+  String get jobLoss => 'Kehilangan pekerjaan';
 
   @override
-  String get medicalIssue =>  'Masalah Kesehatan';
+  String get jobUncertaintly => 'Ketidak jelasan pekerjaan';
 
   @override
-  String get salaryIssue =>  'Masalah Penghasilan';
+  String get medicalIssue => 'Masalah Kesehatan';
 
   @override
-  String get noInternetConnection =>  'Tidak ada koneksi internet';
+  String get salaryIssue => 'Masalah Penghasilan';
 
   @override
-  String get mode =>  'Mode';
+  String get noInternetConnection => 'Tidak ada koneksi internet';
 
   @override
-  String get saveNewPassword =>  'SIMPAN  PASSWORD BARU';
+  String get mode => 'Mode';
 
   @override
-  String get enterNewPassword =>  'Masukkan  password baru';
+  String get saveNewPassword => 'SIMPAN  PASSWORD BARU';
 
   @override
-  String get enterConfirmNewPassword =>  'Konfirmasi  password baru';
+  String get enterNewPassword => 'Masukkan  password baru';
 
   @override
-  String get clear =>  'Clear';
+  String get enterConfirmNewPassword => 'Konfirmasi  password baru';
 
   @override
-  String get customerContactType =>  'Jenis Contact Customer*';
+  String get clear => 'Clear';
 
   @override
-  String get contact =>  'Contact';
+  String get customerContactType => 'Jenis Contact Customer*';
 
   @override
-  String get pleaseSelectDropDownValue =>  'Pilihlah dari Drop Down Value';
+  String get contact => 'Contact';
 
   @override
-  String get pleaseEnterCurrectUserId =>  'Masukkan User ID yang benar';
+  String get pleaseSelectDropDownValue => 'Pilihlah dari Drop Down Value';
 
   @override
-  String get pleaseSelectOptions =>  'Harap update event';
+  String get pleaseEnterCurrectUserId => 'Masukkan User ID yang benar';
 
   @override
-  String get pleaseSelectPaymentMode =>  'Harap Pilih Model Pembayaran';
+  String get pleaseSelectOptions => 'Harap update event';
 
   @override
-  String get pleaseUploadDepositSlip =>  'harap upload slip deposit ';
+  String get pleaseSelectPaymentMode => 'Harap Pilih Model Pembayaran';
 
   @override
-  String get noCaseAvailble =>  'Tidak ada Case yang Available';
+  String get pleaseUploadDepositSlip => 'harap upload slip deposit ';
 
   @override
-  String get shouldBeSelectOneCase =>  'Harap pilih satu kasus';
+  String get noCaseAvailble => 'Tidak ada Case yang Available';
 
   @override
-  String get resetPasswordModelViaOTP =>  'Reset password lewat OTP';
+  String get shouldBeSelectOneCase => 'Harap pilih satu kasus';
 
   @override
-  String get successfullyUpdated =>  'Update sukses !!';
+  String get resetPasswordModelViaOTP => 'Reset password lewat OTP';
 
   @override
-  String get eventUpdatedSuccessfully =>  'Update event sukses.';
+  String get successfullyUpdated => 'Update sukses !!';
 
   @override
-  String get successfullySubmitted =>  'Submit sukses!!';
+  String get eventUpdatedSuccessfully => 'Update event sukses.';
 
   @override
-  String get loginViaDifferentUser =>  'Login dengan user lain';
+  String get successfullySubmitted => 'Submit sukses!!';
 
   @override
-  String get event =>  'Event';
+  String get loginViaDifferentUser => 'Login dengan user lain';
 
   @override
-  String get changeSecurePIN =>  'GANTI Secure PIN';
+  String get event => 'Event';
 
   @override
-  String get changeYourSecureDigitPIN =>  'Ganti  secure 4-digit PIN';
+  String get changeSecurePIN => 'GANTI Secure PIN';
 
   @override
-  String get newPin =>  'Pin Baru';
+  String get changeYourSecureDigitPIN => 'Ganti  secure 4-digit PIN';
 
   @override
-  String get save =>  'Simpan';
+  String get newPin => 'Pin Baru';
 
   @override
-  String get secureYourAccountByCreatingAFourDigitPin =>       'Amankan akun anda dengan membuat PIN 4 digit';
+  String get save => 'Simpan';
 
   @override
-  String get enterYourSecureFourdDigitPin =>  'Masukkan secure 4-digit PIN';
+  String get secureYourAccountByCreatingAFourDigitPin =>
+      'Amankan akun anda dengan membuat PIN 4 digit';
 
   @override
-  String get forgotPin =>  'Lupa PIN?';
+  String get enterYourSecureFourdDigitPin => 'Masukkan secure 4-digit PIN';
 
   @override
-  String get waitFewSecondsYouGetCallFromAdmin =>       'Tunggu beberapa saat, anda akan mendapat panggilan dari Admin';
+  String get forgotPin => 'Lupa PIN?';
 
   @override
-  String get pleaseWaitForTheCallIsOngoing =>       'harap menunggu call yang sedang berlangsung';
+  String get waitFewSecondsYouGetCallFromAdmin =>
+      'Tunggu beberapa saat, anda akan mendapat panggilan dari Admin';
 
   @override
-  String get pleaseSpeakWithCustomer =>  'Harap berbicara dengan customer';
+  String get pleaseWaitForTheCallIsOngoing =>
+      'harap menunggu call yang sedang berlangsung';
 
   @override
-  String get doesntGetTheAgentAddress =>  'Tidak dapat alamat agen!';
+  String get pleaseSpeakWithCustomer => 'Harap berbicara dengan customer';
 
   @override
-  String get autoCallingIsComplete =>  'Auto Calling tidak tuntas';
+  String get doesntGetTheAgentAddress => 'Tidak dapat alamat agen!';
 
   @override
-  String get pleaseCallAgain =>  'Lakukan panggilan kembali!';
+  String get autoCallingIsComplete => 'Auto Calling tidak tuntas';
 
   @override
-  String get approved =>  'Approved';
+  String get pleaseCallAgain => 'Lakukan panggilan kembali!';
 
   @override
-  String get pendingApproval =>  'Pending Approval';
+  String get approved => 'Approved';
 
   @override
-  String get rejected =>  'Rejected';
+  String get pendingApproval => 'Pending Approval';
 
   @override
-  String get homeAddressNotAvailable =>  'Alamat rumah tidak ada.';
+  String get rejected => 'Rejected';
 
   @override
-  String get sendSMS =>  'KIRIM SMS';
+  String get homeAddressNotAvailable => 'Alamat rumah tidak ada.';
 
   @override
-  String get uploadFile =>  'UPLOAD FILE';
+  String get sendSMS => 'KIRIM SMS';
 
   @override
-  String get upto5mb =>  'HINGGA 5MB';
+  String get uploadFile => 'UPLOAD FILE';
 
   @override
-  String get addMoreContact =>  'TAMBAHKAN  CONTACT';
+  String get upto5mb => 'HINGGA 5MB';
 
   @override
-  String get uploadAudioFile =>  'UPLOAD AUDIO FILE';
+  String get addMoreContact => 'TAMBAHKAN  CONTACT';
 
   @override
-  String get autoCalling =>  'Auto Calling';
+  String get uploadAudioFile => 'UPLOAD AUDIO FILE';
 
   @override
-  String get callConnectedPleaseWait =>  'Panggilan terkoneksi';
+  String get autoCalling => 'Auto Calling';
 
   @override
-  String get canceled =>  'Cancel';
+  String get callConnectedPleaseWait => 'Panggilan terkoneksi';
 
   @override
-  String get uploadImage =>  'Upload Gambar';
+  String get canceled => 'Cancel';
 
   @override
-  String get successfullySMSsend =>  'SMS terkirim';
+  String get uploadImage => 'Upload Gambar';
 
   @override
-  String get pleaseWait =>  'Harap tunggu...';
+  String get successfullySMSsend => 'SMS terkirim';
 
   @override
-  String get userIDDoesNotExist =>       'User ID tidak ada. Harap contact  system administrator';
+  String get pleaseWait => 'Harap tunggu...';
 
   @override
-  String get invalidPassword =>       'Password salah. Harap masukkan password yang benar';
+  String get userIDDoesNotExist =>
+      'User ID tidak ada. Harap contact  system administrator';
 
   @override
-  String get notSelectedCase =>  'Pilih paling sedikit satu kasus';
+  String get invalidPassword =>
+      'Password salah. Harap masukkan password yang benar';
 
   @override
-  String get pleaseSelectMaximum5MbFile =>       'Pilih file berukuran maksimum 5 MB .';
+  String get notSelectedCase => 'Pilih paling sedikit satu kasus';
 
   @override
-  String get pleaseSelectCustomerContactType =>       'Pilih jenis contact customer';
+  String get pleaseSelectMaximum5MbFile =>
+      'Pilih file berukuran maksimum 5 MB .';
 
   @override
-  String get pleaseSelectCorrectPassword =>  'Masukkan Password yang benar';
+  String get pleaseSelectCustomerContactType => 'Pilih jenis contact customer';
 
   @override
-  String get emailNotAvailable =>       'Email ID tidak terdaftar, Ponsel terdaftar, kirim OTP lewat SMS';
+  String get pleaseSelectCorrectPassword => 'Masukkan Password yang benar';
 
   @override
-  String get invalidAddress =>  'Alamat tidak valid';
+  String get emailNotAvailable =>
+      'Email ID tidak terdaftar, Ponsel terdaftar, kirim OTP lewat SMS';
 
   @override
-  String get loading =>  'Loading...';
+  String get invalidAddress => 'Alamat tidak valid';
 
   @override
-  String get reciptsAlertMesg =>       'Pastikan pembayaran tunai/cek di setorkan ke bank dalam 24 jam';
+  String get loading => 'Loading...';
 
   @override
-  String get awaitingApproval=> 'Menunggu Approval';
+  String get reciptsAlertMesg =>
+      'Pastikan pembayaran tunai/cek di setorkan ke bank dalam 24 jam';
 
   @override
-  String get sendSMSerror =>  'SMS tidak teraktivasi';
+  String get awaitingApproval => 'Menunggu Approval';
 
   @override
-  String get logiginDeifferentSucessMessage =>  'Cleared';
+  String get sendSMSerror => 'SMS tidak teraktivasi';
 
   @override
-  String get logiginDeifferentFailMessage =>  'Tidak ada credential yang di clear';
+  String get logiginDeifferentSucessMessage => 'Cleared';
 
   @override
-  String get disputeWithCharges =>  'Masalah dengan Charges';
+  String get logiginDeifferentFailMessage =>
+      'Tidak ada credential yang di clear';
 
   @override
-  String get loanCleared =>  'Pinjaman Cleared';
+  String get disputeWithCharges => 'Masalah dengan Charges';
 
   @override
-  String get edit =>  'EDIT';
+  String get loanCleared => 'Pinjaman Cleared';
 
   @override
-  String get remarksRecording =>  'Perekaman Catatan';
+  String get edit => 'EDIT';
 
   @override
-  String get chooseLanguage =>  'Pilih Bahasa';
+  String get remarksRecording => 'Perekaman Catatan';
 
   @override
-  String get selectedLanguage =>  'Bahasa terpilih';
+  String get chooseLanguage => 'Pilih Bahasa';
 
   @override
-  String get errorMsgS2TlangCode =>       'Pilih Bahasa Speech to Text Language dari Profil';
+  String get selectedLanguage => 'Bahasa terpilih';
 
   @override
-  String get generatePaymentLink =>  'Generate Link Pembayaran';
+  String get errorMsgS2TlangCode =>
+      'Pilih Bahasa Speech to Text Language dari Profil';
 
   @override
-  String get showQRcode =>  'SHOW KODE QR';
+  String get generatePaymentLink => 'Generate Link Pembayaran';
 
   @override
-  String get close =>  'Tutup';
+  String get showQRcode => 'SHOW KODE QR';
+
+  @override
+  String get close => 'Tutup';
 
   // Customer Preference Languages
   @override
-  String get tamilLang =>  'Tamil';
+  String get tamilLang => 'Tamil';
 
   @override
-  String get hindiLang =>  'Hindi';
+  String get hindiLang => 'Hindi';
 
   @override
-  String get bengaliLang =>  'Bengali';
+  String get bengaliLang => 'Bengali';
 
   @override
-  String get gujaratiLang =>  'Gujarati';
+  String get gujaratiLang => 'Gujarati';
 
   @override
-  String get kannadaLang =>  'Kannada';
+  String get kannadaLang => 'Kannada';
 
   @override
-  String get urduLang =>  'Urdu';
+  String get urduLang => 'Urdu';
 
   @override
-  String get malayalamLang =>  'Malayalam';
+  String get malayalamLang => 'Malayalam';
 
   @override
-  String get marathiLang =>  'Marathi';
+  String get marathiLang => 'Marathi';
 
   @override
-  String get panjabiLang =>  'Punjabi (Gurmukhi)';
+  String get panjabiLang => 'Punjabi (Gurmukhi)';
 
   @override
-  String get teluguLang =>  'Telugu';
+  String get teluguLang => 'Telugu';
 
   @override
-  String get accountPassword =>  'Password Akun';
+  String get accountPassword => 'Password Akun';
 
   @override
-  String get enterOTP =>  'Masukkan OTP';
+  String get enterOTP => 'Masukkan OTP';
 
   @override
-  String get otpSentRegisterMobile =>       'OTP telah terkirim ke nomor ponsel yang terdaftar';
+  String get otpSentRegisterMobile =>
+      'OTP telah terkirim ke nomor ponsel yang terdaftar';
 
   @override
-  String get youAreInOffline =>  'Anda sedang offline';
+  String get youAreInOffline => 'Anda sedang offline';
 
   @override
-  String get disposition =>  'Disposisi';
+  String get disposition => 'Disposisi';
 
   @override
-  String get visit =>  'Visit';
+  String get visit => 'Visit';
 
   @override
-  String get selectSpeechToTextLanguage =>  'Pilih bahasa Speech to text';
+  String get selectSpeechToTextLanguage => 'Pilih bahasa Speech to text';
 
   @override
-  String get agent =>  'Agen';
+  String get agent => 'Agen';
 
   @override
-  String get dateOfLoanDisbursement =>  'Tanggal pencairan pinjaman';
+  String get dateOfLoanDisbursement => 'Tanggal pencairan pinjaman';
 
   @override
-  String get tos =>  'TOS';
+  String get tos => 'TOS';
 
   @override
-  String get emiAmount =>  'Angsuran';
+  String get emiAmount => 'Angsuran';
 
   @override
-  String get noOfPendingEMI =>  'Jumlah Pending Angsuran';
+  String get noOfPendingEMI => 'Jumlah Pending Angsuran';
 
   @override
-  String get penaltyAmount =>  'Nilai Penalti';
+  String get penaltyAmount => 'Nilai Penalti';
 
   @override
-  String get odInterest =>  'Bunga OD';
+  String get odInterest => 'Bunga OD';
 
   @override
-  String get assetDetails =>  'Rincian Pinjaman';
+  String get assetDetails => 'Rincian Pinjaman';
 
   @override
-  String get coLender =>  'CO-Debitur ';
+  String get coLender => 'CO-Debitur ';
 
   @override
-  String get employerBusinessEntity =>  'Entitas Usaha Pemberi Kerja';
+  String get employerBusinessEntity => 'Entitas Usaha Pemberi Kerja';
 
   @override
-  String get lastPaymentDate =>  'Tanggal pembayaran terakhir';
+  String get lastPaymentDate => 'Tanggal pembayaran terakhir';
 
   @override
-  String get sourcingRmName =>  'Nama RM';
+  String get sourcingRmName => 'Nama RM';
 
   @override
-  String get lastPaidAmount =>  'Jumlah pembayaran terakhir';
+  String get lastPaidAmount => 'Jumlah pembayaran terakhir';
 
   @override
-  String get riskRanking =>  'Ranking Risiko';
+  String get riskRanking => 'Ranking Risiko';
 
   @override
-  String get reviewFlag =>  'Flag review';
+  String get reviewFlag => 'Flag review';
 
   @override
-  String get location =>  'Lokasi';
+  String get location => 'Lokasi';
 
   @override
-  String get agency =>  'Agency';
+  String get agency => 'Agency';
 
   @override
-  String get minDueAmount =>  'Nilai tunggakan min';
+  String get minDueAmount => 'Nilai tunggakan min';
 
   @override
-  String get cardOutstanding =>  'Outstanding kartu';
+  String get cardOutstanding => 'Outstanding kartu';
 
   @override
-  String get statementDate =>  'Tanggal statement';
+  String get statementDate => 'Tanggal statement';
 
   @override
-  String get dueDate =>  'Tanggal jatuh tempo';
+  String get dueDate => 'Tanggal jatuh tempo';
 
   @override
-  String get cardStatus =>  'Status kartu';
+  String get cardStatus => 'Status kartu';
 
   @override
-  String get lastBilledAmount =>  'Nilai tagihan terakhir';
+  String get lastBilledAmount => 'Nilai tagihan terakhir';
 
   @override
-  String get chassisNumber =>  'Nomor Chassis';
+  String get chassisNumber => 'Nomor Chassis';
 
   @override
-  String get riskBucket =>  'Bucket Risk';
+  String get riskBucket => 'Bucket Risk';
 
   @override
-  String get ref1 =>  'Reference 1';
+  String get ref1 => 'Reference 1';
 
   @override
-  String get ref2 =>  'Reference 2';
+  String get ref2 => 'Reference 2';
 
   @override
-  String get loanDetails =>  'Rincian Pinjaman';
+  String get loanDetails => 'Rincian Pinjaman';
 
   @override
-  String get agentDetails =>  'Rincian Agen';
+  String get agentDetails => 'Rincian Agen';
 
   @override
-  String get repaymentInformation =>  'Informasi Repayment';
+  String get repaymentInformation => 'Informasi Repayment';
 
   @override
-  String get attributeDetails =>  'Rincian Attributes';
+  String get attributeDetails => 'Rincian Attributes';
 
   @override
-  String get contactDetails =>  'Rincian Contact';
+  String get contactDetails => 'Rincian Contact';
 
   @override
-  String get derivedDetails=>  'Derived Details';
+  String get derivedDetails => 'Derived Details';
 
   @override
-  String get auditDetails =>  'Rincian Audit';
+  String get auditDetails => 'Rincian Audit';
 
   @override
-  String get primaryUser =>  'User Primary';
+  String get primaryUser => 'User Primary';
 
   @override
-  String get secondaryUser =>  'User Secondary';
+  String get secondaryUser => 'User Secondary';
 
   @override
-  String get agentName =>  'Nama Agen';
+  String get agentName => 'Nama Agen';
 
   @override
-  String get agentType =>  'Tipe Agen';
+  String get agentType => 'Tipe Agen';
 
   @override
-  String get state =>  'Propinsi';
+  String get state => 'Propinsi';
 
   @override
-  String get city =>  'Kota';
+  String get city => 'Kota';
 
   @override
-  String get createdBy =>  'Created By';
+  String get createdBy => 'Created By';
 
   @override
-  String get createdAt =>  'Created At';
+  String get createdAt => 'Created At';
 
   @override
-  String get updatedBy =>  'Updated By';
+  String get updatedBy => 'Updated By';
 
   @override
-  String get updatedAt =>  'Updated At';
+  String get updatedAt => 'Updated At';
 
   @override
-  String get allocatedBy =>  'Alokasi Oleh';
+  String get allocatedBy => 'Alokasi Oleh';
 
   @override
-  String get allocatedAt =>  'Alokasi di';
+  String get allocatedAt => 'Alokasi di';
 
   @override
-  String get residenceAddress =>  'Alamat tempat tinggal';
+  String get residenceAddress => 'Alamat tempat tinggal';
 
   @override
-  String get mobile =>  'Nomor Ponsel';
+  String get mobile => 'Nomor Ponsel';
 
   @override
-  String get officeaddress =>  'Alamat Kantor';
+  String get officeaddress => 'Alamat Kantor';
 
   @override
-  String get followUpPriority =>  'Prioritas Follow up';
+  String get followUpPriority => 'Prioritas Follow up';
 
   @override
-  String get fatherSpouseName =>  'Nama Ibu Kandung';
+  String get fatherSpouseName => 'Nama Ibu Kandung';
 
   @override
-  String get lastPaymentMode =>  'Cara Pembayaran Terakhir';
+  String get lastPaymentMode => 'Cara Pembayaran Terakhir';
 
   @override
-  String get dpd =>  'DPD';
+  String get dpd => 'DPD';
 
   @override
-  String get zone =>  'Zona';
+  String get zone => 'Zona';
 
   @override
-  String get language =>  'Bahasa';
+  String get language => 'Bahasa';
 
   @override
-  String get beneficiaryAccountNumber =>  'Nomor rekening Beneficiary';
+  String get beneficiaryAccountNumber => 'Nomor rekening Beneficiary';
 
   @override
-  String get chat =>  'Chat';
+  String get chat => 'Chat';
 
   @override
-  String get proceed =>  'Proses';
+  String get proceed => 'Proses';
 
   @override
-  String get authorizationLetter =>  'Surat Otorisasi';
+  String get authorizationLetter => 'Surat Otorisasi';
 
   @override
-  String get idCard =>  'Kartu ID';
+  String get idCard => 'Kartu ID';
 
   @override
-  String get front =>  'Depan';
+  String get front => 'Depan';
 
   @override
-  String get back =>  'Belakang';
+  String get back => 'Belakang';
 
   @override
-  String get notInterested =>  'Tidak tertarik';
+  String get notInterested => 'Tidak tertarik';
 
   @override
-  String get notEligible =>  'Tidak Eligible';
+  String get notEligible => 'Tidak Eligible';
 
   @override
-  String get login =>  'Login';
+  String get login => 'Login';
 
   @override
-  String get feedback =>  'Feedback';
+  String get feedback => 'Feedback';
 
   @override
-  String get reasonForNotEligible =>  'Alasan Tidak Eligible *';
+  String get reasonForNotEligible => 'Alasan Tidak Eligible *';
 
   @override
-  String get reasonForNotIntrested =>  'Alasan tidak tertarik *';
+  String get reasonForNotIntrested => 'Alasan tidak tertarik *';
 
   @override
-  String get loginStatus =>  'Status Login *';
+  String get loginStatus => 'Status Login *';
 
   @override
-  String get upload =>  'Upload';
+  String get upload => 'Upload';
 
   @override
-  String get enable =>  'Enable';
+  String get enable => 'Enable';
 
   @override
-  String get basicInfo =>  'Info Dasar';
+  String get basicInfo => 'Info Dasar';
 
   @override
-  String get forgotPassword =>  'Lupa Password ?';
+  String get forgotPassword => 'Lupa Password ?';
 
   @override
-  String get correctMPin =>  'Masukkan mPin yang benar';
+  String get correctMPin => 'Masukkan mPin yang benar';
 
   @override
   String get allocationDetails => 'Allocation Details';

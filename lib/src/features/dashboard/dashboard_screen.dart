@@ -11,6 +11,7 @@ import 'package:origa/models/return_value_model.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
 import 'package:origa/src/features/dashboard/presentation/broken_ptp/broken_ptp.dart';
 import 'package:origa/src/features/dashboard/presentation/my_recipts/my_receipts.dart';
+import 'package:origa/src/features/dashboard/presentation/my_self_release/my_self_release.dart';
 import 'package:origa/src/features/dashboard/presentation/my_visit/my_visits.dart';
 import 'package:origa/src/features/dashboard/presentation/priority/my_deposits/my_deposists.dart';
 import 'package:origa/src/features/dashboard/presentation/priority/priority_follow_up_bottomsheet.dart';
@@ -130,6 +131,9 @@ class DashboardScreenState extends State<DashboardScreen> {
           }
           if (state is MyReceiptsState) {
             myReceiptsSheet(context);
+          }
+          if (state is MySelfReleaseState) {
+            mySelfReleaseSheet(context);
           }
 
           if (state is MyVisitsState) {
@@ -557,10 +561,15 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                     .add(
                                                         YardingAndSelfReleaseEvent());
                                                 break;
+                                              case 7:
+                                                BlocProvider.of<DashboardBloc>(
+                                                        context)
+                                                    .add(MySelfReleaseEvent());
+                                                break;
                                               default:
                                             }
                                           },
-                                          child: index == 5
+                                          child: index == 7
                                               ? BlocProvider.of<DashboardBloc>(
                                                               context)
                                                           .userType! ==
@@ -597,7 +606,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                       ),
                                                     )
                                                   : const SizedBox()
-                                              : index == 6
+                                              : index == 5
                                                   ? BlocProvider.of<DashboardBloc>(
                                                                   context)
                                                               .userType! ==
@@ -605,25 +614,18 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                       ? Card(
                                                           elevation: 0,
                                                           color: ColorResource
-                                                              .colorffffff,
+                                                              .colorD3D7DE,
                                                           shape:
                                                               RoundedRectangleBorder(
-                                                            side:
-                                                                const BorderSide(
-                                                                    width: 0.5),
+                                                            side: const BorderSide(
+                                                                color: ColorResource
+                                                                    .colorD3D7DE),
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         75),
                                                           ),
-                                                          child: Container(
-                                                            alignment: Alignment
-                                                                .center,
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        5),
+                                                          child: Center(
                                                             child: CustomText(
                                                               BlocProvider.of<
                                                                           DashboardBloc>(
@@ -631,11 +633,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   .dashboardList[
                                                                       index]
                                                                   .title!,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
                                                               fontSize: FontSize
                                                                   .twelve,
+                                                              lineHeight: 1,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
@@ -648,7 +648,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                   : index == 6
                                                       ? BlocProvider.of<DashboardBloc>(
                                                                       context)
-                                                                  .userType ==
+                                                                  .userType! ==
                                                               Constants
                                                                   .fieldagent
                                                           ? Card(
@@ -666,150 +666,182 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                         .circular(
                                                                             75),
                                                               ),
-                                                              child: Center(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          10),
-                                                                  child:
-                                                                      CustomText(
-                                                                    BlocProvider.of<DashboardBloc>(
-                                                                            context)
-                                                                        .dashboardList[
-                                                                            index]
-                                                                        .title!,
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .twelve,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    color: ColorResource
-                                                                        .color23375A,
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : const SizedBox()
-                                                      : Card(
-                                                          elevation: 2,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: const BorderSide(
-                                                                color: ColorResource
-                                                                    .colorDADADA,
-                                                                width: 0.5),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        10),
-                                                          ),
-                                                          child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .fromLTRB(
-                                                                    8, 5, 5, 5),
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .spaceBetween,
-                                                                  children: [
-                                                                    SizedBox(
-                                                                        width:
-                                                                            105,
-                                                                        child:
-                                                                            CustomText(
-                                                                          BlocProvider.of<DashboardBloc>(context)
-                                                                              .dashboardList[index]
-                                                                              .title!,
-                                                                          fontSize:
-                                                                              FontSize.twelve,
-                                                                          fontWeight:
-                                                                              FontWeight.w700,
-                                                                          color:
-                                                                              ColorResource.color23375A,
-                                                                        )),
-                                                                    if (BlocProvider.of<DashboardBloc>(context)
-                                                                            .dashboardList[
-                                                                                index]
-                                                                            .image! !=
-                                                                        '')
-                                                                      SvgPicture.asset(BlocProvider.of<DashboardBloc>(
-                                                                              context)
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .image!),
-                                                                  ],
-                                                                ),
-                                                                const Spacer(),
-                                                                Row(
-                                                                  children: [
+                                                              child: Container(
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        5),
+                                                                child:
                                                                     CustomText(
-                                                                      BlocProvider.of<DashboardBloc>(
-                                                                              context)
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .count!,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 6,
-                                                                    ),
-                                                                    CustomText(
-                                                                      BlocProvider.of<DashboardBloc>(
-                                                                              context)
-                                                                          .dashboardList[
-                                                                              index]
-                                                                          .subTitle!,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color: ColorResource
-                                                                          .color23375A,
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                                const SizedBox(
-                                                                  height: 3,
-                                                                ),
-                                                                CustomText(
-                                                                  Constants
-                                                                          .inr +
-                                                                      double.parse(BlocProvider.of<DashboardBloc>(context)
-                                                                              .dashboardList[index]
-                                                                              .amountRs!)
-                                                                          .toStringAsFixed(2),
+                                                                  BlocProvider.of<
+                                                                              DashboardBloc>(
+                                                                          context)
+                                                                      .dashboardList[
+                                                                          index]
+                                                                      .title!,
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
                                                                   fontSize:
                                                                       FontSize
-                                                                          .sixteen,
+                                                                          .twelve,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w700,
                                                                   color: ColorResource
                                                                       .color23375A,
-                                                                  isSingleLine:
-                                                                      true,
                                                                 ),
-                                                              ],
+                                                              ),
+                                                            )
+                                                          : const SizedBox()
+                                                      : index == 6
+                                                          ? BlocProvider.of<DashboardBloc>(
+                                                                          context)
+                                                                      .userType ==
+                                                                  Constants
+                                                                      .fieldagent
+                                                              ? Card(
+                                                                  elevation: 0,
+                                                                  color: ColorResource
+                                                                      .colorffffff,
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    side: const BorderSide(
+                                                                        width:
+                                                                            0.5),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            75),
+                                                                  ),
+                                                                  child: Center(
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                          horizontal:
+                                                                              10),
+                                                                      child:
+                                                                          CustomText(
+                                                                        BlocProvider.of<DashboardBloc>(context)
+                                                                            .dashboardList[index]
+                                                                            .title!,
+                                                                        fontSize:
+                                                                            FontSize.twelve,
+                                                                        fontWeight:
+                                                                            FontWeight.w700,
+                                                                        color: ColorResource
+                                                                            .color23375A,
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              : const SizedBox()
+                                                          : Card(
+                                                              elevation: 2,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                side: const BorderSide(
+                                                                    color: ColorResource
+                                                                        .colorDADADA,
+                                                                    width: 0.5),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .fromLTRB(
+                                                                        8,
+                                                                        5,
+                                                                        5,
+                                                                        5),
+                                                                child: Column(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .start,
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        SizedBox(
+                                                                            width:
+                                                                                105,
+                                                                            child:
+                                                                                CustomText(
+                                                                              BlocProvider.of<DashboardBloc>(context).dashboardList[index].title!,
+                                                                              fontSize: FontSize.twelve,
+                                                                              fontWeight: FontWeight.w700,
+                                                                              color: ColorResource.color23375A,
+                                                                            )),
+                                                                        if (BlocProvider.of<DashboardBloc>(context).dashboardList[index].image! !=
+                                                                            '')
+                                                                          SvgPicture.asset(BlocProvider.of<DashboardBloc>(context)
+                                                                              .dashboardList[index]
+                                                                              .image!),
+                                                                      ],
+                                                                    ),
+                                                                    const Spacer(),
+                                                                    Row(
+                                                                      children: [
+                                                                        CustomText(
+                                                                          BlocProvider.of<DashboardBloc>(context)
+                                                                              .dashboardList[index]
+                                                                              .count!,
+                                                                          fontWeight:
+                                                                              FontWeight.w700,
+                                                                          color:
+                                                                              ColorResource.color23375A,
+                                                                        ),
+                                                                        const SizedBox(
+                                                                          width:
+                                                                              6,
+                                                                        ),
+                                                                        CustomText(
+                                                                          BlocProvider.of<DashboardBloc>(context)
+                                                                              .dashboardList[index]
+                                                                              .subTitle!,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              ColorResource.color23375A,
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height: 3,
+                                                                    ),
+                                                                    CustomText(
+                                                                      Constants
+                                                                              .inr +
+                                                                          double.parse(BlocProvider.of<DashboardBloc>(context).dashboardList[index].amountRs!)
+                                                                              .toStringAsFixed(2),
+                                                                      fontSize:
+                                                                          FontSize
+                                                                              .sixteen,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      color: ColorResource
+                                                                          .color23375A,
+                                                                      isSingleLine:
+                                                                          true,
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ),
                                         );
                                       },
                                       // ========================================================================================================
@@ -820,7 +852,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                   ? 0.6
                                                   : index == 6
                                                       ? 0.7
-                                                      : 1.3),
+                                                      : index == 7
+                                                          ? 0.8
+                                                          : 1.3),
                                       mainAxisSpacing: 4.0,
                                       crossAxisSpacing: 4.0,
                                     ),
@@ -917,6 +951,17 @@ class DashboardScreenState extends State<DashboardScreen> {
               bottom: false,
               child: YardingAndSelfRelease(
                   BlocProvider.of<DashboardBloc>(buildContext)));
+        });
+  }
+
+  void mySelfReleaseSheet(BuildContext buildContext) {
+    showCupertinoModalPopup(
+        context: buildContext,
+        builder: (BuildContext context) {
+          return BlocProvider.value(
+              value: BlocProvider.of<DashboardBloc>(buildContext),
+              child: const SafeArea(
+                  bottom: false, child: MySelfReleaseBottomSheet()));
         });
   }
 }

@@ -119,6 +119,9 @@ class LanguageEn extends Languages {
   String get yardingSelfRelease => 'YARDING & SELF- RELEASE';
 
   @override
+  String get mySelfRelease => 'MY SELF RELEASE';
+
+  @override
   String get help => 'Help';
 
   @override
