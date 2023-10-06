@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:languages/language_english.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/models/speech2text_model.dart';

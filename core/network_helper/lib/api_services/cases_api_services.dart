@@ -19,19 +19,13 @@ class CasesApiService {
   static String eventsUrl =
       "${getMobileBackendUrl()}case-details-events/eventDetails?caseId=";
 
-  static String denialPostUrl(String selectValue, String userTypeValue) =>
+  static String eventsPostUrl(String selectValue, String userTypeValue) =>
       '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
+
+  static final String otsPostUrl =
+      '${getMobileBackendUrl()}case-details-events/ots';
 
   static String reminderPostUrl(String selectValue, String userTypeValue) =>
-      '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
-
-  static String repoPostUrl(String selectValue, String userTypeValue) =>
-      '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
-
-  static String disputePostUrl(String selectValue, String userTypeValue) =>
-      '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
-
-  static String ptpPostUrl(String selectValue, String userTypeValue) =>
       '${getMobileBackendUrl()}case-details-events/$selectValue?userType=$userTypeValue';
 
   static String unreachableUrl(String selectValue, String userTypeValue) =>
@@ -132,12 +126,57 @@ class CasesApiService {
     }
   }
 
-  Future<ApiResult<BaseResponse>> postPTPEvent(String accessToken,
+  Future<ApiResult<BaseResponse>> postCaseEventToServer(String accessToken,
       dynamic requestBodyData, String eventType, String userType) async {
     dynamic response;
     try {
       response = await DioClient(baseUrl, accessToken: accessToken)
-          .post(ptpPostUrl(eventType, userType), data: requestBodyData);
+          .post(eventsPostUrl(eventType, userType), data: requestBodyData);
+      final mappedResponse =
+          SingleResponse.fromJson(response, BaseResponse.fromJson);
+      return ApiResult.success(data: mappedResponse.result);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<BaseResponse>> postFileEvent(String accessToken,
+      dynamic requestBodyData, String eventType, String userType) async {
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl,
+              accessToken: accessToken, isMultiFormRequest: true)
+          .post(eventsPostUrl(eventType, userType), data: requestBodyData);
+      final mappedResponse =
+          SingleResponse.fromJson(response, BaseResponse.fromJson);
+      return ApiResult.success(data: mappedResponse.result);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<BaseResponse>> postOtsEvent(
+      String accessToken, dynamic requestBodyData, String userType) async {
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl,
+              accessToken: accessToken, isMultiFormRequest: true)
+          .post(otsPostUrl, data: requestBodyData);
+      final mappedResponse =
+          SingleResponse.fromJson(response, BaseResponse.fromJson);
+      return ApiResult.success(data: mappedResponse.result);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<BaseResponse>> postImageCaptureEvent(String accessToken,
+      dynamic requestBodyData, String eventType, String userType) async {
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl,
+              accessToken: accessToken, isMultiFormRequest: true)
+          .post(eventsPostUrl(eventType, userType), data: requestBodyData);
       final mappedResponse =
           SingleResponse.fromJson(response, BaseResponse.fromJson);
       return ApiResult.success(data: mappedResponse.result);

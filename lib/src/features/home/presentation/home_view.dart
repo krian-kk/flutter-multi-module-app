@@ -1,9 +1,8 @@
-import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
-import 'package:design_system/strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/allocation/presentation/priority_list_view/priority_bloc.dart';
@@ -12,7 +11,6 @@ import 'package:origa/src/features/dashboard/dashboard_screen.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_event.dart';
 import 'package:origa/src/features/home/presentation/bloc/home_state.dart';
-import 'package:origa/src/features/home/presentation/search_view.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
 import 'package:origa/src/features/profile/profile_screen.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -44,6 +42,9 @@ class _HomeViewState extends State<HomeView>
   @override
   void initState() {
     super.initState();
+    Singleton.instance.agentRef = 'M2PD_krishnacollector';
+    Singleton.instance.contractor = 'C0095';
+    Singleton.instance.agentName = 'KRISHNACOLLECTOR';
     mContext = context;
     _controller = TabController(
       length: 3,
@@ -329,8 +330,8 @@ class _HomeViewState extends State<HomeView>
                                             repository: CaseRepositoryImpl()),
                                         child: const AllocationView()),
                                   ), //1
-                                  DashboardScreen(), //2
-                                  ProfileScreen(), //3
+                                  const DashboardScreen(), //2
+                                  const ProfileScreen(), //3
                                 ]),
                           ),
                         ))

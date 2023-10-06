@@ -12,6 +12,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:languages/language_english.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/collection_post_model/collection_post_model.dart';
@@ -38,6 +41,7 @@ import 'package:origa/widgets/custom_dialog.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
@@ -850,25 +854,23 @@ class _CustomCollectionsBottomSheetState
                           'Exception while converting base64 ${e.toString()}');
                     }
                     setState(() => isSubmit = true);
-                    //todo
-                    // await FirebaseUtils.storeEvents(
-                    //     eventsDetails: firebaseObject,
-                    //     caseId: widget.caseId,
-                    //     selectedFollowUpDate: dateControlller.text,
-                    //     selectedClipValue: Constants.collections,
-                    //     bloc: widget.bloc);
+                    await FirebaseUtils.storeEvents(
+                        eventsDetails: firebaseObject,
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: dateControlller.text,
+                        selectedClipValue: Constants.collections,
+                        bloc: widget.bloc);
                     AppUtils.topSnackBar(
                         context, Constants.successfullySubmitted);
                     widget.bloc.add(ChangeHealthStatusEvent());
                   } else {
-                    final Map<String, dynamic> postResult =
-                        await APIRepository.apiRequest(
-                      APIRequestType.upload,
-                      HttpUrl.collectionPostUrl('collection', widget.userType),
-                      formDatas: FormData.fromMap(postdata),
-                    );
-                    //postResult[success]
-                    if (postResult[Constants.success]) {
+                    final CaseRepositoryImpl caseRepositoryImpl =
+                        CaseRepositoryImpl();
+                    final ApiResult<BaseResponse> eventResult =
+                        await caseRepositoryImpl.postEventWithFile(
+                            FormData.fromMap(postdata), 'collection');
+                    await eventResult.when(
+                        success: (BaseResponse? result) async {
                       final Map<String, dynamic> firebaseObject =
                           jsonDecode(jsonEncode(requestBodyData.toJson()));
                       try {
@@ -879,13 +881,12 @@ class _CustomCollectionsBottomSheetState
                         debugPrint(
                             'Exception while converting base64 ${e.toString()}');
                       }
-                      // //todo
-                      // await FirebaseUtils.storeEvents(
-                      //     eventsDetails: firebaseObject,
-                      //     caseId: widget.caseId,
-                      //     selectedFollowUpDate: dateControlller.text,
-                      //     selectedClipValue: Constants.collections,
-                      //     bloc: widget.bloc);
+                      await FirebaseUtils.storeEvents(
+                          eventsDetails: firebaseObject,
+                          caseId: widget.caseId,
+                          selectedFollowUpDate: dateControlller.text,
+                          selectedClipValue: Constants.collections,
+                          bloc: widget.bloc);
 
                       widget.bloc.add(
                         ChangeIsSubmitForMyVisitEvent(
@@ -916,71 +917,67 @@ class _CustomCollectionsBottomSheetState
                           ));
                         }
                       } else {
-                        if (postResult['data']['result']['error'] != null) {
-                          setState(() => isSubmit = true);
-                          AppUtils.showErrorToast(
-                              postResult['data']['result']['error']);
-                        } else {
-                          // here update followUpPriority value.
-                          widget.bloc.caseDetailsAPIValue.caseDetails!
-                                  .followUpPriority =
-                              requestBodyData.eventAttr.followUpPriority;
+                        // here update followUpPriority value.
+                        widget.bloc.caseDetailsAPIValue.caseDetails!
+                                .followUpPriority =
+                            requestBodyData.eventAttr.followUpPriority;
 
-                          AppUtils.topSnackBar(
-                              context, Constants.successfullySubmitted);
-                          widget.bloc.add(
-                            ChangeHealthStatusEvent(),
+                        AppUtils.topSnackBar(
+                            context, Constants.successfullySubmitted);
+                        widget.bloc.add(
+                          ChangeHealthStatusEvent(),
+                        );
+                        // Send SMS Notification
+                        if ((Singleton.instance.contractorInformations?.result
+                                    ?.sendSms ??
+                                false) &&
+                            Singleton.instance.usertype ==
+                                Constants.fieldagent) {
+                          final ReceiptSendSMS requestBodyData = ReceiptSendSMS(
+                            agrRef: Singleton.instance.agrRef,
+                            agentRef: Singleton.instance.agentRef,
+                            borrowerMobile:
+                                Singleton.instance.customerContactNo ?? '0',
+                            type: Constants.receiptAcknowledgementType,
+                            receiptAmount:
+                                int.parse(amountCollectedControlller.text),
+                            receiptDate: dateControlller.text,
+                            paymentMode: selectedPaymentModeButton,
+                            messageBody: 'message',
                           );
-                          // Send SMS Notification
-                          if ((Singleton.instance.contractorInformations?.result
-                                      ?.sendSms ??
-                                  false) &&
-                              Singleton.instance.usertype ==
-                                  Constants.fieldagent) {
-                            final ReceiptSendSMS requestBodyData =
-                                ReceiptSendSMS(
-                              agrRef: Singleton.instance.agrRef,
-                              agentRef: Singleton.instance.agentRef,
-                              borrowerMobile:
-                                  Singleton.instance.customerContactNo ?? '0',
-                              type: Constants.receiptAcknowledgementType,
-                              receiptAmount:
-                                  int.parse(amountCollectedControlller.text),
-                              receiptDate: dateControlller.text,
-                              paymentMode: selectedPaymentModeButton,
-                              messageBody: 'message',
-                            );
-                            //todo
-                            // await FirebaseUtils.storeEvents(
-                            //     eventsDetails: requestBodyData.toJson(),
-                            //     caseId: widget.caseId,
-                            //     selectedFollowUpDate: dateControlller.text,
-                            //     selectedClipValue: Constants.collections,
-                            //     bloc: widget.bloc);
-                            if (ConnectivityResult.none ==
-                                await Connectivity().checkConnectivity()) {
-                            } else {
-                              final Map<String, dynamic> postResult =
-                                  await APIRepository.apiRequest(
-                                APIRequestType.post,
-                                HttpUrl.sendSMSurl,
-                                requestBodydata: jsonEncode(requestBodyData),
-                              );
-                              if (postResult[Constants.success]) {
-                                AppUtils.showToast(
-                                  LanguageEn().successfullySMSsend,
-                                );
-                              }
-                            }
+                          await FirebaseUtils.storeEvents(
+                              eventsDetails: requestBodyData.toJson(),
+                              caseId: widget.caseId,
+                              selectedFollowUpDate: dateControlller.text,
+                              selectedClipValue: Constants.collections,
+                              bloc: widget.bloc);
+                          if (ConnectivityResult.none ==
+                              await Connectivity().checkConnectivity()) {
                           } else {
-                            AppUtils.showErrorToast(LanguageEn().sendSMSerror);
+                            final Map<String, dynamic> postResult =
+                                await APIRepository.apiRequest(
+                              APIRequestType.post,
+                              HttpUrl.sendSMSurl,
+                              requestBodydata: jsonEncode(requestBodyData),
+                            );
+                            if (postResult[Constants.success]) {
+                              AppUtils.showToast(
+                                LanguageEn().successfullySMSsend,
+                              );
+                            }
                           }
-                          Navigator.pop(context);
+                        } else {
+                          AppUtils.showErrorToast(LanguageEn().sendSMSerror);
                         }
+                        Navigator.pop(context);
                       }
-                    } else {
+                    }, failure: (NetworkExceptions? error) async {
                       setState(() => isSubmit = true);
-                    }
+                      //todo message
+                    });
+                    //postResult[success]
+                    // else {
+                    // }
                   }
                 },
               );

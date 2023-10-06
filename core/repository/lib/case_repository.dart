@@ -69,12 +69,43 @@ class CaseRepositoryImpl implements CaseRepository {
     return response;
   }
 
-  Future<ApiResult<BaseResponse>> postPTPEvent(dynamic requestBodyData) async {
+  Future<ApiResult<BaseResponse>> postCaseEvent(
+      dynamic requestBodyData, String eventName) async {
     //todo move request body here
     String? userType = await getUserType();
     String? accessToken = await getAccessToken();
-    ApiResult<BaseResponse> response = await collectApiProvider.postPTPEvent(
-        accessToken, requestBodyData, 'ptp', userType);
+    ApiResult<BaseResponse> response = await collectApiProvider.postCaseEventToServer(
+        accessToken, requestBodyData, eventName, userType);
+    return response;
+  }
+
+  Future<ApiResult<BaseResponse>> postEventWithFile(
+      dynamic requestBodyData, String eventName) async {
+    //todo move request body here
+    String? userType = await getUserType();
+    String? accessToken = await getAccessToken();
+    ApiResult<BaseResponse> response = await collectApiProvider.postFileEvent(
+        accessToken, requestBodyData, eventName, userType);
+    return response;
+  }
+
+  Future<ApiResult<BaseResponse>> postOts(dynamic requestBodyData) async {
+    //todo move request body here
+    String? userType = await getUserType();
+    String? accessToken = await getAccessToken();
+    ApiResult<BaseResponse> response = await collectApiProvider.postOtsEvent(
+        accessToken, requestBodyData, userType);
+    return response;
+  }
+
+  Future<ApiResult<BaseResponse>> postImageCaptureEvent(
+      dynamic formData) async {
+    //todo move request body here
+    String? userType = await getUserType();
+    String? accessToken = await getAccessToken();
+    ApiResult<BaseResponse> response =
+        await collectApiProvider.postImageCaptureEvent(
+            accessToken, formData, 'imageCaptured', userType);
     return response;
   }
 }

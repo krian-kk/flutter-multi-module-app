@@ -9,9 +9,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:languages/language_english.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/models/repo_post_model/repo_post_model.dart';
+import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -22,15 +24,14 @@ import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
+import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-
-import '../../models/speech2text_model.dart';
-import '../../utils/string_resource.dart';
-import '../../widgets/get_followuppriority_value.dart';
+import 'package:origa/widgets/get_followuppriority_value.dart';
+import 'package:repository/case_repository.dart';
 
 class CustomRepoBottomSheet extends StatefulWidget {
   const CustomRepoBottomSheet(
@@ -603,12 +604,8 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                                     dealerAddressController
                                                         .text,
                                                 repo: Repo(),
-                                                date: dateControlller.text
-                                                        .trim() +
-                                                    'T' +
-                                                    timeControlller.text
-                                                        .trim() +
-                                                    ':00.000Z',
+                                                date:
+                                                    '${dateControlller.text.trim()}T${timeControlller.text.trim()}:00.000Z',
                                                 imageLocation: <String>[],
                                                 customerName: Singleton.instance
                                                         .caseCustomerName ??
@@ -674,78 +671,85 @@ class _CustomRepoBottomSheetState extends State<CustomRepoBottomSheet> {
                                           debugPrint(
                                               'Exception while converting base64 ${e.toString()}');
                                         }
-                                        //todo
-                                        // await FirebaseUtils.storeEvents(
-                                        //         eventsDetails: firebaseObject,
-                                        //         caseId: widget.caseId,
-                                        //         selectedFollowUpDate:
-                                        //             dateControlller.text,
-                                        //         selectedClipValue:
-                                        //             Constants.repo,
-                                        //         bloc: widget.bloc)
-                                        //     .whenComplete(() {
-                                        //   AppUtils.topSnackBar(context,
-                                        //       Constants.successfullySubmitted);
-                                        // });
-                                      } else {
-                                        final Map<String, dynamic> postResult =
-                                            await APIRepository.apiRequest(
-                                          APIRequestType.upload,
-                                          HttpUrl.repoPostUrl(
-                                              'repo', widget.userType),
-                                          formDatas: FormData.fromMap(postdata),
-                                        );
-                                        if (postResult[Constants.success]) {
-                                          final Map<String, dynamic>
-                                              firebaseObject =
-                                              requestBodyData.toJson();
-                                          try {
-                                            firebaseObject.addAll(
-                                                await FirebaseUtils
-                                                    .toPrepareFileStoringModel(
-                                                        uploadFileLists));
-                                          } catch (e) {
-                                            debugPrint(
-                                                'Exception while converting base64 ${e.toString()}');
-                                          }
-                                          //todo
-                                          // await FirebaseUtils.storeEvents(
-                                          //         eventsDetails: firebaseObject,
-                                          //         caseId: widget.caseId,
-                                          //         selectedFollowUpDate:
-                                          //             dateControlller.text,
-                                          //         selectedClipValue:
-                                          //             Constants.repo,
-                                          //         bloc: widget.bloc)
-                                          //     .whenComplete(() {});
-                                          // here update followUpPriority value.
-                                          widget
-                                                  .bloc
-                                                  .caseDetailsAPIValue
-                                                  .caseDetails!
-                                                  .followUpPriority =
-                                              requestBodyData
-                                                  .eventAttr.followUpPriority;
-
-                                          widget.bloc.add(
-                                            ChangeIsSubmitForMyVisitEvent(
-                                              Constants.repo,
-                                            ),
-                                          );
-                                          // set speech to text data is null
-                                          returnS2Tdata.result?.reginalText =
-                                              null;
-                                          returnS2Tdata.result?.translatedText =
-                                              null;
-                                          returnS2Tdata.result?.audioS3Path =
-                                              null;
+                                        await FirebaseUtils.storeEvents(
+                                                eventsDetails: firebaseObject,
+                                                caseId: widget.caseId,
+                                                selectedFollowUpDate:
+                                                    dateControlller.text,
+                                                selectedClipValue:
+                                                    Constants.repo,
+                                                bloc: widget.bloc)
+                                            .whenComplete(() {
                                           AppUtils.topSnackBar(context,
                                               Constants.successfullySubmitted);
-                                          widget.bloc.add(
-                                            ChangeHealthStatusEvent(),
-                                          );
-                                          Navigator.pop(context);
-                                        }
+                                        });
+                                      } else {
+                                        final CaseRepositoryImpl
+                                            caseRepositoryImpl =
+                                            CaseRepositoryImpl();
+                                        final ApiResult<BaseResponse>
+                                            eventResult =
+                                            await caseRepositoryImpl
+                                                .postEventWithFile(
+                                                    FormData.fromMap(postdata),
+                                                    'repo');
+                                        await eventResult.when(
+                                            success:
+                                                (BaseResponse? result) async {
+                                              final Map<String, dynamic>
+                                                  firebaseObject =
+                                                  requestBodyData.toJson();
+                                              try {
+                                                firebaseObject.addAll(
+                                                    await FirebaseUtils
+                                                        .toPrepareFileStoringModel(
+                                                            uploadFileLists));
+                                              } catch (e) {
+                                                debugPrint(
+                                                    'Exception while converting base64 ${e.toString()}');
+                                              }
+                                              await FirebaseUtils.storeEvents(
+                                                      eventsDetails:
+                                                          firebaseObject,
+                                                      caseId: widget.caseId,
+                                                      selectedFollowUpDate:
+                                                          dateControlller.text,
+                                                      selectedClipValue:
+                                                          Constants.repo,
+                                                      bloc: widget.bloc)
+                                                  .whenComplete(() {});
+                                              // here update followUpPriority value.
+                                              widget
+                                                      .bloc
+                                                      .caseDetailsAPIValue
+                                                      .caseDetails!
+                                                      .followUpPriority =
+                                                  requestBodyData.eventAttr
+                                                      .followUpPriority;
+
+                                              widget.bloc.add(
+                                                ChangeIsSubmitForMyVisitEvent(
+                                                  Constants.repo,
+                                                ),
+                                              );
+                                              // set speech to text data is null
+                                              returnS2Tdata
+                                                  .result?.reginalText = null;
+                                              returnS2Tdata.result
+                                                  ?.translatedText = null;
+                                              returnS2Tdata
+                                                  .result?.audioS3Path = null;
+                                              AppUtils.topSnackBar(
+                                                  context,
+                                                  Constants
+                                                      .successfullySubmitted);
+                                              widget.bloc.add(
+                                                ChangeHealthStatusEvent(),
+                                              );
+                                              Navigator.pop(context);
+                                            },
+                                            failure: (NetworkExceptions?
+                                                error) async {});
                                       }
                                     }
                                   }

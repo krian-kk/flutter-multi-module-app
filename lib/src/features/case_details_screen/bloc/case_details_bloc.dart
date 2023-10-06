@@ -4,17 +4,23 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/constants.dart';
+import 'package:dio/dio.dart';
+import 'package:domain_models/common/constant_event_values.dart';
 import 'package:domain_models/response_models/case/case_detail_models/case_details_response.dart';
 import 'package:domain_models/response_models/events/event_details/event_details_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:languages/app_languages.dart';
 import 'package:languages/language_english.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/models/campaign_config_model.dart';
 import 'package:origa/models/customer_met_model.dart';
+import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_model/display_eventdetails_model.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
@@ -27,7 +33,9 @@ import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/image_resource.dart';
+import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:repository/case_repository.dart';
 
 part 'case_details_event.dart';
@@ -54,7 +62,9 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
   bool isAutoCalling = false;
   String? changeFollowUpDate;
   bool isSendWhatsappLoading = false;
-
+  bool isEventSubmited = false;
+  bool isSubmitedForMyVisits = false;
+  String submitedEventType = '';
   BuildContext? caseDetailsContext;
   bool isBasicInfo = true;
 
@@ -380,6 +390,239 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       indexValue = 0;
       emit(ClickMainAddressBottomSheetState(0,
           addressModel: event.addressModel));
+    }
+
+    if (event is ChangeFollowUpDateEvent) {
+      changeFollowUpDate = event.followUpDate;
+    }
+    if (event is PostImageCapturedEvent) {
+      emit(DisableCaptureImageBtnState());
+      final Map<String, dynamic> postData =
+          jsonDecode(jsonEncode(event.postData!.toJson()))
+              as Map<String, dynamic>;
+      final List<dynamic> value = <dynamic>[];
+      for (File element in event.fileData!) {
+        value.add(await MultipartFile.fromFile(element.path.toString()));
+      }
+      postData.addAll(<String, dynamic>{
+        'files': value,
+      });
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        //do do do do
+        final Map<String, dynamic> firebaseObject = event.postData!.toJson();
+        try {
+          firebaseObject.addAll(
+              await FirebaseUtils.toPrepareFileStoringModel(event.fileData!));
+        } catch (e) {
+          debugPrint('Exception while converting base64 ${e.toString()}');
+        }
+        await FirebaseUtils.storeEvents(
+            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
+        emit(PostDataApiSuccessState());
+      } else {
+        final CaseRepositoryImpl caseRepositoryImpl = CaseRepositoryImpl();
+        final ApiResult<BaseResponse> eventResult = await caseRepositoryImpl
+            .postImageCaptureEvent(FormData.fromMap(postData));
+        await eventResult.when(
+            success: (BaseResponse? result) async {
+              if (Singleton.instance.usertype == Constants.fieldagent &&
+                  Singleton.instance.isOfflineEnabledContractorBased) {
+                //do do do do
+                final Map<String, dynamic> firebaseObject =
+                    event.postData!.toJson();
+                try {
+                  firebaseObject.addAll(
+                      await FirebaseUtils.toPrepareFileStoringModel(
+                          event.fileData!));
+                } catch (e) {
+                  debugPrint(
+                      'Exception while converting base64 ${e.toString()}');
+                }
+                await FirebaseUtils.storeEvents(
+                    eventsDetails: firebaseObject, caseId: caseId, bloc: this);
+              }
+              Navigator.pop(event.context!);
+              emit(PostDataApiSuccessState());
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+      emit(EnableCaptureImageBtnState());
+    }
+
+    if (event is ClickCustomerNotMetButtonEvent) {
+      emit(DisableCustomerNotMetBtnState());
+      if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)?.leftMessage) {
+        customerNotMetButtonClick(
+            Constants.leftMessage,
+            caseId.toString(),
+            'leftMessage',
+            'PTP',
+            <String, dynamic>{
+              'cType': caseDetailsAPIValue.addressDetails?[indexValue!]['cType']
+                  .toString(),
+              'value': caseDetailsAPIValue.addressDetails?[indexValue!]['value']
+                  .toString(),
+              'health': ConstantEventValues.addressCustomerNotMetHealth,
+              // 'resAddressId_0': Singleton.instance.resAddressId_0,
+            },
+            addressSelectedCustomerNotMetClip,
+            event.context,
+            emit);
+      } else if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)!.doorLocked) {
+        customerNotMetButtonClick(
+            Constants.doorLocked,
+            caseId.toString(),
+            'doorLocked',
+            'PTP',
+            <String, dynamic>{
+              'cType': caseDetailsAPIValue.addressDetails?[indexValue!]['cType']
+                  .toString(),
+              'value': caseDetailsAPIValue.addressDetails?[indexValue!]['value']
+                  .toString(),
+              'health': ConstantEventValues.addressCustomerNotMetHealth,
+              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+            },
+            addressSelectedCustomerNotMetClip,
+            event.context,
+            emit);
+      } else if (addressSelectedCustomerNotMetClip ==
+          Languages.of(event.context)!.entryRestricted) {
+        customerNotMetButtonClick(
+            Constants.entryRestricted,
+            caseId.toString(),
+            'entryRestricted',
+            'PTP',
+            <String, dynamic>{
+              'cType': caseDetailsAPIValue.addressDetails?[indexValue!]['cType']
+                  .toString(),
+              'value': caseDetailsAPIValue.addressDetails?[indexValue!]['value']
+                  .toString(),
+              'health': ConstantEventValues.addressCustomerNotMetHealth,
+              // 'resAddressId_0': Singleton.instance.resAddressId_0 ?? '',
+            },
+            addressSelectedCustomerNotMetClip,
+            event.context,
+            emit);
+      }
+    }
+  }
+
+  void customerNotMetButtonClick(
+    String eventType,
+    String caseId,
+    String eventName,
+    String followUpPriority,
+    dynamic contact,
+    String selectedClipValue,
+    BuildContext context,
+    Emitter<CaseDetailsState> emit,
+  ) async {
+    Position position = Position(
+        longitude: 0,
+        latitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0,
+        headingAccuracy: 0,
+        altitudeAccuracy: 0);
+    final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
+
+    final Position res = await geolocatorPlatform.getCurrentPosition();
+
+    position = res;
+    final CustomerNotMetPostModel requestBodyData = CustomerNotMetPostModel(
+        eventId: ConstantEventValues.addressCustomerNotMetEventId,
+        eventType: eventType,
+        caseId: caseId,
+        eventCode: ConstantEventValues.addressCustomerNotMetEvenCode,
+        contact: contact,
+        eventModule: 'Field Allocation',
+        callerServiceID: Singleton.instance.callerServiceID,
+        callID: Singleton.instance.callID,
+        callingID: Singleton.instance.callingID,
+        voiceCallEventCode: ConstantEventValues.voiceCallEventCode,
+        // createdAt: (ConnectivityResult.none ==
+        //         await Connectivity().checkConnectivity())
+        //     ? DateTime.now().toString()
+        //     : null,
+        createdBy: Singleton.instance.agentRef ?? '',
+        agentName: Singleton.instance.agentName ?? '',
+        contractor: Singleton.instance.contractor ?? '',
+        agrRef: Singleton.instance.agrRef ?? '',
+        invalidNumber: Singleton.instance.invalidNumber,
+        eventAttr: CustomerNotMetEventAttr(
+          remarks: addressCustomerNotMetRemarksController.text.isNotEmpty
+              ? addressCustomerNotMetRemarksController.text
+              : null,
+          followUpPriority: followUpPriority,
+          nextActionDate: addressCustomerNotMetSelectedDate != ''
+              ? addressCustomerNotMetSelectedDate
+              : addressCustomerNotMetNextActionDateController.text,
+          longitude: position.longitude,
+          latitude: position.latitude,
+          accuracy: position.accuracy,
+          altitude: position.altitude,
+          heading: position.heading,
+          speed: position.speed,
+          reginalText: returnS2TCustomerNotMet.result?.reginalText,
+          translatedText: returnS2TCustomerNotMet.result?.translatedText,
+          audioS3Path: returnS2TCustomerNotMet.result?.audioS3Path,
+        ));
+    Map<String, dynamic> postResult = <String, dynamic>{'success': false};
+
+    if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+      await FirebaseUtils.storeEvents(
+              eventsDetails: requestBodyData.toJson(),
+              caseId: caseId,
+              selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+                  ? addressCustomerNotMetSelectedDate
+                  : addressCustomerNotMetNextActionDateController.text,
+              selectedClipValue: ConvertString.convertLanguageToConstant(
+                  selectedClipValue, context),
+              bloc: this)
+          .then((bool value) {
+        //For navigation purpose - back screen
+        postResult = <String, dynamic>{'success': true};
+      });
+    } else {
+      final CaseRepositoryImpl caseRepositoryImpl = CaseRepositoryImpl();
+      final ApiResult<BaseResponse> eventResult = await caseRepositoryImpl
+          .postCaseEvent(jsonEncode(requestBodyData), eventName);
+      await eventResult.when(success: (BaseResponse? result) async {
+        await FirebaseUtils.storeEvents(
+                eventsDetails: requestBodyData.toJson(),
+                caseId: caseId,
+                selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+                    ? addressCustomerNotMetSelectedDate
+                    : addressCustomerNotMetNextActionDateController.text,
+                selectedClipValue: ConvertString.convertLanguageToConstant(
+                    selectedClipValue, context),
+                bloc: this)
+            .then((bool value) {});
+        submitedEventType = 'Customer Not Met';
+        isSubmitedForMyVisits = true;
+        isEventSubmited = true;
+        caseDetailsAPIValue.caseDetails?.collSubStatus =
+            ConvertString.convertLanguageToConstant(selectedClipValue, context);
+        addressCustomerNotMetSelectedDate = '';
+        addressCustomerNotMetNextActionDateController.text = '';
+        addressCustomerNotMetRemarksController.clear();
+        addressSelectedCustomerNotMetClip = '';
+        returnS2TCustomerNotMet.result?.reginalText = null;
+        returnS2TCustomerNotMet.result?.translatedText = null;
+        returnS2TCustomerNotMet.result?.audioS3Path = null;
+        emit(UpdateHealthStatusState());
+        emit(PostDataApiSuccessState());
+        emit(EnableCustomerNotMetBtnState());
+      }, failure: (NetworkExceptions? error) async {
+        emit(EnableCustomerNotMetBtnState());
+      });
     }
   }
 }

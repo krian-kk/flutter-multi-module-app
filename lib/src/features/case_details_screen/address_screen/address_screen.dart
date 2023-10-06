@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:languages/language_english.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/address_screen/customer_met_screen.dart';
@@ -33,10 +32,10 @@ class AddressScreen extends StatefulWidget {
   final dynamic addressModel;
 
   @override
-  _AddressScreenState createState() => _AddressScreenState();
+  AddressScreenState createState() => AddressScreenState();
 }
 
-class _AddressScreenState extends State<AddressScreen>
+class AddressScreenState extends State<AddressScreen>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
 
@@ -151,14 +150,10 @@ class _AddressScreenState extends State<AddressScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 CustomText(
-                                  widget
-                                          .bloc
-                                          .caseDetailsAPIValue
-                                          .addressDetails![widget.index]
-                                              ['cType']
-                                          .toString()
-                                          .toUpperCase() ??
-                                      '_',
+                                  widget.bloc.caseDetailsAPIValue
+                                      .addressDetails![widget.index]['cType']
+                                      .toString()
+                                      .toUpperCase(),
                                   fontWeight: FontWeight.w700,
                                   color: ColorResource.color23375A,
                                 ),
@@ -185,13 +180,9 @@ class _AddressScreenState extends State<AddressScreen>
                               child: SizedBox(
                                 width: 255,
                                 child: CustomText(
-                                  widget
-                                          .bloc
-                                          .caseDetailsAPIValue
-                                          .addressDetails![widget.index]
-                                              ['value']
-                                          .toString() ??
-                                      '_',
+                                  widget.bloc.caseDetailsAPIValue
+                                      .addressDetails![widget.index]['value']
+                                      .toString(),
                                   color: ColorResource.color23375A,
                                 ),
                               ),
@@ -612,124 +603,3 @@ class _AddressScreenState extends State<AddressScreen>
     );
   }
 }
-
-// class CustomMapViewBottomSheet extends StatefulWidget {
-//   const CustomMapViewBottomSheet({Key? key}) : super(key: key);
-
-//   @override
-//   _CustomMapViewBottomSheetState createState() =>
-//       _CustomMapViewBottomSheetState();
-// }
-
-// class _CustomMapViewBottomSheetState extends State<CustomMapViewBottomSheet> {
-//   late BitmapDescriptor customIcon;
-//   late Position position;
-//   final Completer<GoogleMapController> _controller = Completer();
-//   static const LatLng _center = LatLng(28.644800, 77.216721);
-//   final Set<Marker> _markers = {};
-//   late String addressLine;
-
-//   @override
-//   void dispose() {
-//     super.dispose();
-//   }
-
-//   @override
-//   void initState() {
-//     BitmapDescriptor.fromAssetImage(
-//             const ImageConfiguration(size: Size(12, 12)), 'assets/marker.png')
-//         .then((d) {
-//       customIcon = d;
-//     });
-//     getCurrentLocation();
-//     super.initState();
-//   }
-
-//   Future getCurrentLocation() async {
-//     LocationPermission permission = await Geolocator.checkPermission();
-//     if (permission.toString() == PermissionStatus.granted.toString()) {
-//       LocationPermission permission = await Geolocator.requestPermission();
-//       if (permission.toString() != PermissionStatus.granted.toString()) {
-//         getLocation();
-//       }
-//       return;
-//     }
-//     getLocation();
-//   }
-
-//   void getLocation() async {
-//     Position res = await Geolocator.getCurrentPosition(
-//         desiredAccuracy: LocationAccuracy.best);
-//     setState(() {
-//       position = res;
-//     });
-
-//     _onAddMarkerButtonPressed();
-//   }
-
-//   _onMapCreated(GoogleMapController controller) {
-//     _controller.complete(controller);
-//   }
-
-//   void _onAddMarkerButtonPressed() async {
-//     final CameraPosition _position1 = CameraPosition(
-//       bearing: 192.833,
-//       target: LatLng(position.latitude, position.longitude),
-//       tilt: 59.440,
-//       zoom: 16.0,
-//     );
-//     final GoogleMapController controller = await _controller.future;
-//     controller.animateCamera(CameraUpdate.newCameraPosition(_position1));
-//     setState(() {
-//       _markers.add(
-//         Marker(
-//           markerId: const MarkerId('current location'),
-//           position: LatLng(position.latitude, position.longitude),
-//           infoWindow: const InfoWindow(
-//             title: 'current location',
-//           ),
-//           icon: customIcon,
-//         ),
-//       );
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return SafeArea(
-//       bottom: false,
-//       child: SizedBox(
-//         height: MediaQuery.of(context).size.height * 0.82,
-//         child: StatefulBuilder(
-//             builder: (BuildContext context, StateSetter setState) {
-//           return Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               Container(
-//                 padding: const EdgeInsets.fromLTRB(25, 0, 5, 0),
-//                 child: BottomSheetAppbar(
-//                   title: LanguageEn().mapView,
-//                   padding:
-//                       const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
-//                 ),
-//               ),
-//               Expanded(
-//                 child: GoogleMap(
-//                   onMapCreated: _onMapCreated,
-//                   initialCameraPosition: const CameraPosition(
-//                     target: _center,
-//                     zoom: 11.0,
-//                   ),
-//                   mapType: MapType.normal,
-//                   markers: _markers,
-//                   myLocationButtonEnabled: true,
-//                   myLocationEnabled: true,
-//                 ),
-//               ),
-//             ],
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }

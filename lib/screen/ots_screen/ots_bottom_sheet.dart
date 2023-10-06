@@ -11,8 +11,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
 import 'package:languages/language_english.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
@@ -36,6 +37,7 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
@@ -577,15 +579,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               contractor: Singleton.instance.contractor ?? '',
               invalidNumber: Singleton.instance.invalidNumber.toString(),
             );
-
-            // requestBodyData
-            //     .toJson()
-            //     .remove((key, value) => value == requestBodyData.createdAt);
-            //  remove(requestBodyData.createdAt);
-
-            // debugPrint(
-            //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -608,83 +601,84 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               } catch (e) {
                 debugPrint('Exception while converting base64 ${e.toString()}');
               }
-              //todo
-              // await FirebaseUtils.storeEvents(
-              //         eventsDetails: firebaseObject,
-              //         caseId: widget.caseId,
-              //         selectedFollowUpDate: otsPaymentDateControlller.text,
-              //         selectedClipValue: Constants.ots,
-              //         bloc: widget.bloc)
-              //     .whenComplete(() {
-              //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-              // });
+              await FirebaseUtils.storeEvents(
+                      eventsDetails: firebaseObject,
+                      caseId: widget.caseId,
+                      selectedFollowUpDate: otsPaymentDateControlller.text,
+                      selectedClipValue: Constants.ots,
+                      bloc: widget.bloc)
+                  .whenComplete(() {
+                AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+              });
             } else {
-              final Map<String, dynamic> postResult =
-                  await APIRepository.apiRequest(
-                APIRequestType.upload,
-                HttpUrl.otsPostUrl,
-                formDatas: FormData.fromMap(postdata),
-              );
-              if (postResult[Constants.success]) {
-                final Map<String, dynamic> firebaseObject =
-                    requestBodyData.toJson();
-                try {
-                  firebaseObject.addAll(
-                      await FirebaseUtils.toPrepareFileStoringModel(
-                          uploadFileLists));
-                } catch (e) {
-                  debugPrint(
-                      'Exception while converting base64 ${e.toString()}');
-                }
-                //todo
-                // await FirebaseUtils.storeEvents(
-                //         eventsDetails: firebaseObject,
-                //         caseId: widget.caseId,
-                //         selectedFollowUpDate: otsPaymentDateControlller.text,
-                //         selectedClipValue: Constants.ots,
-                //         bloc: widget.bloc)
-                //     .whenComplete(() {});
-                widget.bloc.add(
-                  ChangeIsSubmitForMyVisitEvent(
-                    Constants.ots,
-                  ),
-                );
-                if (!(widget.userType == Constants.fieldagent &&
-                    widget.isCall!)) {
-                  widget.bloc.add(
-                      ChangeIsSubmitEvent(selectedClipValue: Constants.ots));
-                }
+              final CaseRepositoryImpl caseRepositoryImpl =
+                  CaseRepositoryImpl();
+              final ApiResult<BaseResponse> eventResult =
+                  await caseRepositoryImpl.postOts(FormData.fromMap(postdata));
+              await eventResult.when(
+                  success: (BaseResponse? result) async {
+                    final Map<String, dynamic> firebaseObject =
+                        requestBodyData.toJson();
+                    try {
+                      firebaseObject.addAll(
+                          await FirebaseUtils.toPrepareFileStoringModel(
+                              uploadFileLists));
+                    } catch (e) {
+                      debugPrint(
+                          'Exception while converting base64 ${e.toString()}');
+                    }
+                    await FirebaseUtils.storeEvents(
+                            eventsDetails: firebaseObject,
+                            caseId: widget.caseId,
+                            selectedFollowUpDate:
+                                otsPaymentDateControlller.text,
+                            selectedClipValue: Constants.ots,
+                            bloc: widget.bloc)
+                        .whenComplete(() {});
+                    widget.bloc.add(
+                      ChangeIsSubmitForMyVisitEvent(
+                        Constants.ots,
+                      ),
+                    );
+                    if (!(widget.userType == Constants.fieldagent &&
+                        widget.isCall!)) {
+                      widget.bloc.add(ChangeIsSubmitEvent(
+                          selectedClipValue: Constants.ots));
+                    }
 
-                widget.bloc.add(
-                  ChangeHealthStatusEvent(),
-                );
+                    widget.bloc.add(
+                      ChangeHealthStatusEvent(),
+                    );
 
-                // set speech to text data is null
-                returnS2Tdata.result?.reginalText = null;
-                returnS2Tdata.result?.translatedText = null;
-                returnS2Tdata.result?.audioS3Path = null;
+                    // set speech to text data is null
+                    returnS2Tdata.result?.reginalText = null;
+                    returnS2Tdata.result?.translatedText = null;
+                    returnS2Tdata.result?.audioS3Path = null;
 
-                if (widget.isAutoCalling) {
-                  Navigator.pop(widget.paramValue['context']);
-                  Navigator.pop(widget.paramValue['context']);
-                  Singleton.instance.startCalling = false;
-                  if (!stopValue) {
-                    widget.allocationBloc!.add(StartCallingEvent(
-                      customerIndex: widget.paramValue['customerIndex'] + 1,
-                      phoneIndex: 0,
-                      isIncreaseCount: true,
-                    ));
-                  } else {
-                    widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                      customerIndex: widget.paramValue['customerIndex'],
-                    ));
-                  }
-                } else {
-                  AppUtils.topSnackBar(
-                      context, Constants.successfullySubmitted);
-                  Navigator.pop(context);
-                }
-              }
+                    if (widget.isAutoCalling) {
+                      Navigator.pop(widget.paramValue['context']);
+                      Navigator.pop(widget.paramValue['context']);
+                      Singleton.instance.startCalling = false;
+                      if (!stopValue) {
+                        widget.allocationBloc!.add(StartCallingEvent(
+                          customerIndex: widget.paramValue['customerIndex'] + 1,
+                          phoneIndex: 0,
+                          isIncreaseCount: true,
+                        ));
+                      } else {
+                        widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                          customerIndex: widget.paramValue['customerIndex'],
+                        ));
+                      }
+                    } else {
+                      AppUtils.topSnackBar(
+                          context, Constants.successfullySubmitted);
+                      Navigator.pop(context);
+                    }
+                  },
+                  failure: (NetworkExceptions? error) async {
+
+                  });
             }
           }
         }

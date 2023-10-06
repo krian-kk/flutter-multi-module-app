@@ -565,8 +565,8 @@ class _CustomPtpBottomSheetState extends State<CustomPtpBottomSheet> {
               final CaseRepositoryImpl caseRepositoryImpl =
                   CaseRepositoryImpl();
               final ApiResult<BaseResponse> eventResult =
-                  await caseRepositoryImpl
-                      .postPTPEvent(jsonEncode(requestBodyData));
+                  await caseRepositoryImpl.postCaseEvent(
+                      jsonEncode(requestBodyData), 'ptp');
               await eventResult.when(
                   success: (BaseResponse? result) async {
                     await FirebaseUtils.storeEvents(

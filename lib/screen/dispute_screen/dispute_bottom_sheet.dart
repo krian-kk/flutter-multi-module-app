@@ -8,6 +8,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:languages/language_english.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
@@ -20,6 +23,7 @@ import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
+import 'package:origa/utils/firebase.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/pick_date_time_utils.dart';
@@ -29,6 +33,7 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../widgets/get_followuppriority_value.dart';
@@ -470,18 +475,84 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
 
               if (ConnectivityResult.none ==
                   await Connectivity().checkConnectivity()) {
-                //todo
-                // await FirebaseUtils.storeEvents(
-                //         eventsDetails: requestBodyData.toJson(),
-                //         caseId: widget.caseId,
-                //         selectedFollowUpDate: nextActionDateControlller.text,
-                //         selectedClipValue: Constants.dispute,
-                //         bloc: widget.bloc)
-                //     .whenComplete(() {
-                //   AppUtils.topSnackBar(
-                //       context, Constants.successfullySubmitted);
-                // });
+                await FirebaseUtils.storeEvents(
+                        eventsDetails: requestBodyData.toJson(),
+                        caseId: widget.caseId,
+                        selectedFollowUpDate: nextActionDateControlller.text,
+                        selectedClipValue: Constants.dispute,
+                        bloc: widget.bloc)
+                    .whenComplete(() {
+                  AppUtils.topSnackBar(
+                      context, Constants.successfullySubmitted);
+                });
               } else {
+                final CaseRepositoryImpl caseRepositoryImpl =
+                    CaseRepositoryImpl();
+                final ApiResult<BaseResponse> eventResult =
+                    await caseRepositoryImpl.postCaseEvent(
+                        jsonEncode(requestBodyData), 'dispute');
+                await eventResult.when(
+                    success: (BaseResponse? result) async {
+                      await FirebaseUtils.storeEvents(
+                              eventsDetails: requestBodyData.toJson(),
+                              caseId: widget.caseId,
+                              selectedFollowUpDate:
+                                  nextActionDateControlller.text,
+                              selectedClipValue: Constants.dispute,
+                              bloc: widget.bloc)
+                          .whenComplete(() {});
+                      // here update followUpPriority value.
+                      widget.bloc.caseDetailsAPIValue.caseDetails!
+                              .followUpPriority =
+                          requestBodyData.eventAttr.followUpPriority;
+
+                      widget.bloc.add(
+                        ChangeIsSubmitForMyVisitEvent(
+                          Constants.dispute,
+                        ),
+                      );
+
+                      // set speech to text data is null
+                      returnS2Tdata.result?.reginalText = null;
+                      returnS2Tdata.result?.translatedText = null;
+                      returnS2Tdata.result?.audioS3Path = null;
+
+                      if (!(widget.userType == Constants.fieldagent &&
+                          widget.isCall!)) {
+                        widget.bloc.add(
+                          ChangeIsSubmitEvent(
+                              selectedClipValue: Constants.disputeCaseStatus),
+                        );
+                      }
+
+                      widget.bloc.add(
+                        ChangeHealthStatusEvent(),
+                      );
+
+                      if (widget.isAutoCalling) {
+                        Navigator.pop(widget.paramValue['context']);
+                        Navigator.pop(widget.paramValue['context']);
+                        Singleton.instance.startCalling = false;
+                        if (!stopValue) {
+                          widget.allocationBloc!.add(StartCallingEvent(
+                            customerIndex:
+                                widget.paramValue['customerIndex'] + 1,
+                            phoneIndex: 0,
+                            isIncreaseCount: true,
+                          ));
+                        } else {
+                          widget.allocationBloc!
+                              .add(ConnectedStopAndSubmitEvent(
+                            customerIndex: widget.paramValue['customerIndex'],
+                          ));
+                        }
+                      } else {
+                        AppUtils.topSnackBar(
+                            context, Constants.successfullySubmitted);
+                        Navigator.pop(context);
+                      }
+                    },
+                    failure: (NetworkExceptions? error) async {});
                 final Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                         APIRequestType.post,
@@ -490,64 +561,6 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                           widget.userType,
                         ),
                         requestBodydata: jsonEncode(requestBodyData));
-                if (postResult[Constants.success]) {
-                  //todo
-                  // await FirebaseUtils.storeEvents(
-                  //         eventsDetails: requestBodyData.toJson(),
-                  //         caseId: widget.caseId,
-                  //         selectedFollowUpDate: nextActionDateControlller.text,
-                  //         selectedClipValue: Constants.dispute,
-                  //         bloc: widget.bloc)
-                  //     .whenComplete(() {});
-                  // here update followUpPriority value.
-                  widget.bloc.caseDetailsAPIValue.caseDetails!
-                          .followUpPriority =
-                      requestBodyData.eventAttr.followUpPriority;
-
-                  widget.bloc.add(
-                    ChangeIsSubmitForMyVisitEvent(
-                      Constants.dispute,
-                    ),
-                  );
-
-                  // set speech to text data is null
-                  returnS2Tdata.result?.reginalText = null;
-                  returnS2Tdata.result?.translatedText = null;
-                  returnS2Tdata.result?.audioS3Path = null;
-
-                  if (!(widget.userType == Constants.fieldagent &&
-                      widget.isCall!)) {
-                    widget.bloc.add(
-                      ChangeIsSubmitEvent(
-                          selectedClipValue: Constants.disputeCaseStatus),
-                    );
-                  }
-
-                  widget.bloc.add(
-                    ChangeHealthStatusEvent(),
-                  );
-
-                  if (widget.isAutoCalling) {
-                    Navigator.pop(widget.paramValue['context']);
-                    Navigator.pop(widget.paramValue['context']);
-                    Singleton.instance.startCalling = false;
-                    if (!stopValue) {
-                      widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] + 1,
-                        phoneIndex: 0,
-                        isIncreaseCount: true,
-                      ));
-                    } else {
-                      widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                        customerIndex: widget.paramValue['customerIndex'],
-                      ));
-                    }
-                  } else {
-                    AppUtils.topSnackBar(
-                        context, Constants.successfullySubmitted);
-                    Navigator.pop(context);
-                  }
-                }
               }
             }
           } else {

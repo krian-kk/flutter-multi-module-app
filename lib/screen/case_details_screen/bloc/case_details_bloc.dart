@@ -10,6 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
@@ -42,6 +45,7 @@ import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
@@ -710,9 +714,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         //     eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
       } else {
+
+        final CaseRepositoryImpl caseRepositoryImpl =
+        CaseRepositoryImpl();
+        final ApiResult<BaseResponse> eventResult =
+        await caseRepositoryImpl
+            .postImageCaptureEvent(FormData.fromMap(postdata));
+        await eventResult.when(
+            success: (BaseResponse? result) async {
+            },
+            failure: (NetworkExceptions? error) async {});
         final Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
-          HttpUrl.imageCaptured + 'userType=$userType',
+          '${HttpUrl.imageCaptured}userType=$userType',
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
