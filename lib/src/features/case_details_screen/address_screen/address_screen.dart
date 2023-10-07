@@ -112,7 +112,7 @@ class AddressScreenState extends State<AddressScreen>
         builder: (BuildContext context, CaseDetailsState state) {
           bool showVisit = false;
           String? key = Singleton
-              .instance.contractorInformations?.result?.googleMapsApiKey;
+              .instance.contractorInformations?.googleMapsApiKey;
           if (key?.isEmpty == false) {
             showVisit = true;
           }

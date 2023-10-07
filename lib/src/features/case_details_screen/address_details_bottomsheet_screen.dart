@@ -121,7 +121,6 @@ class _AddressDetailsBottomSheetScreenState
                               String? key = Singleton
                                   .instance
                                   .contractorInformations
-                                  ?.result
                                   ?.googleMapsApiKey;
                               if (key?.isEmpty == false) {
                                 showVisit = true;

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:design_system/constant_event_values.dart';
 import 'package:design_system/constants.dart';
 import 'package:domain_models/common/buildroute_data.dart';
@@ -11,9 +10,10 @@ import 'package:domain_models/response_models/allocation/contractor_details_mode
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:domain_models/response_models/mapView/map_model.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:meta/meta.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
@@ -265,7 +265,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             success: (List<PriorityCaseListModel>? result) async {
               multipleLatLong.clear();
               if (result != null) {
-                result.forEach((element) {
+                for (var element in result) {
                   multipleLatLong.add(
                     MapMarkerModel(
                       caseId: element.caseId,
@@ -276,7 +276,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                       longitude: element.location?.lng,
                     ),
                   );
-                });
+                }
               }
             },
             failure: (NetworkExceptions? error) async {});

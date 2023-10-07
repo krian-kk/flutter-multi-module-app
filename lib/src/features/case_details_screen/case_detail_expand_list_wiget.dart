@@ -1,8 +1,8 @@
 import 'package:design_system/color_resources.dart';
 import 'package:design_system/fonts.dart';
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
 import 'package:languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
@@ -121,16 +121,14 @@ class ListOfCaseDetails {
       children: [
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.loanAmount,
-            value: bloc.caseDetailsAPIValue.caseDetails?.loanAmt
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.loanAmt.toString()),
         Row(
           children: <Widget>[
             Flexible(
               child: SizedBox(
                 child: ListOfCaseDetails.textFieldView(
                     title: Languages.of(context)!.loanDuration,
-                    value: bloc
-                        .caseDetailsAPIValue.caseDetails?.loanDuration
+                    value: bloc.caseDetailsAPIValue.caseDetails?.loanDuration
                         .toString()),
               ),
             ),
@@ -141,8 +139,8 @@ class ListOfCaseDetails {
               child: SizedBox(
                 child: ListOfCaseDetails.textFieldView(
                     title: Languages.of(context)!.pos,
-                    value: bloc.caseDetailsAPIValue.caseDetails?.pos
-                        .toString()),
+                    value:
+                        bloc.caseDetailsAPIValue.caseDetails?.pos.toString()),
               ),
             ),
           ],
@@ -152,8 +150,7 @@ class ListOfCaseDetails {
             Flexible(
               child: ListOfCaseDetails.textFieldView(
                   title: Languages.of(context)!.schemeCode,
-                  value: bloc
-                      .caseDetailsAPIValue.caseDetails?.schemeCode
+                  value: bloc.caseDetailsAPIValue.caseDetails?.schemeCode
                       .toString()),
             ),
             bloc.caseDetailsAPIValue.caseDetails?.schemeCode != null
@@ -175,50 +172,42 @@ class ListOfCaseDetails {
         //         .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.product,
-            value: bloc.caseDetailsAPIValue.caseDetails?.product
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.product.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.batchNo,
-            value: bloc.caseDetailsAPIValue.caseDetails?.batchNo
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.batchNo.toString()),
 
         // Extra text field
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.dateOfLoanDisbursement,
-            value: bloc.caseDetailsAPIValue.caseDetails?.loanDisbDate
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.loanDisbDate.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.tos,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.tos.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.tos.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.emiAmount,
-            value: bloc.caseDetailsAPIValue.caseDetails?.emiAmt
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.emiAmt.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.noOfPendingEMI,
-            value: bloc.caseDetailsAPIValue.caseDetails?.pendingEmi
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.pendingEmi.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.penaltyAmount,
-            value: bloc.caseDetailsAPIValue.caseDetails?.amtPenalty
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.amtPenalty.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.odInterest,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.odInt.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.odInt.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.assetDetails,
-            value: bloc.caseDetailsAPIValue.caseDetails?.assetDetails
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.assetDetails.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.coLender,
-            value: bloc.caseDetailsAPIValue.caseDetails?.coLender
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.coLender.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.employerBusinessEntity,
-            value: bloc.caseDetailsAPIValue.caseDetails?.empBusEntity
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.empBusEntity.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.lastPaymentDate,
             value: bloc.caseDetailsAPIValue.caseDetails?.lastPaymentDate
@@ -230,8 +219,7 @@ class ListOfCaseDetails {
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.fatherSpouseName,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.fatherSpouseName
+            value: bloc.caseDetailsAPIValue.caseDetails?.fatherSpouseName
                 .toString()),
 
         ListOfCaseDetails.textFieldView(
@@ -241,18 +229,15 @@ class ListOfCaseDetails {
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.zone,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.zone.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.zone.toString()),
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.dpd,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.dpd.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.dpd.toString()),
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.language,
-            value: bloc.caseDetailsAPIValue.caseDetails?.language
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.language.toString()),
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.lastPaidAmount,
@@ -260,69 +245,56 @@ class ListOfCaseDetails {
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.riskRanking,
-            value: bloc.caseDetailsAPIValue.caseDetails?.riskRanking
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.riskRanking.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.reviewFlag,
-            value: bloc.caseDetailsAPIValue.caseDetails?.reviewFlag
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.reviewFlag.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.location,
-            value: bloc.caseDetailsAPIValue.caseDetails?.location
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.location.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.agency,
-            value: bloc.caseDetailsAPIValue.caseDetails?.agency
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.agency.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.customerID,
-            value: bloc.caseDetailsAPIValue.caseDetails?.customerId
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.customerId.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.minDueAmount,
-            value: bloc.caseDetailsAPIValue.caseDetails?.minDueAmt
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.minDueAmt.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.cardOutstanding,
-            value: bloc.caseDetailsAPIValue.caseDetails?.cardOs
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.cardOs.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.statementDate,
-            value: bloc.caseDetailsAPIValue.caseDetails?.statementDate
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.statementDate.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.dueDate,
-            value: bloc.caseDetailsAPIValue.caseDetails?.dueDate
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.dueDate.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.cardStatus,
-            value: bloc.caseDetailsAPIValue.caseDetails?.cardStatus
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.cardStatus.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.lastBilledAmount,
-            value: bloc.caseDetailsAPIValue.caseDetails?.lastBilledAmt
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.lastBilledAmt.toString()),
 
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.chassisNo,
-            value: bloc.caseDetailsAPIValue.caseDetails?.chassisNo
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.chassisNo.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.modelMake,
-            value: bloc.caseDetailsAPIValue.caseDetails?.modelMake
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.modelMake.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.riskBucket,
-            value: bloc.caseDetailsAPIValue.caseDetails?.riskBucket
-                .toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.riskBucket.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.ref1,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.ref1.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.ref1.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.ref2,
-            value:
-                bloc.caseDetailsAPIValue.caseDetails?.ref2.toString()),
+            value: bloc.caseDetailsAPIValue.caseDetails?.ref2.toString()),
       ],
     );
   }
@@ -337,17 +309,16 @@ class ListOfCaseDetails {
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.secondaryUser,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.agent?.secondaryAgent
+            value: bloc.caseDetailsAPIValue.caseDetails?.agent?.secondaryAgent
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.agentName,
-            value: bloc.caseDetailsAPIValue.caseDetails?.agent?.name
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.agent?.name.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.agentType,
-            value: bloc.caseDetailsAPIValue.caseDetails?.agent?.type
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.agent?.type.toString()),
       ],
     );
   }
@@ -358,18 +329,15 @@ class ListOfCaseDetails {
       children: [
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.state,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.attr?.first.state
+            value: bloc.caseDetailsAPIValue.caseDetails?.attr?.first.state
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.city,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.attr?.first.city
+            value: bloc.caseDetailsAPIValue.caseDetails?.attr?.first.city
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.pincode,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.attr?.first.pincode
+            value: bloc.caseDetailsAPIValue.caseDetails?.attr?.first.pincode
                 .toString()),
       ],
     );
@@ -379,34 +347,29 @@ class ListOfCaseDetails {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(
-          bloc.caseDetailsAPIValue.caseDetails?.contact?.length ?? 0,
-          (index) {
+          bloc.caseDetailsAPIValue.caseDetails?.contact?.length ?? 0, (index) {
         String ctype;
-        String value = bloc.caseDetailsAPIValue.caseDetails
-                ?.contact?[index].value ??
-            '';
+        String value =
+            bloc.caseDetailsAPIValue.caseDetails?.contact?[index].value ?? '';
         if (bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType!
                 .toLowerCase() ==
             'residence address') {
           ctype = Languages.of(context)!.residenceAddress;
-        } else if (bloc
-                .caseDetailsAPIValue.caseDetails?.contact?[index].cType!
+        } else if (bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType!
                 .toLowerCase() ==
             'office address') {
           ctype = Languages.of(context)!.officeaddress;
-        } else if (bloc
-                .caseDetailsAPIValue.caseDetails?.contact?[index].cType!
+        } else if (bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType!
                 .toLowerCase() ==
             'mobile') {
           ContractorResult? informationModel =
-              Singleton.instance.contractorInformations?.result;
+              Singleton.instance.contractorInformations;
           if (informationModel?.cloudTelephony == true &&
               informationModel?.contactMasking == true) {
             value = value.replaceRange(2, 7, 'XXXXX');
           }
           ctype = Languages.of(context)!.mobile;
-        } else if (bloc.caseDetailsAPIValue.caseDetails?.contact?[index]
-                    .cType!
+        } else if (bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType!
                     .toLowerCase() ==
                 'email' ||
             bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType!
@@ -414,9 +377,8 @@ class ListOfCaseDetails {
                 'email id') {
           ctype = Languages.of(context)!.email;
         } else {
-          ctype = bloc.caseDetailsAPIValue.caseDetails?.contact?[index]
-                  .cType ??
-              '';
+          ctype =
+              bloc.caseDetailsAPIValue.caseDetails?.contact?[index].cType ?? '';
         }
         final Widget widget =
             ListOfCaseDetails.textFieldView(title: ctype, value: value);
@@ -431,28 +393,25 @@ class ListOfCaseDetails {
       children: [
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.createdBy,
-            value: bloc.caseDetailsAPIValue.caseDetails?.audit?.crBy
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.audit?.crBy.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.createdAt,
-            value: DateFormatUtils2.followUpDateFormat2(bloc
-                    .caseDetailsAPIValue.caseDetails?.audit?.crAt
-                    .toString() ??
-                '')),
+            value: DateFormatUtils2.followUpDateFormat2(
+                bloc.caseDetailsAPIValue.caseDetails?.audit?.crAt.toString() ??
+                    '')),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.updatedBy,
-            value: bloc.caseDetailsAPIValue.caseDetails?.audit?.upBy
-                .toString()),
+            value:
+                bloc.caseDetailsAPIValue.caseDetails?.audit?.upBy.toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.updatedAt,
-            value: DateFormatUtils2.followUpDateFormat2(bloc
-                    .caseDetailsAPIValue.caseDetails?.audit?.upAt
-                    .toString() ??
-                '')),
+            value: DateFormatUtils2.followUpDateFormat2(
+                bloc.caseDetailsAPIValue.caseDetails?.audit?.upAt.toString() ??
+                    '')),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.allocatedBy,
-            value: bloc
-                .caseDetailsAPIValue.caseDetails?.audit?.allocatedBy
+            value: bloc.caseDetailsAPIValue.caseDetails?.audit?.allocatedBy
                 .toString()),
         ListOfCaseDetails.textFieldView(
             title: Languages.of(context)!.allocatedAt,

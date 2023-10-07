@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
@@ -16,6 +17,7 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:languages/app_languages.dart';
 import 'package:languages/language_english.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/src/common_widgets/toolbar_rect_btn_widget.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -671,7 +673,7 @@ class _PriorityCaseItemState extends State<PriorityCaseItemWidget> {
     //todo move to repository
 
     String? addressValue = '';
-    if ("FIELDAGENT" == Constants.fieldagent) {
+    if (Singleton.instance.usertype == Constants.fieldagent) {
       if (widget.item.address?.isNotEmpty == true) {
         final addressList = widget.item.address;
         for (var item in addressList!) {
@@ -982,22 +984,26 @@ class CaseItemStackWidget extends StatelessWidget {
                               ),
                             const Spacer(),
                             GestureDetector(
-                                    onTap: _openCaseDetails,
-                                    child: Row(
-                                      children: [
-                                        CustomText(
-                                          LanguageEn().view,
-                                          lineHeight: 1,
-                                          color:
-                                              ColorResourceDesign.color23375A,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        SvgPicture.asset(
-                                            ImageResource.forwardArrow)
-                                      ],
+                              onTap: () => {
+                                context.go('/${AppRouter.caseDetailsScreen}',
+                                    extra: {
+                                      'caseID': item.caseId,
+                                      'isOffline': false
+                                    })
+                              },
+                              child: Row(
+                                children: [
+                                  CustomText(
+                                    LanguageEn().view,
+                                    lineHeight: 1,
+                                    color: ColorResourceDesign.color23375A,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SvgPicture.asset(ImageResource.forwardArrow)
+                                ],
                               ),
                             ),
                           ],
@@ -1216,10 +1222,5 @@ class _BuildRouteFilterOptionsWidgetState
         },
       ),
     );
-  }
-
-  void _openCaseDetails() {
-    context.go('/${AppRouter.caseDetailsScreen}',
-        extra: {'caseID': widget.item.caseId, 'isOffline': false});
   }
 }

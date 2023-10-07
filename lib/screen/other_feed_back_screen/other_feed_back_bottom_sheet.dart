@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -16,7 +17,6 @@ import 'package:languages/language_english.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/add_new_contact_model.dart';
-import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/other_feed_back_post_model/other_feed_back_post_model.dart';
 import 'package:origa/models/speech2text_model.dart';
 import 'package:origa/models/update_health_model.dart';
@@ -139,8 +139,7 @@ class _CustomOtherFeedBackBottomSheetState
     dateControlller = TextEditingController();
     remarksController = TextEditingController();
     //todo
-    Singleton.instance.feedbackTemplate!.result!.feedbackTemplate
-        ?.forEach((element) {
+    Singleton.instance.feedbackTemplate!.feedbackTemplate?.forEach((element) {
       dynamicEventAttr.addAll({element.data![0].name!: ''});
     });
     setState(() {
@@ -283,7 +282,7 @@ class _CustomOtherFeedBackBottomSheetState
                                   physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: Singleton.instance.feedbackTemplate
-                                          ?.result?.feedbackTemplate?.length ??
+                                          ?.feedbackTemplate?.length ??
                                       0,
                                   itemBuilder:
                                       (BuildContext context, int index) {
@@ -291,7 +290,6 @@ class _CustomOtherFeedBackBottomSheetState
                                     if (Singleton
                                             .instance
                                             .feedbackTemplate!
-                                            .result!
                                             .feedbackTemplate![index]
                                             .data![0]
                                             .type ==
@@ -299,7 +297,6 @@ class _CustomOtherFeedBackBottomSheetState
                                       Singleton
                                           .instance
                                           .feedbackTemplate!
-                                          .result!
                                           .feedbackTemplate![index]
                                           .data![0]
                                           .options
@@ -308,8 +305,9 @@ class _CustomOtherFeedBackBottomSheetState
                                       });
                                     }
                                     return expandList(
-                                        Singleton.instance.feedbackTemplate!
-                                            .result!.feedbackTemplate!,
+                                        Singleton.instance.feedbackTemplate
+                                                ?.feedbackTemplate ??
+                                            [],
                                         index,
                                         dropList);
                                   }),
@@ -694,6 +692,8 @@ class _CustomOtherFeedBackBottomSheetState
             //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
             // });
           } else {
+
+
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(
               APIRequestType.upload,

@@ -6,9 +6,8 @@ class AllocationEvent extends BaseEquatable {}
 class AllocationInitialEvent extends AllocationEvent {}
 
 class AllocationTabLoadedEvent extends AllocationEvent {
-  String tabLoaded = "priority";
-
   AllocationTabLoadedEvent({required this.tabLoaded});
+  String tabLoaded = "priority";
 }
 
 class NavigateSearchPageEvent extends AllocationEvent {}
@@ -23,22 +22,22 @@ class InitialCurrentLocationEvent extends AllocationEvent {}
 
 class AllocationTabClicked extends AllocationEvent {
 
-  int tab;
-
   AllocationTabClicked({required this.tab});
+
+  int tab;
 }
 
 class MapViewEvent extends AllocationEvent {
-  final BuildRouteDataModel paramValues;
-  int pageKey;
 
   MapViewEvent({required this.paramValues, required this.pageKey});
+  final BuildRouteDataModel paramValues;
+  int pageKey;
 }
 
 class BuildRouteFilterClickedEvent extends AllocationEvent {
-  int index = 0;
 
   BuildRouteFilterClickedEvent(this.index);
+  int index = 0;
 }
 
 class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}

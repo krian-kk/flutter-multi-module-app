@@ -2,8 +2,8 @@ import 'package:design_system/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/singleton.dart';
 import 'package:languages/app_languages.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -65,6 +65,7 @@ class _HomeViewState extends State<HomeView>
     BlocProvider.of<HomeBloc>(context).add(HomeInitialEvent());
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     title = Languages.of(context)!.allocation;

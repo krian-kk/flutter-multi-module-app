@@ -1,8 +1,8 @@
+import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/contractor_information_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
@@ -185,7 +185,7 @@ class _PhoneScreenState extends State<PhoneScreen>
                 '_';
             debugPrint(cKey);
             final ContractorResult? informationModel =
-                Singleton.instance.contractorInformations?.result;
+                Singleton.instance.contractorInformations;
             if (informationModel?.cloudTelephony == true &&
                 informationModel?.contactMasking == true &&
                 (cKey == 'mobile' || cKey == 'phone')) {

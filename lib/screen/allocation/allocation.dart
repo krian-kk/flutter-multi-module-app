@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:connectivity_plus/connectivity_plus.dart'; // import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -85,16 +85,17 @@ class _AllocationScreenState extends State<AllocationScreen>
   bool isCaseDetailLoading = false;
   bool isOffline = false;
   Position position = Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: DateTime.now(),
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0,
-      headingAccuracy: 0,
-      altitudeAccuracy: 0);
+    longitude: 0,
+    latitude: 0,
+    timestamp: DateTime.now(),
+    accuracy: 0,
+    altitude: 0,
+    heading: 0,
+    speed: 0,
+    speedAccuracy: 0,
+    altitudeAccuracy: 0,
+    headingAccuracy: 0,
+  );
   List<Result> resultList = [];
   String? searchBasedOnValue;
   String version = '';
@@ -481,11 +482,17 @@ class _AllocationScreenState extends State<AllocationScreen>
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) async {
+        // Map<String, dynamic>? data = element.data();
+        // // log('message $data');
+        // resultList.add(Result.fromJson(data));
+        // if (Result.fromJson(data).starredCase == true) {
+        //   starCount++;
+        // }
         if (state is FirebaseStoredCompletionState) {
-          collectionReference = FirebaseFirestore.instance
-              .collection(Singleton.instance.firebaseDatabaseName)
-              .doc(Singleton.instance.agentRef)
-              .collection(Constants.firebaseCase);
+          // collectionReference = FirebaseFirestore.instance
+          //     .collection(Singleton.instance.firebaseDatabaseName)
+          //     .doc(Singleton.instance.agentRef)
+          //     .collection(Constants.firebaseCase);
 
           Future.delayed(const Duration(milliseconds: 60), () {
             widget.myValueSetter!(0);
@@ -643,31 +650,31 @@ class _AllocationScreenState extends State<AllocationScreen>
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
-                                  // final CaseDetailsBloc caseDetailsloc =
-                                  //     CaseDetailsBloc(bloc)
-                                  //       ..add(CaseDetailsInitialEvent(
-                                  //         paramValues: {
-                                  //           'caseID': bloc
-                                  //               .autoCallingResultList[
-                                  //                   state.customerIndex!]
-                                  //               .caseId,
-                                  //           'isAutoCalling': true,
-                                  //           'caseIndex': state.customerIndex,
-                                  //           'customerIndex':
-                                  //               state.customerIndex,
-                                  //           'phoneIndex': state.phoneIndex,
-                                  //           'contactIndex': state.phoneIndex,
-                                  //           'mobileList': tempMobileList,
-                                  //           'context': context,
-                                  //           'callId': postResult['data']
-                                  //               ['result'],
-                                  //         },
-                                  //         context: context,
-                                  //       ));
-                                  // await Future.delayed(
-                                  //     const Duration(milliseconds: 1500));
-                                  // await phoneBottomSheet(
-                                  //     context, caseDetailsloc, 0);
+                                  final CaseDetailsBloc caseDetailsloc =
+                                      CaseDetailsBloc()
+                                        ..add(CaseDetailsInitialEvent(
+                                          paramValues: {
+                                            'caseID': bloc
+                                                .autoCallingResultList[
+                                                    state.customerIndex!]
+                                                .caseId,
+                                            'isAutoCalling': true,
+                                            'caseIndex': state.customerIndex,
+                                            'customerIndex':
+                                                state.customerIndex,
+                                            'phoneIndex': state.phoneIndex,
+                                            'contactIndex': state.phoneIndex,
+                                            'mobileList': tempMobileList,
+                                            'context': context,
+                                            'callId': postResult['data']
+                                                ['result'],
+                                          },
+                                          context: context,
+                                        ));
+                                  await Future.delayed(
+                                      const Duration(milliseconds: 1500));
+                                  await phoneBottomSheet(
+                                      context, caseDetailsloc, 0);
                                 } else {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
@@ -714,7 +721,6 @@ class _AllocationScreenState extends State<AllocationScreen>
             );
           }
         }
-
         if (state is UpdateNewValueState) {
           bloc.resultList.asMap().forEach((index, value) {
             if (value.caseId == state.paramValue) {
@@ -755,7 +761,6 @@ class _AllocationScreenState extends State<AllocationScreen>
             debugPrint(e.toString());
           }
         }
-
         if (state is NavigateSearchPageState) {
           final dynamic returnValue =
               await Navigator.pushNamed(context, AppRoutes.searchScreen);
@@ -914,16 +919,6 @@ class _AllocationScreenState extends State<AllocationScreen>
             isSubmitRUOffice = true;
           });
           Position positions = Position(
-              longitude: 0,
-              latitude: 0,
-              timestamp: DateTime.now(),
-              accuracy: 0,
-              altitude: 0,
-              heading: 0,
-              speed: 0,
-              speedAccuracy: 0,
-              headingAccuracy: 0,
-              altitudeAccuracy: 0);
             longitude: 0,
             latitude: 0,
             timestamp: DateTime.now(),
@@ -1379,91 +1374,103 @@ class _AllocationScreenState extends State<AllocationScreen>
                           child: AutoCalling.buildAutoCalling(context, bloc))
                       : isOffline &&
                               Singleton.instance.isOfflineEnabledContractorBased
-                          ? StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance
-                                  .collection(
-                                      Singleton.instance.firebaseDatabaseName)
-                                  .doc(Singleton.instance.agentRef)
-                                  .collection(Constants.firebaseCase)
-                                  .limit(100)
-                                  .snapshots(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 50, right: 20, left: 20),
-                                        child:
-                                            NoCaseAvailble.buildNoCaseAvailable(
-                                                messageContent:
-                                                    'Something went wrong'),
-                                      ),
-                                    ],
-                                  );
-                                } else if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  const CustomLoadingWidget();
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.active) {
-                                  // bloc.resultList.clear();
-                                  // resultList.clear();
-
-                                  bloc.resultList = [];
-                                  resultList = [];
-                                  bloc.starCount = 0;
-                                  bloc.totalCases = 0;
-                                  // setState(() {
-                                  for (var element in snapshot.data!.docs) {
-                                    final tempResult = Result.fromJson(element
-                                        .data()! as Map<String, dynamic>);
-                                    bloc.resultList.add(tempResult);
-                                    resultList.add(tempResult);
-                                    bloc.totalCases++;
-                                    if (tempResult.starredCase == true) {
-                                      bloc.starCount++;
-                                    }
-                                  }
-                                  final List<Result> staredCasesList = [];
-                                  for (var element in resultList) {
-                                    if (element.starredCase) {
-                                      staredCasesList.add(element);
-                                    }
-                                  }
-                                  resultList.removeWhere(
-                                      (element) => element.starredCase);
-                                  resultList.insertAll(0, staredCasesList);
-                                  for (var element in resultList) {
-                                    debugPrint(
-                                        'Cases accNo--> ${element.accNo}');
-                                  }
-                                }
-                                return resultList.isEmpty
-                                    ? Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 50, right: 20, left: 20),
-                                            child: NoCaseAvailble
-                                                .buildNoCaseAvailable(),
-                                          ),
-                                        ],
-                                      )
-                                    : Flexible(
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: CustomCardList.buildListView(
-                                            bloc,
-                                            resultData: resultList,
-                                            listViewController: _controller,
-                                          ),
-                                        ),
-                                      );
-                              },
-                            )
+                          ? Container(child: Text("Commented autocalling"))
+                          // StreamBuilder<QuerySnapshot>(
+                          //             stream: FirebaseFirestore.instance
+                          //                 .collection(
+                          //                     Singleton.instance.firebaseDatabaseName)
+                          //                 .doc(Singleton.instance.agentRef)
+                          //                 .collection(Constants.firebaseCase)
+                          //                 .limit(100)
+                          //                 .snapshots(),
+                          //             builder: (BuildContext context,
+                          //                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                          //               if (snapshot.hasError) {
+                          //                 return Column(
+                          //                   children: [
+                          //                     Padding(
+                          //                       padding: const EdgeInsets.only(
+                          //                           top: 50, right: 20, left: 20),
+                          //                       child:
+                          //                           NoCaseAvailble.buildNoCaseAvailable(
+                          //                               messageContent:
+                          //                                   'Something went wrong'),
+                          //                     ),
+                          //                   ],
+                          //                 );
+                          //               } else if (snapshot.connectionState ==
+                          //                   ConnectionState.waiting) {
+                          //                 const CustomLoadingWidget();
+                          //               }
+                          //               if (snapshot.connectionState ==
+                          //                   ConnectionState.active) {
+                          //                 // bloc.resultList.clear();
+                          //                 // resultList.clear();
+                          //
+                          //                 bloc.resultList = [];
+                          //                 resultList = [];
+                          //                 bloc.starCount = 0;
+                          //                 bloc.totalCases = 0;
+                          //                 // setState(() {
+                          //                 for (var element in snapshot.data!.docs) {
+                          //                   final tempResult = Result.fromJson(element
+                          //                       .data()! as Map<String, dynamic>);
+                          //                   bloc.resultList.add(tempResult);
+                          //                   resultList.add(tempResult);
+                          //                   bloc.totalCases++;
+                          //                   if (tempResult.starredCase == true) {
+                          //                     bloc.starCount++;
+                          //                   }
+                          //                 }
+                          //                 // resultList.sort((a, b) {
+                          //                 //   return b.starredCase ? 1 : -1;
+                          //                 //   // });
+                          //                 // });
+                          //                 // resultList.sort((a, b) {
+                          //                 //   if (b.starredCase) {
+                          //                 //     return 1;
+                          //                 //   }
+                          //                 //   return -1;
+                          //                 // });
+                          //
+                          //                 final List<Result> staredCasesList = [];
+                          //                 for (var element in resultList) {
+                          //                   if (element.starredCase) {
+                          //                     staredCasesList.add(element);
+                          //                   }
+                          //                 }
+                          //                 resultList.removeWhere(
+                          //                     (element) => element.starredCase);
+                          //                 resultList.insertAll(0, staredCasesList);
+                          //                 for (var element in resultList) {
+                          //                   debugPrint(
+                          //                       'Cases accNo--> ${element.accNo}');
+                          //                 }
+                          //               }
+                          //               return resultList.isEmpty
+                          //                   ? Column(
+                          //                       children: [
+                          //                         Padding(
+                          //                           padding: const EdgeInsets.only(
+                          //                               top: 50, right: 20, left: 20),
+                          //                           child: NoCaseAvailble
+                          //                               .buildNoCaseAvailable(),
+                          //                         ),
+                          //                       ],
+                          //                     )
+                          //                   : Flexible(
+                          //                       child: Padding(
+                          //                         padding: const EdgeInsets.symmetric(
+                          //                             horizontal: 20.0),
+                          //                         child: CustomCardList.buildListView(
+                          //                           bloc,
+                          //                           resultData: resultList,
+                          //                           listViewController: _controller,
+                          //                         ),
+                          //                       ),
+                          //                     );
+                          //             },
+                          //           )
                           : Expanded(
                               child: isCaseDetailLoading
                                   ? const SkeletonLoading()

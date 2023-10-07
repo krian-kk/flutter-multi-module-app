@@ -710,7 +710,7 @@ class _CustomCollectionsBottomSheetState
                   returnS2Tdata.result?.audioS3Path = null;
                   // Send SMS Notification
                   if (Singleton
-                          .instance.contractorInformations!.result!.sendSms! &&
+                          .instance.contractorInformations!.sendSms! &&
                       Singleton.instance.usertype == Constants.fieldagent) {
                     final ReceiptSendSMS requestBodyData = ReceiptSendSMS(
                       agrRef: Singleton.instance.agrRef,
@@ -928,8 +928,8 @@ class _CustomCollectionsBottomSheetState
                           ChangeHealthStatusEvent(),
                         );
                         // Send SMS Notification
-                        if ((Singleton.instance.contractorInformations?.result
-                                    ?.sendSms ??
+                        if ((Singleton
+                                    .instance.contractorInformations?.sendSms ??
                                 false) &&
                             Singleton.instance.usertype ==
                                 Constants.fieldagent) {
