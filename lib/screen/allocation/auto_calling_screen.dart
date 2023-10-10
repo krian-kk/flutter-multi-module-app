@@ -41,8 +41,7 @@ class AutoCalling {
             customerLoanUserWidget: CustomLoanUserDetails(
               userName:
                   bloc.caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              userId:
-                  '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+              userId: '${bloc.caseDetailsAPIValue.result?.caseDetails?.agrRef}',
               userAmount: bloc.caseDetailsAPIValue.result?.caseDetails?.due
                       ?.toDouble() ??
                   0.0,
@@ -318,8 +317,7 @@ class AutoCalling {
                                                 ContractorResult?
                                                     informationModel = Singleton
                                                         .instance
-                                                        .contractorInformations
-                                                        ;
+                                                        .contractorInformations;
                                                 double fontSizeNumber =
                                                     FontSize.fourteen;
                                                 if (informationModel
@@ -353,8 +351,7 @@ class AutoCalling {
                                                           CaseDetailsBloc(bloc)
                                                             ..add(
                                                                 CaseDetailsInitialEvent(
-                                                              paramValues: <
-                                                                  String,
+                                                              paramValues: <String,
                                                                   dynamic>{
                                                                 'caseID': bloc
                                                                     .autoCallingResultList[
@@ -445,8 +442,7 @@ class AutoCalling {
                                                                   ''),
                                                               const Spacer(),
                                                               Row(
-                                                                children: <
-                                                                    Widget>[
+                                                                children: <Widget>[
                                                                   CustomText(
                                                                     Languages.of(
                                                                             context)!

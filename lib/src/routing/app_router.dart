@@ -2,13 +2,12 @@ import 'package:domain_models/common/searching_data_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
+import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/sign_in_view.dart';
-import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/src/features/dashboard/dashboard_screen.dart';
-import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
-import 'package:origa/src/features/home/presentation/home_view.dart';
 import 'package:origa/src/features/search/bloc/search_bloc.dart';
 import 'package:origa/src/features/search/search_list/search_list_screen.dart';
 import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
@@ -53,13 +52,14 @@ class AppRouter {
             path: homeTabScreen,
             builder: (BuildContext context, GoRouterState state) {
               return BlocProvider(
-                  create: (context) => HomeBloc(), child: const HomeView());
+                  create: (context) => HomeTabBloc(),
+                  child: const HomeTabScreen());
             },
           ),
           GoRoute(
             path: caseDetailsScreen,
             builder: (BuildContext context, GoRouterState state) {
-              return const AllocationView();
+              return const AllocationScreen();
             },
           ),
           GoRoute(

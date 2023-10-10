@@ -1,15 +1,15 @@
+import 'package:design_system/colors.dart';
+import 'package:design_system/fonts.dart';
 import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
+import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/languages/app_languages.dart';
-import 'package:origa/models/priority_case_list.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
-import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/date_format_utils.dart';
-import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
@@ -17,7 +17,7 @@ import '../../widgets/case_status_widget.dart';
 
 class CustomCardList {
   static Widget buildListView(AllocationBloc bloc,
-      {List<Result>? resultData,
+      {List<dynamic>? resultData,
       required ScrollController listViewController}) {
     return ListView.builder(
         controller: listViewController,
@@ -68,7 +68,7 @@ class CustomCardList {
                     addressValue = value;
                     break;
                 }
-                if (addressValue.isNotEmpty) {
+                if (addressValue!.isNotEmpty) {
                   break;
                 }
               }
@@ -86,7 +86,7 @@ class CustomCardList {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 3.0, vertical: 3.0),
                               decoration: BoxDecoration(
-                                color: ColorResource.colorBEC4CF,
+                                color: ColorResourceDesign.colorBEC4CF,
                                 borderRadius: BorderRadius.circular(75),
                               ),
                               child: Row(
@@ -96,7 +96,7 @@ class CustomCardList {
                                     height: 26,
                                     width: 26,
                                     decoration: const BoxDecoration(
-                                      color: ColorResource.color23375A,
+                                      color: ColorResourceDesign.color23375A,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
@@ -105,7 +105,7 @@ class CustomCardList {
                                       lineHeight: 1,
                                       fontSize: FontSize.twelve,
                                       fontWeight: FontWeight.w700,
-                                      color: ColorResource.colorffffff,
+                                      color: ColorResourceDesign.colorffffff,
                                     )),
                                   ),
                                   const SizedBox(
@@ -126,7 +126,8 @@ class CustomCardList {
                                                     distanceValues!
                                                 : '-',
                                             lineHeight: 1,
-                                            color: ColorResource.color101010,
+                                            color:
+                                                ColorResourceDesign.color101010,
                                           ),
                                         ),
                                         const SizedBox(
@@ -147,7 +148,7 @@ class CustomCardList {
                                   // resultData.length.toString() +
                                   ' ' +
                                   Languages.of(context)!.allocation,
-                              color: ColorResource.color000000,
+                              color: ColorResourceDesign.color000000,
                               fontWeight: FontWeight.w700,
                             ),
                             const SizedBox(
@@ -165,7 +166,7 @@ class CustomCardList {
                                   ' ' +
                                   Languages.of(context)!.hignPriority,
                               fontSize: FontSize.ten,
-                              color: ColorResource.color101010,
+                              color: ColorResourceDesign.color101010,
                               fontWeight: FontWeight.w700,
                             ),
                           ],
@@ -192,9 +193,9 @@ class CustomCardList {
                                   ? const EdgeInsets.only(bottom: 70)
                                   : EdgeInsets.zero,
                               decoration: BoxDecoration(
-                                color: ColorResource.colorffffff,
+                                color: ColorResourceDesign.colorffffff,
                                 border: Border.all(
-                                    color: ColorResource.colorDADADA,
+                                    color: ColorResourceDesign.colorDADADA,
                                     width: 0.5),
                                 borderRadius: BorderRadius.circular(10),
                                 boxShadow: const [
@@ -216,7 +217,7 @@ class CustomCardList {
                                     child: CustomText(
                                       resultData[index].agrRef!,
                                       fontSize: FontSize.twelve,
-                                      color: ColorResource.color101010,
+                                      color: ColorResourceDesign.color101010,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -237,16 +238,16 @@ class CustomCardList {
                                                         .due
                                                         .toString(),
                                                 fontSize: FontSize.eighteen,
-                                                color:
-                                                    ColorResource.color101010,
+                                                color: ColorResourceDesign
+                                                    .color101010,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                               const SizedBox(height: 3.0),
                                               CustomText(
                                                 resultData[index].cust!,
                                                 fontSize: FontSize.sixteen,
-                                                color:
-                                                    ColorResource.color101010,
+                                                color: ColorResourceDesign
+                                                    .color101010,
                                               ),
                                             ],
                                           ),
@@ -301,7 +302,8 @@ class CustomCardList {
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 5, 15, 5),
                                             decoration: BoxDecoration(
-                                              color: ColorResource.colorF8F9FB,
+                                              color: ColorResourceDesign
+                                                  .colorF8F9FB,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -311,8 +313,8 @@ class CustomCardList {
                                               children: [
                                                 CustomText(
                                                   addressValue ?? '',
-                                                  color:
-                                                      ColorResource.color484848,
+                                                  color: ColorResourceDesign
+                                                      .color484848,
                                                 ),
                                               ],
                                             ),
@@ -328,7 +330,7 @@ class CustomCardList {
                                                       horizontal: 17,
                                                       vertical: 6),
                                                   decoration: BoxDecoration(
-                                                    color: ColorResource
+                                                    color: ColorResourceDesign
                                                         .colorF8F9FB,
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -336,7 +338,7 @@ class CustomCardList {
                                                   ),
                                                   child: CustomText(
                                                     item,
-                                                    color: ColorResource
+                                                    color: ColorResourceDesign
                                                         .color484848,
                                                     lineHeight: 1.0,
                                                   ),
@@ -359,7 +361,8 @@ class CustomCardList {
                                       children: [
                                         CustomText(
                                           Languages.of(context)!.followUpDate,
-                                          color: ColorResource.color101010,
+                                          color:
+                                              ColorResourceDesign.color101010,
                                         ),
                                         Row(
                                           children: [
@@ -378,8 +381,8 @@ class CustomCardList {
                                                             resultData[index]
                                                                 .fieldfollowUpDate!)
                                                     : '-',
-                                                color:
-                                                    ColorResource.color101010,
+                                                color: ColorResourceDesign
+                                                    .color101010,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             if (Singleton.instance.usertype ==
@@ -393,8 +396,8 @@ class CustomCardList {
                                                             resultData[index]
                                                                 .followUpDate!)
                                                     : '-',
-                                                color:
-                                                    ColorResource.color101010,
+                                                color: ColorResourceDesign
+                                                    .color101010,
                                                 fontWeight: FontWeight.w700,
                                               ),
                                             const Spacer(),
@@ -403,8 +406,8 @@ class CustomCardList {
                                                 CustomText(
                                                   Languages.of(context)!.view,
                                                   lineHeight: 1,
-                                                  color:
-                                                      ColorResource.color23375A,
+                                                  color: ColorResourceDesign
+                                                      .color23375A,
                                                   fontWeight: FontWeight.w700,
                                                 ),
                                                 const SizedBox(
@@ -432,9 +435,10 @@ class CustomCardList {
                             child: GestureDetector(
                               onTap: () {
                                 bloc.add(UpdateStaredCaseEvent(
-                                    selectedStarIndex: index,
-                                    caseID: resultData[index].caseId!,
-                                    context: context));
+                                  selectedStarIndex: index,
+                                  caseID: resultData[index].caseId!,
+                                  // context: context
+                                ));
                               },
                               child: resultData[index].starredCase
                                   ? SizedBox(

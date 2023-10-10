@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/router.dart';
-import 'package:origa/screen/allocation/allocation.dart';
-import 'package:origa/screen/dashboard/dashboard_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_state.dart';
-import 'package:origa/screen/profile_screen.dart/profile_screen.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
+import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
+import 'package:origa/src/features/dashboard/dashboard_screen.dart';
+import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
+import 'package:origa/src/features/profile/profile_screen.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -20,6 +23,11 @@ import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:repository/allocation_repository.dart';
+import 'package:repository/case_repository.dart';
+import 'package:repository/dashboard_repository.dart';
+import 'package:repository/file_repository.dart';
+import 'package:repository/profile_repository.dart';
 
 import 'bloc/home_tab_event.dart';
 
@@ -125,6 +133,38 @@ class _HomeTabScreenState extends State<HomeTabScreen>
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => DashBoardRepositoryImpl()),
+        RepositoryProvider(create: (context) => FileRepositoryImpl()),
+        RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
+        RepositoryProvider(create: (context) => CaseRepositoryImpl()),
+        RepositoryProvider(create: (context) => AllocationRepositoryImpl()),
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          // BlocProvider(create: (context) => HomeBloc()),
+          BlocProvider(
+              create: (context) => AllocationBloc(
+                    repository: context.read<AllocationRepositoryImpl>(),
+                    caseRepository: context.read<CaseRepositoryImpl>(),
+                  )),
+          BlocProvider(
+            create: (context) => DashboardBloc(
+                repository: context.read<DashBoardRepositoryImpl>()),
+          ),
+          BlocProvider(
+              create: (context) => ProfileBloc(
+                    repository: context.read<ProfileRepositoryImpl>(),
+                    fileRepository: context.read<FileRepositoryImpl>(),
+                  ))
+        ],
+        child: getHome(),
+      ),
+    );
+  }
+
+  Widget getHome() {
     return BlocListener<HomeTabBloc, HomeTabState>(
       bloc: bloc,
       listener: (BuildContext context, HomeTabState state) async {

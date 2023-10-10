@@ -14,9 +14,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/are_you_at_office_model.dart/are_you_at_office_model.dart';
 import 'package:origa/models/buildroute_data.dart';
 import 'package:origa/models/call_customer_model/call_customer_model.dart';
@@ -98,7 +98,7 @@ class _AllocationScreenState extends State<AllocationScreen>
     altitudeAccuracy: 0,
     headingAccuracy: 0,
   );
-  List<Result> resultList = [];
+  List<Result> resultListUi = [];
   String? searchBasedOnValue;
   String version = '';
   late Timer _timer;
@@ -204,17 +204,17 @@ class _AllocationScreenState extends State<AllocationScreen>
           internetAvailability = value.name;
         });
         if (value.name == 'none') {
-          resultList.clear();
+          resultListUi.clear();
           isOffline = true;
           bloc.hasNextPage = false;
-          bloc.resultList = [];
-          resultList = [];
+          bloc.resultListBloc = [];
+          resultListUi = [];
         } else {
           isOffline = false;
-          resultList.clear();
+          resultListUi.clear();
           bloc.hasNextPage = true;
-          bloc.resultList = [];
-          resultList = [];
+          bloc.resultListBloc = [];
+          resultListUi = [];
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
@@ -223,17 +223,17 @@ class _AllocationScreenState extends State<AllocationScreen>
       setState(() {
         internetAvailability = event.name;
         if (event.name == 'none') {
-          resultList.clear();
+          resultListUi.clear();
           isOffline = true;
           bloc.hasNextPage = false;
-          bloc.resultList = [];
-          resultList = [];
+          bloc.resultListBloc = [];
+          resultListUi = [];
         } else {
           isOffline = false;
-          resultList.clear();
+          resultListUi.clear();
           bloc.hasNextPage = true;
-          bloc.resultList = [];
-          resultList = [];
+          bloc.resultListBloc = [];
+          resultListUi = [];
           bloc = AllocationBloc()..add(AllocationInitialEvent(context));
         }
       });
@@ -542,7 +542,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         }
 
         if (state is UpdateNewValueState) {
-          bloc.resultList.asMap().forEach((index, value) {
+          bloc.resultListBloc.asMap().forEach((index, value) {
             if (value.caseId == state.paramValue) {
               setState(() {
                 if (Singleton.instance.usertype == Constants.telecaller) {
@@ -652,32 +652,33 @@ class _AllocationScreenState extends State<AllocationScreen>
                                   }
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
-                                  final CaseDetailsBloc caseDetailsloc =
-                                      CaseDetailsBloc(bloc)
-                                        ..add(CaseDetailsInitialEvent(
-                                          paramValues: {
-                                            'caseID': bloc
-                                                .autoCallingResultList[
-                                                    state.customerIndex!]
-                                                .caseId,
-                                            'isAutoCalling': true,
-                                            'caseIndex': state.customerIndex,
-                                            'customerIndex':
-                                                state.customerIndex,
-                                            'phoneIndex': state.phoneIndex,
-                                            'contactIndex': state.phoneIndex,
-                                            'mobileList': tempMobileList,
-                                            'context': context,
-                                            'callId': postResult['data']
-                                                ['result'],
-                                          },
-                                          context: context,
-                                        ));
-                                  await Future.delayed(
-                                      const Duration(milliseconds: 1500));
-                                  await phoneBottomSheet(
-                                      context, caseDetailsloc, 0);
-                                } else {
+                                  //   final CaseDetailsBloc caseDetailsloc =
+                                  //       CaseDetailsBloc(bloc)
+                                  //         ..add(CaseDetailsInitialEvent(
+                                  //           paramValues: {
+                                  //             'caseID': bloc
+                                  //                 .autoCallingResultList[
+                                  //                     state.customerIndex!]
+                                  //                 .caseId,
+                                  //             'isAutoCalling': true,
+                                  //             'caseIndex': state.customerIndex,
+                                  //             'customerIndex':
+                                  //                 state.customerIndex,
+                                  //             'phoneIndex': state.phoneIndex,
+                                  //             'contactIndex': state.phoneIndex,
+                                  //             'mobileList': tempMobileList,
+                                  //             'context': context,
+                                  //             'callId': postResult['data']
+                                  //                 ['result'],
+                                  //           },
+                                  //           context: context,
+                                  //         ));
+                                  //   await Future.delayed(
+                                  //       const Duration(milliseconds: 1500));
+                                  //   await phoneBottomSheet(
+                                  //       context, caseDetailsloc, 0);
+
+                                }else{
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
                                     phoneIndex: 0,
@@ -724,7 +725,7 @@ class _AllocationScreenState extends State<AllocationScreen>
           }
         }
         if (state is UpdateNewValueState) {
-          bloc.resultList.asMap().forEach((index, value) {
+          bloc.resultListBloc.asMap().forEach((index, value) {
             if (value.caseId == state.paramValue) {
               setState(() {
                 if (Singleton.instance.usertype == Constants.telecaller) {
@@ -797,7 +798,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         if (state is AllocationLoadedState) {
           //List<Result>
           if (state.successResponse is List<Result>) {
-            resultList = state.successResponse;
+            resultListUi = state.successResponse;
             isOffline = false;
           } //List<Result>
           if (state.successResponse is String) {
@@ -813,7 +814,7 @@ class _AllocationScreenState extends State<AllocationScreen>
 
         if (state is TapPriorityState) {
           if (state.successResponse is List<Result>) {
-            resultList = state.successResponse;
+            resultListUi = state.successResponse;
           }
           isCaseDetailLoading = false;
           bloc.isShowSearchPincode = false;
@@ -821,7 +822,7 @@ class _AllocationScreenState extends State<AllocationScreen>
 
         if (state is TapBuildRouteState) {
           if (state.successResponse is List<Result>) {
-            resultList = state.successResponse;
+            resultListUi = state.successResponse;
           }
           isCaseDetailLoading = false;
           bloc.isShowSearchPincode = false;
@@ -836,7 +837,7 @@ class _AllocationScreenState extends State<AllocationScreen>
           // debugPrint('Result length--> ${resultList.length}');
           if (state.successResponse is List<Result>) {
             if (bloc.hasNextPage) {
-              resultList.addAll(state.successResponse);
+              resultListUi.addAll(state.successResponse);
             }
           }
         }
@@ -844,7 +845,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         if (state is BuildRouteLoadMoreState) {
           if (state.successResponse is List<Result>) {
             if (bloc.hasNextPage) {
-              resultList.addAll(state.successResponse);
+              resultListUi.addAll(state.successResponse);
             }
           }
         }
@@ -860,10 +861,10 @@ class _AllocationScreenState extends State<AllocationScreen>
                 HttpUrl.updateStaredCase,
                 requestBodydata: jsonEncode(postData),
               );
-              final removedItem = bloc.resultList[state.selectedIndex];
-              bloc.resultList.removeAt(state.selectedIndex);
+              final removedItem = bloc.resultListBloc[state.selectedIndex];
+              bloc.resultListBloc.removeAt(state.selectedIndex);
               setState(() {
-                bloc.resultList.insert(0, removedItem);
+                bloc.resultListBloc.insert(0, removedItem);
                 bloc.starCount++;
               });
               if (Singleton.instance.usertype == Constants.fieldagent) {
@@ -1370,10 +1371,9 @@ class _AllocationScreenState extends State<AllocationScreen>
                       ),
                     ),
                   ),
-                  bloc.isAutoCalling
-                      ? Expanded(
-                          child: AutoCalling.buildAutoCalling(context, bloc))
-                      : isOffline &&
+                      // ? Expanded(
+                      //     child: AutoCalling.buildAutoCalling(context, bloc))
+                       isOffline &&
                               Singleton.instance.isOfflineEnabledContractorBased
                           ? Container(child: Text("Commented autocalling"))
                           // StreamBuilder<QuerySnapshot>(
@@ -1475,7 +1475,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                           : Expanded(
                               child: isCaseDetailLoading
                                   ? const SkeletonLoading()
-                                  : resultList.isEmpty
+                                  : resultListUi.isEmpty
                                       ? Column(
                                           children: [
                                             Padding(
@@ -1486,15 +1486,16 @@ class _AllocationScreenState extends State<AllocationScreen>
                                             ),
                                           ],
                                         )
-                                      : Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20.0),
-                                          child: CustomCardList.buildListView(
-                                            bloc,
-                                            resultData: resultList,
-                                            listViewController: _controller,
-                                          ),
-                                        ),
+                                      : const SizedBox(),
+                              // : Padding(
+                              //     padding: const EdgeInsets.symmetric(
+                              //         horizontal: 20.0),
+                              //     child: CustomCardList.buildListView(
+                              //       bloc,
+                              //       resultData: resultListUi,
+                              //       listViewController: _controller,
+                              //     ),
+                              //   ),
                             ),
                 ],
               ),
@@ -1545,7 +1546,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                               bloc.add(StartCallingEvent(
                                 customerIndex: 0,
                                 phoneIndex: 0,
-                                customerList: bloc.resultList.first,
+                                customerList: bloc.resultListBloc.first,
                                 // isStartFromButtonClick: true,
                               ));
                             },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:languages/app_languages.dart';
+import 'package:origa/screen/allocation/allocation.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -318,17 +319,9 @@ class _HomeViewState extends State<HomeView>
                                 controller: _controller,
                                 physics: const NeverScrollableScrollPhysics(),
                                 children: <Widget>[
-                              MultiBlocProvider(
-                                providers: [
-                                  BlocProvider(
-                                      create: (context) => PriorityBloc(
-                                          repository: CaseRepositoryImpl())),
-                                  BlocProvider(
-                                      create: (context) => BuildRouteBloc(
-                                          repository: CaseRepositoryImpl())),
-                                ],
-                                child: const AllocationView(),
-                              ), //1
+                              // AllocationScreen(myValueSetter: (value) {
+                              //   indexMethod(value);
+                              // }), //1
                               DashboardScreen(), //2
                               ProfileScreen(), //3
                             ]))

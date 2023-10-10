@@ -49,11 +49,3 @@ class PriorityBloc extends Bloc<PriorityEvent, PriorityState> {
     }
   }
 }
-
-class PriorityStateListState {
-  PriorityStateListState({this.itemList, this.error, this.nextPageKey = 0});
-
-  final List<PriorityCaseListModel>? itemList;
-  final dynamic error;
-  final int? nextPageKey;
-}

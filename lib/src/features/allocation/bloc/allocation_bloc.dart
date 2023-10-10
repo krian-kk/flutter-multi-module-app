@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/constant_event_values.dart';
 import 'package:design_system/constants.dart';
 import 'package:domain_models/common/buildroute_data.dart';
@@ -36,18 +37,33 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   }
 
   AllocationRepository repository;
-  CaseRepository caseRepository;
+  CaseRepositoryImpl caseRepository;
 
   late List<String> filterBuildRoute;
 
   int pageKey = 0;
   int tab = 0;
   int buildRouteSubTab = 0;
-  bool isRefresh = false;
   bool areYouAtOffice = true;
+  String? selectedDistance;
+
+  bool isShowSearchPincode = false;
+
   bool isSubmitRUOffice = false;
   bool isGoogleApiKeyNull = false;
   bool isCloudTelephony = false;
+  bool hasNextPage = false;
+  int page = 1;
+
+  int totalCases = 0;
+  int starCount = 0;
+
+  // Check which event to call for load more cases
+  bool isPriorityLoadMore = false;
+  bool showFilterDistance = false;
+
+  List<PriorityCaseListModel> resultList = <PriorityCaseListModel>[];
+  List<dynamic> autoCallingResultList = <dynamic>[];
 
   ContractorResult? contractorDetails;
 
@@ -68,13 +84,53 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
     headingAccuracy: 0,
   );
   String? currentAddress;
-  static const _pageSize = 20;
+  static const _pageSize = 10;
   List<dynamic> multipleLatLong = <dynamic>[];
   String? userType;
+
+  bool isOfflineTriggered = false;
+  int selectedOption = 0;
+
+  int customerCount = 0;
+  int totalCount = 0;
+  int tempTotalCount = 0;
+
+  // int autoCallingTotalCaseCount = 0;
+
+  String? agentName;
+  String? agrRef;
+
+  int indexValue = 0;
+
+  // it's manage the Refresh the page basaed on Internet connection
+  bool isNoInternetAndServerError = false;
+  String? isNoInternetAndServerErrorMsg = '';
+
+  int? messageCount = 0;
+  bool isMessageThere = false;
+
+  // There is used for pagination to scroll up
+
+  // Show Telecaller Autocalling
+  bool isAutoCalling = false;
+
+  // Enable or Disable the search floating button
+  bool isShowSearchFloatingButton = true;
+
+  // Check which event to call for load more cases
+
+  late Position currentLocation;
+
+  ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
+  int? selectedStar;
 
   Future<void> _onEvent(
       AllocationEvent event, Emitter<AllocationState> emit) async {
     if (event is AllocationInitialEvent) {
+      // if (event.myValueSetter != null) {
+      //   event.myValueSetter!(0);
+      // }
+
       emit(AllocationLoadingState());
 
       List<String?> initialData = await repository.allocationInitialData();
@@ -92,75 +148,119 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         }
       });
 
+      isShowSearchPincode = false;
+      selectedDistance = 'All';
+
       filterBuildRoute = <String>[
         StringResource.all,
         StringResource.under5km,
         StringResource.more5km,
       ];
 
-      final ApiResult<ContractorResult> data =
-          await repository.getContractorDetails();
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        isNoInternetAndServerError = true;
+        emit(AllocationOfflineState(
+            successResponse: 'offlineData', showErrorMessage: true));
+      } else {
+        isNoInternetAndServerError = false;
+        //Now set priority case is a load more event
+        isPriorityLoadMore = true;
 
-      await data.when(
-          success: (ContractorResult? data) async {
-            contractorDetails = data!;
+        // bool appDataLoadedFromFirebase = false;
+        // await PreferenceHelper.getBool(
+        //         keyPair: Constants.appDataLoadedFromFirebase)
+        //     .then((value) {
+        //   appDataLoadedFromFirebase = value;
+        // });
 
-            final ApiResult<ContractorDetailsModel> customContractorData =
-                await repository.getCustomContractorDetailsData();
-            await customContractorData.when(
-                success: (ContractorDetailsModel?
-                    customContractorDataProcessed) async {
-                  customContractorDetails = customContractorDataProcessed!;
-                  Singleton.instance.feedbackTemplate =
-                      customContractorDataProcessed;
-                },
-                failure: (NetworkExceptions? error) async {});
+        final ApiResult<ContractorResult> data =
+            await repository.getContractorDetails();
 
-            // check and store cloudTelephony true or false
-            final ApiResult<CommunicationChannelModel> comChannelData =
-                await repository.getCommunicationChannels();
-            await comChannelData.when(
-                success:
-                    (CommunicationChannelModel? comChannelDataProcessed) async {
-                  communicationChannel = comChannelDataProcessed!;
-                },
-                failure: (NetworkExceptions? error) async {});
+        await data.when(
+            success: (ContractorResult? data) async {
+              contractorDetails = data!;
+              totalCases = 0;
+              starCount = 0;
 
-            Singleton.instance.cloudTelephony =
-                contractorDetails?.cloudTelephony ?? false;
-            Singleton.instance.contractorInformations = contractorDetails;
-            Singleton.instance.allocationTemplateConfig =
-                contractorDetails!.allocationTemplateConfig;
+              final ApiResult<ContractorDetailsModel> customContractorData =
+                  await repository.getCustomContractorDetailsData();
+              await customContractorData.when(
+                  success: (ContractorDetailsModel?
+                      customContractorDataProcessed) async {
+                    customContractorDetails = customContractorDataProcessed!;
+                    Singleton.instance.feedbackTemplate =
+                        customContractorDataProcessed;
+                  },
+                  failure: (NetworkExceptions? error) async {});
 
-            String? googleMapsApiKey =
-                Singleton.instance.contractorInformations?.googleMapsApiKey;
-            if (userType == Constants.fieldagent) {
-              if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
-                isGoogleApiKeyNull = true;
-              } else {
-                await _setGoogleMapApiKey(googleMapsApiKey);
+              // check and store cloudTelephony true or false
+              final ApiResult<CommunicationChannelModel> comChannelData =
+                  await repository.getCommunicationChannels();
+              await comChannelData.when(
+                  success: (CommunicationChannelModel?
+                      comChannelDataProcessed) async {
+                    communicationChannel = comChannelDataProcessed!;
+                  },
+                  failure: (NetworkExceptions? error) async {});
+
+              Singleton.instance.cloudTelephony =
+                  contractorDetails?.cloudTelephony ?? false;
+              Singleton.instance.contractorInformations = contractorDetails;
+              Singleton.instance.allocationTemplateConfig =
+                  contractorDetails!.allocationTemplateConfig;
+
+              String? googleMapsApiKey =
+                  Singleton.instance.contractorInformations?.googleMapsApiKey;
+              if (userType == Constants.fieldagent) {
+                if (googleMapsApiKey == null || googleMapsApiKey.isEmpty) {
+                  isGoogleApiKeyNull = true;
+                } else {
+                  await _setGoogleMapApiKey(googleMapsApiKey);
+                }
               }
-            }
-            // if cloudTelephone false means don't show autoCalling tab
-            if (contractorDetails!.cloudTelephony == false &&
-                communicationChannel!.voiceApiKeyAvailable == false) {
-              if (userType == Constants.telecaller) {
-                isCloudTelephony = false;
+              // if cloudTelephone false means don't show autoCalling tab
+              if (contractorDetails!.cloudTelephony == false &&
+                  communicationChannel!.voiceApiKeyAvailable == false) {
+                if (userType == Constants.telecaller) {
+                  isCloudTelephony = false;
+                }
               }
-            }
-            if (contractorDetails!.cloudTelephony == true &&
-                communicationChannel!.voiceApiKeyAvailable == false) {
-              if (userType == Constants.telecaller) {
-                isCloudTelephony = false;
+              if (contractorDetails!.cloudTelephony == true &&
+                  communicationChannel!.voiceApiKeyAvailable == false) {
+                if (userType == Constants.telecaller) {
+                  isCloudTelephony = false;
+                }
               }
-            }
-          },
-          failure: (NetworkExceptions? error) async {});
+            },
+            failure: (NetworkExceptions? error) async {});
 
-      emit(AllocationLoadedState());
+        final newItems = await caseRepository.getCasesFromServer(_pageSize, 1);
+        await newItems.when(
+            success: (List<PriorityCaseListModel>? result) async {
+              if (result?.isNotEmpty == true && result != null) {
+                resultList.clear();
+                starCount = 0;
+
+                result.forEach((element) {
+                  resultList.add(element);
+                  if (element.starredCase == true) {
+                    starCount++;
+                  }
+                });
+
+                if (resultList.length >= 10) {
+                  hasNextPage = true;
+                } else {
+                  hasNextPage = false;
+                }
+              }
+            },
+            failure: (NetworkExceptions? error) async {});
+        emit(AllocationLoadedState(successResponse: resultList));
+      }
     }
 
-    if (event is InitialCurrentLocationEvent) {
+    if (event is GetCurrentLocationEvent) {
       await Permission.location.request();
       if (await Permission.location.isGranted) {
         final Position result = await Geolocator.getCurrentPosition();
@@ -181,23 +281,149 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
     }
 
-    if (event is AllocationTabLoadedEvent) {
-      emit(AllocationTabLoadedState(event.tabLoaded));
+    if (event is TapPriorityEvent) {
+      emit(CaseListViewLoadingState());
+      page = 1;
+      isPriorityLoadMore = true;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final newItems = await caseRepository.getCasesFromServer(_pageSize, 1);
+        await newItems.when(
+            success: (List<PriorityCaseListModel>? result) async {
+              if (result?.isNotEmpty == true && result != null) {
+                resultList.clear();
+                starCount = 0;
+
+                result.forEach((element) {
+                  resultList.add(element);
+                  if (element.starredCase == true) {
+                    starCount++;
+                  }
+                });
+
+                if (resultList.length >= 10) {
+                  hasNextPage = true;
+                } else {
+                  hasNextPage = false;
+                }
+              }
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+
+      emit(TapPriorityState(successResponse: resultList));
+    }
+
+    if (event is PriorityLoadMoreEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final newItems =
+            await caseRepository.getCasesFromServer(_pageSize, page);
+        await newItems.when(
+            success: (List<PriorityCaseListModel>? result) async {
+              if (result?.isNotEmpty == true && result != null) {
+                result.forEach((element) {
+                  resultList.add(element);
+                  if (element.starredCase == true) {
+                    starCount++;
+                  }
+                });
+
+                if (result.length >= 10) {
+                  hasNextPage = true;
+                } else {
+                  hasNextPage = false;
+                }
+              }
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+      emit(PriorityLoadMoreState(successResponse: resultList));
+    }
+
+    //Build Route
+
+    if (event is TapBuildRouteEvent) {
+      emit(CaseListViewLoadingState());
+      page = 1;
+      isPriorityLoadMore = false;
+
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final newItems = await caseRepository.getBuildRouteCases(
+            _pageSize, 1, event.paramValues);
+        await newItems.when(
+            success: (List<PriorityCaseListModel>? result) async {
+              if (result?.isNotEmpty == true && result != null) {
+                resultList.clear();
+
+                multipleLatLong.clear();
+                result.forEach((element) {
+                  resultList.add(element);
+                  multipleLatLong.add(
+                    MapMarkerModel(
+                      caseId: element.caseId,
+                      address: element.address?.first.value,
+                      due: element.due.toString(),
+                      name: element.cust,
+                      latitude: element.location?.lat,
+                      longitude: element.location?.lng,
+                    ),
+                  );
+                });
+                if (resultList.length >= 10) {
+                  hasNextPage = true;
+                } else {
+                  hasNextPage = false;
+                }
+              }
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+
+      emit(TapBuildRouteState(successResponse: resultList));
+    }
+
+    if (event is BuildRouteLoadMoreEvent) {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
+        final newItems = await caseRepository.getBuildRouteCases(
+            _pageSize, page, event.paramValues);
+        await newItems.when(
+            success: (List<PriorityCaseListModel>? result) async {
+              if (result?.isNotEmpty == true && result != null) {
+                result.forEach((element) {
+                  resultList.add(element);
+                  multipleLatLong.add(
+                    MapMarkerModel(
+                      caseId: element.caseId,
+                      address: element.address?.first.value,
+                      due: element.due.toString(),
+                      name: element.cust,
+                      latitude: element.location?.lat,
+                      longitude: element.location?.lng,
+                    ),
+                  );
+                });
+                if (resultList.length >= 10) {
+                  hasNextPage = true;
+                } else {
+                  hasNextPage = false;
+                }
+              }
+            },
+            failure: (NetworkExceptions? error) async {});
+      }
+      emit(BuildRouteLoadMoreState(successResponse: resultList));
     }
 
     if (event is NavigateSearchPageEvent) {
       emit(NavigateSearchPageState());
-    }
-
-    if (event is AllocationTabClicked) {
-      isRefresh = true;
-      tab = event.tab;
-      emit(AllocationTabClickedState());
-    }
-    if (event is BuildRouteFilterClickedEvent) {
-      isRefresh = true;
-      buildRouteSubTab = event.index;
-      emit(BuildRouteFilterClickedState());
     }
 
     if (event is TapAreYouAtOfficeOptionsEvent) {
@@ -255,12 +481,38 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       });
     }
 
+    if (event is NavigateCaseDetailEvent) {
+      emit(NavigateCaseDetailState(paramValues: event.paramValues));
+    }
+
+    if (event is UpdateStaredCaseEvent) {
+      // Singleton.instance.buildContext = event.context;
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        if (Singleton.instance.usertype == Constants.fieldagent) {
+          resultList[event.selectedStarIndex].starredCase =
+              !resultList[event.selectedStarIndex].starredCase;
+        } else {
+          emit(NoInternetConnectionState());
+        }
+      } else {
+        resultList[event.selectedStarIndex].starredCase =
+            !resultList[event.selectedStarIndex].starredCase;
+      }
+
+      emit(UpdateStaredCaseState(
+          caseId: event.caseID,
+          isStared: resultList[event.selectedStarIndex].starredCase,
+          selectedIndex: event.selectedStarIndex));
+    }
+
     if (event is MapViewEvent) {
-      {
+      if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+        emit(NoInternetConnectionState());
+      } else {
         emit(MapViewLoadingState());
 
         final newItems = await caseRepository.getBuildRouteCases(
-            _pageSize, event.pageKey, event.paramValues);
+            _pageSize, 1, event.paramValues);
         await newItems.when(
             success: (List<PriorityCaseListModel>? result) async {
               multipleLatLong.clear();
@@ -280,8 +532,9 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               }
             },
             failure: (NetworkExceptions? error) async {});
-        emit(MapViewState());
       }
+
+      emit(MapViewState());
     }
   }
 

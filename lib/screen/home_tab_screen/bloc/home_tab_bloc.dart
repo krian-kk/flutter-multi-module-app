@@ -7,21 +7,22 @@ import 'home_tab_event.dart';
 import 'home_tab_state.dart';
 
 class HomeTabBloc extends Bloc<HomeTabEvent, HomeTabState> {
-  HomeTabBloc({AuthenticationBloc? authBloc}) : super(HomeTabInitialState());
+  HomeTabBloc({AuthenticationBloc? authBloc}) : super(HomeTabInitialState()) {
+    on<HomeTabEvent>(_onEvent);
+  }
 
   int? notificationCount = 0;
   String? userType;
 
-  @override
-  Stream<HomeTabState> mapEventToState(HomeTabEvent event) async* {
+  Future<void> _onEvent(HomeTabEvent event, Emitter<HomeTabState> emit) async {
     if (event is HomeTabInitialEvent) {
-      yield HomeTabLoadingState();
+      emit(HomeTabLoadingState());
 
       if (event.notificationData != null) {
-        yield NavigateTabState(notificationData: event.notificationData);
+        emit(NavigateTabState(notificationData: event.notificationData));
       }
       userType = Singleton.instance.usertype;
-      yield HomeTabLoadedState();
+      emit(HomeTabLoadedState());
     }
   }
 }

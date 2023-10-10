@@ -96,7 +96,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   int starCount = 0;
   int totalCases = 0;
-  List<Result> resultList = <Result>[];
+  List<Result> resultListBloc = <Result>[];
   List<Result> autoCallingResultList = <Result>[];
   ContractorDetailsModel contractorDetailsValue = ContractorDetailsModel();
   AllocationTemplateConfig? allocationTemplateConfig;
@@ -188,7 +188,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '${url}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: url.contains('v1') ? true : false);
 
-        resultList.clear();
+        resultListBloc.clear();
         starCount = 0;
         debugPrint((priorityListData).toString());
         if (priorityListData['success']) {
@@ -209,7 +209,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             yield AllocationLoadedState(successResponse: '');
             debugPrint(priorityListData['data']['result'].toString());
             for (var element in priorityListData['data']['result']) {
-              resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+              resultListBloc
+                  .add(Result.fromJson(jsonDecode(jsonEncode(element))));
               if (Result.fromJson(jsonDecode(jsonEncode(element)))
                       .starredCase ==
                   true) {
@@ -219,7 +220,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             if (priorityListData['data']['totalCases'] != null) {
               totalCases = priorityListData['data']['totalCases'] as int;
             }
-            if (resultList.length >= 10) {
+            if (resultListBloc.length >= 10) {
               hasNextPage = true;
             } else {
               hasNextPage = false;
@@ -294,7 +295,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 AppUtils.showToast(getContractorDetails['data'] ?? '');
               }
             }
-            yield AllocationLoadedState(successResponse: resultList);
+            yield AllocationLoadedState(successResponse: resultListBloc);
             if (Singleton.instance.isOfflineEnabledContractorBased &&
                 Singleton.instance.usertype == Constants.fieldagent) {
               //todo firebase
@@ -333,7 +334,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             priorityListData['statusCode'] == 502) {
           isNoInternetAndServerError = true;
           isNoInternetAndServerErrorMsg = priorityListData['data'];
-          yield AllocationLoadedState(successResponse: resultList);
+          yield AllocationLoadedState(successResponse: resultListBloc);
         }
         // }
       }
@@ -358,25 +359,25 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '${HttpUrl.priorityCaseListV1}pageNo=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: true);
 
-        resultList.clear();
+        resultListBloc.clear();
         starCount = 0;
 
         for (var element in priorityListData['data']['result']) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          resultListBloc.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
             starCount++;
           }
         }
 
-        if (resultList.length >= 10) {
+        if (resultListBloc.length >= 10) {
           hasNextPage = true;
         } else {
           hasNextPage = false;
         }
       }
 
-      yield TapPriorityState(successResponse: resultList);
+      yield TapPriorityState(successResponse: resultListBloc);
     }
     if (event is ConnectedStopAndSubmitEvent) {
       final Result val = autoCallingResultList[event.customerIndex];
@@ -412,7 +413,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             PriorityCaseListModel.fromJson(priorityListData['data']);
         if (priorityListData['data']['result'] != null) {
           for (var element in priorityListData['data']['result']) {
-            resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+            resultListBloc
+                .add(Result.fromJson(jsonDecode(jsonEncode(element))));
             if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
                 true) {
               starCount++;
@@ -427,7 +429,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           }
         } else {}
       }
-      yield PriorityLoadMoreState(successResponse: resultList);
+      yield PriorityLoadMoreState(successResponse: resultListBloc);
     }
     if (event is CallSuccessfullyConnectedEvent) {
       int? index = 0;
@@ -472,10 +474,10 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
                 '${HttpUrl.buildRouteCaseList}lat=${event.paramValues.lat}&lng=${event.paramValues.long}&maxDistMeters=${event.paramValues.maxDistMeters}&page=${Constants.pageNo}&limit=${Constants.limit}',
                 encrypt: true);
 
-        resultList.clear();
+        resultListBloc.clear();
         multipleLatLong.clear();
         buildRouteListData['data']['result'].forEach((element) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          resultListBloc.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
               Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
@@ -491,13 +493,13 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         });
 
         ///checking list if case length becoz of loaD more data
-        if (resultList.length >= 10) {
+        if (resultListBloc.length >= 10) {
           hasNextPage = true;
         } else {
           hasNextPage = false;
         }
       }
-      yield TapBuildRouteState(successResponse: resultList);
+      yield TapBuildRouteState(successResponse: resultListBloc);
     }
     if (event is BuildRouteLoadMoreEvent) {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
@@ -510,7 +512,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final PriorityCaseListModel listOfdata =
             PriorityCaseListModel.fromJson(buildRouteListData['data']);
         buildRouteListData['data']['result'].forEach((element) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          resultListBloc.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           final Result listOfCases =
               Result.fromJson(jsonDecode(jsonEncode(element)));
           multipleLatLong.add(
@@ -532,7 +534,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
           hasNextPage = false;
         }
       }
-      yield BuildRouteLoadMoreState(successResponse: resultList);
+      yield BuildRouteLoadMoreState(successResponse: resultListBloc);
     }
     if (event is UpdateNewValuesEvent) {
       // resultList.asMap().forEach((index, value) {
@@ -626,11 +628,11 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               encrypt: true);
         }
 
-        resultList.clear();
+        resultListBloc.clear();
         starCount = 0;
 
         for (var element in getSearchResultData['data']['result']) {
-          resultList.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+          resultListBloc.add(Result.fromJson(jsonDecode(jsonEncode(element))));
           if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
               true) {
             starCount++;
@@ -684,19 +686,19 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       Singleton.instance.buildContext = event.context;
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         if (Singleton.instance.usertype == Constants.fieldagent) {
-          resultList[event.selectedStarIndex].starredCase =
-              !resultList[event.selectedStarIndex].starredCase;
+          resultListBloc[event.selectedStarIndex].starredCase =
+              !resultListBloc[event.selectedStarIndex].starredCase;
         } else {
           yield NoInternetConnectionState();
         }
       } else {
-        resultList[event.selectedStarIndex].starredCase =
-            !resultList[event.selectedStarIndex].starredCase;
+        resultListBloc[event.selectedStarIndex].starredCase =
+            !resultListBloc[event.selectedStarIndex].starredCase;
       }
 
       yield UpdateStaredCaseState(
           caseId: event.caseID,
-          isStared: resultList[event.selectedStarIndex].starredCase,
+          isStared: resultListBloc[event.selectedStarIndex].starredCase,
           selectedIndex: event.selectedStarIndex);
     }
     if (event is AutoCallContactHealthUpdateEvent) {
