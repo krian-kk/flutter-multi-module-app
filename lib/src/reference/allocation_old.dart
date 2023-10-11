@@ -13,7 +13,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languages/app_languages.dart';
-import 'package:origa/screen/allocation/custom_card_list.dart';
+import 'package:origa/src/features/allocation/presentation/custom_card_list.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/utils/app_utils.dart';

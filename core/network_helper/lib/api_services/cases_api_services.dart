@@ -14,6 +14,9 @@ class CasesApiService {
   static String buildRouteCaseList =
       "${getMobileBackendUrl(apiVersion: 'v1/')}case-details/buildRoute?";
 
+  static String autoCallingURL =
+      '${mobileBackendUrl}case-details/priority?forAutocalling=true';
+
   Future<ApiResult<List<PriorityCaseListModel>>> getCases(
       String accessToken, int limit, int pageNo) async {
     dynamic response;
@@ -23,6 +26,22 @@ class CasesApiService {
 
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
+      final mappedResponse =
+          ListResponse.fromJson(response, PriorityCaseListModel.fromJson);
+      List<PriorityCaseListModel>? list =
+          mappedResponse.result?.cast<PriorityCaseListModel>();
+      return ApiResult.success(data: list);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<List<PriorityCaseListModel>>> getAutoCallingListDataFromApi(
+      String accessToken) async {
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl, accessToken: accessToken)
+          .get(autoCallingURL, decryptResponse: true);
       final mappedResponse =
           ListResponse.fromJson(response, PriorityCaseListModel.fromJson);
       List<PriorityCaseListModel>? list =

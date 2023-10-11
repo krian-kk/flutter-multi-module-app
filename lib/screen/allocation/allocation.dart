@@ -52,7 +52,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:workmanager/workmanager.dart';
 
 import 'bloc/allocation_bloc.dart';
-import 'custom_card_list.dart';
+import '../../src/features/allocation/presentation/custom_card_list.dart';
 
 class AllocationScreen extends StatefulWidget {
   const AllocationScreen({Key? key, this.myValueSetter}) : super(key: key);
@@ -677,8 +677,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                                   //       const Duration(milliseconds: 1500));
                                   //   await phoneBottomSheet(
                                   //       context, caseDetailsloc, 0);
-
-                                }else{
+                                } else {
                                   bloc.add(StartCallingEvent(
                                     customerIndex: state.customerIndex! + 1,
                                     phoneIndex: 0,
@@ -1371,132 +1370,132 @@ class _AllocationScreenState extends State<AllocationScreen>
                       ),
                     ),
                   ),
-                      // ? Expanded(
-                      //     child: AutoCalling.buildAutoCalling(context, bloc))
-                       isOffline &&
-                              Singleton.instance.isOfflineEnabledContractorBased
-                          ? Container(child: Text("Commented autocalling"))
-                          // StreamBuilder<QuerySnapshot>(
-                          //             stream: FirebaseFirestore.instance
-                          //                 .collection(
-                          //                     Singleton.instance.firebaseDatabaseName)
-                          //                 .doc(Singleton.instance.agentRef)
-                          //                 .collection(Constants.firebaseCase)
-                          //                 .limit(100)
-                          //                 .snapshots(),
-                          //             builder: (BuildContext context,
-                          //                 AsyncSnapshot<QuerySnapshot> snapshot) {
-                          //               if (snapshot.hasError) {
-                          //                 return Column(
-                          //                   children: [
-                          //                     Padding(
-                          //                       padding: const EdgeInsets.only(
-                          //                           top: 50, right: 20, left: 20),
-                          //                       child:
-                          //                           NoCaseAvailble.buildNoCaseAvailable(
-                          //                               messageContent:
-                          //                                   'Something went wrong'),
-                          //                     ),
-                          //                   ],
-                          //                 );
-                          //               } else if (snapshot.connectionState ==
-                          //                   ConnectionState.waiting) {
-                          //                 const CustomLoadingWidget();
-                          //               }
-                          //               if (snapshot.connectionState ==
-                          //                   ConnectionState.active) {
-                          //                 // bloc.resultList.clear();
-                          //                 // resultList.clear();
-                          //
-                          //                 bloc.resultList = [];
-                          //                 resultList = [];
-                          //                 bloc.starCount = 0;
-                          //                 bloc.totalCases = 0;
-                          //                 // setState(() {
-                          //                 for (var element in snapshot.data!.docs) {
-                          //                   final tempResult = Result.fromJson(element
-                          //                       .data()! as Map<String, dynamic>);
-                          //                   bloc.resultList.add(tempResult);
-                          //                   resultList.add(tempResult);
-                          //                   bloc.totalCases++;
-                          //                   if (tempResult.starredCase == true) {
-                          //                     bloc.starCount++;
-                          //                   }
-                          //                 }
-                          //                 // resultList.sort((a, b) {
-                          //                 //   return b.starredCase ? 1 : -1;
-                          //                 //   // });
-                          //                 // });
-                          //                 // resultList.sort((a, b) {
-                          //                 //   if (b.starredCase) {
-                          //                 //     return 1;
-                          //                 //   }
-                          //                 //   return -1;
-                          //                 // });
-                          //
-                          //                 final List<Result> staredCasesList = [];
-                          //                 for (var element in resultList) {
-                          //                   if (element.starredCase) {
-                          //                     staredCasesList.add(element);
-                          //                   }
-                          //                 }
-                          //                 resultList.removeWhere(
-                          //                     (element) => element.starredCase);
-                          //                 resultList.insertAll(0, staredCasesList);
-                          //                 for (var element in resultList) {
-                          //                   debugPrint(
-                          //                       'Cases accNo--> ${element.accNo}');
-                          //                 }
-                          //               }
-                          //               return resultList.isEmpty
-                          //                   ? Column(
-                          //                       children: [
-                          //                         Padding(
-                          //                           padding: const EdgeInsets.only(
-                          //                               top: 50, right: 20, left: 20),
-                          //                           child: NoCaseAvailble
-                          //                               .buildNoCaseAvailable(),
-                          //                         ),
-                          //                       ],
-                          //                     )
-                          //                   : Flexible(
-                          //                       child: Padding(
-                          //                         padding: const EdgeInsets.symmetric(
-                          //                             horizontal: 20.0),
-                          //                         child: CustomCardList.buildListView(
-                          //                           bloc,
-                          //                           resultData: resultList,
-                          //                           listViewController: _controller,
-                          //                         ),
-                          //                       ),
-                          //                     );
-                          //             },
-                          //           )
-                          : Expanded(
-                              child: isCaseDetailLoading
-                                  ? const SkeletonLoading()
-                                  : resultListUi.isEmpty
-                                      ? Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 50, right: 20, left: 20),
-                                              child: NoCaseAvailble
-                                                  .buildNoCaseAvailable(),
-                                            ),
-                                          ],
-                                        )
-                                      : const SizedBox(),
-                              // : Padding(
-                              //     padding: const EdgeInsets.symmetric(
-                              //         horizontal: 20.0),
-                              //     child: CustomCardList.buildListView(
-                              //       bloc,
-                              //       resultData: resultListUi,
-                              //       listViewController: _controller,
-                              //     ),
-                              //   ),
-                            ),
+                  // ? Expanded(
+                  //     child: AutoCalling.buildAutoCalling(context, bloc))
+                  isOffline &&
+                          Singleton.instance.isOfflineEnabledContractorBased
+                      ? Container(child: Text("Commented autocalling"))
+                      // StreamBuilder<QuerySnapshot>(
+                      //             stream: FirebaseFirestore.instance
+                      //                 .collection(
+                      //                     Singleton.instance.firebaseDatabaseName)
+                      //                 .doc(Singleton.instance.agentRef)
+                      //                 .collection(Constants.firebaseCase)
+                      //                 .limit(100)
+                      //                 .snapshots(),
+                      //             builder: (BuildContext context,
+                      //                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                      //               if (snapshot.hasError) {
+                      //                 return Column(
+                      //                   children: [
+                      //                     Padding(
+                      //                       padding: const EdgeInsets.only(
+                      //                           top: 50, right: 20, left: 20),
+                      //                       child:
+                      //                           NoCaseAvailble.buildNoCaseAvailable(
+                      //                               messageContent:
+                      //                                   'Something went wrong'),
+                      //                     ),
+                      //                   ],
+                      //                 );
+                      //               } else if (snapshot.connectionState ==
+                      //                   ConnectionState.waiting) {
+                      //                 const CustomLoadingWidget();
+                      //               }
+                      //               if (snapshot.connectionState ==
+                      //                   ConnectionState.active) {
+                      //                 // bloc.resultList.clear();
+                      //                 // resultList.clear();
+                      //
+                      //                 bloc.resultList = [];
+                      //                 resultList = [];
+                      //                 bloc.starCount = 0;
+                      //                 bloc.totalCases = 0;
+                      //                 // setState(() {
+                      //                 for (var element in snapshot.data!.docs) {
+                      //                   final tempResult = Result.fromJson(element
+                      //                       .data()! as Map<String, dynamic>);
+                      //                   bloc.resultList.add(tempResult);
+                      //                   resultList.add(tempResult);
+                      //                   bloc.totalCases++;
+                      //                   if (tempResult.starredCase == true) {
+                      //                     bloc.starCount++;
+                      //                   }
+                      //                 }
+                      //                 // resultList.sort((a, b) {
+                      //                 //   return b.starredCase ? 1 : -1;
+                      //                 //   // });
+                      //                 // });
+                      //                 // resultList.sort((a, b) {
+                      //                 //   if (b.starredCase) {
+                      //                 //     return 1;
+                      //                 //   }
+                      //                 //   return -1;
+                      //                 // });
+                      //
+                      //                 final List<Result> staredCasesList = [];
+                      //                 for (var element in resultList) {
+                      //                   if (element.starredCase) {
+                      //                     staredCasesList.add(element);
+                      //                   }
+                      //                 }
+                      //                 resultList.removeWhere(
+                      //                     (element) => element.starredCase);
+                      //                 resultList.insertAll(0, staredCasesList);
+                      //                 for (var element in resultList) {
+                      //                   debugPrint(
+                      //                       'Cases accNo--> ${element.accNo}');
+                      //                 }
+                      //               }
+                      //               return resultList.isEmpty
+                      //                   ? Column(
+                      //                       children: [
+                      //                         Padding(
+                      //                           padding: const EdgeInsets.only(
+                      //                               top: 50, right: 20, left: 20),
+                      //                           child: NoCaseAvailble
+                      //                               .buildNoCaseAvailable(),
+                      //                         ),
+                      //                       ],
+                      //                     )
+                      //                   : Flexible(
+                      //                       child: Padding(
+                      //                         padding: const EdgeInsets.symmetric(
+                      //                             horizontal: 20.0),
+                      //                         child: CustomCardList.buildListView(
+                      //                           bloc,
+                      //                           resultData: resultList,
+                      //                           listViewController: _controller,
+                      //                         ),
+                      //                       ),
+                      //                     );
+                      //             },
+                      //           )
+                      : Expanded(
+                          child: isCaseDetailLoading
+                              ? const SkeletonLoading()
+                              : resultListUi.isEmpty
+                                  ? Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              top: 50, right: 20, left: 20),
+                                          child: NoCaseAvailble
+                                              .buildNoCaseAvailable(),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+                          // : Padding(
+                          //     padding: const EdgeInsets.symmetric(
+                          //         horizontal: 20.0),
+                          //     child: CustomCardList.buildListView(
+                          //       bloc,
+                          //       resultData: resultListUi,
+                          //       listViewController: _controller,
+                          //     ),
+                          //   ),
+                        ),
                 ],
               ),
               bottomNavigationBar: Visibility(

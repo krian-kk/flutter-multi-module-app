@@ -123,3 +123,36 @@ class AutoCallContactHealthUpdateState extends AllocationState {
 class MapInitiateState extends AllocationState {}
 
 class AutoCallingContactSortState extends AllocationState {}
+
+class UpdateStarredCasesSuccessState extends AllocationState {
+  UpdateStarredCasesSuccessState(
+      {required this.caseId, required this.removedItem});
+
+  final PriorityCaseListModel removedItem;
+  final String caseId;
+}
+
+class UpdateUnStarredCasesSuccessState extends AllocationState {
+  UpdateUnStarredCasesSuccessState({required this.caseId});
+
+  final String caseId;
+}
+
+class PostCallCustomerSuccessState extends AllocationState {
+  PostCallCustomerSuccessState(
+      {this.customerIndex, this.phoneIndex, this.callId});
+
+  final dynamic callId;
+  final int? customerIndex;
+  final int? phoneIndex;
+}
+
+class PostCallCustomerFailureState extends AllocationState {}
+
+class GetAgencyDetailsFailureState extends AllocationState {}
+
+class PhoneIndexLesserThanTempMobileListEvent extends AllocationState {
+  PhoneIndexLesserThanTempMobileListEvent({this.customerIndex});
+
+  final int? customerIndex;
+}

@@ -3,6 +3,7 @@ import 'package:design_system/fonts.dart';
 import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:languages/app_languages.dart';
 import 'package:origa/singleton.dart';
@@ -13,7 +14,7 @@ import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/custom_text.dart';
 
-import '../../widgets/case_status_widget.dart';
+import '../../../../widgets/case_status_widget.dart';
 
 class CustomCardList {
   static Widget buildListView(AllocationBloc bloc,

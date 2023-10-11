@@ -109,3 +109,10 @@ class ConnectedStopAndSubmitEvent extends AllocationEvent {
 
   final int customerIndex;
 }
+
+class StartCallingAdditionalHandlingEvent extends AllocationEvent {
+  StartCallingAdditionalHandlingEvent({this.customerIndex, this.phoneIndex});
+
+  final int? customerIndex;
+  final int? phoneIndex;
+}

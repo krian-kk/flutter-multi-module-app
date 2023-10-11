@@ -1,4 +1,7 @@
+import 'package:domain_models/request_body/allocation/agency_details_model.dart';
 import 'package:domain_models/request_body/allocation/are_you_at_office_model.dart';
+import 'package:domain_models/request_body/allocation/call_customer_model.dart';
+import 'package:domain_models/request_body/allocation/update_staredcase_model.dart';
 import 'package:domain_models/response_models/allocation/communication_channel_model.dart';
 import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
@@ -24,6 +27,15 @@ abstract class AllocationRepository {
 
   Future<ApiResult<ContractorDetailsModel>> getCustomContractorDetailsData();
 
+  Future<ApiResult<BaseResponse>> updateStarredCases(UpdateStaredCase postData);
+
+  Future<int> getAutoCallingIndexValueAndUpdate();
+
+  Future<int> getAutoCallingSubIndexValueAndUpdate();
+
+  Future<ApiResult<AgencyResult>> getAgencyDetailsData();
+
+  Future<ApiResult<BaseResponse>> postCallCustomer(CallCustomerModel postData);
 }
 
 class AllocationRepositoryImpl extends AllocationRepository {
@@ -36,7 +48,49 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<ApiResult<ContractorResult>> getContractorDetails()async {
+  Future<int> getAutoCallingIndexValueAndUpdate() async {
+    int? index =
+        await PreferenceHelper.getInt(keyPair: 'autoCallingIndexValue');
+    await PreferenceHelper.setPreference('autoCallingIndexValue', index! + 1);
+    return index;
+  }
+
+  @override
+  Future<ApiResult<AgencyResult>> getAgencyDetailsData() async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<AgencyResult> response =
+        await apiProvider.getAgencyDetailsDataFromApi(accessToken);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<BaseResponse>> postCallCustomer(CallCustomerModel postData) async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<BaseResponse> response =
+        await apiProvider.postCallCustomerFromApi(accessToken,postData);
+    return response;
+  }
+
+  @override
+  Future<int> getAutoCallingSubIndexValueAndUpdate() async {
+    int? subIndex =
+        await PreferenceHelper.getInt(keyPair: 'autoCallingSubIndexValue');
+    await PreferenceHelper.setPreference(
+        'autoCallingSubIndexValue', subIndex! + 1);
+    return subIndex;
+  }
+
+  @override
+  Future<ApiResult<BaseResponse>> updateStarredCases(
+      UpdateStaredCase postData) async {
+    String? accessToken = await getAccessToken();
+    final ApiResult<BaseResponse> response =
+        await apiProvider.updateStarredCasesFromApi(accessToken, postData);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<ContractorResult>> getContractorDetails() async {
     String? accessToken = await getAccessToken();
     final ApiResult<ContractorResult> response =
         await apiProvider.getContractorDetailsFromApi(accessToken);
@@ -44,7 +98,8 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<ApiResult<ContractorDetailsModel>> getCustomContractorDetailsData()async {
+  Future<ApiResult<ContractorDetailsModel>>
+      getCustomContractorDetailsData() async {
     String? accessToken = await getAccessToken();
     final ApiResult<ContractorDetailsModel> response =
         await apiProvider.getCustomContractorDetailsDataFromApi(accessToken);
@@ -52,13 +107,13 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<ApiResult<CommunicationChannelModel>> getCommunicationChannels()async {
+  Future<ApiResult<CommunicationChannelModel>>
+      getCommunicationChannels() async {
     String? accessToken = await getAccessToken();
     final ApiResult<CommunicationChannelModel> response =
         await apiProvider.getCommunicationChannelsFromApi(accessToken);
     return response;
   }
-
 
   @override
   Future<ApiResult<BaseResponse>> areYouAtOffice(

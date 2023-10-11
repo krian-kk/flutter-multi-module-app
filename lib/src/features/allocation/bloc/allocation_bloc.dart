@@ -5,7 +5,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/constant_event_values.dart';
 import 'package:design_system/constants.dart';
 import 'package:domain_models/common/buildroute_data.dart';
+import 'package:domain_models/request_body/allocation/agency_details_model.dart';
 import 'package:domain_models/request_body/allocation/are_you_at_office_model.dart';
+import 'package:domain_models/request_body/allocation/call_customer_model.dart';
+import 'package:domain_models/request_body/allocation/update_staredcase_model.dart';
 import 'package:domain_models/response_models/allocation/communication_channel_model.dart';
 import 'package:domain_models/response_models/allocation/contractor_all_information_model.dart';
 import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
@@ -499,10 +502,28 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             !resultList[event.selectedStarIndex].starredCase;
       }
 
-      emit(UpdateStaredCaseState(
-          caseId: event.caseID,
-          isStared: resultList[event.selectedStarIndex].starredCase,
-          selectedIndex: event.selectedStarIndex));
+      final isStarred = resultList[event.selectedStarIndex].starredCase;
+      if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
+        final UpdateStaredCase postData =
+            UpdateStaredCase(caseId: event.caseID, starredCase: isStarred);
+        final data = await repository.updateStarredCases(postData);
+        if (isStarred) {
+          await data.when(
+              success: (BaseResponse? result) async {
+                final removedItem = resultList[event.selectedStarIndex];
+                resultList.removeAt(event.selectedStarIndex);
+                emit(UpdateStarredCasesSuccessState(
+                    caseId: event.caseID, removedItem: removedItem));
+              },
+              failure: (NetworkExceptions? error) async {});
+        } else {
+          await data.when(
+              success: (BaseResponse? result) async {
+                emit(UpdateUnStarredCasesSuccessState(caseId: event.caseID));
+              },
+              failure: (NetworkExceptions? error) async {});
+        }
+      }
     }
 
     if (event is MapViewEvent) {
@@ -535,6 +556,231 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
 
       emit(MapViewState());
+    }
+
+    if (event is ConnectedStopAndSubmitEvent) {
+      final PriorityCaseListModel val =
+          autoCallingResultList[event.customerIndex];
+      autoCallingResultList.remove(val);
+      customerCount++;
+    }
+    if (event is StartCallingEvent) {
+      if (event.isIncreaseCount && event.customerIndex! <= totalCount) {
+        final PriorityCaseListModel val =
+            autoCallingResultList[event.customerIndex! - 1];
+        autoCallingResultList.remove(val);
+        // autoCallingResultList.add(val);
+        customerCount++;
+        emit(UpdateNewValueState());
+      }
+      Singleton.instance.startCalling = true;
+
+      emit(StartCallingState(
+        customerIndex: event.isIncreaseCount
+            ? event.customerIndex! - 1
+            : event.customerIndex!,
+        phoneIndex: event.phoneIndex,
+      ));
+    }
+
+    if (event is CallSuccessfullyConnectedEvent) {
+      int? index = 0;
+      await repository.getAutoCallingIndexValueAndUpdate().then((value) {
+        index = value;
+      });
+      indexValue = index!;
+      if (Singleton.instance.startCalling ?? false) {
+        emit(StartCallingState());
+      }
+    }
+
+    if (event is CallUnSuccessfullyConnectedEvent) {
+      int? index, subIndex;
+      await repository.getAutoCallingIndexValueAndUpdate().then((value) {
+        index = value;
+      });
+      await repository.getAutoCallingSubIndexValueAndUpdate().then((value) {
+        subIndex = value;
+      });
+      if (Singleton.instance.startCalling ?? false) {
+        emit(StartCallingState());
+      }
+    }
+
+    if (event is StartCallingAdditionalHandlingEvent) {
+      final data = await repository.getAgencyDetailsData();
+      await data.when(success: (AgencyResult? result) async {
+        if (result != null) {
+          if (Singleton.instance.cloudTelephony!) {
+            if (event.customerIndex! < autoCallingResultList.length) {
+              final List<Address> tempMobileList = [];
+              autoCallingResultList[event.customerIndex!]
+                  .address
+                  ?.asMap()
+                  .forEach((i, element) {
+                if (element.cType == 'mobile') {
+                  tempMobileList.add(element);
+                }
+              });
+              if (event.phoneIndex! < tempMobileList.length) {
+                final requestBodyData = CallCustomerModel(
+                  from: result?.agentAgencyContact ?? '',
+                  // for testing purpose using your number here
+                  // from: 'test number',
+                  to: tempMobileList[event.phoneIndex!].value ?? '',
+                  callerId: result?.voiceAgencyData?.first.callerIds != []
+                      ? result?.voiceAgencyData?.first.callerIds?.first
+                          as String
+                      : '0',
+                  aRef: Singleton.instance.agentRef ?? '',
+                  customerName:
+                      autoCallingResultList[event.customerIndex!].cust!,
+                  service: result?.voiceAgencyData?.first.agencyId ?? '0',
+                  callerServiceID: result?.voiceAgencyData?.first.agencyId,
+                  contractor: Singleton.instance.contractor,
+                  caseId: autoCallingResultList[event.customerIndex!].caseId!,
+                  sId: autoCallingResultList[event.customerIndex!].sId!,
+                  agrRef:
+                      autoCallingResultList[event.customerIndex!].agrRef ?? '',
+                  agentName: Singleton.instance.agentName ?? '',
+                  agentType:
+                      (Singleton.instance.usertype == Constants.telecaller)
+                          ? 'TELECALLER'
+                          : 'COLLECTOR',
+                );
+                final postData =
+                    await repository.postCallCustomer(requestBodyData);
+                await postData.when(success: (BaseResponse? result) async {
+                  emit(PostCallCustomerSuccessState(
+                    callId: result,
+                    phoneIndex: event.phoneIndex,
+                    customerIndex: event.customerIndex,
+                  ));
+                }, failure: (NetworkExceptions? error) async {
+                  print("Error ${error}");
+                  emit(PostCallCustomerFailureState());
+                });
+              } else {
+                emit(PhoneIndexLesserThanTempMobileListEvent());
+              }
+            }
+          }
+        }
+      }, failure: (NetworkExceptions? error) async {
+        emit(GetAgencyDetailsFailureState());
+      });
+    }
+
+    if (event is UpdateNewValuesEvent) {
+      // resultList.asMap().forEach((index, value) {
+      //   if (value.caseId == event.paramValue) {
+      //     if (Singleton.instance.usertype == Constants.telecaller) {
+      //       value.telSubStatus = event.selectedClipValue;
+      //     } else {
+      //       value.collSubStatus = event.selectedClipValue;
+      //     }
+      //     if (event.selectedClipValue != null && event.followUpDate != null) {
+      //       value.followUpDate = event.followUpDate;
+      //     }
+      //   }
+      // });
+      emit(UpdateNewValueState(
+          selectedEventValue: event.selectedClipValue,
+          updateFollowUpdate: event.followUpDate,
+          paramValue: event.paramValue));
+    }
+
+    if (event is MessageEvent) {
+      emit(MessageState());
+    }
+
+    if (event is FilterSelectOptionEvent) {
+      emit(FilterSelectOptionState());
+    }
+    // if (event is SearchReturnDataEvent) {
+    //   yield CaseListViewLoadingState();
+    //
+    //   if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
+    //     yield NoInternetConnectionState();
+    //   } else {
+    //     final data = event.returnValue as SearchingDataModel;
+    //     Map<String, dynamic> getSearchResultData;
+    //     if (data.isStarCases! && data.isMyRecentActivity!) {
+    //       getSearchResultData = await APIRepository.apiRequest(
+    //           APIRequestType.get,
+    //           '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
+    //           encrypt: true);
+    //     } else if (data.isStarCases!) {
+    //       getSearchResultData = await APIRepository.apiRequest(
+    //           APIRequestType.get,
+    //           '${HttpUrl.searchUrl}starredOnly=${data.isStarCases}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
+    //           encrypt: true);
+    //     } else if (data.isMyRecentActivity!) {
+    //       getSearchResultData = await APIRepository.apiRequest(
+    //           APIRequestType.get,
+    //           '${HttpUrl.searchUrl}recentActivity=${data.isMyRecentActivity}&accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
+    //           encrypt: true);
+    //     } else {
+    //       getSearchResultData = await APIRepository.apiRequest(
+    //           APIRequestType.get,
+    //           '${HttpUrl.searchUrl}accNo=${data.accountNumber}&cust=${data.customerName}&bankName=${data.bankName}&dpdStr=${data.dpdBucket}&customerId=${data.customerID}&pincode=${data.pincode}&collSubStatus=${data.status}',
+    //           encrypt: true);
+    //     }
+    //
+    //     resultListBloc.clear();
+    //     starCount = 0;
+    //
+    //     for (var element in getSearchResultData['data']['result']) {
+    //       resultListBloc.add(Result.fromJson(jsonDecode(jsonEncode(element))));
+    //       if (Result.fromJson(jsonDecode(jsonEncode(element))).starredCase ==
+    //           true) {
+    //         starCount++;
+    //       }
+    //     }
+    //
+    //     isShowSearchPincode = true;
+    //     selectedOption = 3;
+    //     showFilterDistance = false;
+    //   }
+    //   yield SearchReturnDataState();
+    // }
+
+    if (event is ShowAutoCallingEvent) {
+      emit(AutoCallingLoadingState());
+      customerCount = 0;
+      isAutoCalling = true;
+      isShowSearchFloatingButton = false;
+
+      final autoCallingListData = await caseRepository.getAutoCallingListData();
+      await autoCallingListData.when(
+          success: (List<PriorityCaseListModel>? result) async {
+            if (result?.isNotEmpty == true && result != null) {
+              autoCallingResultList.clear();
+
+              result.forEach((element) {
+                autoCallingResultList.add(element);
+              });
+
+              // totalCount = result.totalCases;
+              for (var element in autoCallingResultList) {
+                element.address?.removeWhere((element) =>
+                    (element.cType == 'office address' ||
+                        element.cType == 'residence address' ||
+                        element.cType == 'email'));
+              }
+            }
+          },
+          failure: (NetworkExceptions? error) async {});
+
+      emit(AutoCallingLoadedState());
+    }
+    if (event is AutoCallingContactSortEvent) {
+      emit(AutoCallingContactSortState());
+    }
+
+    if (event is AutoCallContactHealthUpdateEvent) {
+      emit(AutoCallContactHealthUpdateState(
+          contactIndex: event.contactIndex, caseIndex: event.caseIndex));
     }
   }
 
