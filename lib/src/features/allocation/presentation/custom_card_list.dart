@@ -146,7 +146,6 @@ class CustomCardList {
                           children: [
                             CustomText(
                               bloc.totalCases.toString() +
-                                  // resultData.length.toString() +
                                   ' ' +
                                   Languages.of(context)!.allocation,
                               color: ColorResourceDesign.color000000,

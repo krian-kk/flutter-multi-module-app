@@ -13,11 +13,13 @@ abstract class CaseRepository {
   Future<ApiResult<List<PriorityCaseListModel>>> getCasesFromServer(
       int limit, int pageNo);
 
+  Future<ApiResult<MappedPaginatedListResponse>>
+      getCasesFromServerWithTotalCases(int limit, int pageNo);
+
   Future<ApiResult<List<PriorityCaseListModel>>> getBuildRouteCases(
       int limit, int pageNo, BuildRouteDataModel paramValues);
 
   Future<ApiResult<List<PriorityCaseListModel>>> getAutoCallingListData();
-
 }
 
 class CaseRepositoryImpl implements CaseRepository {
@@ -51,7 +53,22 @@ class CaseRepositoryImpl implements CaseRepository {
   }
 
   @override
-  Future<ApiResult<List<PriorityCaseListModel>>> getAutoCallingListData() async {
+  Future<ApiResult<MappedPaginatedListResponse>>
+      getCasesFromServerWithTotalCases(int limit, int pageNo) async {
+    if (pageNo % 10 == 0) {
+      pageNo = (pageNo % 10) + 1;
+    } else {
+      pageNo = pageNo % 10;
+    }
+    String? accessToken = await getAccessToken();
+    ApiResult<MappedPaginatedListResponse> response = await collectApiProvider
+        .getCasesWithTotalNoOfCases(accessToken, limit, pageNo);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<List<PriorityCaseListModel>>>
+      getAutoCallingListData() async {
     String? accessToken = await getAccessToken();
     ApiResult<List<PriorityCaseListModel>> response =
         await collectApiProvider.getAutoCallingListDataFromApi(accessToken);

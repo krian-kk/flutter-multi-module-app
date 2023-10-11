@@ -703,29 +703,21 @@ class _AllocationScreenState extends State<AllocationScreen>
             if (state is AllocationLoadedState) {
               if (BlocProvider.of<AllocationBloc>(context).userType ==
                   Constants.fieldagent) {
-                filterOptions = [
-                  Languages.of(context)!.priority,
-                  Languages.of(context)!.buildRoute,
-                  Languages.of(context)!.mapView,
-                ];
-
-                BlocProvider.of<AllocationBloc>(context)
-                    .add(GetCurrentLocationEvent());
-
-                // if (BlocProvider.of<AllocationBloc>(context).isGoogleApiKeyNull ==
-                //     true) {
-                //   filterOptions = [
-                //     Languages.of(context)!.priority,
-                //   ];
-                // } else {
-                //   filterOptions = [
-                //     Languages.of(context)!.priority,
-                //     Languages.of(context)!.buildRoute,
-                //     Languages.of(context)!.mapView,
-                //   ];
-                //   BlocProvider.of<AllocationBloc>(context)
-                //       .add(GetCurrentLocationEvent());
-                // }
+                if (BlocProvider.of<AllocationBloc>(context)
+                        .isGoogleApiKeyNull ==
+                    true) {
+                  filterOptions = [
+                    Languages.of(context)!.priority,
+                  ];
+                } else {
+                  filterOptions = [
+                    Languages.of(context)!.priority,
+                    Languages.of(context)!.buildRoute,
+                    Languages.of(context)!.mapView,
+                  ];
+                  BlocProvider.of<AllocationBloc>(context)
+                      .add(GetCurrentLocationEvent());
+                }
               }
 
               if (BlocProvider.of<AllocationBloc>(context).userType ==

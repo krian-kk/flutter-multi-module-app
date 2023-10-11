@@ -83,6 +83,8 @@ class _AllocationScreenState extends State<AllocationScreen>
     with WidgetsBindingObserver {
   late AllocationBloc bloc;
   bool isSubmitRUOffice = false;
+  List<Result> resultListUi = <Result>[];
+
   String? currentAddress;
   bool isCaseDetailLoading = false;
   bool isOffline = false;
@@ -484,13 +486,12 @@ class _AllocationScreenState extends State<AllocationScreen>
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) async {
-
-        Map<String, dynamic>? data = element.data();
-        // log('message $data');
-        resultList.add(Result.fromJson(data));
-        if (Result.fromJson(data).starredCase == true) {
-          starCount++;
-        }
+        // Map<String, dynamic>? data = element.data();
+        // // log('message $data');
+        // resultList.add(Result.fromJson(data));
+        // if (Result.fromJson(data).starredCase == true) {
+        //   starCount++;
+        // }
         if (state is FirebaseStoredCompletionState) {
           // collectionReference = FirebaseFirestore.instance
           //     .collection(Singleton.instance.firebaseDatabaseName)

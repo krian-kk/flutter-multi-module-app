@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:meta/meta.dart';
+import 'package:network_helper/api_services/cases_api_services.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:network_helper/network_base_models/base_response.dart';
@@ -238,9 +239,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
             },
             failure: (NetworkExceptions? error) async {});
 
-        final newItems = await caseRepository.getCasesFromServer(_pageSize, 1);
+        final newItems =
+            await caseRepository.getCasesFromServerWithTotalCases(_pageSize, 1);
         await newItems.when(
-            success: (List<PriorityCaseListModel>? result) async {
+            success: (MappedPaginatedListResponse? mappedResponse) async {
+              final List<PriorityCaseListModel> result =
+                  mappedResponse!.response;
+              totalCases = mappedResponse!.totalCases ?? 0;
+
               if (result?.isNotEmpty == true && result != null) {
                 resultList.clear();
                 starCount = 0;
@@ -293,9 +299,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         emit(NoInternetConnectionState());
       } else {
-        final newItems = await caseRepository.getCasesFromServer(_pageSize, 1);
+        final newItems =
+            await caseRepository.getCasesFromServerWithTotalCases(_pageSize, 1);
         await newItems.when(
-            success: (List<PriorityCaseListModel>? result) async {
+            success: (MappedPaginatedListResponse? mappedResponse) async {
+              final List<PriorityCaseListModel> result =
+                  mappedResponse!.response;
+              totalCases = mappedResponse!.totalCases ?? 0;
+
               if (result?.isNotEmpty == true && result != null) {
                 resultList.clear();
                 starCount = 0;
@@ -324,10 +335,14 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         emit(NoInternetConnectionState());
       } else {
-        final newItems =
-            await caseRepository.getCasesFromServer(_pageSize, page);
+        final newItems = await caseRepository.getCasesFromServerWithTotalCases(
+            _pageSize, page);
         await newItems.when(
-            success: (List<PriorityCaseListModel>? result) async {
+            success: (MappedPaginatedListResponse? mappedResponse) async {
+              final List<PriorityCaseListModel> result =
+                  mappedResponse!.response;
+              totalCases = mappedResponse!.totalCases ?? 0;
+
               if (result?.isNotEmpty == true && result != null) {
                 result.forEach((element) {
                   resultList.add(element);

@@ -26,11 +26,33 @@ class CasesApiService {
 
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
-      final mappedResponse =
-          ListResponse.fromJson(response, PriorityCaseListModel.fromJson);
+      final mappedResponse = PaginatedListResponse.fromJson(
+          response, PriorityCaseListModel.fromJson);
       List<PriorityCaseListModel>? list =
           mappedResponse.result?.cast<PriorityCaseListModel>();
       return ApiResult.success(data: list);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<MappedPaginatedListResponse>> getCasesWithTotalNoOfCases(
+      String accessToken, int limit, int pageNo) async {
+    dynamic response;
+    try {
+      String url = priorityCasesV1;
+      url = "${url}pageNo=${pageNo}&limit=$limit";
+
+      response = await DioClient(baseUrl, accessToken: accessToken)
+          .get(url, decryptResponse: true);
+      final mappedResponse = PaginatedListResponse.fromJson(
+          response, PriorityCaseListModel.fromJson);
+      List<PriorityCaseListModel>? list =
+          mappedResponse.result?.cast<PriorityCaseListModel>();
+      MappedPaginatedListResponse responseWithTotalCases =
+          MappedPaginatedListResponse(
+              response: list!, totalCases: mappedResponse.totalCases);
+      return ApiResult.success(data: responseWithTotalCases);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }
@@ -73,4 +95,12 @@ class CasesApiService {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }
   }
+}
+
+class MappedPaginatedListResponse {
+  MappedPaginatedListResponse(
+      {required this.response, required this.totalCases});
+
+  List<PriorityCaseListModel> response = [];
+  int? totalCases = 0;
 }

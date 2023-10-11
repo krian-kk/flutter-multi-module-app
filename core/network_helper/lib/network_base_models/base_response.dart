@@ -51,11 +51,37 @@ class SingleResponse<T> extends BaseResponse {
         result: create(json["result"]));
   }
 
-  factory SingleResponse.fromJson2(
-      Map<String, dynamic> json) {
+  factory SingleResponse.fromJson2(Map<String, dynamic> json) {
     return SingleResponse<T>(
         status: json["status"],
         message: json["message"],
         result: json["result"]);
+  }
+}
+
+@JsonSerializable(genericArgumentFactories: true)
+class PaginatedListResponse<T> extends BaseResponse {
+  List<T>? result;
+  int? totalCases;
+
+  PaginatedListResponse({
+    int? status,
+    String? message,
+    this.result,
+    this.totalCases,
+  }) : super(message: message, status: status);
+
+  factory PaginatedListResponse.fromJson(
+      Map<String, dynamic> json, Function(Map<String, dynamic>) create) {
+    var listData = <T>[];
+    json['result'].forEach((v) {
+      listData.add(create(v));
+    });
+
+    return PaginatedListResponse<T>(
+        status: json["status"],
+        message: json["message"],
+        result: listData,
+        totalCases: json["totalCases"]);
   }
 }
