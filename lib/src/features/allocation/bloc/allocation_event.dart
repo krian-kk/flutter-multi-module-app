@@ -71,6 +71,13 @@ class ShowAutoCallingEvent extends AllocationEvent {}
 
 class CallSuccessfullyConnectedEvent extends AllocationEvent {}
 
+class UpdateCurrentLocation extends AllocationEvent {
+  UpdateCurrentLocation({required this.lat, required this.long});
+
+  final double lat;
+  final double long;
+}
+
 class UpdateNewValuesEvent extends AllocationEvent {
   UpdateNewValuesEvent(
     this.paramValue,

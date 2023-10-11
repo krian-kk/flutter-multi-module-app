@@ -41,6 +41,7 @@ import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/floating_action_button.dart';
 import 'package:origa/widgets/no_case_available.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:repository/allocation_repository.dart';
 import 'package:workmanager/workmanager.dart';
 
 class AllocationScreen extends StatefulWidget {
@@ -61,8 +62,8 @@ void callbackDispatcher() {
     } //simpleTask will be emitted here.
     if (await Permission.location.isGranted) {
       final Position result = await Geolocator.getCurrentPosition();
-      await APIRepository.apiRequest(APIRequestType.put,
-          '${HttpUrl.updateDeviceLocation}lat=${result.latitude}&lng=${result.longitude}');
+      final AllocationRepositoryImpl tempRepo = AllocationRepositoryImpl();
+      await tempRepo.putCurrentLocation(result.latitude, result.longitude);
     }
     return Future.value(true);
   });
@@ -125,6 +126,7 @@ class _AllocationScreenState extends State<AllocationScreen>
     //     .collection(Constants.firebaseCase);
     _controller = ScrollController()..addListener(_loadMore);
 
+    // Singleton.instance.usertype = Constants.fieldagent;
     // For offline checking only
     internetChecking();
     if (Singleton.instance.usertype == Constants.fieldagent) {
@@ -233,7 +235,6 @@ class _AllocationScreenState extends State<AllocationScreen>
     });
   }
 
-  //get current location lat, alng and address
   getCurrentLocation() async {
     if (ConnectivityResult.none != await Connectivity().checkConnectivity()) {
       await Permission.location.request();
@@ -251,9 +252,8 @@ class _AllocationScreenState extends State<AllocationScreen>
             currentAddress =
                 '${placeMarks.toList().first.street}, ${placeMarks.toList().first.subLocality}, ${placeMarks.toList().first.postalCode}';
           });
-          //todo add to repo layer
-          await APIRepository.apiRequest(APIRequestType.put,
-              '${HttpUrl.updateDeviceLocation}lat=${position.latitude}&lng=${position.longitude}');
+          BlocProvider.of<AllocationBloc>(context).add(UpdateCurrentLocation(
+              lat: position.latitude, long: position.longitude));
           await locationTracker();
         }
       } else {
@@ -524,6 +524,9 @@ class _AllocationScreenState extends State<AllocationScreen>
             }
 
             if (state is TapAreYouAtOfficeOptionsSuccessState) {
+              setState(() {
+                position = state!.positions;
+              });
               AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
             }
 
@@ -715,8 +718,8 @@ class _AllocationScreenState extends State<AllocationScreen>
                     Languages.of(context)!.buildRoute,
                     Languages.of(context)!.mapView,
                   ];
-                  BlocProvider.of<AllocationBloc>(context)
-                      .add(GetCurrentLocationEvent());
+                  // BlocProvider.of<AllocationBloc>(context)
+                  //     .add(GetCurrentLocationEvent());
                 }
               }
 

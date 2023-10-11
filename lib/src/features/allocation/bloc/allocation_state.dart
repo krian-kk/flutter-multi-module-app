@@ -23,7 +23,11 @@ class MapViewState extends AllocationState {}
 
 class AreYouAtOfficeLoadingState extends AllocationState {}
 
-class TapAreYouAtOfficeOptionsSuccessState extends AllocationState {}
+class TapAreYouAtOfficeOptionsSuccessState extends AllocationState {
+  TapAreYouAtOfficeOptionsSuccessState({required this.positions});
+
+  Position positions;
+}
 
 class TapAreYouAtOfficeOptionsFailureState extends AllocationState {}
 

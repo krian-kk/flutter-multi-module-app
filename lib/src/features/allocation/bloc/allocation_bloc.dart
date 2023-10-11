@@ -76,18 +76,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
   ContractorDetailsModel? customContractorDetails;
 
-  Position position = Position(
-    longitude: 0,
-    latitude: 0,
-    timestamp: DateTime.now(),
-    accuracy: 0,
-    altitude: 0,
-    heading: 0,
-    speed: 0,
-    speedAccuracy: 0,
-    altitudeAccuracy: 0,
-    headingAccuracy: 0,
-  );
   String? currentAddress;
   static const _pageSize = 10;
   List<dynamic> multipleLatLong = <dynamic>[];
@@ -270,12 +258,23 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
       }
     }
 
+    if (event is UpdateCurrentLocation) {
+      final response =
+          await repository.putCurrentLocation(event.lat, event.long);
+
+      await response.when(
+          success: (BaseResponse? result) async {
+            emit(UpdatedCurrentLocationState());
+          },
+          failure: (NetworkExceptions? error) async {});
+    }
+
     if (event is GetCurrentLocationEvent) {
       await Permission.location.request();
       if (await Permission.location.isGranted) {
         final Position result = await Geolocator.getCurrentPosition();
 
-        position = result;
+        // position = result;
 
         final List<Placemark> placeMarks =
             await placemarkFromCoordinates(result.latitude, result.longitude);
@@ -283,8 +282,8 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         currentAddress =
             '${placeMarks.toList().first.street}, ${placeMarks.toList().first.subLocality}, ${placeMarks.toList().first.postalCode}';
 
-        await repository.putCurrentLocation(
-            position.latitude, position.longitude);
+        // await repository.putCurrentLocation(
+        //     position.latitude, position.longitude);
         emit(UpdatedCurrentLocationState());
       } else {
         await openAppSettings();
@@ -492,7 +491,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         PreferenceHelper.setPreference('areyouatOffice', false);
         PreferenceHelper.setPreference(
             'ruAtOfficeDay', DateTime.now().day.toString());
-        emit(TapAreYouAtOfficeOptionsSuccessState());
+        emit(TapAreYouAtOfficeOptionsSuccessState(positions: positions));
       }, failure: (NetworkExceptions? error) async {
         isSubmitRUOffice = false;
         areYouAtOffice = true;
