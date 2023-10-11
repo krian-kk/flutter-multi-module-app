@@ -251,6 +251,7 @@ class _AllocationScreenState extends State<AllocationScreen>
             currentAddress =
                 '${placeMarks.toList().first.street}, ${placeMarks.toList().first.subLocality}, ${placeMarks.toList().first.postalCode}';
           });
+          //todo add to repo layer
           await APIRepository.apiRequest(APIRequestType.put,
               '${HttpUrl.updateDeviceLocation}lat=${position.latitude}&lng=${position.longitude}');
           await locationTracker();
@@ -473,33 +474,27 @@ class _AllocationScreenState extends State<AllocationScreen>
         return BlocListener<AllocationBloc, AllocationState>(
           bloc: bloc,
           listener: (BuildContext context, AllocationState state) async {
-            // Map<String, dynamic>? data = element.data();
-            // // log('message $data');
-            // resultList.add(Result.fromJson(data));
-            // if (Result.fromJson(data).starredCase == true) {
-            //   starCount++;
-            // }
-            // if (state is FirebaseStoredCompletionState) {
-            //   // collectionReference = FirebaseFirestore.instance
-            //   //     .collection(Singleton.instance.firebaseDatabaseName)
-            //   //     .doc(Singleton.instance.agentRef)
-            //   //     .collection(Constants.firebaseCase);
-            //
-            //   Future.delayed(const Duration(milliseconds: 60), () {
-            //     widget.myValueSetter!(0);
-            //   });
-            //   Future.delayed(const Duration(seconds: 5), () {
-            //     widget.myValueSetter!(0);
-            //     AppUtils.showToast('App synced with local');
-            //     debugPrint('App synced with local');
-            //     setState(() {
-            //       isToastShow = true;
-            //     });
-            //     bloc.add(AllocationInitialEvent(context, myValueSetter: (values) {
-            //       widget.myValueSetter!(values);
-            //     }));
-            //   });
-            // }
+            if (state is FirebaseStoredCompletionState) {
+              // collectionReference = FirebaseFirestore.instance
+              //     .collection(Singleton.instance.firebaseDatabaseName)
+              //     .doc(Singleton.instance.agentRef)
+              //     .collection(Constants.firebaseCase);
+
+              Future.delayed(const Duration(milliseconds: 60), () {
+                widget.myValueSetter!(0);
+              });
+              Future.delayed(const Duration(seconds: 5), () {
+                widget.myValueSetter!(0);
+                AppUtils.showToast('App synced with local');
+                debugPrint('App synced with local');
+                setState(() {
+                  isToastShow = true;
+                });
+                bloc.add(AllocationInitialEvent(myValueSetter: (values) {
+                  widget.myValueSetter!(values);
+                }));
+              });
+            }
 
             /**Offline code*/
             // if (state is AllocationOfflineState) {
@@ -696,7 +691,6 @@ class _AllocationScreenState extends State<AllocationScreen>
             //     debugPrint(e.toString());
             //   }
             // }
-            //TODO:SEARCH RETURN DATA STATE
 
             if (state is NavigateSearchPageState) {
               context.push(context.namedLocation('search'));
@@ -807,6 +801,8 @@ class _AllocationScreenState extends State<AllocationScreen>
             }
 
             if (state is UpdateStarredCasesSuccessState) {
+              print("${resultList} result UI\n\n\n");
+              print(bloc.resultList);
               if (ConnectivityResult.none !=
                   await Connectivity().checkConnectivity()) {
                 setState(() {

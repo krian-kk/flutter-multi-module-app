@@ -98,7 +98,7 @@ class _AllocationScreenState extends State<AllocationScreen>
     altitudeAccuracy: 0,
     headingAccuracy: 0,
   );
-  List<Result> resultListUi = [];
+  List<Result> resulelementtListUi = [];
   String? searchBasedOnValue;
   String version = '';
   late Timer _timer;
@@ -484,12 +484,13 @@ class _AllocationScreenState extends State<AllocationScreen>
     return BlocListener<AllocationBloc, AllocationState>(
       bloc: bloc,
       listener: (BuildContext context, AllocationState state) async {
-        // Map<String, dynamic>? data = element.data();
-        // // log('message $data');
-        // resultList.add(Result.fromJson(data));
-        // if (Result.fromJson(data).starredCase == true) {
-        //   starCount++;
-        // }
+
+        Map<String, dynamic>? data = element.data();
+        // log('message $data');
+        resultList.add(Result.fromJson(data));
+        if (Result.fromJson(data).starredCase == true) {
+          starCount++;
+        }
         if (state is FirebaseStoredCompletionState) {
           // collectionReference = FirebaseFirestore.instance
           //     .collection(Singleton.instance.firebaseDatabaseName)

@@ -83,17 +83,18 @@ class AllocationApiProvider {
     }
   }
 
-  Future<ApiResult<BaseResponse>> updateStarredCasesFromApi(
+  Future<ApiResult<bool>> updateStarredCasesFromApi(
       String accessToken, UpdateStaredCase postData) async {
     dynamic response;
     try {
       response = await DioClient(baseUrl, accessToken: accessToken)
           .post(updateStaredCase, data: postData);
 
-      final mappedResponse =
-          SingleResponse.fromJson(response, BaseResponse.fromJson);
 
-      return ApiResult.success(data: mappedResponse.result);
+      final mappedResponse =
+          SingleResponse.fromJson2(response);
+
+      return ApiResult.success(data: mappedResponse.result as bool);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }

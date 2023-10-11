@@ -27,7 +27,7 @@ abstract class AllocationRepository {
 
   Future<ApiResult<ContractorDetailsModel>> getCustomContractorDetailsData();
 
-  Future<ApiResult<BaseResponse>> updateStarredCases(UpdateStaredCase postData);
+  Future<ApiResult<bool>> updateStarredCases(UpdateStaredCase postData);
 
   Future<int> getAutoCallingIndexValueAndUpdate();
 
@@ -81,10 +81,10 @@ class AllocationRepositoryImpl extends AllocationRepository {
   }
 
   @override
-  Future<ApiResult<BaseResponse>> updateStarredCases(
+  Future<ApiResult<bool>> updateStarredCases(
       UpdateStaredCase postData) async {
     String? accessToken = await getAccessToken();
-    final ApiResult<BaseResponse> response =
+    final ApiResult<bool> response =
         await apiProvider.updateStarredCasesFromApi(accessToken, postData);
     return response;
   }

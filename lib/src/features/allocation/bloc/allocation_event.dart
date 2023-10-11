@@ -3,7 +3,11 @@ part of 'allocation_bloc.dart';
 @immutable
 class AllocationEvent extends BaseEquatable {}
 
-class AllocationInitialEvent extends AllocationEvent {}
+class AllocationInitialEvent extends AllocationEvent {
+  AllocationInitialEvent({this.myValueSetter});
+
+  final ValueSetter<int>? myValueSetter;
+}
 
 class NavigateSearchPageEvent extends AllocationEvent {}
 

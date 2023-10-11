@@ -14,6 +14,7 @@ import 'package:domain_models/response_models/allocation/contractor_all_informat
 import 'package:domain_models/response_models/allocation/contractor_details_model.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
 import 'package:domain_models/response_models/mapView/map_model.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -509,7 +510,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
         final data = await repository.updateStarredCases(postData);
         if (isStarred) {
           await data.when(
-              success: (BaseResponse? result) async {
+              success: (bool? result) async {
                 final removedItem = resultList[event.selectedStarIndex];
                 resultList.removeAt(event.selectedStarIndex);
                 emit(UpdateStarredCasesSuccessState(
@@ -518,7 +519,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
               failure: (NetworkExceptions? error) async {});
         } else {
           await data.when(
-              success: (BaseResponse? result) async {
+              success: (bool? result) async {
                 emit(UpdateUnStarredCasesSuccessState(caseId: event.caseID));
               },
               failure: (NetworkExceptions? error) async {});
