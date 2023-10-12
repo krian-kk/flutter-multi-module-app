@@ -20,7 +20,6 @@ import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/preference_helper.dart';
-import 'package:origa/utils/string_resource.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:repository/allocation_repository.dart';
@@ -36,14 +35,13 @@ class HomeTabScreen extends StatefulWidget {
   final dynamic notificationData;
 
   @override
-  _HomeTabScreenState createState() => _HomeTabScreenState();
+  State<HomeTabScreen> createState() => _HomeTabScreenState();
 }
 
 class _HomeTabScreenState extends State<HomeTabScreen>
     with SingleTickerProviderStateMixin {
   late HomeTabBloc bloc;
-
-  String? title = StringResource.allocation.toUpperCase();
+  late String? title;
   String? internetAvailability;
   late final TabController? _controller;
   String navigationErrorMsg = 'Bad network connection';
@@ -70,6 +68,12 @@ class _HomeTabScreenState extends State<HomeTabScreen>
           context: context, notificationData: widget.notificationData));
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    title = Languages.of(context)!.allocation;
+  }
+
   Future<void> internetChecking() async {
     await Connectivity().checkConnectivity().then((ConnectivityResult value) {
       setState(() {
@@ -83,7 +87,7 @@ class _HomeTabScreenState extends State<HomeTabScreen>
         if (internetAvailability == 'none') {
           if (_controller!.index != 0) {
             _controller!.index = 0;
-            title = StringResource.dashboard.toUpperCase();
+            title = Languages.of(context)!.dashboard;
           }
         }
         timeCalculateForOffline();
@@ -121,11 +125,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
     } catch (e) {
       debugPrint(e.toString());
     }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -310,16 +309,16 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                         case 0:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.allocation
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .allocation;
                                             });
                                           }
                                           break;
                                         case 1:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.dashboard
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .dashboard;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(
@@ -329,8 +328,8 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                         case 2:
                                           if (internetAvailability != 'none') {
                                             setState(() {
-                                              title = StringResource.profile
-                                                  .toUpperCase();
+                                              title = Languages.of(context)!
+                                                  .profile;
                                             });
                                           } else {
                                             AppUtils.noInternetSnackbar(
@@ -367,8 +366,8 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                             const SizedBox(
                                               height: 3,
                                             ),
-                                            const CustomText(
-                                              StringResource.allocation,
+                                            CustomText(
+                                              Languages.of(context)!.allocation,
                                               fontSize: FontSize.eight,
                                             ),
                                           ],
@@ -384,8 +383,8 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                             const SizedBox(
                                               height: 3,
                                             ),
-                                            const CustomText(
-                                              StringResource.dashboard,
+                                            CustomText(
+                                              Languages.of(context)!.dashboard,
                                               fontSize: FontSize.eight,
                                             ),
                                           ],
@@ -413,8 +412,9 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                                 const SizedBox(
                                                   height: 3,
                                                 ),
-                                                const CustomText(
-                                                  StringResource.profile,
+                                                CustomText(
+                                                  Languages.of(context)!
+                                                      .profile,
                                                   fontSize: FontSize.eight,
                                                 ),
                                               ],
@@ -422,6 +422,14 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                             if (bloc.notificationCount != 0)
                                               Container(
                                                 alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  color:
+                                                      ColorResource.colorD5344C,
+                                                ),
+                                                height: 19,
+                                                width: 19,
                                                 child: CustomText(
                                                   bloc.notificationCount! > 10
                                                       ? '10+'
@@ -434,14 +442,6 @@ class _HomeTabScreenState extends State<HomeTabScreen>
                                                   fontWeight: FontWeight.w700,
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      ColorResource.colorD5344C,
-                                                ),
-                                                height: 19,
-                                                width: 19,
                                               ),
                                           ],
                                         ),

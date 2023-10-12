@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:design_system/colors.dart';
 import 'package:domain_models/common/buildroute_data.dart';
 import 'package:domain_models/response_models/case/priority_case_response.dart';
-
-// import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +15,13 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languages/app_languages.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/update_health_model.dart';
-import 'package:origa/src/features/allocation/presentation/custom_card_list.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
 import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
+import 'package:origa/src/features/allocation/presentation/custom_card_list.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
@@ -47,7 +41,6 @@ import 'package:workmanager/workmanager.dart';
 class AllocationScreen extends StatefulWidget {
   const AllocationScreen({Key? key, this.myValueSetter}) : super(key: key);
 
-  // final Function? returnFuntion;
   final ValueSetter<int>? myValueSetter;
 
   @override
@@ -95,6 +88,7 @@ class _AllocationScreenState extends State<AllocationScreen>
   String? internetAvailability;
   bool isToastShow = false;
   List<String> filterOptions = <String>[];
+  List<String> filterBuildRoute = <String>[];
 
   // The controller for the ListView
   late ScrollController _controller;
@@ -126,7 +120,7 @@ class _AllocationScreenState extends State<AllocationScreen>
     //     .collection(Constants.firebaseCase);
     _controller = ScrollController()..addListener(_loadMore);
 
-    // Singleton.instance.usertype = Constants.fieldagent;
+    Singleton.instance.usertype = Constants.fieldagent;
     // For offline checking only
     internetChecking();
     if (Singleton.instance.usertype == Constants.fieldagent) {
@@ -386,7 +380,7 @@ class _AllocationScreenState extends State<AllocationScreen>
 
   List<Widget> _buildRouteFilterOptions() {
     final List<Widget> widgets = [];
-    bloc.filterBuildRoute.asMap().forEach((index, element) {
+    filterBuildRoute.asMap().forEach((index, element) {
       widgets.add(_buildRouteFilterWidget(index, element));
     });
     return widgets;
@@ -525,7 +519,7 @@ class _AllocationScreenState extends State<AllocationScreen>
 
             if (state is TapAreYouAtOfficeOptionsSuccessState) {
               setState(() {
-                position = state!.positions;
+                position = state.positions;
               });
               AppUtils.showToast(Languages.of(context)!.successfullySubmitted);
             }
@@ -696,7 +690,7 @@ class _AllocationScreenState extends State<AllocationScreen>
             // }
 
             if (state is NavigateSearchPageState) {
-              context.push(context.namedLocation('search'));
+              await context.push(context.namedLocation('search'));
             }
 
             if (state is SearchReturnDataState) {
@@ -718,6 +712,13 @@ class _AllocationScreenState extends State<AllocationScreen>
                     Languages.of(context)!.buildRoute,
                     Languages.of(context)!.mapView,
                   ];
+
+                  filterBuildRoute = <String>[
+                    Languages.of(context)!.all,
+                    Languages.of(context)!.under5km,
+                    Languages.of(context)!.more5km,
+                  ];
+
                   // BlocProvider.of<AllocationBloc>(context)
                   //     .add(GetCurrentLocationEvent());
                 }
@@ -780,7 +781,6 @@ class _AllocationScreenState extends State<AllocationScreen>
               // debugPrint('Result length--> ${resultList.length}');
               if (state.successResponse is List<PriorityCaseListModel>) {
                 if (BlocProvider.of<AllocationBloc>(context).hasNextPage) {
-                  print("Here check alloc view ${resultList.runtimeType}");
                   resultList.addAll(
                       state.successResponse as List<PriorityCaseListModel>);
                 }
@@ -796,8 +796,6 @@ class _AllocationScreenState extends State<AllocationScreen>
             }
 
             if (state is UpdateStarredCasesSuccessState) {
-              print("${resultList} result UI\n\n\n");
-              print(bloc.resultList);
               if (ConnectivityResult.none !=
                   await Connectivity().checkConnectivity()) {
                 setState(() {
@@ -1267,8 +1265,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                       //     :
                       isOffline &&
                               Singleton.instance.isOfflineEnabledContractorBased
-                          ? Container(
-                              child: const Text('Commented autocalling'))
+                          ? const Text('Commented autocalling')
                           // StreamBuilder<QuerySnapshot>(
                           //             stream: FirebaseFirestore.instance
                           //                 .collection(

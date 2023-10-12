@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:domain_models/common/dashboard_model.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_data.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_mydeposists_model/dashboard_mydeposists_model.dart';
 import 'package:domain_models/response_models/dashboard/dashboard_myvisit_model.dart';
@@ -17,10 +18,9 @@ import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
 import 'package:origa/models/dashboard_all_models/result.dart';
 import 'package:origa/models/dashboard_event_count_model/dashboard_event_count_model.dart';
-import 'package:origa/models/dashboard_model.dart';
+
 import 'package:origa/utils/base_equatable.dart';
 import 'package:origa/utils/constants.dart';
-import 'package:origa/utils/image_resource.dart';
 import 'package:repository/dashboard_repository.dart';
 
 part 'dashboard_event.dart';
@@ -110,78 +110,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
               met = dashCountResultData?.met?.count.toString();
               notMet = dashCountResultData?.notMet?.count.toString();
               invalid = dashCountResultData?.invalid?.count.toString();
-              dashboardList.addAll([
-                DashboardListModel(
-                  title: 'priorityFollowUp',
-                  subTitle: 'customer',
-                  image: ImageResource.vectorArrow,
-                  count:
-                      dashCountResultData?.priorityFollowUp?.count.toString() ??
-                          '0',
-                  amountRs: dashCountResultData?.priorityFollowUp!.totalAmt
-                          .toString() ??
-                      '0',
-                ),
-                DashboardListModel(
-                  title: 'untouchedCases',
-                  subTitle: 'customer',
-                  image: ImageResource.vectorArrow,
-                  count:
-                      dashCountResultData?.untouched?.count.toString() ?? '0',
-                  amountRs:
-                      dashCountResultData?.untouched?.totalAmt.toString() ??
-                          '0',
-                ),
-                DashboardListModel(
-                  title: 'brokenPTP',
-                  subTitle: 'customer',
-                  image: ImageResource.vectorArrow,
-                  count:
-                      dashCountResultData?.brokenPtp?.count.toString() ?? '0',
-                  amountRs:
-                      dashCountResultData?.brokenPtp?.totalAmt.toString() ??
-                          '0',
-                ),
-                DashboardListModel(
-                  title: 'myReceipts',
-                  subTitle: 'event',
-                  image: ImageResource.vectorArrow,
-                  count: dashCountResultData?.receipts!.count.toString() ?? '0',
-                  amountRs:
-                      dashCountResultData?.receipts!.totalAmt.toString() ?? '0',
-                ),
-                DashboardListModel(
-                  title:
-                      userType == Constants.fieldagent ? 'myVisits' : 'myCalls',
-                  subTitle: 'event',
-                  image: ImageResource.vectorArrow,
-                  count: dashCountResultData?.visits?.count.toString() ?? '0',
-                  amountRs:
-                      dashCountResultData?.visits?.totalAmt.toString() ?? '0',
-                ),
-                DashboardListModel(
-                  title: 'myDeposists',
-                  subTitle: '',
-                  image: '',
-                  count: '',
-                  amountRs: '',
-                ),
-                DashboardListModel(
-                  title: 'yardingSelfRelease',
-                  subTitle: '',
-                  image: '',
-                  count: '',
-                  amountRs: '',
-                ),
-                DashboardListModel(
-                  title: 'mySelfRelease',
-                  subTitle: '',
-                  image: '',
-                  count: '',
-                  amountRs: '',
-                ),
-              ]);
-              emit(DashboardLoadedState());
+              emit(DashboardLoadedState(
+                  dashCountResultData: dashCountResultData));
             },
             failure: (NetworkExceptions? error) async {});
       }

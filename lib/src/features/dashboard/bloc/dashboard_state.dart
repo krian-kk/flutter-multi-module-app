@@ -6,7 +6,11 @@ class DashboardInitial extends DashboardState {}
 
 class DashboardLoadingState extends DashboardState {}
 
-class DashboardLoadedState extends DashboardState {}
+class DashboardLoadedState extends DashboardState {
+  DashboardLoadedState({required this.dashCountResultData});
+
+  final DashCountResult? dashCountResultData;
+}
 
 class PriorityFollowState extends DashboardState {}
 
@@ -23,7 +27,6 @@ class ReturnSelfReleaseApiState extends DashboardState {
 
   final dynamic returnData;
 }
-
 
 class ReturnReceiptsApiState extends DashboardState {
   ReturnReceiptsApiState({this.returnData});

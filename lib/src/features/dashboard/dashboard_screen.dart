@@ -1,3 +1,4 @@
+import 'package:domain_models/common/dashboard_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:languages/language_english.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/return_value_model.dart';
 import 'package:origa/src/features/dashboard/bloc/dashboard_bloc.dart';
@@ -22,6 +23,7 @@ import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/font.dart';
+import 'package:origa/utils/image_resource.dart';
 import 'package:origa/utils/skeleton.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
@@ -106,6 +108,86 @@ class DashboardScreenState extends State<DashboardScreen> {
           if (state is ClickToCardLoadingState) {
             BlocProvider.of<DashboardBloc>(context).isClickToCardLoading =
                 !BlocProvider.of<DashboardBloc>(context).isClickToCardLoading;
+          }
+
+          if (state is DashboardLoadedState) {
+            BlocProvider.of<DashboardBloc>(context).dashboardList.addAll([
+              DashboardListModel(
+                title: Languages.of(context)!.priorityFollowUp,
+                subTitle: Languages.of(context)!.customer,
+                image: ImageResource.vectorArrow,
+                count: state.dashCountResultData?.priorityFollowUp?.count
+                        .toString() ??
+                    '0',
+                amountRs: state.dashCountResultData?.priorityFollowUp!.totalAmt
+                        .toString() ??
+                    '0',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.untouchedCases,
+                subTitle: Languages.of(context)!.customer,
+                image: ImageResource.vectorArrow,
+                count: state.dashCountResultData?.untouched?.count.toString() ??
+                    '0',
+                amountRs:
+                    state.dashCountResultData?.untouched?.totalAmt.toString() ??
+                        '0',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.brokenPTP,
+                subTitle: Languages.of(context)!.customer,
+                image: ImageResource.vectorArrow,
+                count: state.dashCountResultData?.brokenPtp?.count.toString() ??
+                    '0',
+                amountRs:
+                    state.dashCountResultData?.brokenPtp?.totalAmt.toString() ??
+                        '0',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.myReceipts,
+                subTitle: Languages.of(context)!.event,
+                image: ImageResource.vectorArrow,
+                count: state.dashCountResultData?.receipts!.count.toString() ??
+                    '0',
+                amountRs:
+                    state.dashCountResultData?.receipts!.totalAmt.toString() ??
+                        '0',
+              ),
+              DashboardListModel(
+                title: BlocProvider.of<DashboardBloc>(context).userType ==
+                        Constants.fieldagent
+                    ? Languages.of(context)!.myVisits
+                    : Languages.of(context)!.myCalls,
+                subTitle: Languages.of(context)!.event,
+                image: ImageResource.vectorArrow,
+                count:
+                    state.dashCountResultData?.visits?.count.toString() ?? '0',
+                amountRs:
+                    state.dashCountResultData?.visits?.totalAmt.toString() ??
+                        '0',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.myDeposists,
+                subTitle: '',
+                image: '',
+                count: '',
+                amountRs: '',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.yardingSelfRelease,
+                subTitle: '',
+                image: '',
+                count: '',
+                amountRs: '',
+              ),
+              DashboardListModel(
+                title: Languages.of(context)!.mySelfRelease,
+                subTitle: '',
+                image: '',
+                count: '',
+                amountRs: '',
+              ),
+            ]);
           }
 
           if (state is PostDataApiSuccessState) {
@@ -256,8 +338,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? LanguageEn().customerMet
-                                                      : LanguageEn()
+                                                      ? Languages.of(context)!
+                                                          .customerMet
+                                                      : Languages.of(context)!
                                                           .connected
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -280,9 +363,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                                                   context)
                                                               .userType ==
                                                           Constants.fieldagent
-                                                      ? LanguageEn()
+                                                      ? Languages.of(context)!
                                                           .customerNotMet
-                                                      : LanguageEn()
+                                                      : Languages.of(context)!
                                                           .unreachable
                                                           .trim(),
                                               count: BlocProvider.of<
@@ -300,8 +383,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                           ),
                                           Expanded(
                                             child: userActivity(
-                                              header:
-                                                  LanguageEn().invalid.trim(),
+                                              header: Languages.of(context)!
+                                                  .invalid
+                                                  .trim(),
                                               count: BlocProvider.of<
                                                       DashboardBloc>(context)
                                                   .invalid
@@ -326,7 +410,8 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn().mtdResolutionProgress,
+                                            Languages.of(context)!
+                                                .mtdResolutionProgress,
                                             fontSize: FontSize.twelve,
                                             fontWeight: FontWeight.w700,
                                             color: ColorResource.color23375A,
@@ -335,7 +420,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             height: 5,
                                           ),
                                           CustomText(
-                                            LanguageEn().customer.toUpperCase(),
+                                            Languages.of(context)!
+                                                .customer
+                                                .toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,
@@ -419,7 +506,9 @@ class DashboardScreenState extends State<DashboardScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           CustomText(
-                                            LanguageEn().amount.toUpperCase(),
+                                            Languages.of(context)!
+                                                .amount
+                                                .toUpperCase(),
                                             color: ColorResource.color23375A,
                                             fontSize: FontSize.ten,
                                             fontWeight: FontWeight.w700,

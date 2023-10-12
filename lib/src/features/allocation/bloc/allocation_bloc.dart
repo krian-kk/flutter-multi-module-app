@@ -44,7 +44,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationRepository repository;
   CaseRepositoryImpl caseRepository;
 
-  late List<String> filterBuildRoute;
+
 
   int pageKey = 0;
   int tab = 0;
@@ -143,12 +143,6 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       isShowSearchPincode = false;
       selectedDistance = 'All';
-
-      filterBuildRoute = <String>[
-        StringResource.all,
-        StringResource.under5km,
-        StringResource.more5km,
-      ];
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;
