@@ -339,67 +339,67 @@ class AutoCalling {
                                                     'mobile') {
                                                   return GestureDetector(
                                                     onTap: () async {
-                                                      Singleton
-                                                              .instance.agrRef =
-                                                          bloc
-                                                              .autoCallingResultList[
-                                                                  indexs]
-                                                              .agrRef;
-
-                                                      final CaseDetailsBloc
-                                                          caseDetailsloc =
-                                                          CaseDetailsBloc(bloc)
-                                                            ..add(
-                                                                CaseDetailsInitialEvent(
-                                                              paramValues: <String,
-                                                                  dynamic>{
-                                                                'caseID': bloc
-                                                                    .autoCallingResultList[
-                                                                        indexs]
-                                                                    .caseId,
-                                                                'customerIndex':
-                                                                    i,
-                                                                'phoneIndex': i,
-                                                                // 'mobileList': tempMobileList,
-                                                                'context':
-                                                                    context,
-                                                                'contactIndex':
-                                                                    i,
-                                                                'caseIndex':
-                                                                    indexs,
-                                                              },
-                                                              context: context,
-                                                            ));
-                                                      await phoneBottomSheet(
-                                                        context,
-                                                        caseDetailsloc,
-                                                        i,
-                                                        bloc
-                                                            .autoCallingResultList[
-                                                                indexs]
-                                                            .caseId!,
-                                                        bloc
-                                                            .autoCallingResultList[
-                                                                indexs]
-                                                            .address![i],
-                                                        bloc
-                                                            .autoCallingResultList[
-                                                                indexs]
-                                                            .cust!,
-                                                        (bloc
-                                                                .autoCallingResultList[
-                                                                    indexs]
-                                                                .bankName! +
-                                                            ' / ' +
-                                                            bloc
-                                                                .autoCallingResultList[
-                                                                    indexs]
-                                                                .agrRef!),
-                                                        bloc
-                                                            .autoCallingResultList[
-                                                                indexs]
-                                                            .due,
-                                                      );
+                                                      // Singleton
+                                                      //         .instance.agrRef =
+                                                      //     bloc
+                                                      //         .autoCallingResultList[
+                                                      //             indexs]
+                                                      //         .agrRef;
+                                                      //
+                                                      // final CaseDetailsBloc
+                                                      //     caseDetailsloc =
+                                                      //     CaseDetailsBloc(bloc)
+                                                      //       ..add(
+                                                      //           CaseDetailsInitialEvent(
+                                                      //        paramValues: <//             String,
+                                                      //             dynamic>{
+                                                      //           'caseID': bloc
+                                                      //               .autoCallingResultList[
+                                                      //                   indexs]
+                                                      //               .caseId,
+                                                      //           'customerIndex':
+                                                      //               i,
+                                                      //           'phoneIndex': i,
+                                                      //           // 'mobileList': tempMobileList,
+                                                      //           'context':
+                                                      //               context,
+                                                      //           'contactIndex':
+                                                      //               i,
+                                                      //           'caseIndex':
+                                                      //               indexs,
+                                                      //         },
+                                                      //         context: context,
+                                                      //       ));
+                                                      // await phoneBottomSheet(
+                                                      //   context,
+                                                      //   caseDetailsloc,
+                                                      //   i,
+                                                      //   bloc
+                                                      //       .autoCallingResultList[
+                                                      //           indexs]
+                                                      //       .caseId!,
+                                                      //   bloc
+                                                      //       .autoCallingResultList[
+                                                      //           indexs]
+                                                      //       .address![i],
+                                                      //   bloc
+                                                      //       .autoCallingResultList[
+                                                      //           indexs]
+                                                      //       .cust!,
+                                                      //   (bloc
+                                                      //           .autoCallingResultList[
+                                                      //               indexs]
+                                                      //           .bankName! +
+                                                      //       ' / ' +
+                                                      //       bloc
+                                                      //           .autoCallingResultList[
+                                                      //               indexs]
+                                                      //           .agrRef!),
+                                                      //   bloc
+                                                      //       .autoCallingResultList[
+                                                      //           indexs]
+                                                      //       .due,
+                                                      // );
                                                     },
                                                     child: Container(
                                                       width:

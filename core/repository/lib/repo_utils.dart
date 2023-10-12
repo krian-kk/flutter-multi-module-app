@@ -6,3 +6,9 @@ Future<String> getAccessToken() async {
           keyPair: PreferenceConstants.accessToken) ??
       '';
 }
+
+Future<String> getUserType() async {
+  return await PreferenceHelper.getString(
+          keyPair: PreferenceConstants.userType) ??
+      '';
+}

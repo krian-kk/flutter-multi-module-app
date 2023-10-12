@@ -22,7 +22,6 @@ part 'event_details_event.dart';
 part 'event_details_state.dart';
 
 class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
-  List<EventModel> eventList = [];
 
   EventDetailsBloc() : super(EventDetailsInitial()) {
     eventList = [];
@@ -140,6 +139,7 @@ class EventDetailsBloc extends Bloc<EventDetailsEvent, EventDetailsState> {
       emit.call(EventDetailsLoadedState());
     });
   }
+  List<EventModel> eventList = [];
 
   Map releaseDateMap = {};
   EventDetailsModel eventDetailsAPIValues = EventDetailsModel();

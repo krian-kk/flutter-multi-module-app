@@ -1,12 +1,10 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
-
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:origa/authentication/authentication_bloc.dart';
 import 'package:origa/http/api_repository.dart';
@@ -17,7 +15,6 @@ import 'package:origa/models/allocation_templates/allocation_templates.dart';
 import 'package:origa/models/auto_calling_model.dart';
 import 'package:origa/models/contractor_detail_model.dart';
 import 'package:origa/models/contractor_information_model.dart';
-import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/offline_priority_response_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/searching_data_model.dart';

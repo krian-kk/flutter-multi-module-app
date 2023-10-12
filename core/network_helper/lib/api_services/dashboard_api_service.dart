@@ -10,9 +10,9 @@ import 'package:domain_models/response_models/dashboard/my_receipts_model.dart';
 import 'package:domain_models/response_models/dashboard/my_self_release_model.dart';
 import 'package:domain_models/response_models/dashboard/response_priority_follow_up_model.dart';
 import 'package:network_helper/dio/dio_client.dart';
-import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:network_helper/errors/network_exception.dart';
 import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 
 class DashboardApiProvider {
   static const String dashboardUrl = '${mobileBackendUrl}profile/dashboard?';

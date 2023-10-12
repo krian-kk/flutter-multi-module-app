@@ -3,17 +3,14 @@ import 'dart:convert';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/not_eligible_post_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -28,12 +25,9 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/dropdown_custom.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../models/speech2text_model.dart';
-import '../../utils/image_resource.dart';
 import '../../widgets/custom_text.dart';
-import '../../widgets/get_followuppriority_value.dart';
 
 class CustomNotEligibleBottomSheet extends StatefulWidget {
   const CustomNotEligibleBottomSheet(
@@ -120,20 +114,16 @@ class _CustomNotEligibleBottomSheetState
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue.callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -386,15 +376,16 @@ class _CustomNotEligibleBottomSheetState
 
           if (ConnectivityResult.none ==
               await Connectivity().checkConnectivity()) {
-            await FirebaseUtils.storeEvents(
-                    eventsDetails: requestBodyData.toJson(),
-                    caseId: widget.caseId,
-                    // selectedFollowUpDate: nextActionDateControlller.text,
-                    selectedClipValue: Constants.notEligible,
-                    bloc: widget.bloc)
-                .whenComplete(() {
-              AppUtils.topSnackBar(context, Constants.successfullySubmitted);
-            });
+            //todo
+            // await FirebaseUtils.storeEvents(
+            //         eventsDetails: requestBodyData.toJson(),
+            //         caseId: widget.caseId,
+            //         // selectedFollowUpDate: nextActionDateControlller.text,
+            //         selectedClipValue: Constants.notEligible,
+            //         bloc: widget.bloc)
+            //     .whenComplete(() {
+            //   AppUtils.topSnackBar(context, Constants.successfullySubmitted);
+            // });
           } else {
             final Map<String, dynamic> postResult =
                 await APIRepository.apiRequest(
@@ -403,13 +394,14 @@ class _CustomNotEligibleBottomSheetState
               requestBodydata: jsonEncode(requestBodyData),
             );
             if (postResult[Constants.success]) {
-              await FirebaseUtils.storeEvents(
-                      eventsDetails: requestBodyData.toJson(),
-                      caseId: widget.caseId,
-                      // selectedFollowUpDate: nextActionDateControlller.text,
-                      selectedClipValue: Constants.notEligible,
-                      bloc: widget.bloc)
-                  .whenComplete(() {});
+              //todo
+              // await FirebaseUtils.storeEvents(
+              //         eventsDetails: requestBodyData.toJson(),
+              //         caseId: widget.caseId,
+              //         // selectedFollowUpDate: nextActionDateControlller.text,
+              //         selectedClipValue: Constants.notEligible,
+              //         bloc: widget.bloc)
+              //     .whenComplete(() {});
               // // here update followUpPriority value.
               // widget.bloc.caseDetailsAPIValue.result!.caseDetails!
               //         .followUpPriority =

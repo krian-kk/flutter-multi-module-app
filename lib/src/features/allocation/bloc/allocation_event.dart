@@ -20,6 +20,8 @@ class SearchReturnDataEvent extends AllocationEvent {
 class GetCurrentLocationEvent extends AllocationEvent {}
 
 class MapViewEvent extends AllocationEvent {
+
+  MapViewEvent({required this.paramValues, required this.pageKey});
   final BuildRouteDataModel paramValues;
 
   MapViewEvent({required this.paramValues});

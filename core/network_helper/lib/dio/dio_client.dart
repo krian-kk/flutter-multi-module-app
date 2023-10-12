@@ -193,7 +193,7 @@ class DioClient {
       if (isMultiFormRequest) {
         return {
           keyAuthorization: '$authTypeBearer $accessToken',
-          keyContentType: jsonContentType
+          keyContentType: multiPartContentType
         };
       } else {
         return {

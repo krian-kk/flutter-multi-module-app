@@ -31,7 +31,6 @@ dependencies:
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.11
   webview_flutter: ^4.2.0
-  encrypt: ^5.0.1
   flutter_local_notifications: ^14.0.0+1
   google_maps_flutter: ^2.3.1
   keyboard_actions: ^4.1.0
@@ -66,6 +65,7 @@ dependencies:
   cloud_firestore: ^4.9.1
   firebase_core: ^2.15.1
   firebase_messaging: ^14.6.7
+  firebase_database: ^10.2.3
 
 dev_dependencies:
   equatable: ^2.0.3

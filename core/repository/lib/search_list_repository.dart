@@ -19,41 +19,13 @@ class SearchListRepositoryImpl extends SearchListRepository {
       SearchingDataModel searchData) async {
     String? accessToken = await getAccessToken();
     if (searchData.isStarCases! && searchData.isMyRecentActivity!) {
-      urlParams = 'starredOnly=${searchData.isStarCases}&' +
-          'recentActivity=${searchData.isMyRecentActivity}&' +
-          'accNo=${searchData.accountNumber}&' +
-          'cust=${searchData.customerName}&' +
-          'bankName=${searchData.bankName}&' +
-          'dpdStr=${searchData.dpdBucket}&' +
-          'customerId=${searchData.customerID}&' +
-          'pincode=${searchData.pincode}&' +
-          'collSubStatus=${searchData.status}';
+      urlParams = 'starredOnly=${searchData.isStarCases}&recentActivity=${searchData.isMyRecentActivity}&accNo=${searchData.accountNumber}&cust=${searchData.customerName}&bankName=${searchData.bankName}&dpdStr=${searchData.dpdBucket}&customerId=${searchData.customerID}&pincode=${searchData.pincode}&collSubStatus=${searchData.status}';
     } else if (searchData.isStarCases!) {
-      urlParams = 'starredOnly=${searchData.isStarCases}&' +
-          'accNo=${searchData.accountNumber}&' +
-          'cust=${searchData.customerName}&' +
-          'bankName=${searchData.bankName}&' +
-          'dpdStr=${searchData.dpdBucket}&' +
-          'customerId=${searchData.customerID}&' +
-          'pincode=${searchData.pincode}&' +
-          'collSubStatus=${searchData.status}';
+      urlParams = 'starredOnly=${searchData.isStarCases}&accNo=${searchData.accountNumber}&cust=${searchData.customerName}&bankName=${searchData.bankName}&dpdStr=${searchData.dpdBucket}&customerId=${searchData.customerID}&pincode=${searchData.pincode}&collSubStatus=${searchData.status}';
     } else if (searchData.isMyRecentActivity!) {
-      urlParams = 'recentActivity=${searchData.isMyRecentActivity}&' +
-          'accNo=${searchData.accountNumber}&' +
-          'cust=${searchData.customerName}&' +
-          'bankName=${searchData.bankName}&' +
-          'dpdStr=${searchData.dpdBucket}&' +
-          'customerId=${searchData.customerID}&' +
-          'pincode=${searchData.pincode}&' +
-          'collSubStatus=${searchData.status}';
+      urlParams = 'recentActivity=${searchData.isMyRecentActivity}&accNo=${searchData.accountNumber}&cust=${searchData.customerName}&bankName=${searchData.bankName}&dpdStr=${searchData.dpdBucket}&customerId=${searchData.customerID}&pincode=${searchData.pincode}&collSubStatus=${searchData.status}';
     } else {
-      urlParams = 'accNo=${searchData.accountNumber}&' +
-          'cust=${searchData.customerName}&' +
-          'bankName=${searchData.bankName}&' +
-          'dpdStr=${searchData.dpdBucket}&' +
-          'customerId=${searchData.customerID}&' +
-          'pincode=${searchData.pincode}&' +
-          'collSubStatus=${searchData.status}';
+      urlParams = 'accNo=${searchData.accountNumber}&cust=${searchData.customerName}&bankName=${searchData.bankName}&dpdStr=${searchData.dpdBucket}&customerId=${searchData.customerID}&pincode=${searchData.pincode}&collSubStatus=${searchData.status}';
     }
 
     final ApiResult<List<SearchListResponse>> response =

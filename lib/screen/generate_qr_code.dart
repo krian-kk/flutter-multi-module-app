@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/font.dart';
 import 'package:origa/widgets/custom_button.dart';

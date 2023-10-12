@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/models/speech2text_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -40,16 +41,16 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
   @override
   Widget build(BuildContext context) {
     final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
-      SelectedClipModel(Languages.of(context)!.wrongAddress),
-      SelectedClipModel(Languages.of(context)!.shifted),
-      SelectedClipModel(Languages.of(context)!.addressNotFound),
+      SelectedClipModel(LanguageEn().wrongAddress),
+      SelectedClipModel(LanguageEn().shifted),
+      SelectedClipModel(LanguageEn().addressNotFound),
     ];
 
     final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
         <OptionBottomSheetButtonModel>[
-      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
+      OptionBottomSheetButtonModel(LanguageEn().repo, Constants.repo),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
+          LanguageEn().otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -74,7 +75,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       const SizedBox(height: 15),
                       Flexible(
                           child: CustomReadOnlyTextField(
-                        Languages.of(context)!.remarks.replaceAll('*', ''),
+                        LanguageEn().remarks.replaceAll('*', ''),
                         widget.bloc.addressInvalidRemarksController,
                         // validationRules: const <String>['required'],
                         isLabel: true,
@@ -106,7 +107,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                       )),
                       const SizedBox(height: 19),
                       CustomButton(
-                        Languages.of(context)!.captureImage.toUpperCase(),
+                        LanguageEn().captureImage.toUpperCase(),
                         cardShape: 75.0,
                         textColor: ColorResource.color23375A,
                         fontSize: FontSize.sixteen,
@@ -117,8 +118,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                         isLeading: true,
                         onTap: () => widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
-                            widget.bloc.caseDetailsAPIValue.result
-                                ?.addressDetails,
+                            widget.bloc.caseDetailsAPIValue.addressDetails,
                             false,
                             health: '0')),
                         trailingWidget:
@@ -138,8 +138,7 @@ class _AddressInvalidScreenState extends State<AddressInvalidScreen> {
                             });
                             widget.bloc.add(EventDetailsEvent(
                                 element.stringResourceValue,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.addressDetails,
+                                widget.bloc.caseDetailsAPIValue.addressDetails,
                                 false,
                                 health: ConstantEventValues.healthZero));
                           },

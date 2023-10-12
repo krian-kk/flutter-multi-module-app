@@ -13,6 +13,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.18.0
+  preference_helper:
+    path: ../preference_helper
 
 dev_dependencies:
   flutter_test:

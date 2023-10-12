@@ -37,55 +37,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class DashboardScreenState extends State<DashboardScreen> {
-  Widget userActivity(
-      {String? header,
-      String? count,
-      Color? backgroundColor,
-      required Color leadingColor}) {
-    return Container(
-      height: 65,
-      decoration: BoxDecoration(
-          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
-      child: Row(
-        children: [
-          Container(
-            width: 5,
-            decoration: BoxDecoration(
-              color: leadingColor,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                topLeft: Radius.circular(10),
-              ),
-            ),
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                CustomText(
-                  header!,
-                  color: ColorResource.color23375A,
-                  fontSize: 10.5,
-                  fontWeight: FontWeight.w700,
-                  lineHeight: 1.0,
-                ),
-                CustomText(
-                  count ?? '0',
-                  color: ColorResource.color23375A,
-                  fontSize: FontSize.sixteen,
-                  fontWeight: FontWeight.w700,
-                ),
-              ],
-            ),
-          ))
-        ],
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
@@ -964,6 +915,55 @@ class DashboardScreenState extends State<DashboardScreen> {
                   ],
                 );
         }));
+  }
+
+  Widget userActivity(
+      {String? header,
+      String? count,
+      Color? backgroundColor,
+      required Color leadingColor}) {
+    return Container(
+      height: 65,
+      decoration: BoxDecoration(
+          color: backgroundColor, borderRadius: BorderRadius.circular(10)),
+      child: Row(
+        children: [
+          Container(
+            width: 5,
+            decoration: BoxDecoration(
+              color: leadingColor,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(10),
+                topLeft: Radius.circular(10),
+              ),
+            ),
+          ),
+          Expanded(
+              child: Padding(
+            padding: const EdgeInsets.fromLTRB(7, 5, 2, 2),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                CustomText(
+                  header!,
+                  color: ColorResource.color23375A,
+                  fontSize: 10.5,
+                  fontWeight: FontWeight.w700,
+                  lineHeight: 1.0,
+                ),
+                CustomText(
+                  count ?? '0',
+                  color: ColorResource.color23375A,
+                  fontSize: FontSize.sixteen,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
+            ),
+          ))
+        ],
+      ),
+    );
   }
 
   void priorityFollowUpSheet(BuildContext buildContext) {

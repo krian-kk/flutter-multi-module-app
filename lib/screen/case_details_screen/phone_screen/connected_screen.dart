@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -32,6 +32,7 @@ class PhoneConnectedScreen extends StatefulWidget {
 
 class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
   String selectedOptionBottomSheetButton = '';
+
   @override
   Widget build(BuildContext context) {
     List<OptionBottomSheetButtonModel> optionBottomSheetButtonList = [];
@@ -127,8 +128,7 @@ class _PhoneConnectedScreenState extends State<PhoneConnectedScreen> {
                               widget.bloc.add(
                                 EventDetailsEvent(
                                   element.stringResourceValue,
-                                  widget.bloc.caseDetailsAPIValue.result
-                                      ?.callDetails,
+                                  widget.bloc.caseDetailsAPIValue.callDetails,
                                   true,
                                   health: ConstantEventValues.healthTwo,
                                   isCallFromCallDetails:

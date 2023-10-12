@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:languages/app_languages.dart';
 import 'package:origa/screen/allocation/allocation.dart';
+import 'package:origa/singleton.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/allocation/presentation/build_route_list_view/build_route_bloc.dart';
@@ -45,7 +46,9 @@ class _HomeViewState extends State<HomeView>
   @override
   void initState() {
     super.initState();
-
+    Singleton.instance.agentRef = 'M2PD_krishnacollector';
+    Singleton.instance.contractor = 'C0095';
+    Singleton.instance.agentName = 'KRISHNACOLLECTOR';
     mContext = context;
     _controller = TabController(
       length: 3,
@@ -63,6 +66,7 @@ class _HomeViewState extends State<HomeView>
     BlocProvider.of<HomeBloc>(context).add(HomeInitialEvent());
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     title = Languages.of(context)!.allocation;
@@ -322,9 +326,9 @@ class _HomeViewState extends State<HomeView>
                               // AllocationScreen(myValueSetter: (value) {
                               //   indexMethod(value);
                               // }), //1
-                              DashboardScreen(), //2
-                              ProfileScreen(), //3
-                            ]))
+                              const DashboardScreen(), //2
+                                  const ProfileScreen(), //3
+                                ]))
                       ]),
                     ),
                   ),

@@ -1,3 +1,4 @@
+import 'package:domain_models/common/constants.dart';
 import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
 import 'package:domain_models/response_models/auth/sign_in/login_response.dart';
 import 'package:network_helper/api_services/authentication_api_service.dart';
@@ -55,6 +56,8 @@ class AuthRepositoryImpl extends AuthRepository {
           PreferenceConstants.sessionId, loginData?.sessionState ?? '');
       await PreferenceHelper.setPreference(
           PreferenceConstants.agentRef, userName);
+      await PreferenceHelper.setPreference(
+          PreferenceConstants.userType, Constants.fieldagent);
       await PreferenceHelper.setPreference(
           PreferenceConstants.userId, userName);
       await PreferenceHelper.getString(keyPair: PreferenceConstants.agentRef);
@@ -159,6 +162,7 @@ class AuthRepositoryImpl extends AuthRepository {
     }, failure: (NetworkExceptions? error) async {
       return ApiResult.failure(error: NetworkExceptions.getDioException(error));
     });
+    return null;
   }
 
   @override

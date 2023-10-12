@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
+
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -9,20 +10,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/address_invalid_post_model/address_invalid_post_model.dart';
 import 'package:origa/models/campaign_config_model.dart';
-import 'package:origa/models/case_details_api_model/case_details.dart';
 import 'package:origa/models/case_details_api_model/case_details_api_model.dart';
-import 'package:origa/models/case_details_api_model/result.dart';
 import 'package:origa/models/customer_met_model.dart';
 import 'package:origa/models/customer_not_met_post_model/customer_not_met_post_model.dart';
 import 'package:origa/models/event_detail_model.dart';
 import 'package:origa/models/event_details_model/display_eventdetails_model.dart';
 import 'package:origa/models/event_details_model/event_details_model.dart';
-import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/imagecaptured_post_model.dart';
 import 'package:origa/models/other_feedback_model.dart';
 import 'package:origa/models/phone_invalid_post_model/phone_invalid_post_model.dart';
@@ -31,19 +32,6 @@ import 'package:origa/models/play_audio_model.dart';
 import 'package:origa/models/priority_case_list.dart';
 import 'package:origa/models/send_sms_model.dart';
 import 'package:origa/models/speech2text_model.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dart';
-import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
-import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
-import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
-import 'package:origa/screen/login_conected/login_connected.dart';
-import 'package:origa/screen/not_eligible/not_eligible.dart';
-import 'package:origa/screen/not_intrested/not_intrested.dart';
-import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
-import 'package:origa/screen/ots_screen/ots_bottom_sheet.dart';
-import 'package:origa/screen/ptp_screen/ptp_bottom_sheet.dart';
-import 'package:origa/screen/remainder_screen/remainder_bottom_sheet.dart';
-import 'package:origa/screen/rtp_screen/rtp_bottom_sheet.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/base_equatable.dart';
@@ -57,7 +45,7 @@ import 'package:origa/utils/language_to_constant_convert.dart';
 import 'package:origa/utils/preference_helper.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
-import 'package:origa/widgets/custom_loan_user_details.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../../models/generate_payment_link_model.dart';
 import '../../../models/get_payment_configuration_model.dart';
@@ -69,8 +57,7 @@ part 'case_details_event.dart';
 part 'case_details_state.dart';
 
 class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
-  CaseDetailsBloc(this.allocationBloc) : super(CaseDetailsInitial());
-  AllocationBloc allocationBloc;
+  CaseDetailsBloc() : super(CaseDetailsInitial());
 
   //Offline purpose
   dynamic selectedAddressModel;
@@ -277,8 +264,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (caseDetailsData[Constants.success] == true) {
           final Map<String, dynamic> jsonData = caseDetailsData['data'];
           caseDetailsAPIValue = CaseDetailsApiModel.fromJson(jsonData);
-          caseDetailsAPIValue.result?.callDetails = caseDetailsAPIValue
-              .result?.callDetails;
+          caseDetailsAPIValue.result?.callDetails =
+              caseDetailsAPIValue.result?.callDetails;
           caseDetailsAPIValue.result?.callDetails?.sort(
               (dynamic a, dynamic b) =>
                   (b['health'] ?? '1.5').compareTo(a['health'] ?? '1.5'));
@@ -401,7 +388,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       yield CaseDetailsLoadedState();
       if (event.paramValues['isAutoCalling'] != null) {
         isAutoCalling = true;
-        indexValue = allocationBloc.indexValue;
+        // indexValue = allocationBloc.indexValue;
         // yield ClickMainCallBottomSheetState(0);
         yield PhoneBottomSheetSuccessState();
       }
@@ -723,13 +710,23 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         } catch (e) {
           debugPrint('Exception while converting base64 ${e.toString()}');
         }
-        await FirebaseUtils.storeEvents(
-            eventsDetails: firebaseObject, caseId: caseId, bloc: this);
+        // await FirebaseUtils.storeEvents(
+        //     eventsDetails: firebaseObject, caseId: caseId, bloc: this);
         yield PostDataApiSuccessState();
       } else {
+
+        final CaseRepositoryImpl caseRepositoryImpl =
+        CaseRepositoryImpl();
+        final ApiResult<BaseResponse> eventResult =
+        await caseRepositoryImpl
+            .postImageCaptureEvent(FormData.fromMap(postdata));
+        await eventResult.when(
+            success: (BaseResponse? result) async {
+            },
+            failure: (NetworkExceptions? error) async {});
         final Map<String, dynamic> postResult = await APIRepository.apiRequest(
           APIRequestType.upload,
-          HttpUrl.imageCaptured + 'userType=$userType',
+          '${HttpUrl.imageCaptured}userType=$userType',
           formDatas: FormData.fromMap(postdata),
         );
         if (postResult[Constants.success]) {
@@ -745,8 +742,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
             } catch (e) {
               debugPrint('Exception while converting base64 ${e.toString()}');
             }
-            await FirebaseUtils.storeEvents(
-                eventsDetails: firebaseObject, caseId: caseId, bloc: this);
+            // await FirebaseUtils.storeEvents(
+            //     eventsDetails: firebaseObject, caseId: caseId, bloc: this);
           }
           Navigator.pop(event.context!);
           yield PostDataApiSuccessState();
@@ -971,10 +968,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (resultValue[Constants.success]) {
           if (isAutoCalling) {
             if (event.autoCallingStopAndSubmit) {
-              allocationBloc.add(StartCallingEvent(
-                customerIndex: paramValue['customerIndex'],
-                phoneIndex: paramValue['phoneIndex'] + 1,
-              ));
+              // allocationBloc.add(StartCallingEvent(
+              //   customerIndex: paramValue['customerIndex'],
+              //   phoneIndex: paramValue['phoneIndex'] + 1,
+              // ));
             }
             Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
@@ -984,10 +981,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           // update autocalling screen case list of contact health
           if (paramValue['contactIndex'] != null ||
               paramValue['phoneIndex'] != null) {
-            allocationBloc.add(AutoCallContactHealthUpdateEvent(
-              contactIndex: paramValue['contactIndex'],
-              caseIndex: paramValue['caseIndex'],
-            ));
+            // allocationBloc.add(AutoCallContactHealthUpdateEvent(
+            //   contactIndex: paramValue['contactIndex'],
+            //   caseIndex: paramValue['caseIndex'],
+            // ));
           }
           yield PostDataApiSuccessState();
         }
@@ -1089,10 +1086,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           }
           if (isAutoCalling) {
             if (event.autoCallingStopAndSubmit) {
-              allocationBloc.add(StartCallingEvent(
-                customerIndex: paramValue['customerIndex'],
-                phoneIndex: paramValue['phoneIndex'] + 1,
-              ));
+              // allocationBloc.add(StartCallingEvent(
+              //   customerIndex: paramValue['customerIndex'],
+              //   phoneIndex: paramValue['phoneIndex'] + 1,
+              // ));
             }
             Singleton.instance.startCalling = false;
             Navigator.pop(paramValue['context']);
@@ -1102,10 +1099,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
           // update autocalling screen case list of contact health
           if (paramValue['contactIndex'] != null ||
               paramValue['phoneIndex'] != null) {
-            allocationBloc.add(AutoCallContactHealthUpdateEvent(
-              contactIndex: paramValue['contactIndex'],
-              caseIndex: paramValue['caseIndex'],
-            ));
+            // allocationBloc.add(AutoCallContactHealthUpdateEvent(
+            //   contactIndex: paramValue['contactIndex'],
+            //   caseIndex: paramValue['caseIndex'],
+            // ));
           }
           yield PostDataApiSuccessState();
         }
@@ -1202,8 +1199,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         if (postResult[Constants.success]) {
           generatePaymentLink =
               GenerateQrLinkModel.fromJson(postResult['data']);
-          yield GenerateQRcodeState(
-              qrUrl: generatePaymentLink.data?.qrLink);
+          yield GenerateQRcodeState(qrUrl: generatePaymentLink.data?.qrLink);
         } else {
           AppUtils.showToast('Error while generating QR coxde');
         }
@@ -1250,10 +1246,10 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       // update autocalling screen case list of contact health
       if (paramValue['contactIndex'] != null ||
           paramValue['phoneIndex'] != null) {
-        allocationBloc.add(AutoCallContactHealthUpdateEvent(
-          contactIndex: paramValue['contactIndex'],
-          caseIndex: paramValue['caseIndex'],
-        ));
+        // allocationBloc.add(AutoCallContactHealthUpdateEvent(
+        //   contactIndex: paramValue['contactIndex'],
+        //   caseIndex: paramValue['caseIndex'],
+        // ));
       }
 
       yield UpdateHealthStatusState();
@@ -1278,267 +1274,267 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       builder: (BuildContext context) {
         switch (cardTitle) {
           case Constants.ptp:
-            return CustomPtpBottomSheet(
-              Languages.of(context)!.ptp,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-          case Constants.rtp:
-            return CustomRtpBottomSheet(
-              Languages.of(context)!.rtp,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-          case Constants.dispute:
-            return CustomDisputeBottomSheet(
-              Languages.of(context)!.dispute,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-          case Constants.remainder:
-            return CustomRemainderBottomSheet(
-              Languages.of(context)!.remainderCb,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-          case Constants.collections:
-            return CustomCollectionsBottomSheet(
-              Languages.of(context)!.collections,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              isCall: isCall,
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-          case Constants.ots:
-            return CustomOtsBottomSheet(
-              Languages.of(context)!.ots,
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              caseId: caseId.toString(),
-              userType: userType.toString(),
-              isCall: isCall,
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-
-          case Constants.otherFeedback:
-            return CustomOtherFeedBackBottomSheet(
-              Languages.of(context)!.otherFeedBack,
-              this,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              health: health ?? ConstantEventValues.healthTwo,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-            );
-          case Constants.eventDetails:
-            return CustomEventDetailsBottomSheet(
-              Languages.of(context)!.eventDetails,
-              this,
-              customeLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-            );
-
-          case Constants.callCustomer:
-            final List<String> s1 = <String>[];
-            caseDetailsAPIValue.result?.callDetails?.forEach((dynamic element) {
-              // if (element['cType'].contains('mobile')) {
-              //   if (!(s1.contains(element['value']))) {
-                  s1.add(element['value']);
-                // }
-              // } else {}
-            });
-            return CallCustomerBottomSheet(
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              listOfMobileNo: s1,
-              userType: userType.toString(),
-              caseId: caseId.toString(),
-              custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-              sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
-              contactNumber: listOfAddress?[paramValue['phoneIndex']].value,
-              caseDetailsBloc: this,
-              caseDetailsAPIValue: caseDetailsAPIValue,
-            );
-          // this events only visible based on contractor
-          case Constants.notInterested:
-            return CustomNotIntrestedBottomSheet(
-              Languages.of(context)!.notInterested,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
-
-          case Constants.notEligible:
-            return CustomNotEligibleBottomSheet(
-              Languages.of(context)!.notEligible,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
+          // return CustomPtpBottomSheet(
+          //   Languages.of(context)!.ptp,
+          //   caseId: caseId.toString(),
+          //   customerLoanUserWidget: CustomLoanUserDetails(
+          //     userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //     userAmount:
+          //         caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //             0.0,
+          //   ),
+          //   userType: userType.toString(),
+          //   postValue: indexValue != null
+          //       ? list[indexValue!]
+          //       : list[paramValue['contactIndex']],
+          //   isCall: isCall,
+          //   isAutoCalling: isAutoCalling,
+          //   allocationBloc: null,
+          //   paramValue: paramValue,
+          //   bloc: this,
+          // );
+          // case Constants.rtp:
+          //   return CustomRtpBottomSheet(
+          //     Languages.of(context)!.rtp,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          // case Constants.dispute:
+          //   return CustomDisputeBottomSheet(
+          //     Languages.of(context)!.dispute,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          // case Constants.remainder:
+          //   return CustomRemainderBottomSheet(
+          //     Languages.of(context)!.remainderCb,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          // case Constants.collections:
+          //   return CustomCollectionsBottomSheet(
+          //     Languages.of(context)!.collections,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId: '${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     isCall: isCall,
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          // case Constants.ots:
+          //   return CustomOtsBottomSheet(
+          //     Languages.of(context)!.ots,
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId:
+          //           '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     caseId: caseId.toString(),
+          //     userType: userType.toString(),
+          //     isCall: isCall,
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          //
+          // case Constants.otherFeedback:
+          //   return CustomOtherFeedBackBottomSheet(
+          //     Languages.of(context)!.otherFeedBack,
+          //     this,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId:
+          //           '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     health: health ?? ConstantEventValues.healthTwo,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //   );
+          // case Constants.eventDetails:
+          //   // return CustomEventDetailsBottomSheet(
+          //   //   Languages.of(context)!.eventDetails,
+          //   //   this,
+          //   //   customeLoanUserWidget: CustomLoanUserDetails(
+          //   //     userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //   //     userId:
+          //   //         '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //   //     userAmount:
+          //   //         caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //   //             0.0,
+          //   //   ),
+          //   // );
+          //
+          // case Constants.callCustomer:
+          //   final List<String> s1 = <String>[];
+          //   caseDetailsAPIValue.result?.callDetails?.forEach((dynamic element) {
+          //     // if (element['cType'].contains('mobile')) {
+          //     //   if (!(s1.contains(element['value']))) {
+          //         s1.add(element['value']);
+          //       // }
+          //     // } else {}
+          //   });
+          //   return CallCustomerBottomSheet(
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId:
+          //           '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     listOfMobileNo: s1,
+          //     userType: userType.toString(),
+          //     caseId: caseId.toString(),
+          //     custName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     sid: caseDetailsAPIValue.result!.caseDetails!.id.toString(),
+          //     contactNumber: listOfAddress?[paramValue['phoneIndex']].value,
+          //     caseDetailsBloc: this,
+          //     caseDetailsAPIValue: caseDetailsAPIValue,
+          //   );
+          // // this events only visible based on contractor
+          // case Constants.notInterested:
+          //   return CustomNotIntrestedBottomSheet(
+          //     Languages.of(context)!.notInterested,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId:
+          //           '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
+          //
+          // case Constants.notEligible:
+          //   return CustomNotEligibleBottomSheet(
+          //     Languages.of(context)!.notEligible,
+          //     caseId: caseId.toString(),
+          //     customerLoanUserWidget: CustomLoanUserDetails(
+          //       userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //       userId:
+          //           '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //       userAmount:
+          //           caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //     userType: userType.toString(),
+          //     postValue: indexValue != null
+          //         ? list[indexValue!]
+          //         : list[paramValue['contactIndex']],
+          //     isCall: isCall,
+          //     isAutoCalling: isAutoCalling,
+          //     allocationBloc: null,
+          //     paramValue: paramValue,
+          //     bloc: this,
+          //   );
 
           case Constants.login:
-            return CustomLoginConnectedBottomSheet(
-              Languages.of(context)!.login,
-              caseId: caseId.toString(),
-              customerLoanUserWidget: CustomLoanUserDetails(
-                userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
-                userId:
-                    '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
-                userAmount:
-                    caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-              userType: userType.toString(),
-              postValue: indexValue != null
-                  ? list[indexValue!]
-                  : list[paramValue['contactIndex']],
-              isCall: isCall,
-              isAutoCalling: isAutoCalling,
-              allocationBloc: allocationBloc,
-              paramValue: paramValue,
-              bloc: this,
-            );
+          // return CustomLoginConnectedBottomSheet(
+          //   Languages.of(context)!.login,
+          //   caseId: caseId.toString(),
+          //   customerLoanUserWidget: CustomLoanUserDetails(
+          //     userName: caseDetailsAPIValue.result?.caseDetails?.cust ?? '',
+          //     userId:
+          //         '${caseDetailsAPIValue.result?.caseDetails?.bankName} / ${caseDetailsAPIValue.result?.caseDetails?.agrRef}',
+          //     userAmount:
+          //         caseDetailsAPIValue.result?.caseDetails?.due?.toDouble() ??
+          //             0.0,
+          //   ),
+          //   userType: userType.toString(),
+          //   postValue: indexValue != null
+          //       ? list[indexValue!]
+          //       : list[paramValue['contactIndex']],
+          //   isCall: isCall,
+          //   isAutoCalling: isAutoCalling,
+          //   allocationBloc: null,
+          //   paramValue: paramValue,
+          //   bloc: this,
+          // );
 
           default:
             return SizedBox(
@@ -1617,7 +1613,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      await FirebaseUtils.storeEvents(
+      /*await FirebaseUtils.storeEvents(
               eventsDetails: requestBodyData.toJson(),
               caseId: caseId,
               selectedClipValue: ConvertString.convertLanguageToConstant(
@@ -1625,7 +1621,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               bloc: this)
           .then((bool value) {
         postResult = <String, dynamic>{'success': true};
-      });
+      });*/
     } else {
       // For local storage purpose storing while online
       postResult = await APIRepository.apiRequest(
@@ -1638,15 +1634,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (await postResult[Constants.success]) {
       // here update followUpPriority value.
       if (Singleton.instance.usertype == Constants.fieldagent) {
-        await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: caseId,
-                selectedClipValue: ConvertString.convertLanguageToConstant(
-                    selectedClipValue, context),
-                bloc: this)
-            .then((bool value) {
-          postResult = <String, dynamic>{'success': true};
-        });
+        // await FirebaseUtils.storeEvents(
+        //         eventsDetails: requestBodyData.toJson(),
+        //         caseId: caseId,
+        //         selectedClipValue: ConvertString.convertLanguageToConstant(
+        //             selectedClipValue, context),
+        //         bloc: this)
+        //     .then((bool value) {
+        //   postResult = <String, dynamic>{'success': true};
+        // });
       }
       caseDetailsAPIValue.result!.caseDetails!.followUpPriority =
           requestBodyData.eventAttr.followUpPriority;
@@ -1685,15 +1681,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     BuildContext context,
   ) async {
     Position position = Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: DateTime.now(),
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
-    );
+        longitude: 0,
+        latitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0,
+        headingAccuracy: 0,
+        altitudeAccuracy: 0);
     final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
 
     final Position res = await geolocatorPlatform.getCurrentPosition();
@@ -1740,19 +1737,19 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
 
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      await FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(),
-              caseId: caseId,
-              selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
-                  ? addressCustomerNotMetSelectedDate
-                  : addressCustomerNotMetNextActionDateController.text,
-              selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context),
-              bloc: this)
-          .then((bool value) {
-        //For navigation purpose - back screen
-        postResult = <String, dynamic>{'success': true};
-      });
+      // await FirebaseUtils.storeEvents(
+      //         eventsDetails: requestBodyData.toJson(),
+      //         caseId: caseId,
+      //         selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+      //             ? addressCustomerNotMetSelectedDate
+      //             : addressCustomerNotMetNextActionDateController.text,
+      //         selectedClipValue: ConvertString.convertLanguageToConstant(
+      //             selectedClipValue, context),
+      //         bloc: this)
+      //     .then((bool value) {
+      //   //For navigation purpose - back screen
+      //   postResult = <String, dynamic>{'success': true};
+      // });
     } else {
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
@@ -1760,16 +1757,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         requestBodydata: jsonEncode(requestBodyData),
       );
       if (postResult[Constants.success]) {
-        await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: caseId,
-                selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
-                    ? addressCustomerNotMetSelectedDate
-                    : addressCustomerNotMetNextActionDateController.text,
-                selectedClipValue: ConvertString.convertLanguageToConstant(
-                    selectedClipValue, context),
-                bloc: this)
-            .then((bool value) {});
+        // await FirebaseUtils.storeEvents(
+        //         eventsDetails: requestBodyData.toJson(),
+        //         caseId: caseId,
+        //         selectedFollowUpDate: addressCustomerNotMetSelectedDate != ''
+        //             ? addressCustomerNotMetSelectedDate
+        //             : addressCustomerNotMetNextActionDateController.text,
+        //         selectedClipValue: ConvertString.convertLanguageToConstant(
+        //             selectedClipValue, context),
+        //         bloc: this)
+        //     .then((bool value) {});
       }
     }
     if (await postResult[Constants.success]) {
@@ -1802,15 +1799,16 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     BuildContext context,
   ) async {
     Position position = Position(
-      longitude: 0,
-      latitude: 0,
-      timestamp: DateTime.now(),
-      accuracy: 0,
-      altitude: 0,
-      heading: 0,
-      speed: 0,
-      speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
-    );
+        longitude: 0,
+        latitude: 0,
+        timestamp: DateTime.now(),
+        accuracy: 0,
+        altitude: 0,
+        heading: 0,
+        speed: 0,
+        speedAccuracy: 0,
+        headingAccuracy: 0,
+        altitudeAccuracy: 0);
     final GeolocatorPlatform geolocatorPlatform = GeolocatorPlatform.instance;
 
     final Position res = await geolocatorPlatform.getCurrentPosition();
@@ -1864,15 +1862,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         );
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      await FirebaseUtils.storeEvents(
-              eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
-              caseId: caseId,
-              selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context),
-              bloc: this)
-          .then((bool value) {
-        postResult = <String, dynamic>{'success': true};
-      });
+      // await FirebaseUtils.storeEvents(
+      //         eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
+      //         caseId: caseId,
+      //         selectedClipValue: ConvertString.convertLanguageToConstant(
+      //             selectedClipValue, context),
+      //         bloc: this)
+      //     .then((bool value) {
+      //   postResult = <String, dynamic>{'success': true};
+      // });
     } else {
       // For local storage purpose storing while online
       postResult = await APIRepository.apiRequest(
@@ -1881,15 +1879,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         requestBodydata: jsonEncode(requestBodyData),
       );
       if (await postResult[Constants.success]) {
-        await FirebaseUtils.storeEvents(
-                eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
-                caseId: caseId,
-                selectedClipValue: ConvertString.convertLanguageToConstant(
-                    selectedClipValue, context),
-                bloc: this)
-            .then((bool value) {
-          postResult = <String, dynamic>{'success': true};
-        });
+        // await FirebaseUtils.storeEvents(
+        //         eventsDetails: jsonDecode(jsonEncode(requestBodyData)),
+        //         caseId: caseId,
+        //         selectedClipValue: ConvertString.convertLanguageToConstant(
+        //             selectedClipValue, context),
+        //         bloc: this)
+        //     .then((bool value) {
+        //   postResult = <String, dynamic>{'success': true};
+        // });
       }
     }
     if (await postResult[Constants.success]) {
@@ -1966,15 +1964,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
 
     Map<String, dynamic> postResult = <String, dynamic>{'success': false};
     if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
-      await FirebaseUtils.storeEvents(
-              eventsDetails: requestBodyData.toJson(),
-              caseId: caseId,
-              selectedClipValue: ConvertString.convertLanguageToConstant(
-                  selectedClipValue, context),
-              bloc: this)
-          .then((bool value) {
-        postResult = <String, dynamic>{'success': true};
-      });
+      // await FirebaseUtils.storeEvents(
+      //         eventsDetails: requestBodyData.toJson(),
+      //         caseId: caseId,
+      //         selectedClipValue: ConvertString.convertLanguageToConstant(
+      //             selectedClipValue, context),
+      //         bloc: this)
+      //     .then((bool value) {
+      //   postResult = <String, dynamic>{'success': true};
+      // });
     } else {
       postResult = await APIRepository.apiRequest(
         APIRequestType.post,
@@ -1982,15 +1980,15 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
         requestBodydata: jsonEncode(requestBodyData),
       );
       if (await postResult[Constants.success]) {
-        await FirebaseUtils.storeEvents(
-                eventsDetails: requestBodyData.toJson(),
-                caseId: caseId,
-                selectedClipValue: ConvertString.convertLanguageToConstant(
-                    selectedClipValue, context),
-                bloc: this)
-            .then((bool value) {
-          postResult = <String, dynamic>{'success': true};
-        });
+        // await FirebaseUtils.storeEvents(
+        //         eventsDetails: requestBodyData.toJson(),
+        //         caseId: caseId,
+        //         selectedClipValue: ConvertString.convertLanguageToConstant(
+        //             selectedClipValue, context),
+        //         bloc: this)
+        //     .then((bool value) {
+        //   postResult = <String, dynamic>{'success': true};
+        // });
       }
     }
 

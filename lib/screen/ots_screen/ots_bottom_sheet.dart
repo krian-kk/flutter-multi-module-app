@@ -10,17 +10,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:keyboard_actions/keyboard_actions.dart';
-import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/language_english.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/models/ots_post_model/contact.dart';
 import 'package:origa/models/ots_post_model/event_attr.dart';
 import 'package:origa/models/ots_post_model/ots_post_model.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -36,7 +37,7 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../utils/language_to_constant_convert.dart';
@@ -119,7 +120,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
     if (result != null) {
       if ((result.files.first.size) / 1048576.ceil() > 5) {
         AppUtils.showToast(
-          Languages.of(context)!.pleaseSelectMaximum5MbFile,
+          LanguageEn().pleaseSelectMaximum5MbFile,
           gravity: ToastGravity.CENTER,
         );
       } else {
@@ -128,7 +129,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
         AppUtils.showToast(StringResource.fileUploadMessage);
       }
     } else {
-      AppUtils.showToast(Languages.of(context)!.canceled);
+      AppUtils.showToast(LanguageEn().canceled);
     }
   }
 
@@ -136,9 +137,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
   Widget build(BuildContext context) {
     final List<PaymentModeButtonModel> paymentModeButtonList =
         <PaymentModeButtonModel>[
-      PaymentModeButtonModel(Languages.of(context)!.cheque),
-      PaymentModeButtonModel(Languages.of(context)!.cash),
-      PaymentModeButtonModel(Languages.of(context)!.digital),
+      PaymentModeButtonModel(LanguageEn().cheque),
+      PaymentModeButtonModel(LanguageEn().cash),
+      PaymentModeButtonModel(LanguageEn().digital),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
@@ -149,20 +150,20 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -216,7 +217,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 25),
                                   Flexible(
                                       child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.otsProposedAmount,
+                                    LanguageEn().otsProposedAmount,
                                     otsProposedAmountControlller,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -234,7 +235,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           // CustomText(
-                                          //   Languages.of(context)!
+                                          //   LanguageEn()
                                           //       .otsPaymentDate,
                                           //   fontSize: FontSize.twelve,
                                           //   fontWeight: FontWeight.w400,
@@ -247,8 +248,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                     .width) /
                                                 2,
                                             child: CustomReadOnlyTextField(
-                                              Languages.of(context)!
-                                                  .otsPaymentDate,
+                                              LanguageEn().otsPaymentDate,
                                               otsPaymentDateControlller,
                                               validationRules: const <String>[
                                                 'required'
@@ -285,7 +285,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   const SizedBox(height: 15),
                                   Flexible(
                                       child: CustomReadOnlyTextField(
-                                    Languages.of(context)!.remarks,
+                                    LanguageEn().remarks,
                                     remarksControlller,
                                     validationRules: const <String>['required'],
                                     isLabel: true,
@@ -313,7 +313,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                   )),
                                   const SizedBox(height: 15),
                                   CustomText(
-                                    Languages.of(context)!.paymentMode,
+                                    LanguageEn().paymentMode,
                                     fontWeight: FontWeight.w700,
                                     color: ColorResource.color101010,
                                   ),
@@ -352,8 +352,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                         ImageResource.upload),
                                                     const SizedBox(width: 5),
                                                     CustomText(
-                                                      Languages.of(context)!
-                                                          .uploadFile,
+                                                      LanguageEn().uploadFile,
                                                       color: ColorResource
                                                           .colorFFFFFF,
                                                       fontSize:
@@ -365,8 +364,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                                   ],
                                                 ),
                                                 CustomText(
-                                                  Languages.of(context)!
-                                                      .upto5mb,
+                                                  LanguageEn().upto5mb,
                                                   lineHeight: 1,
                                                   color:
                                                       ColorResource.colorFFFFFF,
@@ -423,13 +421,9 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                                     : 191,
                                 child: CustomButton(
                                   isSubmit
-                                      ? Languages.of(context)!
-                                              .stop
-                                              .toUpperCase() +
+                                      ? LanguageEn().stop.toUpperCase() +
                                           ' & \n' +
-                                          Languages.of(context)!
-                                              .submit
-                                              .toUpperCase()
+                                          LanguageEn().submit.toUpperCase()
                                       : null,
                                   isLeading: !isSubmit,
                                   trailingWidget: CustomLoadingWidget(
@@ -461,9 +455,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                               ? 150
                               : 191,
                           child: CustomButton(
-                            isSubmit
-                                ? Languages.of(context)!.submit.toUpperCase()
-                                : null,
+                            isSubmit ? LanguageEn().submit.toUpperCase() : null,
                             isLeading: !isSubmit,
                             trailingWidget: CustomLoadingWidget(
                               gradientColors: <Color>[
@@ -510,7 +502,7 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
       }
       if (_formKey.currentState!.validate()) {
         if (selectedPaymentModeButton == '') {
-          AppUtils.showToast(Languages.of(context)!.pleaseSelectOptions);
+          AppUtils.showToast(LanguageEn().pleaseSelectOptions);
         } else {
           setState(() => isSubmit = false);
           bool isNotAutoCalling = true;
@@ -527,15 +519,16 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
           }
           if (isNotAutoCalling) {
             Position position = Position(
-              longitude: 0,
-              latitude: 0,
-              timestamp: DateTime.now(),
-              accuracy: 0,
-              altitude: 0,
-              heading: 0,
-              speed: 0,
-              speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
-            );
+                longitude: 0,
+                latitude: 0,
+                timestamp: DateTime.now(),
+                accuracy: 0,
+                altitude: 0,
+                heading: 0,
+                speed: 0,
+                speedAccuracy: 0,
+                headingAccuracy: 0,
+                altitudeAccuracy: 0);
 
             final GeolocatorPlatform geolocatorPlatform =
                 GeolocatorPlatform.instance;
@@ -586,15 +579,6 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
               contractor: Singleton.instance.contractor ?? '',
               invalidNumber: Singleton.instance.invalidNumber.toString(),
             );
-
-            // requestBodyData
-            //     .toJson()
-            //     .remove((key, value) => value == requestBodyData.createdAt);
-            //  remove(requestBodyData.createdAt);
-
-            // debugPrint(
-            //     "new res data ------------------> ${jsonEncode(requestBodyData.toJson())}");
-
             final Map<String, dynamic> postdata =
                 jsonDecode(jsonEncode(requestBodyData.toJson()))
                     as Map<String, dynamic>;
@@ -627,71 +611,74 @@ class _CustomOtsBottomSheetState extends State<CustomOtsBottomSheet> {
                 AppUtils.topSnackBar(context, Constants.successfullySubmitted);
               });
             } else {
-              final Map<String, dynamic> postResult =
-                  await APIRepository.apiRequest(
-                APIRequestType.upload,
-                HttpUrl.otsPostUrl,
-                formDatas: FormData.fromMap(postdata),
-              );
-              if (postResult[Constants.success]) {
-                final Map<String, dynamic> firebaseObject =
-                    requestBodyData.toJson();
-                try {
-                  firebaseObject.addAll(
-                      await FirebaseUtils.toPrepareFileStoringModel(
-                          uploadFileLists));
-                } catch (e) {
-                  debugPrint(
-                      'Exception while converting base64 ${e.toString()}');
-                }
-                await FirebaseUtils.storeEvents(
-                        eventsDetails: firebaseObject,
-                        caseId: widget.caseId,
-                        selectedFollowUpDate: otsPaymentDateControlller.text,
-                        selectedClipValue: Constants.ots,
-                        bloc: widget.bloc)
-                    .whenComplete(() {});
-                widget.bloc.add(
-                  ChangeIsSubmitForMyVisitEvent(
-                    Constants.ots,
-                  ),
-                );
-                if (!(widget.userType == Constants.fieldagent &&
-                    widget.isCall!)) {
-                  widget.bloc.add(
-                      ChangeIsSubmitEvent(selectedClipValue: Constants.ots));
-                }
+              final CaseRepositoryImpl caseRepositoryImpl =
+                  CaseRepositoryImpl();
+              final ApiResult<BaseResponse> eventResult =
+                  await caseRepositoryImpl.postOts(FormData.fromMap(postdata));
+              await eventResult.when(
+                  success: (BaseResponse? result) async {
+                    final Map<String, dynamic> firebaseObject =
+                        requestBodyData.toJson();
+                    try {
+                      firebaseObject.addAll(
+                          await FirebaseUtils.toPrepareFileStoringModel(
+                              uploadFileLists));
+                    } catch (e) {
+                      debugPrint(
+                          'Exception while converting base64 ${e.toString()}');
+                    }
+                    await FirebaseUtils.storeEvents(
+                            eventsDetails: firebaseObject,
+                            caseId: widget.caseId,
+                            selectedFollowUpDate:
+                                otsPaymentDateControlller.text,
+                            selectedClipValue: Constants.ots,
+                            bloc: widget.bloc)
+                        .whenComplete(() {});
+                    widget.bloc.add(
+                      ChangeIsSubmitForMyVisitEvent(
+                        Constants.ots,
+                      ),
+                    );
+                    if (!(widget.userType == Constants.fieldagent &&
+                        widget.isCall!)) {
+                      widget.bloc.add(ChangeIsSubmitEvent(
+                          selectedClipValue: Constants.ots));
+                    }
 
-                widget.bloc.add(
-                  ChangeHealthStatusEvent(),
-                );
+                    widget.bloc.add(
+                      ChangeHealthStatusEvent(),
+                    );
 
-                // set speech to text data is null
-                returnS2Tdata.result?.reginalText = null;
-                returnS2Tdata.result?.translatedText = null;
-                returnS2Tdata.result?.audioS3Path = null;
+                    // set speech to text data is null
+                    returnS2Tdata.result?.reginalText = null;
+                    returnS2Tdata.result?.translatedText = null;
+                    returnS2Tdata.result?.audioS3Path = null;
 
-                if (widget.isAutoCalling) {
-                  Navigator.pop(widget.paramValue['context']);
-                  Navigator.pop(widget.paramValue['context']);
-                  Singleton.instance.startCalling = false;
-                  if (!stopValue) {
-                    widget.allocationBloc!.add(StartCallingEvent(
-                      customerIndex: widget.paramValue['customerIndex'] + 1,
-                      phoneIndex: 0,
-                      isIncreaseCount: true,
-                    ));
-                  } else {
-                    widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                      customerIndex: widget.paramValue['customerIndex'],
-                    ));
-                  }
-                } else {
-                  AppUtils.topSnackBar(
-                      context, Constants.successfullySubmitted);
-                  Navigator.pop(context);
-                }
-              }
+                    if (widget.isAutoCalling) {
+                      Navigator.pop(widget.paramValue['context']);
+                      Navigator.pop(widget.paramValue['context']);
+                      Singleton.instance.startCalling = false;
+                      if (!stopValue) {
+                        widget.allocationBloc!.add(StartCallingEvent(
+                          customerIndex: widget.paramValue['customerIndex'] + 1,
+                          phoneIndex: 0,
+                          isIncreaseCount: true,
+                        ));
+                      } else {
+                        widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
+                          customerIndex: widget.paramValue['customerIndex'],
+                        ));
+                      }
+                    } else {
+                      AppUtils.topSnackBar(
+                          context, Constants.successfullySubmitted);
+                      Navigator.pop(context);
+                    }
+                  },
+                  failure: (NetworkExceptions? error) async {
+
+                  });
             }
           }
         }

@@ -7,14 +7,17 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:languages/language_english.dart';
+import 'package:network_helper/errors/network_exception.dart';
+import 'package:network_helper/network_base_models/api_result.dart';
+import 'package:network_helper/network_base_models/base_response.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/dispute_post_model/dispute_post_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/singleton.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/call_status_utils.dart';
 import 'package:origa/utils/color_resource.dart';
@@ -30,7 +33,7 @@ import 'package:origa/widgets/custom_cancel_button.dart';
 import 'package:origa/widgets/custom_drop_down_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_read_only_text_field.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:repository/case_repository.dart';
 
 import '../../models/speech2text_model.dart';
 import '../../widgets/get_followuppriority_value.dart';
@@ -118,20 +121,20 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
           setState(() {
             switch (data.tabIndex) {
               case 0:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '2';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '2';
                 break;
               case 1:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '1';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '1';
                 break;
               case 2:
-                widget.bloc.caseDetailsAPIValue.result
-                    ?.callDetails![data.selectedHealthIndex!]['health'] = '0';
+                widget.bloc.caseDetailsAPIValue
+                    .callDetails![data.selectedHealthIndex!]['health'] = '0';
                 break;
               default:
-                widget.bloc.caseDetailsAPIValue.result
-                        ?.callDetails![data.selectedHealthIndex!]['health'] =
+                widget.bloc.caseDetailsAPIValue
+                        .callDetails![data.selectedHealthIndex!]['health'] =
                     data.currentHealth;
                 break;
             }
@@ -172,7 +175,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   // CustomText(
-                                  //   Languages.of(context)!.nextActionDate,
+                                  //   LanguageEn().nextActionDate,
                                   //   fontSize: FontSize.twelve,
                                   //   fontWeight: FontWeight.w400,
                                   //   color: ColorResource.color666666,
@@ -183,7 +186,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                             46) /
                                         2,
                                     child: CustomReadOnlyTextField(
-                                      Languages.of(context)!.nextActionDate,
+                                      LanguageEn().nextActionDate,
                                       nextActionDateControlller,
                                       isLabel: true,
                                       validationRules: const <String>[
@@ -216,7 +219,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               const SizedBox(height: 15),
                               Flexible(
                                 child: CustomReadOnlyTextField(
-                                  Languages.of(context)!.remarks,
+                                  LanguageEn().remarks,
                                   remarksControlller,
                                   validationRules: const <String>['required'],
                                   isLabel: true,
@@ -244,13 +247,13 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                               const SizedBox(height: 15),
                               Flexible(
                                 child: CustomDropDownButton(
-                                  Languages.of(context)!.disputeReason,
+                                  LanguageEn().disputeReason,
                                   <String>[
                                     'select',
-                                    Languages.of(context)!.disputeWithCharges,
-                                    Languages.of(context)!.loanCleared,
-                                    Languages.of(context)!.escalations,
-                                    Languages.of(context)!.confirmationPending,
+                                    LanguageEn().disputeWithCharges,
+                                    LanguageEn().loanCleared,
+                                    LanguageEn().escalations,
+                                    LanguageEn().confirmationPending,
                                   ],
                                   menuMaxHeight: 200,
                                   selectedValue: disputeDropDownValue,
@@ -303,13 +306,9 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                                   : 191,
                               child: CustomButton(
                                 isSubmit
-                                    ? Languages.of(context)!
-                                            .stop
-                                            .toUpperCase() +
+                                    ? LanguageEn().stop.toUpperCase() +
                                         ' & \n' +
-                                        Languages.of(context)!
-                                            .submit
-                                            .toUpperCase()
+                                        LanguageEn().submit.toUpperCase()
                                     : null,
                                 isLeading: !isSubmit,
                                 trailingWidget: CustomLoadingWidget(
@@ -340,9 +339,7 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                             ? 150
                             : 191,
                         child: CustomButton(
-                          isSubmit
-                              ? Languages.of(context)!.submit.toUpperCase()
-                              : null,
+                          isSubmit ? LanguageEn().submit.toUpperCase() : null,
                           isLeading: !isSubmit,
                           trailingWidget: CustomLoadingWidget(
                             gradientColors: <Color>[
@@ -404,15 +401,16 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
             }
             if (isNotAutoCalling) {
               Position position = Position(
-                longitude: 0,
-                latitude: 0,
-                timestamp: DateTime.now(),
-                accuracy: 0,
-                altitude: 0,
-                heading: 0,
-                speed: 0,
-                speedAccuracy: 0, altitudeAccuracy: 0, headingAccuracy: 0,
-              );
+                  longitude: 0,
+                  latitude: 0,
+                  timestamp: DateTime.now(),
+                  accuracy: 0,
+                  altitude: 0,
+                  heading: 0,
+                  speed: 0,
+                  speedAccuracy: 0,
+                  headingAccuracy: 0,
+                  altitudeAccuracy: 0);
               LatLng latLng = const LatLng(0, 0);
 
               final GeolocatorPlatform geolocatorPlatform =
@@ -455,11 +453,11 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                   accuracy: position.accuracy,
                   followUpPriority:
                       EventFollowUpPriority.connectedFollowUpPriority(
-                    currentCaseStatus: widget.bloc.caseDetailsAPIValue.result!
-                        .caseDetails!.telSubStatus!,
+                    currentCaseStatus: widget
+                        .bloc.caseDetailsAPIValue.caseDetails!.telSubStatus!,
                     eventType: 'Dispute',
                     currentFollowUpPriority: widget.bloc.caseDetailsAPIValue
-                        .result!.caseDetails!.followUpPriority!,
+                        .caseDetails!.followUpPriority!,
                   ),
                   reginalText: returnS2Tdata.result?.reginalText,
                   translatedText: returnS2Tdata.result?.translatedText,
@@ -488,6 +486,73 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                       context, Constants.successfullySubmitted);
                 });
               } else {
+                final CaseRepositoryImpl caseRepositoryImpl =
+                    CaseRepositoryImpl();
+                final ApiResult<BaseResponse> eventResult =
+                    await caseRepositoryImpl.postCaseEvent(
+                        jsonEncode(requestBodyData), 'dispute');
+                await eventResult.when(
+                    success: (BaseResponse? result) async {
+                      await FirebaseUtils.storeEvents(
+                              eventsDetails: requestBodyData.toJson(),
+                              caseId: widget.caseId,
+                              selectedFollowUpDate:
+                                  nextActionDateControlller.text,
+                              selectedClipValue: Constants.dispute,
+                              bloc: widget.bloc)
+                          .whenComplete(() {});
+                      // here update followUpPriority value.
+                      widget.bloc.caseDetailsAPIValue.caseDetails!
+                              .followUpPriority =
+                          requestBodyData.eventAttr.followUpPriority;
+
+                      widget.bloc.add(
+                        ChangeIsSubmitForMyVisitEvent(
+                          Constants.dispute,
+                        ),
+                      );
+
+                      // set speech to text data is null
+                      returnS2Tdata.result?.reginalText = null;
+                      returnS2Tdata.result?.translatedText = null;
+                      returnS2Tdata.result?.audioS3Path = null;
+
+                      if (!(widget.userType == Constants.fieldagent &&
+                          widget.isCall!)) {
+                        widget.bloc.add(
+                          ChangeIsSubmitEvent(
+                              selectedClipValue: Constants.disputeCaseStatus),
+                        );
+                      }
+
+                      widget.bloc.add(
+                        ChangeHealthStatusEvent(),
+                      );
+
+                      if (widget.isAutoCalling) {
+                        Navigator.pop(widget.paramValue['context']);
+                        Navigator.pop(widget.paramValue['context']);
+                        Singleton.instance.startCalling = false;
+                        if (!stopValue) {
+                          widget.allocationBloc!.add(StartCallingEvent(
+                            customerIndex:
+                                widget.paramValue['customerIndex'] + 1,
+                            phoneIndex: 0,
+                            isIncreaseCount: true,
+                          ));
+                        } else {
+                          widget.allocationBloc!
+                              .add(ConnectedStopAndSubmitEvent(
+                            customerIndex: widget.paramValue['customerIndex'],
+                          ));
+                        }
+                      } else {
+                        AppUtils.topSnackBar(
+                            context, Constants.successfullySubmitted);
+                        Navigator.pop(context);
+                      }
+                    },
+                    failure: (NetworkExceptions? error) async {});
                 final Map<String, dynamic> postResult =
                     await APIRepository.apiRequest(
                         APIRequestType.post,
@@ -496,68 +561,10 @@ class _CustomDisputeBottomSheetState extends State<CustomDisputeBottomSheet> {
                           widget.userType,
                         ),
                         requestBodydata: jsonEncode(requestBodyData));
-                if (postResult[Constants.success]) {
-                  await FirebaseUtils.storeEvents(
-                          eventsDetails: requestBodyData.toJson(),
-                          caseId: widget.caseId,
-                          selectedFollowUpDate: nextActionDateControlller.text,
-                          selectedClipValue: Constants.dispute,
-                          bloc: widget.bloc)
-                      .whenComplete(() {});
-                  // here update followUpPriority value.
-                  widget.bloc.caseDetailsAPIValue.result!.caseDetails!
-                          .followUpPriority =
-                      requestBodyData.eventAttr.followUpPriority;
-
-                  widget.bloc.add(
-                    ChangeIsSubmitForMyVisitEvent(
-                      Constants.dispute,
-                    ),
-                  );
-
-                  // set speech to text data is null
-                  returnS2Tdata.result?.reginalText = null;
-                  returnS2Tdata.result?.translatedText = null;
-                  returnS2Tdata.result?.audioS3Path = null;
-
-                  if (!(widget.userType == Constants.fieldagent &&
-                      widget.isCall!)) {
-                    widget.bloc.add(
-                      ChangeIsSubmitEvent(
-                          selectedClipValue: Constants.disputeCaseStatus),
-                    );
-                  }
-
-                  widget.bloc.add(
-                    ChangeHealthStatusEvent(),
-                  );
-
-                  if (widget.isAutoCalling) {
-                    Navigator.pop(widget.paramValue['context']);
-                    Navigator.pop(widget.paramValue['context']);
-                    Singleton.instance.startCalling = false;
-                    if (!stopValue) {
-                      widget.allocationBloc!.add(StartCallingEvent(
-                        customerIndex: widget.paramValue['customerIndex'] + 1,
-                        phoneIndex: 0,
-                        isIncreaseCount: true,
-                      ));
-                    } else {
-                      widget.allocationBloc!.add(ConnectedStopAndSubmitEvent(
-                        customerIndex: widget.paramValue['customerIndex'],
-                      ));
-                    }
-                  } else {
-                    AppUtils.topSnackBar(
-                        context, Constants.successfullySubmitted);
-                    Navigator.pop(context);
-                  }
-                }
               }
             }
           } else {
-            AppUtils.showToast(
-                Languages.of(context)!.pleaseSelectDropDownValue);
+            AppUtils.showToast(LanguageEn().pleaseSelectDropDownValue);
           }
           setState(() => isSubmit = true);
         }

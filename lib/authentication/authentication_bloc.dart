@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/authentication/authentication_event.dart';
 import 'package:origa/authentication/authentication_state.dart';
 import 'package:origa/http/api_repository.dart';
@@ -114,7 +114,7 @@ class AuthenticationBloc
               final Map<String, dynamic> requestData = {
                 'data': jsonEncode(object)
               };
-              String text =
+              final String text =
                   await platform.invokeMethod('sendEncryptedData', requestData);
               final Map<String, dynamic> agentDetail =
                   await APIRepository.apiRequest(

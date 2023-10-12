@@ -11,6 +11,7 @@ abstract class FileRepository {
 enum ImagePickerType { camera, gallery }
 
 class FileRepositoryImpl extends FileRepository {
+
   @override
   Future<String> selectImageFromMobile(String imageType) {
     if (imageType == ImagePickerType.gallery.toString()) {

@@ -9,7 +9,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languages/app_languages.dart';
 import 'package:origa/src/features/search/bloc/search_bloc.dart';
-import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/image_resource.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
@@ -17,7 +16,6 @@ import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/custom_textfield.dart';
-import 'package:repository/search_list_repository.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/models/select_clip_model.dart';
 import 'package:origa/models/speech2text_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
 import 'package:origa/utils/constants.dart';
@@ -49,18 +49,18 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
   @override
   Widget build(BuildContext context) {
     final List<SelectedClipModel> selectedClipList = <SelectedClipModel>[
-      SelectedClipModel(Languages.of(context)!.leftMessage.toUpperCase()),
-      SelectedClipModel(Languages.of(context)!.doorLocked.toUpperCase()),
-      SelectedClipModel(Languages.of(context)!.entryRestricted.toUpperCase()),
+      SelectedClipModel(LanguageEn().leftMessage.toUpperCase()),
+      SelectedClipModel(LanguageEn().doorLocked.toUpperCase()),
+      SelectedClipModel(LanguageEn().entryRestricted.toUpperCase()),
     ];
 
     final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
         <OptionBottomSheetButtonModel>[
       // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
-      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
+      //     LanguageEn().addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(LanguageEn().repo, Constants.repo),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
+          LanguageEn().otherFeedBack, Constants.otherFeedback),
     ];
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -88,7 +88,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         SizedBox(
                           width: (MediaQuery.of(context).size.width - 62) / 2,
                           child: CustomReadOnlyTextField(
-                            Languages.of(context)!.nextActionDate,
+                            LanguageEn().nextActionDate,
                             widget.bloc
                                 .addressCustomerNotMetNextActionDateController,
                             isLabel: true,
@@ -126,7 +126,7 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         const SizedBox(height: 15),
                         Flexible(
                             child: CustomReadOnlyTextField(
-                          Languages.of(context)!.remarks.replaceAll('*', ''),
+                          LanguageEn().remarks.replaceAll('*', ''),
                           widget.bloc.addressCustomerNotMetRemarksController,
                           // validationRules: const <String>['required'],
                           isLabel: true,
@@ -159,14 +159,13 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                         )),
                         const SizedBox(height: 19),
                         CustomButton(
-                          Languages.of(context)!.captureImage.toUpperCase(),
+                          LanguageEn().captureImage.toUpperCase(),
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
                           onTap: () => widget.bloc.add(EventDetailsEvent(
                             Constants.captureImage,
-                            widget.bloc.caseDetailsAPIValue.result
-                                ?.addressDetails,
+                            widget.bloc.caseDetailsAPIValue.addressDetails,
                             false,
                             health: ConstantEventValues.healthOne,
                           )),
@@ -193,8 +192,8 @@ class _CustomerNotMetScreenState extends State<CustomerNotMetScreen> {
                               widget.bloc.add(
                                 EventDetailsEvent(
                                   element.stringResourceValue,
-                                  widget.bloc.caseDetailsAPIValue.result
-                                      ?.addressDetails,
+                                  widget
+                                      .bloc.caseDetailsAPIValue.addressDetails,
                                   false,
                                   health: ConstantEventValues.healthOne,
                                 ),

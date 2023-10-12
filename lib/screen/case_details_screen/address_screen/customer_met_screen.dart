@@ -2,9 +2,10 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:languages/language_english.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
-import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -47,10 +48,10 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
     final List<OptionBottomSheetButtonModel> optionBottomSheetButtonList =
         <OptionBottomSheetButtonModel>[
       // OptionBottomSheetButtonModel(
-      //     Languages.of(context)!.addNewContact, Constants.addNewContact),
-      OptionBottomSheetButtonModel(Languages.of(context)!.repo, Constants.repo),
+      //     LanguageEn().addNewContact, Constants.addNewContact),
+      OptionBottomSheetButtonModel(LanguageEn().repo, Constants.repo),
       OptionBottomSheetButtonModel(
-          Languages.of(context)!.otherFeedBack, Constants.otherFeedback),
+          LanguageEn().otherFeedBack, Constants.otherFeedback),
     ];
     return BlocListener<CaseDetailsBloc, CaseDetailsState>(
       bloc: widget.bloc,
@@ -132,7 +133,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                         ),
                         const SizedBox(height: 30),
                         CustomButton(
-                          Languages.of(context)!.captureImage.toUpperCase(),
+                          LanguageEn().captureImage.toUpperCase(),
                           cardShape: 75.0,
                           textColor: ColorResource.color23375A,
                           fontSize: FontSize.sixteen,
@@ -144,8 +145,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                           onTap: () => widget.bloc.add(
                             EventDetailsEvent(
                                 Constants.captureImage,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.addressDetails,
+                                widget.bloc.caseDetailsAPIValue.addressDetails,
                                 false,
                                 health: ConstantEventValues.healthTwo),
                           ),
@@ -158,7 +158,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                 alignment: AlignmentDirectional.center,
                                 children: <Widget>[
                                   CustomButton(
-                                    Languages.of(context)!
+                                    LanguageEn()
                                         .showQRcode
                                         .toUpperCase(),
                                     cardShape: 75.0,
@@ -180,7 +180,6 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                               caseID: widget
                                                   .bloc
                                                   .caseDetailsAPIValue
-                                                  .result!
                                                   .caseDetails!
                                                   .caseId!));
                                           setState(() {
@@ -217,8 +216,7 @@ class _CustomerMetScreenState extends State<CustomerMetScreen> {
                                   element.title);
                               widget.bloc.add(EventDetailsEvent(
                                 element.stringResourceValue,
-                                widget.bloc.caseDetailsAPIValue.result
-                                    ?.addressDetails,
+                                widget.bloc.caseDetailsAPIValue.addressDetails,
                                 false,
                               ));
                             },

@@ -2,10 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-
-// import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart'; // import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +108,7 @@ class _AllocationScreenState extends State<AllocationScreen>
   // The controller for the ListView
   late ScrollController _controller;
 
-  // CollectionReference<Map<String, dynamic>>? collectionReference;
+  CollectionReference<Map<String, dynamic>>? collectionReference;
 
   @override
   void dispose() {
@@ -131,10 +129,10 @@ class _AllocationScreenState extends State<AllocationScreen>
     debugPrint('initState--> $this');
     bloc = AllocationBloc();
     firebase();
-    // collectionReference = FirebaseFirestore.instance
-    //     .collection(Singleton.instance.firebaseDatabaseName)
-    //     .doc(Singleton.instance.agentRef)
-    //     .collection(Constants.firebaseCase);
+    collectionReference = FirebaseFirestore.instance
+        .collection(Singleton.instance.firebaseDatabaseName)
+        .doc(Singleton.instance.agentRef)
+        .collection(Constants.firebaseCase);
     _controller = ScrollController()..addListener(_loadMore);
 
     // For offline checking only
@@ -145,16 +143,16 @@ class _AllocationScreenState extends State<AllocationScreen>
   }
 
   Future firebase() async {
-    // await FirebaseFirestore.instance
-    //     .collection(Singleton.instance.firebaseDatabaseName)
-    //     .doc(Singleton.instance.agentRef)
-    //     .collection(Constants.firebaseCase)
-    //     .get()
-    //     .then((value) {
-    //   for (var element in value.docs) {
-    //     debugPrint('Element--> $element');
-    //   }
-    // });
+    await FirebaseFirestore.instance
+        .collection(Singleton.instance.firebaseDatabaseName)
+        .doc(Singleton.instance.agentRef)
+        .collection(Constants.firebaseCase)
+        .get()
+        .then((value) {
+      for (var element in value.docs) {
+        debugPrint('Element--> $element');
+      }
+    });
     return;
   }
 
@@ -655,7 +653,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                                 });
                                 if (state.phoneIndex! < tempMobileList.length) {
                                   //   final CaseDetailsBloc caseDetailsloc =
-                                  //       CaseDetailsBloc(bloc)
+                                  //       CaseDetailsBloc()
                                   //         ..add(CaseDetailsInitialEvent(
                                   //           paramValues: {
                                   //             'caseID': bloc
@@ -743,6 +741,7 @@ class _AllocationScreenState extends State<AllocationScreen>
             }
           });
         }
+
         if (state is NavigateCaseDetailState) {
           try {
             final dynamic returnValue = await Navigator.pushNamed(
