@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:origa/languages/app_languages.dart';
 import 'package:origa/models/case_details_navigation_model.dart';
-import 'package:origa/screen/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
-import 'package:origa/screen/case_details_screen/case_details_screen.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_event.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
@@ -170,17 +168,18 @@ class PageBuilder {
           'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
     }
     return BlocProvider(
-      create: (BuildContext context) =>
-          BlocProvider.of<CaseDetailsBloc>(context)
-            ..add(CaseDetailsInitialEvent(
-              paramValues: caseDetailsNaviagationValue.paramValue,
-            )),
-      child: CaseDetailsScreen(
-        paramValues: caseDetailsNaviagationValue.paramValue,
-        allocationBloc:
-            caseDetailsNaviagationValue.allocationBloc ?? AllocationBloc(),
-      ),
-    );
+        create: (BuildContext context) =>
+            BlocProvider.of<CaseDetailsBloc>(context)
+              ..add(CaseDetailsInitialEvent(
+                paramValues: caseDetailsNaviagationValue.paramValue,
+              )),
+        child: Container()
+        // CaseDetailsScreen(
+        //   paramValues: caseDetailsNaviagationValue.paramValue,
+        //   allocationBloc:
+        //       caseDetailsNaviagationValue.allocationBloc ?? AllocationBloc(),
+        // ),
+        );
   }
 
 //TST_8939600444

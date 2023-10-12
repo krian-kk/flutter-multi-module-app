@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:origa/screen/home_tab_screen/bloc/home_tab_bloc.dart';
 import 'package:origa/screen/home_tab_screen/home_tab_screen.dart';
-import 'package:origa/src/features/allocation/presentation/allocation_view.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/presentation/sign_in/sign_in_view.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
@@ -102,4 +101,25 @@ class AppRouter {
       ),
     ],
   );
+
+  // static Widget buildCaseDetailsPage(RouteSettings settings) {
+  //   CaseDetailsNaviagationModel caseDetailsNaviagationValue;
+  //   caseDetailsNaviagationValue =
+  //       settings.arguments as CaseDetailsNaviagationModel;
+  //   if (caseDetailsNaviagationValue.paramValue['isOffline'] != null) {
+  //     debugPrint(
+  //         'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
+  //   }
+  //   return BlocProvider(
+  //     create: (BuildContext context) =>
+  //         BlocProvider.of<CaseDetailsBloc>(context)
+  //           ..add(CaseDetailsInitialEvent(
+  //             paramValues: caseDetailsNaviagationValue.paramValue,
+  //           )),
+  //     child: CaseDetailsScreen(
+  //       paramValues: caseDetailsNaviagationValue.paramValue,
+  //       allocationBloc: caseDetailsNaviagationValue.allocationBloc ?? AllocationBloc(),
+  //     ),
+  //   );
+  // }
 }

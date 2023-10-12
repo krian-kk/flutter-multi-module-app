@@ -744,21 +744,21 @@ class _AllocationScreenState extends State<AllocationScreen>
 
         if (state is NavigateCaseDetailState) {
           try {
-            final dynamic returnValue = await Navigator.pushNamed(
-                context, AppRoutes.caseDetailsScreen,
-                arguments: CaseDetailsNaviagationModel(state.paramValues,
-                    allocationBloc: bloc));
-            // If user will be offline data stored into firebase ->
-            // so there is no need to update while back
-            if (state.paramValues['isOffline'] != null &&
-                state.paramValues['isOffline'] == false) {
-              final RetrunValueModel returnModelValue =
-                  RetrunValueModel.fromJson(
-                      Map<String, dynamic>.from(returnValue));
-              if (returnModelValue.isSubmit) {
-                bloc.add(TapPriorityEvent());
-              }
-            }
+            // final dynamic returnValue = await Navigator.pushNamed(
+            //     context, AppRoutes.caseDetailsScreen,
+            //     arguments: CaseDetailsNaviagationModel(state.paramValues,
+            //         allocationBloc: bloc));
+            // // If user will be offline data stored into firebase ->
+            // // so there is no need to update while back
+            // if (state.paramValues['isOffline'] != null &&
+            //     state.paramValues['isOffline'] == false) {
+            //   final RetrunValueModel returnModelValue =
+            //       RetrunValueModel.fromJson(
+            //           Map<String, dynamic>.from(returnValue));
+            //   if (returnModelValue.isSubmit) {
+            //     bloc.add(TapPriorityEvent());
+            //   }
+            // }
           } catch (e) {
             debugPrint(e.toString());
           }

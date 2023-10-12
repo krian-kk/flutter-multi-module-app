@@ -156,18 +156,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               // AppUtils.noInternetSnackbar(context);
             }
             if (state is CallCaseDetailsState) {
-              Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                  arguments: CaseDetailsNaviagationModel(
-                    state.paramValues,
-                    allocationBloc: widget.allocationBloc,
-                  ));
+              // Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+              //     arguments: CaseDetailsNaviagationModel(
+              //       state.paramValues,
+              //       allocationBloc: widget.allocationBloc,
+              //     ));
             }
             if (state is PushAndPOPNavigationCaseDetailsState) {
-              Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
-                  arguments: CaseDetailsNaviagationModel(
-                    state.paramValues,
-                    allocationBloc: widget.allocationBloc,
-                  ));
+              // Navigator.pushNamed(context, AppRoutes.caseDetailsScreen,
+              //     arguments: CaseDetailsNaviagationModel(
+              //       state.paramValues,
+              //       allocationBloc: widget.allocationBloc,
+              //     ));
             }
 
             if (state is SendSMSloadState) {

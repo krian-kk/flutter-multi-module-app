@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:origa/languages/app_languages.dart';
-import 'package:origa/languages/language_english.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/singleton.dart';
@@ -78,7 +77,7 @@ class _AddressDetailsBottomSheetScreenState
             child: Column(
               children: <Widget>[
                 BottomSheetAppbar(
-                  title: LanguageEn().addressDetails.toUpperCase(),
+                  title: Languages.of(context)?.addressDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
                   color: ColorResource.color23375A,
                   onTap: () async {
@@ -118,10 +117,8 @@ class _AddressDetailsBottomSheetScreenState
                                 widget.bloc.listOfAddressDetails?.length ?? 0,
                             itemBuilder: (BuildContext context, int i) {
                               bool showVisit = false;
-                              String? key = Singleton
-                                  .instance
-                                  .contractorInformations
-                                  ?.googleMapsApiKey;
+                              String? key = Singleton.instance
+                                  .contractorInformations?.googleMapsApiKey;
                               if (key?.isEmpty == false) {
                                 showVisit = true;
                               }
@@ -329,8 +326,9 @@ class _AddressDetailsBottomSheetScreenState
                                                             .spaceBetween,
                                                     children: <Widget>[
                                                       CustomText(
-                                                        LanguageEn()
-                                                            .disposition,
+                                                        Languages.of(context)
+                                                                ?.disposition ??
+                                                            '',
                                                         lineHeight: 1,
                                                         color: ColorResource
                                                             .color23375A,

@@ -15,6 +15,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:languages/app_languages.dart';
+import 'package:origa/models/case_details_navigation_model.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/bloc/case_details_bloc.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/phone_screen.dart';
@@ -22,6 +23,7 @@ import 'package:origa/screen/map_view_bottom_sheet_screen/map.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/allocation/bloc/allocation_bloc.dart';
 import 'package:origa/src/features/allocation/presentation/custom_card_list.dart';
+import 'package:origa/src/routing/app_router.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/constants.dart';
 import 'package:origa/utils/firebase.dart';
@@ -666,28 +668,33 @@ class _AllocationScreenState extends State<AllocationScreen>
                 }
               });
             }
-            //todo
-            // if (state is NavigateCaseDetailState) {
-            //   try {
-            //     final dynamic returnValue = await Navigator.pushNamed(
-            //         context, AppRoutes.caseDetailsScreen,
-            //         arguments: CaseDetailsNaviagationModel(state.paramValues,
-            //             allocationBloc: bloc));
-            //     // If user will be offline data stored into firebase ->
-            //     // so there is no need to update while back
-            //     if (state.paramValues['isOffline'] != null &&
-            //         state.paramValues['isOffline'] == false) {
-            //       final RetrunValueModel returnModelValue =
-            //       RetrunValueModel.fromJson(
-            //           Map<String, dynamic>.from(returnValue));
-            //       if (returnModelValue.isSubmit) {
-            //         bloc.add(TapPriorityEvent());
-            //       }
-            //     }
-            //   } catch (e) {
-            //     debugPrint(e.toString());
-            //   }
-            // }
+
+            if (state is NavigateCaseDetailState) {
+              try {
+                context.go('/${AppRouter.caseDetailsScreen}',
+                    extra: {
+                      'caseID': state.paramValues['caseID'],
+                      'isOffline': false
+                    });
+                // final dynamic returnValue = await Navigator.pushNamed(
+                //     context, AppRoutes.caseDetailsScreen,
+                //     arguments: CaseDetailsNaviagationModel(state.paramValues,
+                //         allocationBloc: bloc));
+                // // If user will be offline data stored into firebase ->
+                // // so there is no need to update while back
+                // if (state.paramValues['isOffline'] != null &&
+                //     state.paramValues['isOffline'] == false) {
+                //   final RetrunValueModel returnModelValue =
+                //   RetrunValueModel.fromJson(
+                //       Map<String, dynamic>.from(returnValue));
+                //   if (returnModelValue.isSubmit) {
+                //     bloc.add(TapPriorityEvent());
+                //   }
+                // }
+              } catch (e) {
+                debugPrint(e.toString());
+              }
+            }
 
             if (state is NavigateSearchPageState) {
               await context.push(context.namedLocation('search'));
