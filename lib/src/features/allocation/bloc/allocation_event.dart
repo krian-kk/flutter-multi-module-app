@@ -21,10 +21,8 @@ class GetCurrentLocationEvent extends AllocationEvent {}
 
 class MapViewEvent extends AllocationEvent {
 
-  MapViewEvent({required this.paramValues, required this.pageKey});
-  final BuildRouteDataModel paramValues;
-
   MapViewEvent({required this.paramValues});
+  final BuildRouteDataModel paramValues;
 }
 
 class TapAreYouAtOfficeOptionsEvent extends AllocationEvent {}
