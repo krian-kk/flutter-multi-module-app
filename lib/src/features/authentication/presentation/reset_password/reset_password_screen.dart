@@ -3,15 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:languages/language_english.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/http/api_repository.dart';
 import 'package:origa/http/httpurls.dart';
-import 'package:languages/app_languages.dart';
 import 'package:origa/models/reset_password_model/reset_password_model.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_event.dart';
 import 'package:origa/src/features/authentication/bloc/sign_in_state.dart';
-import 'package:origa/src/features/home/presentation/bloc/home_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constants.dart';
@@ -128,7 +126,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 BottomSheetAppbar(
-                  title: LanguageEn().resetPassword.toUpperCase(),
+                  title: Languages.of(context)!.resetPassword,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 12,
@@ -145,7 +143,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: Column(
                       children: <Widget>[
                         CustomTextField(
-                          LanguageEn().userId,
+                          Languages.of(context)!.userId,
                           userIdController,
                           keyBoardType: TextInputType.emailAddress,
                           isFill: true,
@@ -194,7 +192,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   horizontal: 20, vertical: 6),
                               child: isCheck
                                   ? CustomText(
-                                      LanguageEn().check,
+                                      Languages.of(context)!.check,
                                       color: ColorResource.colorFFFFFF,
                                       lineHeight: 1,
                                       fontSize: FontSize.twelve,
@@ -218,7 +216,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          LanguageEn().mobileNumber,
+                          Languages.of(context)!.mobileNumber,
                           mobileNumberController,
                           isFill: true,
                           isBorder: true,
@@ -236,7 +234,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         const SizedBox(height: 20),
                         CustomTextField(
-                          LanguageEn().userName,
+                          Languages.of(context)!.userName,
                           userNameController,
                           isFill: true,
                           isBorder: true,
@@ -253,7 +251,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         ),
                         const SizedBox(height: 21),
                         CustomTextField(
-                          LanguageEn().email,
+                          Languages.of(context)!.email,
                           emailController,
                           isFill: true,
                           isReadOnly: true,
@@ -331,7 +329,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                         userIdController.text));
                                               },
                                         child: CustomText(
-                                          LanguageEn().resendOTP.toUpperCase(),
+                                          Languages.of(context)!
+                                              .resendOTP
+                                              .toUpperCase(),
                                           isUnderLine: true,
                                           color: isTime
                                               ? ColorResource.color23375A
@@ -348,7 +348,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               ),
                         isSendOTP
                             ? CustomButton(
-                                LanguageEn().sendOTP.toUpperCase(),
+                                Languages.of(context)!.sendOTP.toUpperCase(),
                                 buttonBackgroundColor: (userIdController
                                                 .text.isNotEmpty &&
                                             mobileNumberController
@@ -404,7 +404,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 fontSize: FontSize.sixteen,
                               )
                             : CustomButton(
-                                LanguageEn().submit.toUpperCase(),
+                                Languages.of(context)!.submit.toUpperCase(),
                                 buttonBackgroundColor:
                                     (pinCodeController.text.isNotEmpty &&
                                             pinCodeController.text.length == 6)
@@ -477,7 +477,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
                         BottomSheetAppbar(
-                          title: LanguageEn().resetPassword.toUpperCase(),
+                          title: Languages.of(context)!.resetPassword,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 12,
@@ -490,7 +490,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 CustomTextField(
-                                  LanguageEn().enterNewPassword,
+                                  Languages.of(context)!.enterNewPassword,
                                   newPasswordController,
                                   obscureText: true,
                                   isFill: true,
@@ -511,7 +511,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 ),
                                 const SizedBox(height: 20),
                                 CustomTextField(
-                                  LanguageEn().enterConfirmNewPassword,
+                                  Languages.of(context)!
+                                      .enterConfirmNewPassword,
                                   confirmPasswordController,
                                   obscureText: true,
                                   isFill: true,
@@ -535,7 +536,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   padding: const EdgeInsets.only(bottom: 50),
                                   child: CustomButton(
                                     isSaveNewPasswordLoad
-                                        ? LanguageEn()
+                                        ? Languages.of(context)!
                                             .saveNewPassword
                                             .toUpperCase()
                                         : null,
@@ -601,7 +602,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                                 }
                                               } else {
                                                 AppUtils.showToast(
-                                                  LanguageEn()
+                                                  Languages.of(context)!
                                                       .pleaseSelectCorrectPassword,
                                                 );
                                               }

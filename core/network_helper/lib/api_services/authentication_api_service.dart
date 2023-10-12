@@ -51,14 +51,14 @@ class AuthenticationApiProvider {
     }
   }
 
-  Future<dynamic> resendOtpApiForResetPassword(String agentRef) async {
+  Future<ApiResult<bool>> resendOtpApiForResetPassword(String agentRef) async {
     final requestObject = <String, dynamic>{jsonKeyAref: agentRef};
     dynamic response;
     try {
       response = await DioClient(baseUrl).post(resendOtpEndPoint,
           data: requestObject, encryptRequestBody: true);
       final mappedResponse = SingleResponse.fromJson2(response);
-      return ApiResult.success(data: mappedResponse.result);
+      return ApiResult.success(data: mappedResponse.result as bool);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }

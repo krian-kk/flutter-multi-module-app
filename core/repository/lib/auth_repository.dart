@@ -132,13 +132,9 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<ApiResult<bool>?> sendOtpRequestToServer(String agentRef) async {
-    final ApiResult<BaseResponse> response =
+    final ApiResult<bool> response =
         await provider.resendOtpApiForResetPassword(agentRef);
-    await response.when(success: (BaseResponse? agentData) async {
-      return const ApiResult.success(data: true);
-    }, failure: (NetworkExceptions? error) async {
-      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
-    });
+    return response;
   }
 
   @override
