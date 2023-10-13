@@ -12,11 +12,14 @@ class AuthenticationApiProvider {
   static const String agentDetailsEndPoint =
       '$baseUrl${apiType}public/agentDetails';
   static const String resendOtpEndPoint = '$baseUrl${apiType}public/requestOtp';
+  static const String resetPasswordUrl =
+      '$baseUrl${apiType}public/resetPassword';
   static const String verifyOtpEndPoint = '$baseUrl${apiType}public/verifyOtp';
   static const String resetPasswordEndPoint =
       '$baseUrl${apiType}public/resetPassword';
   static const String setPasswordUrl = '$baseUrl${apiType}public/setPassword';
   static const jsonKeyAref = 'aRef';
+  static const encryptedData = 'encryptedData';
 
   Future<dynamic> signIn(
       String userName, String password, String fcmToken) async {
@@ -64,14 +67,28 @@ class AuthenticationApiProvider {
     }
   }
 
-  Future<dynamic> verifyOtpApiFromServer(String agentRef, String pin) async {
+  Future<ApiResult<bool>> postNewPasswordToApi(
+      ResetPasswordModel requestBodyData) async {
+    // final requestObject = <String, dynamic>{encryptedData: requestBodyData};
+    dynamic response;
+    try {
+      response = await DioClient(baseUrl).post(resetPasswordUrl,
+          data: requestBodyData, encryptRequestBody: true);
+      final mappedResponse = SingleResponse.fromJson2(response);
+      return ApiResult.success(data: mappedResponse.result as bool);
+    } catch (e) {
+      return ApiResult.failure(error: NetworkExceptions.getDioException(e));
+    }
+  }
+
+  Future<ApiResult<bool>> verifyOtpApiFromServer(
+      String agentRef, String pin) async {
     final object = <String, dynamic>{'aRef': agentRef, 'otp': pin};
     dynamic response;
     try {
       response = await DioClient(baseUrl).post(verifyOtpEndPoint, data: object);
-      final mappedResponse =
-          SingleResponse.fromJson(response, BaseResponse.fromJson);
-      return ApiResult.success(data: mappedResponse);
+      final mappedResponse = SingleResponse.fromJson2(response);
+      return ApiResult.success(data: mappedResponse.result as bool);
     } catch (e) {
       return ApiResult.failure(error: NetworkExceptions.getDioException(e));
     }

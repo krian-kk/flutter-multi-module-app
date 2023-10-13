@@ -3,15 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:languages/app_locale_constant.dart';
 import 'package:languages/language_config.dart';
 import 'package:origa/http/httpurls.dart';
+import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
 import 'package:origa/src/locale/locale_cubit.dart';
 import 'package:origa/src/routing/app_router.dart';
+import 'package:repository/auth_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await HttpUrl.loadValue('poc');
-  runApp(BlocProvider(
-    create: (context) => LocaleCubit(),
-    child: const MyApp(),
+  runApp(RepositoryProvider(
+    create: (context) => AuthRepositoryImpl(),
+    child: MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => LocaleCubit(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              SignInBloc(authRepo: context.read<AuthRepositoryImpl>()),
+        )
+      ],
+      child: const MyApp(),
+    ),
   ));
 }
 

@@ -1,4 +1,5 @@
 import 'package:domain_models/common/constants.dart';
+import 'package:domain_models/request_body/authentication/reset_password_request_body.dart';
 import 'package:domain_models/response_models/agentInfoPublic/agent_info.dart';
 import 'package:domain_models/response_models/auth/sign_in/login_response.dart';
 import 'package:network_helper/api_services/authentication_api_service.dart';
@@ -25,6 +26,8 @@ abstract class AuthRepository {
       String agentRef, String password, String otp);
 
   Future<ApiResult> setPasswordForAgent(String userName, String password);
+
+  Future<ApiResult<bool>?> postNewPassword(ResetPasswordModel requestBodyData);
 }
 
 class AuthRepositoryImpl extends AuthRepository {
@@ -143,13 +146,9 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<ApiResult<bool>?> verifyOtpRequestToServer(
       String agentRef, String pin) async {
-    final ApiResult<BaseResponse> response =
+    final ApiResult<bool> response =
         await provider.verifyOtpApiFromServer(agentRef, pin);
-    await response.when(success: (BaseResponse? agentData) async {
-      return const ApiResult.success(data: true);
-    }, failure: (NetworkExceptions? error) async {
-      return ApiResult.failure(error: NetworkExceptions.getDioException(error));
-    });
+    return response;
   }
 
   @override
@@ -170,6 +169,14 @@ class AuthRepositoryImpl extends AuthRepository {
       String userName, String password) async {
     final ApiResult response =
         await provider.setPasswordForAgent(userName, password);
+    return response;
+  }
+
+  @override
+  Future<ApiResult<bool>?> postNewPassword(
+      ResetPasswordModel requestBodyData) async {
+    final ApiResult<bool> response =
+        await provider.postNewPasswordToApi(requestBodyData);
     return response;
   }
 }

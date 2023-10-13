@@ -6,6 +6,7 @@ import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
 import 'package:design_system/widgets/longRoundedBtnIcon_widget.dart';
+import 'package:domain_models/common/language_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +45,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late BuildContext mContext;
+  List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
 
   // late ProfileBloc bloc;
   // String addressValue = '';
@@ -262,6 +264,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         if (state is CustomerLanguagePreferenceState) {
+          customerLanguagePreferenceList = [
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.tamilLang,
+                languageCode: Constants.tamilLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.hindiLang,
+                languageCode: Constants.hindiLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.kannadaLang,
+                languageCode: Constants.kannadaLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.teluguLang,
+                languageCode: Constants.teluguLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.malayalamLang,
+                languageCode: Constants.malayalamLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.bengaliLang,
+                languageCode: Constants.bengaliLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.gujaratiLang,
+                languageCode: Constants.gujaratiLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.panjabiLang,
+                languageCode: Constants.panjabiLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.marathiLang,
+                languageCode: Constants.marathiLangCode),
+            CustomerLanguagePreferenceModel(
+                language: Languages.of(context)!.urduLang,
+                languageCode: Constants.urduLangCode),
+          ];
+
           customerSupportLanguageBottomSheet();
         }
         if (state is ClickMessageState) {
@@ -894,7 +929,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         builder: (BuildContext context) => StatefulBuilder(
             builder: (BuildContext buildContext, StateSetter setState) =>
-                CustomerLanguagePreference(mcontext: mContext)));
+                CustomerLanguagePreference(
+                  mcontext: mContext,
+                  customerLanguagePreferenceList:
+                      customerLanguagePreferenceList,
+                )));
   }
 
   messageShowBottomSheet({String? fromID, String? toID}) {

@@ -44,7 +44,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   String? idCardBack;
 
 // customer language preference data
-  List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList = [];
 
   ProfileRepository repository;
   FileRepository fileRepository;
@@ -118,30 +117,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           .getLanguageCodeRatioIndex(PreferenceConstants.s2tLangSelectedIndex);
       setLangCodeS2T =
           await repository.getLanguageCode(PreferenceConstants.s2tLangcode);
-
-      customerLanguagePreferenceList = [
-        CustomerLanguagePreferenceModel(
-            language: "tamilLang", languageCode: Constants.tamilLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "hindiLang", languageCode: Constants.hindiLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "kannadaLang", languageCode: Constants.kannadaLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "teluguLang", languageCode: Constants.teluguLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "malayalamLang",
-            languageCode: Constants.malayalamLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "bengaliLang", languageCode: Constants.bengaliLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "gujaratiLang", languageCode: Constants.gujaratiLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "punjabiLang", languageCode: Constants.panjabiLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "marathiLang", languageCode: Constants.marathiLangCode),
-        CustomerLanguagePreferenceModel(
-            language: "urduLang", languageCode: Constants.urduLangCode),
-      ];
 
       emit(CustomerLanguagePreferenceState());
     }

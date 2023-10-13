@@ -37,14 +37,24 @@ class SetPasswordState extends SignInState {
   final String? name;
 }
 
-class SetPasswordSuccessState extends SignInState{
+class SetPasswordSuccessState extends SignInState {}
 
-}
+class SuccessResetPasswordState extends SignInState {}
 
 class SendOtpSuccessState extends SignInState {}
 
 class RequestOtpSuccessState extends SignInState {}
 
 class VerifyOtpSuccessState extends SignInState {}
+
+class SuccessOtpState extends SignInState {
+  SuccessOtpState({required this.pin});
+
+  final String pin;
+}
+
+class FailureOtpState extends SignInState {}
+
+class VerifyOtpFailureState extends SignInState {}
 
 class ResetPasswordSuccessState extends SignInState {}

@@ -1,6 +1,7 @@
 import 'package:design_system/app_sizes.dart';
 import 'package:design_system/colors.dart';
 import 'package:design_system/fonts.dart';
+import 'package:domain_models/common/language_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:languages/app_languages.dart';
@@ -13,10 +14,12 @@ import '../../../../../utils/constants.dart';
 
 class CustomerLanguagePreference extends StatefulWidget {
   final BuildContext mcontext;
+  final List<CustomerLanguagePreferenceModel> customerLanguagePreferenceList;
 
   const CustomerLanguagePreference({
     Key? key,
     required this.mcontext,
+    required this.customerLanguagePreferenceList,
   }) : super(key: key);
 
   @override
@@ -88,9 +91,7 @@ class _CustomerLanguagePreferenceState
                           child: ListView.builder(
                               shrinkWrap: true,
                               itemCount:
-                                  BlocProvider.of<ProfileBloc>(widget.mcontext)
-                                      .customerLanguagePreferenceList
-                                      .length,
+                                  widget.customerLanguagePreferenceList.length,
                               itemBuilder: (BuildContext context, int i) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -108,9 +109,7 @@ class _CustomerLanguagePreferenceState
                                       activeColor:
                                           ColorResourceDesign.textColor,
                                       title: CustomText(
-                                        BlocProvider.of<ProfileBloc>(
-                                                widget.mcontext)
-                                            .customerLanguagePreferenceList[i]
+                                        widget.customerLanguagePreferenceList[i]
                                             .language!,
                                         lineHeight: Sizes.p1,
                                         color: ColorResourceDesign.darkGray,
@@ -120,8 +119,7 @@ class _CustomerLanguagePreferenceState
                                       onChanged: (int? val) async {
                                         setState(() {
                                           ratioIndex = val!;
-                                          setLanguageCode = BlocProvider.of<
-                                                  ProfileBloc>(widget.mcontext)
+                                          setLanguageCode = widget
                                               .customerLanguagePreferenceList[i]
                                               .languageCode;
                                         });

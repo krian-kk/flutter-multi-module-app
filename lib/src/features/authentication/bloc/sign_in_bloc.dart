@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:domain_models/request_body/authentication/reset_password_request_body.dart';
 import 'package:domain_models/response_models/auth/sign_in/login_response.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:network_helper/errors/network_exception.dart';
@@ -84,11 +85,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     if (event is VerifyOtpEvent) {
       final ApiResult<bool>? data =
           await authRepo.verifyOtpRequestToServer(event.agentRef, event.pin);
-      await data?.when(
-          success: (bool? success) async {
-            emit(VerifyOtpSuccessState());
-          },
-          failure: (NetworkExceptions? error) async {});
+      await data?.when(success: (bool? success) async {
+        emit(SuccessOtpState(pin: event.pin));
+      }, failure: (NetworkExceptions? error) async {
+        emit(FailureOtpState());
+      });
     }
 
     if (event is ResetPasswordChangeEvent) {
@@ -107,6 +108,19 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       data.when(
           success: (success) => {emit(SetPasswordSuccessState())},
           failure: (failure) => {});
+    }
+
+    if (event is SubmitNewPasswordEvent) {
+      final ResetPasswordModel requestBodyData = ResetPasswordModel(
+          otp: event.otp, username: event.name, newPassword: event.newPassword);
+
+      final ApiResult<bool>? response =
+          await authRepo.postNewPassword(requestBodyData);
+      await response?.when(
+          success: (bool? success) async {
+            emit(SuccessResetPasswordState());
+          },
+          failure: (NetworkExceptions? error) async {});
     }
   }
 }

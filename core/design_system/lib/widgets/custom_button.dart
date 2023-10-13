@@ -1,5 +1,5 @@
-import 'package:design_system/color_resources.dart';
 import 'package:design_system/fonts.dart';
+import 'package:design_system/colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatefulWidget {
@@ -14,8 +14,8 @@ class CustomButton extends StatefulWidget {
       child: SizedBox.shrink(),
     ),
     this.font = Font.latoMedium,
-    this.buttonBackgroundColor = ColorResource.colorEA6D48,
-    this.borderColor = ColorResource.colorEA6D48,
+    this.buttonBackgroundColor = ColorResourceDesign.colorEA6D48,
+    this.borderColor = ColorResourceDesign.colorEA6D48,
     this.textAlign = TextAlign.left,
     this.onTap,
     this.textColor = Colors.white,

@@ -67,3 +67,12 @@ class SetPasswordEvent extends SignInEvent {
   final String userName;
   final String password;
 }
+
+class SubmitNewPasswordEvent extends SignInEvent {
+  SubmitNewPasswordEvent(
+      {required this.name, required this.otp, required this.newPassword});
+
+  final String name;
+  final String otp;
+  final String newPassword;
+}

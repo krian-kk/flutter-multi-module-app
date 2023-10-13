@@ -39,14 +39,7 @@ class AppRouter {
         name: 'login',
         path: '/',
         builder: (BuildContext context, GoRouterState state) {
-          return RepositoryProvider(
-            create: (context) => AuthRepositoryImpl(),
-            child: BlocProvider(
-              create: (context) =>
-                  SignInBloc(authRepo: context.read<AuthRepositoryImpl>()),
-              child: const SignInView(),
-            ),
-          );
+          return const SignInView();
         },
         routes: <RouteBase>[
           GoRoute(
@@ -102,24 +95,24 @@ class AppRouter {
     ],
   );
 
-  // static Widget buildCaseDetailsPage(RouteSettings settings) {
-  //   CaseDetailsNaviagationModel caseDetailsNaviagationValue;
-  //   caseDetailsNaviagationValue =
-  //       settings.arguments as CaseDetailsNaviagationModel;
-  //   if (caseDetailsNaviagationValue.paramValue['isOffline'] != null) {
-  //     debugPrint(
-  //         'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
-  //   }
-  //   return BlocProvider(
-  //     create: (BuildContext context) =>
-  //         BlocProvider.of<CaseDetailsBloc>(context)
-  //           ..add(CaseDetailsInitialEvent(
-  //             paramValues: caseDetailsNaviagationValue.paramValue,
-  //           )),
-  //     child: CaseDetailsScreen(
-  //       paramValues: caseDetailsNaviagationValue.paramValue,
-  //       allocationBloc: caseDetailsNaviagationValue.allocationBloc ?? AllocationBloc(),
-  //     ),
-  //   );
-  // }
+// static Widget buildCaseDetailsPage(RouteSettings settings) {
+//   CaseDetailsNaviagationModel caseDetailsNaviagationValue;
+//   caseDetailsNaviagationValue =
+//       settings.arguments as CaseDetailsNaviagationModel;
+//   if (caseDetailsNaviagationValue.paramValue['isOffline'] != null) {
+//     debugPrint(
+//         'isOffline--> ${caseDetailsNaviagationValue.paramValue['isOffline']}');
+//   }
+//   return BlocProvider(
+//     create: (BuildContext context) =>
+//         BlocProvider.of<CaseDetailsBloc>(context)
+//           ..add(CaseDetailsInitialEvent(
+//             paramValues: caseDetailsNaviagationValue.paramValue,
+//           )),
+//     child: CaseDetailsScreen(
+//       paramValues: caseDetailsNaviagationValue.paramValue,
+//       allocationBloc: caseDetailsNaviagationValue.allocationBloc ?? AllocationBloc(),
+//     ),
+//   );
+// }
 }
