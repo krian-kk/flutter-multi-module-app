@@ -1,3 +1,5 @@
+import 'package:origa/utils/date_format_utils.dart';
+
 import 'result.dart';
 
 class DisplayEventDetailsModel {
@@ -33,7 +35,9 @@ class EventResult {
   EventResult({this.month, this.eventList});
 
   EventResult.fromJson(Map<String, dynamic> json) {
-    month = json['month'];
+    // month = json['month'];
+
+    month = DateFormatUtils.getDate2Month(json['month']);
     if (json['eventList'] != null) {
       eventList = <EvnetDetailsResultsModel>[];
       json['eventList'].forEach((v) {

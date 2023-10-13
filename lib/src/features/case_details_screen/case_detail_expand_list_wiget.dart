@@ -159,7 +159,7 @@ class ListOfCaseDetails {
             Flexible(
               child: ListOfCaseDetails.textFieldView(
                   title: Languages.of(context)!.emiStartDate,
-                  value: DateFormatUtils2.followUpDateFormat2(bloc
+                  value: DateFormatUtils3.followUpDateFormat3(bloc
                           .caseDetailsAPIValue.caseDetails?.emiStartDate
                           .toString() ??
                       '')),

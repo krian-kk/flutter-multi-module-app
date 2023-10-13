@@ -536,7 +536,7 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
           alignment: Alignment.bottomCenter,
           child: CustomLoanUserDetails(
             userName: bloc.caseDetailsAPIValue.caseDetails?.cust ?? '_',
-            userId: bloc.caseDetailsAPIValue.caseDetails?.accNo ?? '_',
+            userId: bloc.caseDetailsAPIValue.caseDetails?.agrRef ?? '_',
             userAmount:
                 bloc.caseDetailsAPIValue.caseDetails?.due?.toDouble() ?? 0,
             isAccountNo: true,
