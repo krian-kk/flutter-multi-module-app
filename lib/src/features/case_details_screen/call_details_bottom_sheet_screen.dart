@@ -3,7 +3,7 @@ import 'package:domain_models/response_models/allocation/contractor_all_informat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:languages/language_english.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
@@ -77,7 +77,7 @@ class _CallDetailsBottomSheetScreenState
             child: Column(
               children: <Widget>[
                 BottomSheetAppbar(
-                  title: LanguageEn().callDetails.toUpperCase(),
+                  title: Languages.of(context)!.callDetails.toUpperCase(),
                   padding: const EdgeInsets.fromLTRB(21, 13, 21, 12),
                   color: ColorResource.color23375A,
                 ),
@@ -154,8 +154,9 @@ class _CallDetailsBottomSheetScreenState
                                                   .toString()
                                                   .toUpperCase();
                                         } else {
-                                          AppUtils.showErrorToast(LanguageEn()
-                                              .noInternetConnection);
+                                          AppUtils.showErrorToast(
+                                              Languages.of(context)!
+                                                  .noInternetConnection);
                                         }
                                       },
                                       child: Container(
@@ -235,7 +236,8 @@ class _CallDetailsBottomSheetScreenState
                                                                     ''));
                                                       } else {
                                                         AppUtils.showErrorToast(
-                                                            LanguageEn()
+                                                            Languages.of(
+                                                                    context)!
                                                                 .noInternetConnection);
                                                       }
                                                     },
@@ -266,7 +268,9 @@ class _CallDetailsBottomSheetScreenState
                                                             const SizedBox(
                                                                 width: 12),
                                                             CustomText(
-                                                              LanguageEn().call,
+                                                              Languages.of(
+                                                                      context)!
+                                                                  .call,
                                                               color: ColorResource
                                                                   .color23375A,
                                                               lineHeight: 1,
@@ -287,7 +291,7 @@ class _CallDetailsBottomSheetScreenState
                                                             .spaceBetween,
                                                     children: <Widget>[
                                                       CustomText(
-                                                        LanguageEn()
+                                                        Languages.of(context)!
                                                             .disposition,
                                                         lineHeight: 1,
                                                         fontWeight:
