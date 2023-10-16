@@ -22,7 +22,6 @@ import 'package:origa/screen/call_customer_screen/call_customer_bottom_sheet.dar
 import 'package:origa/screen/capture_image_screen/capture_image_bottom_sheet.dart';
 import 'package:origa/screen/collection_screen/collections_bottom_sheet.dart';
 import 'package:origa/screen/dispute_screen/dispute_bottom_sheet.dart';
-import 'package:origa/screen/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/screen/not_eligible/not_eligible.dart';
 import 'package:origa/screen/not_intrested/not_intrested.dart';
 import 'package:origa/screen/other_feed_back_screen/other_feed_back_bottom_sheet.dart';
@@ -38,6 +37,8 @@ import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.da
 import 'package:origa/src/features/case_details_screen/call_details_bottom_sheet_screen.dart';
 import 'package:origa/src/features/case_details_screen/case_detail_expand_list_wiget.dart';
 import 'package:origa/src/features/case_details_screen/phone_screen/phone_screen.dart';
+import 'package:origa/src/features/event_details_screen/bloc/event_details_bloc.dart';
+import 'package:origa/src/features/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -54,6 +55,7 @@ import 'package:origa/widgets/custom_read_only_text_field.dart';
 import 'package:origa/widgets/custom_text.dart';
 import 'package:origa/widgets/eventdetail_status.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:repository/case_repository.dart';
 
 import 'check_whatsapp_button_enable.dart';
 
@@ -1491,17 +1493,20 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               callId: callId,
             );
           case Constants.eventDetails:
-            return CustomEventDetailsBottomSheet(
-              Languages.of(context)!.eventDetails,
-              bloc,
-              customeLoanUserWidget: CustomLoanUserDetails(
-                userName: bloc.caseDetailsAPIValue.caseDetails?.cust ?? '',
-                userId: '${bloc.caseDetailsAPIValue.caseDetails?.agrRef}',
-                userAmount:
-                    bloc.caseDetailsAPIValue.caseDetails?.due?.toDouble() ??
-                        0.0,
-              ),
-            );
+            return BlocProvider(
+                      create: (context) => EventDetailsBloc(),
+                      child: CustomEventDetailsBottomSheet(
+                        Languages.of(context)!.eventDetails,
+                        bloc,
+                        customeLoanUserWidget: CustomLoanUserDetails(
+                          userName: bloc.caseDetailsAPIValue.caseDetails?.cust ?? '',
+                          userId: '${bloc.caseDetailsAPIValue.caseDetails?.agrRef}',
+                          userAmount:
+                              bloc.caseDetailsAPIValue.caseDetails?.due?.toDouble() ??
+                                  0.0,
+                        ),
+                      ),
+                    );
           case Constants.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callDetails:

@@ -355,7 +355,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                         fontSize: FontSize.twelve,
                         fontWeight: FontWeight.w700,
                         color: ColorResourceDesign.color23375A,
-                      ),
+                      ),EventDetailsLoadingState
                       onTap: () {
                         getCurrentLocation();
                         // AppUtils.showToast('Change address');
@@ -671,11 +671,10 @@ class _AllocationScreenState extends State<AllocationScreen>
 
             if (state is NavigateCaseDetailState) {
               try {
-                context.go('/${AppRouter.caseDetailsScreen}',
-                    extra: {
-                      'caseID': state.paramValues['caseID'],
-                      'isOffline': false
-                    });
+                context.go('/${AppRouter.caseDetailsScreen}', extra: {
+                  'caseID': state.paramValues['caseID'],
+                  'isOffline': false
+                });
                 // final dynamic returnValue = await Navigator.pushNamed(
                 //     context, AppRoutes.caseDetailsScreen,
                 //     arguments: CaseDetailsNaviagationModel(state.paramValues,

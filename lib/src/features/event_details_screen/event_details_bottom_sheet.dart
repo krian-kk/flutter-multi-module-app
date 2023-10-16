@@ -12,17 +12,17 @@ import 'package:origa/http/httpurls.dart';
 import 'package:origa/models/audio_convertion_model.dart';
 import 'package:origa/models/event_details_model/result.dart';
 import 'package:origa/models/play_audio_model.dart';
-import 'package:origa/screen/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';
+import 'package:origa/src/features/event_details_screen/bloc/event_details_bloc.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/date_format_utils.dart';
 import 'package:origa/widgets/bottomsheet_appbar.dart';
 import 'package:origa/widgets/custom_button.dart';
 import 'package:origa/widgets/custom_loading_widget.dart';
 import 'package:origa/widgets/custom_text.dart';
+import 'package:origa/widgets/eventdetail_status.dart';
 import 'package:path_provider/path_provider.dart';
 
-import '../../widgets/eventdetail_status.dart';
 
 class CustomEventDetailsBottomSheet extends StatefulWidget {
   const CustomEventDetailsBottomSheet(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/payment_mode_button_model.dart';
 import 'package:origa/singleton.dart';
 import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.dart';

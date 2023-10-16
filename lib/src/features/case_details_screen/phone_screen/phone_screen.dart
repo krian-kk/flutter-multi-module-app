@@ -2,7 +2,7 @@ import 'package:domain_models/response_models/allocation/contractor_all_informat
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:origa/languages/app_languages.dart';
+import 'package:languages/app_languages.dart';
 import 'package:origa/models/update_health_model.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/connected_screen.dart';
 import 'package:origa/screen/case_details_screen/phone_screen/invalid_screen.dart';
