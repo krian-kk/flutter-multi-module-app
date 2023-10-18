@@ -35,9 +35,7 @@ class EventResult {
   EventResult({this.month, this.eventList});
 
   EventResult.fromJson(Map<String?, dynamic> json) {
-    // month = json['month'];
-
-    month = DateFormatUtils.getDate2Month(json['month']);
+    month = json['month'];
     if (json['eventList'] != null) {
       eventList = <EvnetDetailsResultsModel>[];
       json['eventList'].forEach((v) {
