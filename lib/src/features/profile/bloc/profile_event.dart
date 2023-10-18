@@ -12,7 +12,7 @@ class ClickAuthorizationLetterEvent extends ProfileEvent {}
 
 class ClickIDCardEvent extends ProfileEvent {}
 
-class ClickChangePassswordEvent extends ProfileEvent {}
+class ClickChangePasswordEvent extends ProfileEvent {}
 
 class ClickChangeSecurityPinEvent extends ProfileEvent {}
 
@@ -53,3 +53,4 @@ class ClickChangeLanguageEvent extends ProfileEvent {}
 class InitialCustomerLanguagePreferenceEvent extends ProfileEvent {}
 
 class CustomerLanguagePreferenceEvent extends ProfileEvent {}
+

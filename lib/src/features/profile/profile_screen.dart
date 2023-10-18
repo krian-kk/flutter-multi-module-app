@@ -20,7 +20,8 @@ import 'package:origa/models/profile_navigation_button_model.dart';
 import 'package:origa/screen/message_screen/chat_screen.dart';
 import 'package:origa/screen/mpin_screens/forgot_mpin_screen.dart';
 import 'package:origa/screen/mpin_screens/new_mpin_screen.dart';
-import 'package:origa/screen/reset_password_screen/reset_password_screen.dart';
+import 'package:origa/src/features/authentication/bloc/sign_in_bloc.dart';
+import 'package:origa/src/features/authentication/presentation/reset_password/reset_password_screen.dart';
 import 'package:origa/src/features/profile/bloc/profile_bloc.dart';
 import 'package:origa/src/features/profile/location_maps.dart';
 import 'package:origa/src/features/profile/presentation/customer_language_preference/customer_language_preference.dart';
@@ -227,13 +228,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             BlocProvider.of<ProfileBloc>(context)
                 .add(InitialCustomerLanguagePreferenceEvent());
           }),
-      // ProfileNavigation(
-      //     title: Languages.of(context)!.changePassword,
-      //     isEnable: true,
-      //     onTap: () {
-      //       BlocProvider.of<ProfileBloc>(context)
-      //           .add(ClickChangePassswordEvent());
-      //     }),
+      ProfileNavigation(
+          title: Languages.of(context)!.changePassword,
+          isEnable: true,
+          onTap: () {
+            BlocProvider.of<ProfileBloc>(context)
+                .add(ClickChangePasswordEvent());
+          }),
       // // if (Singleton.instance.usertype == Constants.fieldagent &&
       // //     Singleton.instance.isOfflineEnabledContractorBased)
       // ProfileNavigation(
@@ -841,22 +842,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  changePasswordBottomSheet(BuildContext buildContext) {
+  void changePasswordBottomSheet(BuildContext context) {
     showModalBottomSheet(
-      isScrollControlled: true,
-      isDismissible: false,
-      enableDrag: false,
-      context: buildContext,
-      backgroundColor: ColorResourceDesign.lightWhiteGray,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(20),
+        isScrollControlled: true,
+        isDismissible: false,
+        enableDrag: false,
+        context: context,
+        backgroundColor: ColorResourceDesign.lightWhiteGray,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
         ),
-      ),
-      builder: (BuildContext context) {
-        return const ResetPasswordScreen();
-      },
-    );
+        builder: (innerContext) {
+          return BlocProvider.value(
+              value: context.read<SignInBloc>(),
+              child: const ResetPasswordScreen());
+        });
   }
 
   languageBottomSheet() {

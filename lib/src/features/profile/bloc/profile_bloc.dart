@@ -106,6 +106,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(OpenChangeLanguagePopUpState());
     }
 
+    if (event is ClickChangePasswordEvent) {
+      emit(ClickChangePasswordState());
+    }
+
     if (event is ClickChangeLanguageEvent) {
       await repository.setLanguageCode(PreferenceConstants.mainLanguage,
           PreferenceConstants.mainLanguageCode, ratioIndex!, setLangCode!);
