@@ -376,7 +376,7 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
               });
               final eventList = data
                   .map((item) =>
-                      EventResult.fromJson(item as Map<String, dynamic>))
+                      EventResult.fromJson(item as Map<String?, dynamic>))
                   .toList()
                   .reversed
                   .toList();

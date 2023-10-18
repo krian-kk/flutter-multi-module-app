@@ -34,7 +34,7 @@ class DisplayEventDetailsModel {
 class EventResult {
   EventResult({this.month, this.eventList});
 
-  EventResult.fromJson(Map<String, dynamic> json) {
+  EventResult.fromJson(Map<String?, dynamic> json) {
     // month = json['month'];
 
     month = DateFormatUtils.getDate2Month(json['month']);
