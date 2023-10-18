@@ -312,7 +312,11 @@ class _AllocationScreenState extends State<AllocationScreen>
           bloc.add(PriorityLoadMoreEvent());
         } else {
           bloc.page += 1;
-          bloc.add(BuildRouteLoadMoreEvent());
+          bloc.add(BuildRouteLoadMoreEvent(
+              paramValues: BuildRouteDataModel(
+                  lat: position.latitude.toString(),
+                  long: position.longitude.toString(),
+                  maxDistMeters: bloc.selectedMaxDistance)));
         }
       }
     }
@@ -406,6 +410,7 @@ class _AllocationScreenState extends State<AllocationScreen>
         }
         setState(() {
           bloc.selectedDistance = distance;
+          bloc.selectedMaxDistance = maxDistance;
           bloc.add(TapBuildRouteEvent(
               paramValues: BuildRouteDataModel(
                   lat: position.latitude.toString(),
@@ -787,8 +792,8 @@ class _AllocationScreenState extends State<AllocationScreen>
               // debugPrint('Result length--> ${resultList.length}');
               if (state.successResponse is List<PriorityCaseListModel>) {
                 if (BlocProvider.of<AllocationBloc>(context).hasNextPage) {
-                  resultList.addAll(
-                      state.successResponse as List<PriorityCaseListModel>);
+                  resultList =
+                      state.successResponse as List<PriorityCaseListModel>;
                 }
               }
             }
@@ -796,7 +801,7 @@ class _AllocationScreenState extends State<AllocationScreen>
             if (state is BuildRouteLoadMoreState) {
               if (state.successResponse is List<PriorityCaseListModel>) {
                 if (BlocProvider.of<AllocationBloc>(context).hasNextPage) {
-                  resultList.addAll(state.successResponse);
+                  resultList = state.successResponse;
                 }
               }
             }

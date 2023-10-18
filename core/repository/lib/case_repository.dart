@@ -116,8 +116,9 @@ class CaseRepositoryImpl implements CaseRepository {
     //todo move request body here
     String? userType = await getUserType();
     String? accessToken = await getAccessToken();
-    ApiResult<BaseResponse> response = await collectApiProvider.postCaseEventToServer(
-        accessToken, requestBodyData, eventName, userType);
+    ApiResult<BaseResponse> response =
+        await collectApiProvider.postCaseEventToServer(
+            accessToken, requestBodyData, eventName, userType);
     return response;
   }
 

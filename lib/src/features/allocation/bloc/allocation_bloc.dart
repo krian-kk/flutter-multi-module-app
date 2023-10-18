@@ -46,13 +46,12 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
   AllocationRepository repository;
   CaseRepositoryImpl caseRepository;
 
-
-
   int pageKey = 0;
   int tab = 0;
   int buildRouteSubTab = 0;
   bool areYouAtOffice = true;
   String? selectedDistance;
+  String? selectedMaxDistance;
 
   bool isShowSearchPincode = false;
 
@@ -145,6 +144,7 @@ class AllocationBloc extends Bloc<AllocationEvent, AllocationState> {
 
       isShowSearchPincode = false;
       selectedDistance = 'All';
+      selectedMaxDistance = Constants.allDisMeters;
 
       if (ConnectivityResult.none == await Connectivity().checkConnectivity()) {
         isNoInternetAndServerError = true;

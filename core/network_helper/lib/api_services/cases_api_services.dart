@@ -134,7 +134,7 @@ class CasesApiService {
     try {
       String url = buildRouteCaseList;
       url =
-          "${url}lat=${paramValues.lat}&lng=${paramValues.long}&maxDistMeters=${paramValues.maxDistMeters}&page=${pageNo}&limit=$limit";
+          "${url}lat=${paramValues.lat}&lng=${paramValues.long}&maxDistMeters=${paramValues.maxDistMeters}&pageNo=${pageNo}";
       response = await DioClient(baseUrl, accessToken: accessToken)
           .get(url, decryptResponse: true);
       final mappedResponse =
