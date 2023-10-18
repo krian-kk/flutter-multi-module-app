@@ -37,8 +37,6 @@ import 'package:origa/src/features/case_details_screen/bloc/case_details_bloc.da
 import 'package:origa/src/features/case_details_screen/call_details_bottom_sheet_screen.dart';
 import 'package:origa/src/features/case_details_screen/case_detail_expand_list_wiget.dart';
 import 'package:origa/src/features/case_details_screen/phone_screen/phone_screen.dart';
-import 'package:origa/src/features/event_details_screen/bloc/event_details_bloc.dart';
-import 'package:origa/src/features/event_details_screen/event_details_bottom_sheet.dart';
 import 'package:origa/utils/app_utils.dart';
 import 'package:origa/utils/color_resource.dart';
 import 'package:origa/utils/constant_event_values.dart';
@@ -1492,21 +1490,18 @@ class _CaseDetailsScreenState extends State<CaseDetailsScreen> {
               isCallFromCaseDetails: isCallFromCallDetails,
               callId: callId,
             );
-          case Constants.eventDetails:
-            return BlocProvider(
-                      create: (context) => EventDetailsBloc(),
-                      child: CustomEventDetailsBottomSheet(
-                        Languages.of(context)!.eventDetails,
-                        bloc,
-                        customeLoanUserWidget: CustomLoanUserDetails(
-                          userName: bloc.caseDetailsAPIValue.caseDetails?.cust ?? '',
-                          userId: '${bloc.caseDetailsAPIValue.caseDetails?.agrRef}',
-                          userAmount:
-                              bloc.caseDetailsAPIValue.caseDetails?.due?.toDouble() ??
-                                  0.0,
-                        ),
-                      ),
-                    );
+          // case Constants.eventDetails:
+          //   return CustomEventDetailsBottomSheet(
+          //     Languages.of(context)!.eventDetails,
+          //     bloc,
+          //     customeLoanUserWidget: CustomLoanUserDetails(
+          //       userName: bloc.caseDetailsAPIValue.caseDetails?.cust ?? '',
+          //       userId: '${bloc.caseDetailsAPIValue.caseDetails?.agrRef}',
+          //       userAmount:
+          //           bloc.caseDetailsAPIValue.caseDetails?.due?.toDouble() ??
+          //               0.0,
+          //     ),
+          //   );
           case Constants.addressDetails:
             return AddressDetailsBottomSheetScreen(bloc: bloc);
           case Constants.callDetails:

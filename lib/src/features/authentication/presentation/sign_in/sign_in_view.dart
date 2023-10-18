@@ -43,7 +43,7 @@ class _SignInViewState extends State<SignInView> {
         body: BlocListener<SignInBloc, SignInState>(
           listener: (context, state) {
             if (state.formStatus is SubmissionSuccess) {
-              context.go('/${AppRouter.homeTabScreen}');
+              context.push('/${AppRouter.homeTabScreen}');
             } else if (state.formStatus is SubmissionFailed) {
               final message = (state.formStatus as SubmissionFailed).message;
               AppUtils.showErrorToast(message);

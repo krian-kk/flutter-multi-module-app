@@ -355,7 +355,7 @@ class _AllocationScreenState extends State<AllocationScreen>
                         fontSize: FontSize.twelve,
                         fontWeight: FontWeight.w700,
                         color: ColorResourceDesign.color23375A,
-                      ),EventDetailsLoadingState
+                      ),
                       onTap: () {
                         getCurrentLocation();
                         // AppUtils.showToast('Change address');

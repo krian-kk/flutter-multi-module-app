@@ -395,16 +395,6 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
     if (event is ChangeFollowUpDateEvent) {
       changeFollowUpDate = event.followUpDate;
     }
-
-    if (event is ClickMainCallBottomSheetEvent) {
-      indexValue = event.index;
-      emit(ClickMainCallBottomSheetState(
-        event.index,
-        isCallFromCaseDetails: event.isCallFromCaseDetails,
-        callId: event.callId,
-      ));
-    }
-
     if (event is PostImageCapturedEvent) {
       emit(DisableCaptureImageBtnState());
       final Map<String, dynamic> postData =
