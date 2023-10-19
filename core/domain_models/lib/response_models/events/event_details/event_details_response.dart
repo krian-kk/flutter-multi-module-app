@@ -1,4 +1,5 @@
-import 'package:design_system/widgets/date_format_utils.dart';
+
+import 'package:domain_models/data_mappers/date_format_utils.dart';
 
 class EventDetailsResultsModel {
   EventDetailsResultsModel({
@@ -29,7 +30,6 @@ class EventDetailsResultsModel {
           agrRef: json['agrRef'],
           contractor: json['contractor'],
           eventCode: json['eventCode'],
-          //todo month parser
           monthName: DateFormatUtils.getDate2Month(json['createdAt']));
   String? id;
   String? caseId;

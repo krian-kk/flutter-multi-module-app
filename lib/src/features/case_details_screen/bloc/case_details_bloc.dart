@@ -387,8 +387,8 @@ class CaseDetailsBloc extends Bloc<CaseDetailsEvent, CaseDetailsState> {
       }
     }
     if (event is ClickMainAddressBottomSheetEvent) {
-      indexValue = 0;
-      emit(ClickMainAddressBottomSheetState(0,
+      indexValue = event.index;
+      emit(ClickMainAddressBottomSheetState(event.index,
           addressModel: event.addressModel));
     }
 

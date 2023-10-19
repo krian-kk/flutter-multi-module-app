@@ -13,7 +13,6 @@ import 'package:origa/src/features/search/bloc/search_bloc.dart';
 import 'package:origa/src/features/search/search_list/bloc/search_list_bloc.dart';
 import 'package:origa/src/features/search/search_list/search_list_screen.dart';
 import 'package:origa/src/features/search/search_screen.dart';
-import 'package:repository/auth_repository.dart';
 import 'package:repository/case_repository.dart';
 import 'package:repository/search_list_repository.dart';
 
