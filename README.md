@@ -1,15 +1,18 @@
-# origa
+# Flutter Multi Module Project
 
-A new Flutter project.
+A flutter project with multiple modules and using BLOC architecture
 
-## Getting Started
+## You will learn the following from this project:
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+* Open lib/core folder to access all flutter modules
+* How to create a flutter cross platform plugin.
+  * Using Method Channel for both iOS & Android
+* Network API calls using Dio
+* Using Bloc Architecture pattern in flutter apps
+* Using SOLID principles through out the project
+* Internationalization of app using localisation
+* Flutter firebase integration for offline storage
+* Integration of google maps SDK
 
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
