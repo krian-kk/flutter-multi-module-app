@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:languages/app_languages.dart';
 import 'package:origa/http/api_repository.dart';
-import 'package:origa/http/env.dart';
 import 'package:origa/models/location_converter.dart';
 import 'package:origa/singleton.dart';
 import 'package:permission_handler/permission_handler.dart';
